@@ -1,0 +1,203 @@
+// Google Calendar integration (read-only), per user.
+// Calendar access is incremental consent, separate from login: each user
+// connects their own calendar in Settings. Tokens live in the OAuthToken
+// table keyed by [userId, provider]; client credentials come from .env.local.
+// Derive auth types from the google.auth.OAuth2 constructor itself —
+// node_modules contains two copies of google-auth-library with structurally
+// incompatible private fields, so named type imports would mismatch.
+import { google } from "googleapis";
+import { prisma } from "@/lib/prisma";
+import { toDayKey, dayKeyToDate } from "@/lib/dates";
+
+type OAuth2Client = InstanceType<typeof google.auth.OAuth2>;
+type Credentials = Parameters<OAuth2Client["setCredentials"]>[0];
+
+const PROVIDER = "google";
+const SCOPES = [
+  "https://www.googleapis.com/auth/calendar.readonly",
+  "https://www.googleapis.com/auth/userinfo.email",
+];
+
+export type CalendarEvent = {
+  id: string;
+  summary: string;
+  start: string; // ISO datetime, or YYYY-MM-DD for all-day events
+  end: string;
+  allDay: boolean;
+  dayKey: string; // local day the event starts on
+};
+
+export type GoogleStatus =
+  | { state: "not_configured" }
+  | { state: "not_connected" }
+  | { state: "connected"; email: string | null };
+
+export function isGoogleConfigured(): boolean {
+  return Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+}
+
+function createOAuthClient(): OAuth2Client {
+  return new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_REDIRECT_URI ?? "http://localhost:3000/api/auth/google/callback"
+  );
+}
+
+export function getAuthUrl(): string {
+  return createOAuthClient().generateAuthUrl({
+    access_type: "offline",
+    prompt: "consent", // always return a refresh token
+    scope: SCOPES,
+  });
+}
+
+async function saveCredentials(userId: string, creds: Credentials, email?: string | null) {
+  const data = {
+    accessToken: creds.access_token ?? "",
+    refreshToken: creds.refresh_token ?? undefined, // keep existing if absent
+    expiryDate: creds.expiry_date ? BigInt(creds.expiry_date) : null,
+    scope: creds.scope ?? null,
+    ...(email !== undefined ? { accountEmail: email } : {}),
+  };
+  await prisma.oAuthToken.upsert({
+    where: { userId_provider: { userId, provider: PROVIDER } },
+    update: data,
+    create: {
+      userId,
+      provider: PROVIDER,
+      ...data,
+      refreshToken: creds.refresh_token ?? null,
+    },
+  });
+}
+
+/** Exchange the OAuth callback code for tokens and persist them for the user. */
+export async function handleOAuthCallback(userId: string, code: string): Promise<void> {
+  const client = createOAuthClient();
+  const { tokens } = await client.getToken(code);
+  client.setCredentials(tokens);
+
+  let email: string | null = null;
+  try {
+    const oauth2 = google.oauth2({ version: "v2", auth: client });
+    const { data } = await oauth2.userinfo.get();
+    email = data.email ?? null;
+  } catch {
+    // email is cosmetic — ignore failures
+  }
+
+  await saveCredentials(userId, tokens, email);
+}
+
+/** OAuth client with the user's stored tokens, or null when not connected. */
+export async function getAuthorizedClient(userId: string): Promise<OAuth2Client | null> {
+  if (!isGoogleConfigured()) return null;
+  const stored = await prisma.oAuthToken.findUnique({
+    where: { userId_provider: { userId, provider: PROVIDER } },
+  });
+  if (!stored) return null;
+
+  const client = createOAuthClient();
+  client.setCredentials({
+    access_token: stored.accessToken,
+    refresh_token: stored.refreshToken,
+    expiry_date: stored.expiryDate ? Number(stored.expiryDate) : undefined,
+  });
+  // Persist refreshed access tokens so restarts don't re-trigger refresh.
+  client.on("tokens", (tokens) => {
+    void saveCredentials(userId, { ...tokens, refresh_token: tokens.refresh_token ?? undefined });
+  });
+  return client;
+}
+
+export async function getGoogleStatus(userId: string): Promise<GoogleStatus> {
+  if (!isGoogleConfigured()) return { state: "not_configured" };
+  const stored = await prisma.oAuthToken.findUnique({
+    where: { userId_provider: { userId, provider: PROVIDER } },
+  });
+  if (!stored) return { state: "not_connected" };
+  return { state: "connected", email: stored.accountEmail };
+}
+
+export async function disconnectGoogle(userId: string): Promise<void> {
+  await prisma.oAuthToken.deleteMany({ where: { userId, provider: PROVIDER } });
+}
+
+/**
+ * Fetch the user's events from their primary calendar: `pastDays` days back
+ * through `days` days ahead (both relative to today). Live fetch, never
+ * persisted (caching lives in calendar-cache.ts).
+ */
+export async function fetchCalendarEvents(
+  userId: string,
+  days: number,
+  pastDays = 0
+): Promise<CalendarEvent[]> {
+  const client = await getAuthorizedClient(userId);
+  if (!client) throw new Error("NOT_CONNECTED");
+
+  const timeMin = new Date();
+  timeMin.setHours(0, 0, 0, 0);
+  timeMin.setDate(timeMin.getDate() - pastDays);
+  const timeMax = new Date();
+  timeMax.setHours(0, 0, 0, 0);
+  timeMax.setDate(timeMax.getDate() + days + 1);
+
+  return listEventsInRange(client, timeMin, timeMax);
+}
+
+/**
+ * Fetch the user's events for a single local day (`dayKey`). Unlike
+ * fetchCalendarEvents this takes an absolute day, so it works for any past day
+ * regardless of how far back it is — used to review a historical day's tasks.
+ */
+export async function fetchCalendarEventsForDay(
+  userId: string,
+  dayKey: string
+): Promise<CalendarEvent[]> {
+  const client = await getAuthorizedClient(userId);
+  if (!client) throw new Error("NOT_CONNECTED");
+
+  const timeMin = dayKeyToDate(dayKey);
+  const timeMax = dayKeyToDate(dayKey);
+  timeMax.setDate(timeMax.getDate() + 1);
+
+  const events = await listEventsInRange(client, timeMin, timeMax);
+  // An all-day event ending on `dayKey` (its exclusive end date) can leak in —
+  // keep only events whose local start day is this day.
+  return events.filter((e) => e.dayKey === dayKey);
+}
+
+async function listEventsInRange(
+  client: OAuth2Client,
+  timeMin: Date,
+  timeMax: Date
+): Promise<CalendarEvent[]> {
+  const calendar = google.calendar({ version: "v3", auth: client });
+  const { data } = await calendar.events.list({
+    calendarId: "primary",
+    timeMin: timeMin.toISOString(),
+    timeMax: timeMax.toISOString(),
+    singleEvents: true,
+    orderBy: "startTime",
+    maxResults: 250,
+  });
+
+  return (data.items ?? [])
+    .filter((e) => e.status !== "cancelled")
+    .map((e) => {
+      const allDay = Boolean(e.start?.date);
+      const start = e.start?.dateTime ?? e.start?.date ?? "";
+      const end = e.end?.dateTime ?? e.end?.date ?? "";
+      const dayKey = allDay ? (e.start?.date ?? "") : toDayKey(new Date(start));
+      return {
+        id: e.id ?? `${start}-${e.summary}`,
+        summary: e.summary ?? "(bez tytułu)",
+        start,
+        end,
+        allDay,
+        dayKey,
+      };
+    });
+}

@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+/* Class-based dark mode (toggled on <html>, default follows system). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Dziennik — Design System v1.0 tokens.
+ * Palettes are CSS variables that flip in .dark, so components can use
+ * bg-neutral-0 / text-violet-700 etc. without dark: variants everywhere.
+ * Roles: neutrals = 90% of UI · violet = actions/active states only ·
+ * azure = data only (charts, stats, data links).
+ */
+:root {
+  --neutral-0: #ffffff; /* surface — card backgrounds */
+  --neutral-50: #fafafc; /* bg — page background */
+  --neutral-100: #f4f4f7; /* bg-subtle — secondary fills, inactive numbers */
+  --neutral-200: #e8e8ee; /* border — card outlines, progress tracks */
+  --neutral-300: #d6d6df; /* border-strong — input & secondary button outlines */
+  --neutral-400: #a5a5b1; /* disabled / past events */
+  --neutral-500: #8a8a97; /* text-tertiary — placeholders, metadata */
+  --neutral-600: #5c5c68; /* text-secondary — subtitles, nav links */
+  --neutral-800: #2a2a33; /* text-strong — event content */
+  --neutral-900: #17171d; /* text-primary — headings */
+
+  --violet-100: #f1edfd; /* subtle — active-state fills, nav pill, avatar */
+  --violet-200: #ddd3f9; /* border — active chip outline, NOW bar */
+  --violet-400: #9b84f4; /* soft — charts (secondary series) */
+  --violet-600: #6e56cf; /* primary — buttons, dots, accents */
+  --violet-700: #5b46b0; /* button hover + text on violet-100 */
+  --violet-900: #3b2e73; /* deep — reserve */
+
+  --azure-100: #e6f6fd; /* subtle — info badge fills */
+  --azure-300: #7dd3f5; /* soft — chart fills */
+  --azure-500: #0ea5e9; /* main — chart lines, data */
+  --azure-700: #0b7ab8; /* strong — data text links */
+
+  --success: #16a34a;
+  --success-bg: #e9f7ef;
+  --warning: #d97706;
+  --warning-bg: #fdf3e7;
+  --danger: #dc2626;
+  --danger-bg: #fcecec;
+  --danger-border: #f3c2c2;
+}
+
+.dark {
+  --neutral-0: #17171d; /* surface */
+  --neutral-50: #101014; /* bg */
+  --neutral-100: #1d1d24; /* bg-subtle */
+  --neutral-200: #26262e; /* border */
+  --neutral-300: #33333d; /* border-strong */
+  --neutral-400: #55555f; /* disabled */
+  --neutral-500: #7a7a86; /* text-tertiary */
+  --neutral-600: #a9a9b4; /* text-secondary */
+  --neutral-800: #d9d9e0; /* text-strong */
+  --neutral-900: #f2f2f5; /* text-primary */
+
+  --violet-100: #241f3d; /* subtle */
+  --violet-200: #3a3161; /* border */
+  --violet-400: #9b84f4;
+  --violet-600: #8b72f0; /* primary */
+  --violet-700: #a18bf3; /* hover + text on violet-100 (kept light for AA) */
+  --violet-900: #d6cbfa;
+
+  --azure-100: #0e2536;
+  --azure-300: #2e7ea6;
+  --azure-500: #38bdf8;
+  --azure-700: #67cdf9;
+
+  --success: #4ade80;
+  --success-bg: #10291b;
+  --warning: #fbbf24;
+  --warning-bg: #2c2212;
+  --danger: #f87171;
+  --danger-bg: #2e1516;
+  --danger-border: #5b2a2a;
+}
+
+/*
+ * "Kolorowy" — a vibrant light preset. Neutrals get a purple/pink tint, cards
+ * stay white for readability, and every accent is turned up to full saturation.
+ * Applied via [data-theme="colorful"] on <html> (mutually exclusive with .dark).
+ */
+[data-theme="colorful"] {
+  --neutral-0: #ffffff;
+  --neutral-50: #fdf4ff;
+  --neutral-100: #f9e8ff;
+  --neutral-200: #f0d4f7;
+  --neutral-300: #dcb3ea;
+  --neutral-400: #b483c9;
+  --neutral-500: #8f5fb0;
+  --neutral-600: #6b3f8f;
+  --neutral-800: #3d1a52;
+  --neutral-900: #2a0e3d;
+
+  --violet-100: #ede4ff;
+  --violet-200: #dcc9ff;
+  --violet-400: #a97cf5;
+  --violet-600: #9333ea;
+  --violet-700: #7a1fc0;
+  --violet-900: #4c1d95;
+
+  --azure-100: #cff9fe;
+  --azure-300: #5ee0f0;
+  --azure-500: #06b6d4;
+  --azure-700: #0e7490;
+
+  --success: #059669;
+  --success-bg: #d1fae5;
+  --warning: #ea580c;
+  --warning-bg: #ffedd5;
+  --danger: #e11d48;
+  --danger-bg: #ffe4e6;
+  --danger-border: #fda4c0;
+}
+
+@theme inline {
+  --color-*: initial;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+
+  --color-neutral-0: var(--neutral-0);
+  --color-neutral-50: var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+
+  --color-violet-100: var(--violet-100);
+  --color-violet-200: var(--violet-200);
+  --color-violet-400: var(--violet-400);
+  --color-violet-600: var(--violet-600);
+  --color-violet-700: var(--violet-700);
+  --color-violet-900: var(--violet-900);
+
+  --color-azure-100: var(--azure-100);
+  --color-azure-300: var(--azure-300);
+  --color-azure-500: var(--azure-500);
+  --color-azure-700: var(--azure-700);
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-border: var(--danger-border);
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-roboto-mono), ui-monospace, monospace;
+
+  --radius-card: 12px;
+  --shadow-card: 0 1px 2px rgba(23, 23, 29, 0.05);
+}
+
+body {
+  background: var(--neutral-50);
+  color: var(--neutral-900);
+  font-family: var(--font-sans);
+}
+
+/* Idle "breathing" for the Dudu companion. */
+@keyframes dudu-breathe {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+.dudu-breathe {
+  animation: dudu-breathe 3.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dudu-breathe {
+    animation: none;
+  }
+}

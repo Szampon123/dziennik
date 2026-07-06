@@ -1,0 +1,285 @@
+// Prisma schema for Dziennik — multi-user daily journal.
+// SQLite has no native enums or Json type in Prisma, so enum-like fields
+// are stored as String and validated with zod in the actions layer.
+// Future extensions (tags, weekly summaries) are meant to be added as new
+// tables referencing DayEntry / Note — no breaking migrations needed.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Auth.js (NextAuth) standard models ----------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+
+  // Per-user integration settings (entered in the Settings view).
+  notionToken        String?
+  notionParentPageId String?
+
+  // Personalised "Dziś" layout: JSON { order: string[], hidden: string[] }.
+  // null = default (all widgets visible in the default order).
+  dashboardJson String?
+
+  accounts         Account[]
+  sessions         Session[]
+  dayEntries       DayEntry[]
+  oauthTokens      OAuthToken[]
+  milestones       UserMilestone[]
+  workouts         Workout[]
+  favorites        FavoriteActivity[]
+  milestoneEntries MilestoneEntry[]
+  eventChecks      CalendarEventCheck[]
+  favoriteQuotes   FavoriteQuote[]
+  habits           Habit[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @id
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// ---------- Journal domain ----------
+
+model DayEntry {
+  id             String   @id @default(cuid())
+  userId         String
+  date           String // "YYYY-MM-DD", local timezone
+  morningIntent  String?
+  prioritiesJson String   @default("[]") // JSON array of strings, max 3 (validated in app)
+  // Checkpoint flags aligned by index with prioritiesJson (JSON array of booleans).
+  prioritiesDoneJson String @default("[]")
+  // Calendar-checkpoint snapshot taken when the day is closed (for the Notion
+  // brief and history) — live counts come from CalendarEventCheck + the API.
+  tasksDone      Int?
+  tasksTotal     Int?
+  reflectionGood String?
+  reflectionBad  String?
+  dayRating      Int? // 1-5
+  energyLevel    Int? // 1-5
+  status         String   @default("open") // "open" | "closed"
+  notionPageId   String?
+  syncStatus     String   @default("none") // "none" | "pending" | "synced" | "error"
+  syncError      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  notes          Note[]
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+}
+
+model Note {
+  id         String   @id @default(cuid())
+  content    String
+  type       String   @default("log") // "log" | "distraction" | "idea"
+  createdAt  DateTime @default(now())
+  dayEntryId String
+  dayEntry   DayEntry @relation(fields: [dayEntryId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Activity skill system ----------
+// Activities and their 1..99 milestone ladders are global definitions
+// (seeded via prisma/seed.ts); check-offs are per user.
+
+model Activity {
+  id          String      @id @default(cuid())
+  slug        String      @unique // "bieganie"
+  name        String
+  icon        String?
+  description String?
+  sortOrder   Int         @default(0)
+  logKind     String      @default("distance") // "distance" = km/min workout log, "manual" = ladder only
+  category    String      @default("inne") // grouping key; labels in src/lib/activity-categories.ts
+  milestones  Milestone[]
+  workouts    Workout[]
+  favorites   FavoriteActivity[]
+}
+
+// Per-user favorite activities (for filtering the activity list).
+model FavoriteActivity {
+  userId     String
+  activityId String
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@id([userId, activityId])
+}
+
+// A saved quote (quoteId references the bundled library in src/lib/quotes.ts,
+// not a DB row — the quotes are static, so we only store the id).
+model FavoriteQuote {
+  userId    String
+  quoteId   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, quoteId])
+}
+
+model Milestone {
+  id           String           @id @default(cuid())
+  activityId   String
+  level        Int // 1..99
+  title        String
+  detail       String?
+  criteriaJson String? // machine-readable criteria (see src/lib/milestone-criteria.ts); null = manual-only
+  videoJson    String? // optional learning videos for a piece: {"yt":"<id>","tut":"<search query>"}
+  resourcesJson String? // curated learning resources (videos + verified sites): see src/lib/milestone-resources.ts
+  activity     Activity         @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  completions  UserMilestone[]
+  entries      MilestoneEntry[]
+
+  @@unique([activityId, level])
+}
+
+// Per-user proof/journal entry attached to a milestone level: a short note and
+// an optional photo (e.g. a running-app screenshot). Kept SEPARATE from
+// UserMilestone on purpose — unchecking a level (or the auto-engine removing a
+// completion) must never destroy the user's note or photo.
+model MilestoneEntry {
+  userId       String
+  milestoneId  String
+  note         String?
+  photoPath    String? // relative path under uploads/ (served via the authorized API route)
+  // Per-user override of the level's displayed goal. The original Milestone.title/
+  // detail stays untouched (still in memory, restorable) — the student can tailor a
+  // level to their own goal (e.g. swap a suggested piece) without losing the original.
+  customTitle  String?
+  customDetail String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  milestone    Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+
+  @@id([userId, milestoneId])
+}
+
+model UserMilestone {
+  userId      String
+  milestoneId String
+  completedAt DateTime  @default(now())
+  source      String    @default("manual") // "manual" | "auto" (auto rows are engine-managed)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  milestone   Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+
+  @@id([userId, milestoneId])
+}
+
+// A logged training session — the evidence the milestone engine evaluates.
+model Workout {
+  id         String   @id @default(cuid())
+  userId     String
+  activityId String
+  date       String // "YYYY-MM-DD", local timezone
+  distanceKm Float
+  durationMin Float
+  isRace     Boolean  @default(false)
+  note       String?
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@index([userId, activityId, date])
+}
+
+// Per-user check-off ("checkpoint") of a Google Calendar event — marks the
+// event as done for the day-progress overview on the Dziś screen. Keyed by
+// the Google event id (events are fetched with singleEvents: true, so
+// recurring-event instances have unique ids). Orphaned checks for deleted
+// events are harmless — they simply stop matching any fetched event.
+model CalendarEventCheck {
+  userId    String
+  eventId   String
+  dayKey    String // "YYYY-MM-DD" — the event's day (local timezone)
+  checkedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, eventId])
+  @@index([userId, dayKey])
+}
+
+// ---------- Habit tracker ----------
+// Persistent per-user habits (defined once, tracked every month) + one check
+// row per habit-day (presence = done). Mirrors the CalendarEventCheck pattern.
+
+model Habit {
+  id         String       @id @default(cuid())
+  userId     String
+  name       String
+  sortOrder  Int          @default(0)
+  archivedAt DateTime? // set when the user drops the habit; history (checks) kept
+  createdAt  DateTime     @default(now())
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  checks     HabitCheck[]
+
+  @@index([userId])
+}
+
+// One row = the habit was done on `date` ("YYYY-MM-DD", local tz). Absence = not
+// done. Composite PK guarantees one row per habit-day. `userId` is denormalized
+// for fast per-month queries (where userId + date in month).
+model HabitCheck {
+  userId    String
+  habitId   String
+  date      String
+  createdAt DateTime @default(now())
+  habit     Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@id([habitId, date])
+  @@index([userId, date])
+}
+
+// Google Calendar OAuth tokens, one row per user+provider.
+// (Separate from Auth.js Account rows: calendar access is incremental
+// consent, connected/disconnected independently of login.)
+model OAuthToken {
+  userId       String
+  provider     String // "google"
+  accessToken  String
+  refreshToken String?
+  expiryDate   BigInt?
+  scope        String?
+  accountEmail String? // shown in Settings as "connected as ..."
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, provider])
+}

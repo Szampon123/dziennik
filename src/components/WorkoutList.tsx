@@ -1,0 +1,84 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { X } from "lucide-react";
+import { deleteWorkout } from "@/actions/workouts";
+import { formatDayShort } from "@/lib/dates";
+import { EmptyState } from "@/components/EmptyState";
+import { Badge } from "@/components/ui/Badge";
+
+export type WorkoutItem = {
+  id: string;
+  date: string;
+  distanceKm: number;
+  durationMin: number;
+  isRace: boolean;
+  note: string | null;
+};
+
+function formatPace(distanceKm: number, durationMin: number): string {
+  const paceMin = durationMin / distanceKm;
+  const min = Math.floor(paceMin);
+  const sec = Math.round((paceMin - min) * 60);
+  return `${min}:${String(sec).padStart(2, "0")}/km`;
+}
+
+export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
+  const [error, setError] = useState("");
+  const [isPending, startTransition] = useTransition();
+
+  function remove(id: string) {
+    if (!window.confirm("Usunąć trening? Automatycznie zaliczone poziomy zostaną przeliczone.")) {
+      return;
+    }
+    startTransition(async () => {
+      const result = await deleteWorkout(id);
+      setError(result.ok ? "" : result.error);
+    });
+  }
+
+  if (workouts.length === 0) {
+    return (
+      <EmptyState
+        title="Brak zapisanych treningów"
+        hint="Dodaj trening powyżej — automat odhaczy udowodnione poziomy."
+      />
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      {error && <p className="text-[13px] text-danger">{error}</p>}
+      <ul className="flex flex-col divide-y divide-neutral-200">
+        {workouts.map((w) => (
+          <li key={w.id} className="group flex items-center gap-3 px-1 py-2.5">
+            <span className="w-14 shrink-0 font-mono text-[13px] text-neutral-500">
+              {formatDayShort(w.date)}
+            </span>
+            <span className="flex-1 text-[15px] text-neutral-800">
+              <span className="font-medium">{w.distanceKm} km</span>
+              <span className="text-neutral-500">
+                {" "}· {w.durationMin} min · {formatPace(w.distanceKm, w.durationMin)}
+              </span>
+              {w.isRace && (
+                <Badge variant="azure" className="ml-2">
+                  Zawody
+                </Badge>
+              )}
+            </span>
+            <button
+              type="button"
+              onClick={() => remove(w.id)}
+              disabled={isPending}
+              aria-label="Usuń trening"
+              title="Usuń trening"
+              className="rounded p-1 text-neutral-500 opacity-0 transition-opacity hover:text-danger focus-visible:opacity-100 group-hover:opacity-100 disabled:opacity-50"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

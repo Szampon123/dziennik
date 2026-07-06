@@ -1,0 +1,143 @@
+// Pottery ladder 1-99 — REALISTIC personal-progression scale (dedicated
+// hobbyist; hours capped ~1200, piece counts scaled for a slow medium; top
+// tiers reframed as attainable mastery, real feats left to future certificates).
+// Tracks: umiejetnosci, prace (finished pieces), godziny. Timeline grounded in
+// research: centering is hardest; 0-3 mo basics, 3-12 mo walls/complex forms.
+import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const activity = {
+  slug: "garncarstwo",
+  name: "Garncarstwo (koło)",
+  icon: "🏺",
+  description:
+    "Toczenie na kole — centrowanie, ścianki, formy, szkliwienie. Poziomy 1–99 to realna droga amatora: fundamenty → dorobek i godziny → jarmarki i wystawy → dojrzały, autorski warsztat.",
+  sortOrder: 85,
+  logKind: "manual" as const,
+};
+
+export const { milestones, criteriaByLevel } = ladderC([
+  // 1-10 · Pierwsze kroki
+  ["Przygotuj glinę (wyrabianie, odpowietrzanie)", undefined, prog("umiejetnosci", 1)],
+  ["Wyśrodkuj glinę na kole (centrowanie — najtrudniejsze)", undefined, prog("umiejetnosci", 2)],
+  ["Otwórz bryłę i uformuj dno", undefined, prog("umiejetnosci", 3)],
+  ["Wyciągnij ściankę do góry (pierwszy cylinder)", undefined, prog("umiejetnosci", 4)],
+  ["Utocz prostą miseczkę", undefined, prog("umiejetnosci", 5)],
+  ["Zdejmij pracę z koła bez zniszczenia", undefined, prog("umiejetnosci", 6)],
+  ["Ukończ 5 wyrobów (do wysuszenia i wypału)", undefined, prog("prace", 5)],
+  ["Wytocz kubek z uchem", undefined, prog("umiejetnosci", 7)],
+  ["Ukończ 10 wyrobów", undefined, prog("prace", 10)],
+  ["Toczyj łącznie przez 10 godzin", undefined, prog("godziny", 10)],
+  // 11-25 · Regularny
+  ["Toczyj kilka razy w tygodniu przez 4 kolejne tygodnie", undefined, freq(2, 4)],
+  ["Kontroluj równą grubość ścianek", undefined, prog("umiejetnosci", 8)],
+  ["Wytocz zestaw powtarzalnych miseczek", undefined, prog("prace", 20)],
+  ["Toczenie na spodzie: toczenie stopki (trimming)", undefined, prog("umiejetnosci", 9)],
+  ["Wytocz wyższy cylinder / kubek prosto", undefined, prog("umiejetnosci", 10)],
+  ["Toczyj łącznie przez 25 godzin", undefined, prog("godziny", 25)],
+  ["Nałóż szkliwo i zaplanuj wypał", undefined, prog("umiejetnosci", 11)],
+  ["Ukończ 35 wyrobów", undefined, prog("prace", 35)],
+  ["Wytocz talerz / płaską formę", undefined, prog("umiejetnosci", 12)],
+  ["Dodaj dziobek / detal użytkowy", undefined, prog("umiejetnosci", 13)],
+  ["Wytocz formę zamkniętą (dzbanek, wazon)", undefined, prog("umiejetnosci", 14)],
+  ["Toczyj łącznie przez 45 godzin", undefined, prog("godziny", 45)],
+  ["Wytocz spójny komplet (np. 4 kubki)", undefined, prog("prace", 55)],
+  ["Opanuj podstawy dekoracji (rytowanie, angoby)", undefined, prog("umiejetnosci", 15)],
+  ["Ukończ 60 wyrobów", undefined, prog("prace", 60)],
+  // 26-45 · Średniozaawansowany
+  ["Toczyj regularnie przez 8 kolejnych tygodni", undefined, freq(2, 8)],
+  ["Wytocz dużą formę (misa, duży dzbanek)", undefined, prog("umiejetnosci", 16)],
+  ["Opanuj toczenie z większej ilości gliny (2-3 kg)", undefined, prog("umiejetnosci", 17)],
+  ["Ukończ 90 wyrobów", undefined, prog("prace", 90)],
+  ["Opanuj szkliwa i przewidywalny efekt wypału", undefined, prog("umiejetnosci", 18)],
+  ["Toczyj łącznie przez 70 godzin", undefined, prog("godziny", 70)],
+  ["Wytocz formę składaną z części (czajnik z dzióbkiem i uchem)", undefined, prog("umiejetnosci", 19)],
+  ["Opanuj powtarzalność (seria identycznych wyrobów)", undefined, prog("umiejetnosci", 20)],
+  ["Ukończ 120 wyrobów", undefined, prog("prace", 120)],
+  ["Toczyj cienko i lekko (kontrola ścianki)", undefined, prog("umiejetnosci", 21)],
+  ["Opanuj dekorację powierzchni (sgraffito, wielobarwne szkliwa)", undefined, prog("umiejetnosci", 22)],
+  ["Toczyj łącznie przez 100 godzin", undefined, prog("godziny", 100)],
+  ["Wykonaj spójną serię użytkową (komplet obiadowy)", undefined, prog("prace", 150)],
+  ["Wytocz bardzo dużą formę (wysoki wazon)", undefined, prog("umiejetnosci", 23)],
+  ["Zbuduj dopracowany, „wystawowy” obiekt", undefined, prog("umiejetnosci", 24)],
+  ["Ukończ 180 wyrobów", undefined, prog("prace", 180)],
+  ["Opanuj wybraną technikę wypału (raku, redukcja — jeśli dostępna)", undefined, prog("umiejetnosci", 25)],
+  ["Toczyj łącznie przez 150 godzin", undefined, prog("godziny", 150)],
+  ["Wytocz formę na granicy swoich możliwości (rozmiar/cienkość)", undefined, prog("umiejetnosci", 26)],
+  ["Pracuj w pracowni regularnie przez 3 miesiące", undefined, prog("prace", 220)],
+  // 46-65 · Zaawansowany (amator)
+  ["Toczyj regularnie przez 12 kolejnych tygodni", undefined, freq(2, 12)],
+  ["Wypracuj rozpoznawalny, osobisty styl form", undefined, prog("umiejetnosci", 27)],
+  ["Zbuduj spójną kolekcję (linia wyrobów)", undefined, prog("umiejetnosci", 28)],
+  ["Ukończ 280 wyrobów", undefined, prog("prace", 280)],
+  ["Toczyj łącznie przez 220 godzin", undefined, prog("godziny", 220)],
+  ["Pokaż wyroby publicznie i zbierz opinie"],
+  ["Wykonaj ambitny, wieloelementowy zestaw ceramiki", undefined, prog("umiejetnosci", 29)],
+  ["Ukończ 350 wyrobów", undefined, prog("prace", 350)],
+  ["Opracuj własne przepisy szkliw / efekty powierzchni", undefined, prog("umiejetnosci", 30)],
+  ["Toczyj łącznie przez 300 godzin", undefined, prog("godziny", 300)],
+  ["Sprzedaj wyroby na jarmarku / online (pierwsza sprzedaż)"],
+  ["Weź udział w wystawie zbiorowej lub konkursie ceramiki"],
+  ["Opanuj trudną formę na mistrzowskim poziomie (czajnik, serwis)", undefined, prog("umiejetnosci", 31)],
+  ["Ukończ 450 wyrobów", undefined, prog("prace", 450)],
+  ["Realizuj zamówienia (komplety na zamówienie)", undefined, prog("umiejetnosci", 32)],
+  ["Toczyj łącznie przez 420 godzin", undefined, prog("godziny", 420)],
+  ["Poprowadź kogoś przez podstawy toczenia", undefined, prog("umiejetnosci", 33)],
+  ["Zrealizuj spójny cykl prac wokół jednego pomysłu"],
+  ["Wytocz „galeryjny” obiekt na najwyższym własnym poziomie", undefined, prog("umiejetnosci", 34)],
+  ["Ukończ 550 wyrobów", undefined, prog("prace", 550)],
+  // 66-85 · Ekspert (poziom amatorski wysoki)
+  ["Toczyj regularnie przez pełny sezon (6 miesięcy)"],
+  ["Toczyj swobodnie dowolną formę, jaką zaplanujesz", undefined, prog("umiejetnosci", 35)],
+  ["Ukończ 700 wyrobów", undefined, prog("prace", 700)],
+  ["Toczyj łącznie przez 580 godzin", undefined, prog("godziny", 580)],
+  ["Sprzedawaj wyroby regularnie / prowadź mały stragan"],
+  ["Rozwiń warsztat na tyle, by uczyć toczenia", undefined, prog("umiejetnosci", 36)],
+  ["Zbuduj rozpoznawalną kolekcję o spójnym stylu"],
+  ["Zorganizuj małą wystawę indywidualną (lokalnie)"],
+  ["Opanuj wybraną specjalizację (naczynia użytkowe / rzeźba / szkliwa)", undefined, prog("umiejetnosci", 37)],
+  ["Ukończ 850 wyrobów", undefined, prog("prace", 850)],
+  ["Zdobądź wyróżnienie w konkursie lub uznanie w społeczności"],
+  ["Toczyj łącznie przez 800 godzin", undefined, prog("godziny", 800)],
+  ["Zrealizuj ambitny projekt autorski (duża seria / instalacja)", undefined, prog("umiejetnosci", 38)],
+  ["Twoje wyroby są dojrzałe i rozpoznawalne", undefined, prog("umiejetnosci", 39)],
+  ["Ukończ 1000 wyrobów", undefined, prog("prace", 1000)],
+  ["Zbuduj grono odbiorców / klientów swojej ceramiki"],
+  ["Poprowadź warsztaty lub mentoring dla początkujących"],
+  ["Opracuj autorską paletę szkliw i wykończeń"],
+  ["Zrealizuj wystawę prezentującą Twój dorobek"],
+  ["Ukończ 1200 wyrobów", undefined, prog("prace", 1200)],
+  // 86-99 · Mistrzostwo osobiste (realny szczyt zaangażowanego amatora)
+  ["Toczyj łącznie przez 1000 godzin", undefined, prog("godziny", 1000)],
+  ["Utrzymuj wysoki, powtarzalny poziom w każdej pracy"],
+  ["Ukończ 1400 wyrobów", undefined, prog("prace", 1400)],
+  ["Zbuduj bogatą, spójną kolekcję o autorskim charakterze"],
+  ["Twój styl inspiruje innych ceramików w Twoim otoczeniu"],
+  ["Wykonaj osobisty „opus” — dużą, dopracowaną formę lub serię", undefined, prog("umiejetnosci", 40)],
+  ["Regularnie wystawiasz lub sprzedajesz swoje wyroby"],
+  ["Toczyj łącznie przez 1200 godzin", undefined, prog("godziny", 1200)],
+  ["Twoja ceramika zdobywa uznanie poza lokalną społecznością"],
+  ["Ukończ 1600 wyrobów", undefined, prog("prace", 1600)],
+  ["Uczysz i kształtujesz kolejnych ceramików"],
+  ["Masz dorobek, z którego można ułożyć wystawę retrospektywną"],
+  ["Toczysz swobodnie wszystko, co sobie zaplanujesz"],
+  ["Poziom mistrzowski (amatorski szczyt): dojrzały, autorski warsztat", "Dalsze, „zawodowe” osiągnięcia potwierdzają osobne certyfikaty."],
+]);
+
+// Curated, link-verified learning resources for the concrete technique
+// milestones (toczenie na kole: Florian Gadsby, KEO Ceramics i in.).
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Wyrabianie gliny (wedging)", url: yt("LVAf0MRGOsQ") }],
+  2: [{ kind: "video", title: "Centrowanie gliny na kole", url: yt("-YCGK33c0xs") }],
+  3: [{ kind: "video", title: "Otwieranie bryły i formowanie dna", url: yt("djMAvdY2klY") }],
+  4: [{ kind: "video", title: "Wyciąganie ścianki (cylinder)", url: yt("VM8SJZ4lNRY") }],
+  5: [{ kind: "video", title: "Toczenie miseczki", url: yt("xPgPKRuFia4") }],
+  7: [{ kind: "video", title: "Wyciąganie i doklejanie ucha", url: yt("64nsPN9aGR8") }],
+  9: [{ kind: "video", title: "Toczenie stopki (trimming)", url: yt("Q9L_bkNcu1E") }],
+  11: [{ kind: "video", title: "Szkliwienie dla początkujących", url: yt("GXHES5GhL_k") }],
+  12: [{ kind: "video", title: "Toczenie talerza", url: yt("QSRQUwCuj-w") }],
+  14: [{ kind: "video", title: "Toczenie wazonu (forma zamknięta)", url: yt("ydkj__jLwt0") }],
+  15: [{ kind: "video", title: "Dekoracja sgraffito i angoby", url: yt("Gspxd9zDjkY") }],
+};
