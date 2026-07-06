@@ -13,13 +13,16 @@ Dane są trzymane **lokalnie w SQLite** — Notion to kopia/publikacja, nie źr�
 
 ## Instalacja i uruchomienie
 
+> Zwięzła instrukcja od zera (po `git clone`) jest w [SETUP.md](SETUP.md).
+
 Wymagany Node.js 20+ (instalowany np. przez `winget install OpenJS.NodeJS.LTS`).
 
 ```bash
 npm install
+cp .env.example .env               # DATABASE_URL (ścieżka do bazy) — potrzebne dla Prisma
+cp .env.local.example .env.local   # sekrety: AUTH_SECRET, klucze Google (patrz niżej)
 npx prisma migrate dev   # tworzy lokalną bazę prisma/dev.db
 npx prisma db seed       # ładuje bazę aktywności (poziomy 1-99)
-cp .env.local.example .env.local   # uzupełnij wartości (patrz niżej)
 npm run dev              # aplikacja pod http://localhost:3000
 ```
 
