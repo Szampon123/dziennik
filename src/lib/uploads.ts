@@ -4,13 +4,14 @@
 //   • Local filesystem (default, local dev) — files live OUTSIDE public/ under
 //     ./uploads and are served only through the authorized API route.
 //   • Vercel Blob (when BLOB_READ_WRITE_TOKEN is set, i.e. on Vercel) — the
-//     serverless filesystem is ephemeral/read-only, so photos go to Blob.
+//     serverless filesystem is ephemeral/read-only, so photos go to a PRIVATE
+//     Blob store. Private blobs aren't reachable by URL without the store token.
 //
 // The DB column `photoPath` stores whichever reference the active backend
 // returns: a relative key (filesystem) or an https:// URL (Blob). Reads detect
 // the kind by the `http(s)://` prefix, so a photo saved on one backend is still
-// readable after switching. Blob URLs stay server-side only (streamed through
-// the authorized route), preserving the per-user privacy guarantee.
+// readable after switching. Blobs are read server-side via get() and streamed
+// through the authorized route, preserving the per-user privacy guarantee.
 import path from "path";
 
 export const UPLOADS_ROOT = path.join(process.cwd(), "uploads");
@@ -66,10 +67,12 @@ export async function savePhoto(
 ): Promise<string> {
   if (blobEnabled()) {
     const { put } = await import("@vercel/blob");
-    // Unique URL per upload; the caller deletes the previous ref, so re-uploads
-    // never collide (no overwrite needed) and stale blobs get cleaned up.
+    // Private blob: not reachable by its URL without the store token; the app
+    // reads it server-side via get() and streams it through the authorized
+    // route. Unique URL per upload; the caller deletes the previous ref, so
+    // re-uploads never collide and stale blobs get cleaned up.
     const { url } = await put(key, bytes, {
-      access: "public",
+      access: "private",
       contentType,
       addRandomSuffix: true,
       token: process.env.BLOB_READ_WRITE_TOKEN,
@@ -90,10 +93,14 @@ export async function readPhoto(
 ): Promise<{ data: Uint8Array<ArrayBuffer>; contentType: string } | null> {
   if (isBlobRef(ref)) {
     try {
-      const res = await fetch(ref, { cache: "no-store" });
-      if (!res.ok) return null;
-      const data = new Uint8Array(await res.arrayBuffer());
-      return { data, contentType: res.headers.get("content-type") || contentTypeForPath(ref) };
+      const { get } = await import("@vercel/blob");
+      const result = await get(ref, {
+        access: "private",
+        token: process.env.BLOB_READ_WRITE_TOKEN,
+      });
+      if (!result || result.statusCode !== 200) return null;
+      const data = new Uint8Array(await new Response(result.stream).arrayBuffer());
+      return { data, contentType: result.blob.contentType || contentTypeForPath(ref) };
     } catch {
       return null;
     }
