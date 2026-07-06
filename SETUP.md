@@ -19,19 +19,23 @@ cd dziennik
 npm install
 
 # 3. Utwórz pliki środowiskowe z szablonów
-cp .env.example .env               # DATABASE_URL — ścieżka do bazy (potrzebne dla Prisma)
+cp .env.example .env               # DATABASE_URL + DIRECT_URL (PostgreSQL / Neon)
 cp .env.local.example .env.local   # sekrety: AUTH_SECRET, klucze Google
 
-# 4. Wygeneruj AUTH_SECRET i wklej do .env.local (pole AUTH_SECRET=)
+# 4. Uzupełnij .env — wklej connection stringi z darmowej bazy Neon
+#    (jak założyć: DEPLOY.md, Krok 1). Wygeneruj też AUTH_SECRET do .env.local:
 node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 
-# 5. Utwórz i wypełnij bazę (aktywności, poziomy 1–99)
-npx prisma migrate dev
+# 5. Utwórz schemat i wypełnij bazę (aktywności, poziomy 1–99)
+npx prisma migrate deploy
 npx prisma db seed
 
 # 6. Uruchom aplikację
 npm run dev                        # http://localhost:3000
 ```
+
+> Baza to **PostgreSQL** (nie plik SQLite). Załóż darmową bazę Neon i wklej jej
+> connection stringi do `.env` — pełna instrukcja w **[DEPLOY.md](DEPLOY.md)**.
 
 ## Szybki start bez kluczy Google (tryb deweloperski)
 
@@ -53,9 +57,9 @@ Te rzeczy są celowo w `.gitignore` — na nowej maszynie tworzysz je od nowa (k
 
 | Pominięte | Powód | Jak odtworzyć |
 |---|---|---|
-| `.env`, `.env.local` | sekrety (klucze, `AUTH_SECRET`) | `cp` z `.example` + uzupełnij |
-| `prisma/dev.db` | Twoje prywatne dane | `prisma migrate dev` + `db seed` |
-| `uploads/` | zdjęcia-dowody poziomów | tworzone przy pierwszym uploadzie |
+| `.env`, `.env.local` | sekrety (klucze, `AUTH_SECRET`, URL bazy) | `cp` z `.example` + uzupełnij |
+| baza (Neon/Postgres) | Twoje prywatne dane | `prisma migrate deploy` + `db seed` |
+| `uploads/` | zdjęcia-dowody (lokalnie; w chmurze → Blob) | tworzone przy pierwszym uploadzie |
 | `node_modules/`, `.next/` | zależności / build | `npm install` / `npm run dev` |
 
 ## Przydatne komendy
@@ -67,4 +71,4 @@ npm run lint           # ESLint
 npx prisma studio      # podgląd bazy w przeglądarce
 ```
 
-Reset bazy: usuń `prisma/dev.db`, potem `npx prisma migrate dev` (+ `npx prisma db seed`).
+Reset danych: w Neon utwórz nową bazę (lub wyczyść), zaktualizuj `.env`, potem `npx prisma migrate deploy` (+ `npx prisma db seed`).

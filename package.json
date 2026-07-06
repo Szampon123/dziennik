@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma migrate deploy && next build"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -15,6 +17,7 @@
     "@auth/prisma-adapter": "^2.11.2",
     "@notionhq/client": "^5.22.0",
     "@prisma/client": "^6.19.3",
+    "@vercel/blob": "^0.27.3",
     "googleapis": "^173.0.0",
     "lucide-react": "^1.23.0",
     "next": "16.2.10",

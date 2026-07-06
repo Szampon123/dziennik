@@ -1,11 +1,10 @@
 // Serves a user's milestone proof photo. Files live outside public/ so this
 // route is the only way to reach them — and it only ever returns the photo
 // belonging to the SIGNED-IN user for that milestone (no cross-user access).
-import { readFile } from "fs/promises";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSessionUserId } from "@/lib/session";
-import { absolutePhotoPath, contentTypeForPath } from "@/lib/uploads";
+import { readPhoto } from "@/lib/uploads";
 
 export async function GET(
   _request: Request,
@@ -25,21 +24,14 @@ export async function GET(
     return NextResponse.json({ error: "not_found" }, { status: 404 });
   }
 
-  const abs = absolutePhotoPath(entry.photoPath);
-  if (!abs) {
+  const photo = await readPhoto(entry.photoPath);
+  if (!photo) {
     return NextResponse.json({ error: "not_found" }, { status: 404 });
   }
 
-  let data: Buffer;
-  try {
-    data = await readFile(abs);
-  } catch {
-    return NextResponse.json({ error: "not_found" }, { status: 404 });
-  }
-
-  return new NextResponse(new Uint8Array(data), {
+  return new NextResponse(new Blob([photo.data], { type: photo.contentType }), {
     headers: {
-      "Content-Type": contentTypeForPath(entry.photoPath),
+      "Content-Type": photo.contentType,
       // Private + revalidate: the photo can be replaced; the client busts the
       // cache with a ?v=updatedAt query param anyway.
       "Cache-Control": "private, max-age=0, must-revalidate",

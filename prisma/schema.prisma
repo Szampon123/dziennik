@@ -1,6 +1,7 @@
 // Prisma schema for Dziennik — multi-user daily journal.
-// SQLite has no native enums or Json type in Prisma, so enum-like fields
-// are stored as String and validated with zod in the actions layer.
+// Provider: PostgreSQL (Neon in the cloud + local dev). Enum-like fields are
+// stored as String and validated with zod in the actions layer; a few JSON
+// payloads are stored as String too (portable from the earlier SQLite history).
 // Future extensions (tags, weekly summaries) are meant to be added as new
 // tables referencing DayEntry / Note — no breaking migrations needed.
 
@@ -9,8 +10,12 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  // DATABASE_URL: pooled connection used by the app at runtime (Neon pooler).
+  // DIRECT_URL:   unpooled connection used for migrations (prisma migrate).
+  // Both must be set. Locally you can point both at the same (unpooled) URL.
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ---------- Auth.js (NextAuth) standard models ----------

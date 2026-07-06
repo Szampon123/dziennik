@@ -1,12 +1,16 @@
 "use server";
 
-import { mkdir, rm, writeFile } from "fs/promises";
-import path from "path";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
-import { PHOTO_TYPES, MAX_PHOTO_BYTES, absolutePhotoPath } from "@/lib/uploads";
+import {
+  PHOTO_TYPES,
+  MAX_PHOTO_BYTES,
+  photoStorageKey,
+  savePhoto,
+  deletePhoto,
+} from "@/lib/uploads";
 import type { ActionResult } from "@/actions/day-entry";
 
 const MAX_NOTE_LENGTH = 500;
@@ -163,7 +167,7 @@ export async function uploadMilestonePhoto(formData: FormData): Promise<ActionRe
     return { ok: false, error: "Plik jest pusty." };
   }
   if (file.size > MAX_PHOTO_BYTES) {
-    return { ok: false, error: "Zdjęcie może mieć maks. 6 MB." };
+    return { ok: false, error: "Zdjęcie może mieć maks. 4 MB." };
   }
 
   const slug = await findMilestoneSlug(milestoneId);
@@ -175,23 +179,23 @@ export async function uploadMilestonePhoto(formData: FormData): Promise<ActionRe
     select: { photoPath: true },
   });
 
-  const relativePath = path.join("milestones", userId, `${milestoneId}.${ext}`);
-  const absPath = absolutePhotoPath(relativePath);
-  if (!absPath) return { ok: false, error: "Błąd zapisu pliku." };
-
-  await mkdir(path.dirname(absPath), { recursive: true });
-  await writeFile(absPath, Buffer.from(await file.arrayBuffer()));
+  const key = photoStorageKey(userId, milestoneId, ext);
+  let photoRef: string;
+  try {
+    photoRef = await savePhoto(key, Buffer.from(await file.arrayBuffer()), file.type);
+  } catch {
+    return { ok: false, error: "Błąd zapisu pliku." };
+  }
 
   // Same milestone re-uploaded with a different extension → remove the old file.
-  if (previous?.photoPath && previous.photoPath !== relativePath) {
-    const oldAbs = absolutePhotoPath(previous.photoPath);
-    if (oldAbs) await rm(oldAbs, { force: true });
+  if (previous?.photoPath && previous.photoPath !== photoRef) {
+    await deletePhoto(previous.photoPath);
   }
 
   await prisma.milestoneEntry.upsert({
     where: { userId_milestoneId: { userId, milestoneId } },
-    update: { photoPath: relativePath },
-    create: { userId, milestoneId, photoPath: relativePath },
+    update: { photoPath: photoRef },
+    create: { userId, milestoneId, photoPath: photoRef },
   });
 
   revalidateActivity(slug);
@@ -216,8 +220,7 @@ export async function deleteMilestonePhoto(
     select: { photoPath: true },
   });
   if (entry?.photoPath) {
-    const abs = absolutePhotoPath(entry.photoPath);
-    if (abs) await rm(abs, { force: true });
+    await deletePhoto(entry.photoPath);
     await prisma.milestoneEntry.update({
       where: { userId_milestoneId: { userId, milestoneId } },
       data: { photoPath: null },
