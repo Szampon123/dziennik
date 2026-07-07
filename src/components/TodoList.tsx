@@ -6,6 +6,7 @@ import { addTodo, toggleTodo, deleteTodo } from "@/actions/todos";
 import { sortTodosForDisplay, MAX_TODO_TITLE, type Todo } from "@/lib/todos";
 import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { inputClass } from "@/components/ui/Input";
 
 export function TodoList({
@@ -119,13 +120,12 @@ export function TodoList({
                 key={todo.id}
                 className="group flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-neutral-50"
               >
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={todo.done}
                   onChange={() => toggle(todo)}
                   disabled={disabled}
+                  size="sm"
                   aria-label={`Oznacz „${todo.title}” jako ${todo.done ? "niezrobione" : "zrobione"}`}
-                  className="h-[18px] w-[18px] shrink-0 cursor-pointer accent-violet-600 disabled:cursor-default"
                 />
                 {todo.time && (
                   <span className="shrink-0 font-mono text-[13px] tabular-nums text-neutral-500">

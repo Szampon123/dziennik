@@ -116,10 +116,10 @@ export function DayOverview({
             </div>
           </div>
 
-          {/* Mini Dudu companion → Aktywności */}
+          {/* Mini Dudu companion → zakładka Dudu */}
           <Link
-            href="/activities"
-            aria-label={`Twój towarzysz: ${characterStageName}. Zaliczone poziomy: ${characterXp}. Przejdź do aktywności.`}
+            href="/dudu"
+            aria-label={`Twój towarzysz: ${characterStageName}. Zaliczone poziomy: ${characterXp}. Przejdź do zakładki Dudu.`}
             className="flex shrink-0 flex-col items-center gap-1 rounded-xl px-2 py-1 outline-none transition-colors hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-violet-200"
           >
             <CharacterAvatar

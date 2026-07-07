@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Card } from "@/components/Card";
 import { EmptyState } from "@/components/EmptyState";
+import { Checkbox } from "@/components/ui/Checkbox";
 import {
   formatTime,
   formatDayLong,
@@ -193,13 +194,12 @@ export function WeekCalendar() {
                 return (
                   <div key={e.id} className="flex items-center gap-4 rounded-lg px-3 py-2.5">
                     {interactive && (
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         checked={done}
                         onChange={() => toggleCheck(e)}
+                        size="sm"
                         aria-label={`Wykonane: ${e.summary}`}
                         title="Oznacz jako wykonane"
-                        className="h-4 w-4 shrink-0 accent-[var(--violet-600)]"
                       />
                     )}
                     <span className="shrink-0 rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-600">
@@ -227,13 +227,12 @@ export function WeekCalendar() {
                     }`}
                   >
                     {interactive && (
-                      <input
-                        type="checkbox"
+                      <Checkbox
                         checked={done}
                         onChange={() => toggleCheck(e)}
+                        size="sm"
                         aria-label={`Wykonane: ${e.summary}`}
                         title="Oznacz jako wykonane"
-                        className="h-4 w-4 shrink-0 accent-[var(--violet-600)]"
                       />
                     )}
                     <span

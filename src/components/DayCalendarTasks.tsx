@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { setPastDayEventCheck } from "@/actions/event-check";
 import { Progress } from "@/components/ui/Progress";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { formatTime } from "@/lib/dates";
 
 type EventItem = {
@@ -82,16 +83,15 @@ export function DayCalendarTasks({
         {allDay.map((e) => {
           const isDone = checked.has(e.id);
           return (
-            <label
+            <div
               key={e.id}
-              className="flex cursor-pointer items-center gap-4 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
+              className="flex items-center gap-4 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
             >
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={isDone}
                 onChange={() => toggle(e)}
+                size="sm"
                 aria-label={`Wykonane: ${e.summary}`}
-                className="h-4 w-4 shrink-0 accent-[var(--violet-600)]"
               />
               <span className="shrink-0 rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-600">
                 Cały dzień
@@ -103,22 +103,21 @@ export function DayCalendarTasks({
               >
                 {e.summary}
               </span>
-            </label>
+            </div>
           );
         })}
         {timed.map((e) => {
           const isDone = checked.has(e.id);
           return (
-            <label
+            <div
               key={e.id}
-              className="flex cursor-pointer items-center gap-4 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
+              className="flex items-center gap-4 rounded-lg px-3 py-2.5 hover:bg-neutral-50"
             >
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={isDone}
                 onChange={() => toggle(e)}
+                size="sm"
                 aria-label={`Wykonane: ${e.summary}`}
-                className="h-4 w-4 shrink-0 accent-[var(--violet-600)]"
               />
               <span
                 className={`w-24 shrink-0 font-mono text-[13px] ${
@@ -134,7 +133,7 @@ export function DayCalendarTasks({
               >
                 {e.summary}
               </span>
-            </label>
+            </div>
           );
         })}
       </div>

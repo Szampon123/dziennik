@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { addWorkout } from "@/actions/workouts";
 import { todayKey } from "@/lib/dates";
 import { Button } from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { inputClass } from "@/components/ui/Input";
 
 export function WorkoutForm({ activitySlug }: { activitySlug: string }) {
@@ -69,15 +70,21 @@ export function WorkoutForm({ activitySlug }: { activitySlug: string }) {
             className={`${inputClass} w-28`}
           />
         </label>
-        <label className="flex min-h-10 items-center gap-2 py-2">
-          <input
-            type="checkbox"
+        <div className="flex min-h-10 items-center gap-2 py-2">
+          <Checkbox
             checked={isRace}
-            onChange={(e) => setIsRace(e.target.checked)}
-            className="h-4 w-4 accent-[var(--violet-600)]"
+            onChange={() => setIsRace(!isRace)}
+            size="sm"
+            aria-label="Zawody / bieg oficjalny"
           />
-          <span className="text-sm text-neutral-600">Zawody / bieg oficjalny</span>
-        </label>
+          <button
+            type="button"
+            onClick={() => setIsRace(!isRace)}
+            className="text-sm text-neutral-600"
+          >
+            Zawody / bieg oficjalny
+          </button>
+        </div>
         <Button onClick={submit} disabled={isPending || !distance.trim() || !duration.trim()}>
           {isPending ? "Analizuję…" : "Zapisz trening"}
         </Button>

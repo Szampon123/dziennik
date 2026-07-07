@@ -18,6 +18,7 @@ import type { MilestoneResource, ResourceKind } from "@/lib/milestone-resources"
 import { parseCriteria, implies } from "@/lib/milestone-criteria";
 import { Badge } from "@/components/ui/Badge";
 import { Progress } from "@/components/ui/Progress";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { MilestoneEntryEditor } from "@/components/MilestoneEntryEditor";
 
 export type MilestoneItem = {
@@ -112,18 +113,18 @@ export function MilestoneLadder({
         className={`border-b border-neutral-200 last:border-b-0 ${m.done && !open ? "opacity-80" : ""}`}
       >
         <div className="flex items-start gap-3 px-4 py-2.5">
-          <input
-            type="checkbox"
+          <Checkbox
             checked={m.done}
             disabled={pendingId !== null || m.auto}
             onChange={() => toggle(m)}
+            size="sm"
             aria-label={`Poziom ${m.level}: ${m.title}`}
             title={
               m.auto
                 ? "Zaliczone automatycznie na podstawie treningu — usuń trening, aby cofnąć."
                 : undefined
             }
-            className="mt-1 h-4 w-4 shrink-0 accent-[var(--violet-600)]"
+            className="mt-1"
           />
           <span
             className={`mt-0.5 w-8 shrink-0 text-right font-mono text-[13px] ${

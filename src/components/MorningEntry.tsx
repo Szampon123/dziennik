@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { saveMorning, setPriorityCheck } from "@/actions/day-entry";
 import { MAX_PRIORITIES } from "@/lib/day";
 import { Button } from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 import { Input, Textarea } from "@/components/ui/Input";
 
 export function MorningEntry({
@@ -86,18 +87,17 @@ export function MorningEntry({
           const checkable = Boolean(savedText) && !disabled;
           return (
             <div key={i} className="flex items-center gap-3">
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={done[i]}
                 disabled={!checkable}
                 onChange={() => toggleDone(i)}
+                size="sm"
                 aria-label={`Priorytet ${i + 1} wykonany`}
                 title={
                   checkable
                     ? "Oznacz priorytet jako wykonany"
                     : "Zapisz treść priorytetu, aby móc go odhaczyć"
                 }
-                className="h-4 w-4 shrink-0 accent-[var(--violet-600)] disabled:opacity-40"
               />
               <span
                 aria-hidden
