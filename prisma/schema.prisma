@@ -52,6 +52,8 @@ model User {
   eventChecks      CalendarEventCheck[]
   favoriteQuotes   FavoriteQuote[]
   habits           Habit[]
+  forumThreads     ForumThread[]
+  forumReplies     ForumReply[]
 }
 
 model Account {
@@ -280,6 +282,39 @@ model HabitCheck {
 
   @@id([habitId, date])
   @@index([userId, date])
+}
+
+// ---------- Community forum ----------
+// Shared (all signed-in users) discussion about a skill and, optionally, one of
+// its levels. Threads are attributed to their author; replies are flat (one
+// level deep). Moderation: authors delete their own; admins/owner delete any.
+
+model ForumThread {
+  id           String       @id @default(cuid())
+  userId       String // author
+  activitySlug String // the skill this thread is about (Activity.slug)
+  level        Int? // optional specific level (1..99); null = the whole skill
+  title        String
+  body         String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replies      ForumReply[]
+
+  @@index([activitySlug])
+  @@index([createdAt])
+}
+
+model ForumReply {
+  id        String      @id @default(cuid())
+  threadId  String
+  userId    String // author
+  body      String
+  createdAt DateTime    @default(now())
+  thread    ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([threadId])
 }
 
 // Google Calendar OAuth tokens, one row per user+provider.

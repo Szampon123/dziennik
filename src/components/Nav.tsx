@@ -10,6 +10,7 @@ const links = [
   { href: "/activities", label: "Aktywności" },
   { href: "/nawyki", label: "Nawyki" },
   { href: "/dudu", label: "Dudu" },
+  { href: "/forum", label: "Forum" },
   { href: "/cytaty", label: "Cytaty" },
   { href: "/settings", label: "Ustawienia" },
 ];
