@@ -112,7 +112,7 @@ export function MilestoneLadder({
         key={m.id}
         className={`border-b border-neutral-200 last:border-b-0 ${m.done && !open ? "opacity-80" : ""}`}
       >
-        <div className="flex items-start gap-3 px-4 py-2.5">
+        <div className="flex items-start gap-3 rounded-lg px-4 py-2.5 transition-colors hover:bg-neutral-50">
           <Checkbox
             checked={m.done}
             disabled={pendingId !== null || m.auto}

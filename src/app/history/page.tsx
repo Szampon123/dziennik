@@ -39,15 +39,15 @@ export default async function HistoryPage() {
             hint="Twój pierwszy dzień pojawi się tu po dodaniu wpisu na stronie Dziś."
           />
         ) : (
-          <ul className="flex flex-col divide-y divide-neutral-200">
+          <ul className="flex flex-col gap-2">
             {days.map((day) => (
               <li key={day.id}>
                 <Link
                   href={`/history/${day.date}`}
-                  className="flex min-h-10 cursor-pointer items-center justify-between gap-4 rounded-lg px-3 py-3 transition-colors hover:bg-neutral-50"
+                  className="group flex min-h-10 cursor-pointer items-center justify-between gap-4 rounded-xl border border-neutral-200 bg-neutral-0 px-4 py-3 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-violet-200 hover:shadow-card-hover"
                 >
                   <div className="min-w-0">
-                    <p className="text-[15px] font-medium capitalize text-neutral-900">
+                    <p className="text-[15px] font-medium capitalize text-neutral-900 transition-colors group-hover:text-violet-700">
                       {formatDayLong(day.date)}
                     </p>
                     <p className="mt-0.5 text-[13px] text-neutral-500">
@@ -83,7 +83,10 @@ export default async function HistoryPage() {
                     >
                       ⚡ {day.energyLevel ?? "—"}/5
                     </Badge>
-                    <ChevronRight aria-hidden className="h-4 w-4 text-neutral-400" />
+                    <ChevronRight
+                      aria-hidden
+                      className="h-4 w-4 text-neutral-400 transition-all group-hover:translate-x-0.5 group-hover:text-violet-600"
+                    />
                   </div>
                 </Link>
               </li>

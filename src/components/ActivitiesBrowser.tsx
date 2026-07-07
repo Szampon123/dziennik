@@ -213,14 +213,14 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
               <li key={a.id} className="relative">
                 <Link
                   href={`/activities/${a.slug}`}
-                  className="flex items-center gap-4 rounded-card border border-neutral-200 bg-neutral-0 px-5 py-4 pr-14 shadow-card transition-colors hover:border-violet-200"
+                  className="group flex items-center gap-4 rounded-card border border-neutral-200 bg-neutral-0 px-5 py-4 pr-14 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-violet-200 hover:shadow-card-hover"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neutral-100 p-2">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neutral-100 p-2 transition-colors group-hover:bg-violet-100">
                     <ActivityIcon slug={a.slug} category={a.category} />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-baseline justify-between gap-3">
-                      <span className="truncate text-[15px] font-semibold text-neutral-900">
+                      <span className="truncate text-[15px] font-semibold text-neutral-900 transition-colors group-hover:text-violet-700">
                         {a.name}
                       </span>
                       <Badge variant="neutral" className="shrink-0">

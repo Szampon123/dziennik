@@ -24,8 +24,10 @@ export function ActivitiesOverview({ activities }: { activities: ActivityListIte
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="flex flex-col gap-0.5">
           <p className="text-[13px] text-neutral-500">Zaliczone poziomy</p>
-          <p className="text-2xl font-semibold text-neutral-900">
-            {totalLevels}
+          <p className="text-2xl font-semibold">
+            <span className="bg-gradient-to-r from-violet-600 to-azure-500 bg-clip-text text-transparent">
+              {totalLevels}
+            </span>
             <span className="text-sm font-normal text-neutral-500">/{totalPossible}</span>
           </p>
         </div>
