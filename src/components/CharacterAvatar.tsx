@@ -1,17 +1,23 @@
 // The Dudu doodle — a very simple hand-drawn blob whose form grows with the
 // stage (0 = "Iskra" egg, 7 = "Legenda"). Colours use theme CSS vars so the
 // character adapts to every theme (light/dark/colorful/custom).
+import { DUDU_COLORS, normalizeDuduColor, type DuduColor } from "@/lib/dudu";
+
 export function CharacterAvatar({
   stage,
   size = 104,
   className = "",
+  color,
 }: {
   stage: number;
   size?: number;
   className?: string;
+  color?: DuduColor | string;
 }) {
   const outline = "var(--neutral-900)";
-  const body = "var(--violet-100)";
+  const palette = DUDU_COLORS[normalizeDuduColor(color)];
+  const body = palette.body;
+  const accent = palette.accent;
 
   // Stage 0 — an unhatched spark/egg (no face yet).
   if (stage <= 0) {
@@ -67,7 +73,7 @@ export function CharacterAvatar({
         {showCape && (
           <path
             d="M42 66 L28 122 L60 110 L92 122 L78 66 Z"
-            fill="var(--violet-600)"
+            fill={accent}
             stroke={outline}
             strokeWidth="2.5"
             strokeLinejoin="round"
@@ -127,14 +133,14 @@ export function CharacterAvatar({
           <g>
             <path
               d="M23 73 Q 60 68, 97 73"
-              stroke="var(--violet-600)"
+              stroke={accent}
               strokeWidth="6"
               strokeLinecap="round"
               fill="none"
             />
             <path
               d="M97 73 l9 -4 M97 73 l8 5"
-              stroke="var(--violet-600)"
+              stroke={accent}
               strokeWidth="4"
               strokeLinecap="round"
             />

@@ -21,6 +21,7 @@ export function DayOverview({
   characterStage,
   characterStageName,
   characterXp,
+  characterColor,
 }: {
   weekChecks: { eventId: string; dayKey: string }[];
   dayRating: number | null;
@@ -31,6 +32,7 @@ export function DayOverview({
   characterStage: number;
   characterStageName: string;
   characterXp: number;
+  characterColor?: string;
 }) {
   const { state, events, today, checked } = useCalendar();
 
@@ -120,7 +122,12 @@ export function DayOverview({
             aria-label={`Twój towarzysz: ${characterStageName}. Zaliczone poziomy: ${characterXp}. Przejdź do aktywności.`}
             className="flex shrink-0 flex-col items-center gap-1 rounded-xl px-2 py-1 outline-none transition-colors hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-violet-200"
           >
-            <CharacterAvatar stage={characterStage} size={52} className="dudu-breathe" />
+            <CharacterAvatar
+              stage={characterStage}
+              size={52}
+              color={characterColor}
+              className="dudu-breathe"
+            />
             <span className="text-[11px] font-medium text-violet-700">{characterStageName}</span>
           </Link>
 

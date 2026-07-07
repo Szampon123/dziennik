@@ -3,9 +3,6 @@ import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { UserMenu } from "@/components/UserMenu";
-import { CharacterRail } from "@/components/CharacterRail";
-import { getSessionUserId } from "@/lib/session";
-import { completedMilestoneCount } from "@/lib/queries";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,21 +25,11 @@ export const metadata: Metadata = {
 // Mirrors applyTheme() in src/lib/theme.ts — keep the two in sync.
 const themeInitScript = `(function(){try{var t=localStorage.getItem("theme");var r=document.documentElement;r.classList.remove("dark");r.removeAttribute("data-theme");if(t==="dark"){r.classList.add("dark");}else if(t==="colorful"){r.setAttribute("data-theme","colorful");}else if(t==="custom"){r.setAttribute("data-theme","custom");try{var c=JSON.parse(localStorage.getItem("customTheme")||"{}");for(var k in c){if(c[k])r.style.setProperty(k,c[k]);}}catch(e){}}else if(t!=="light"){if(window.matchMedia("(prefers-color-scheme: dark)").matches)r.classList.add("dark");}}catch(e){}})();`;
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // The Dudu companion needs the signed-in user's activity XP. Best-effort:
-  // never let it break the layout (or show on the logged-out /login screen).
-  let characterXp: number | null = null;
-  try {
-    const userId = await getSessionUserId();
-    if (userId) characterXp = await completedMilestoneCount(userId);
-  } catch {
-    characterXp = null;
-  }
-
   return (
     <html
       lang="pl"
@@ -54,7 +41,6 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <Nav userMenu={<UserMenu />} />
-        {characterXp !== null && <CharacterRail xp={characterXp} />}
         <main className="mx-auto w-full max-w-[760px] flex-1 px-6 py-12">{children}</main>
       </body>
     </html>

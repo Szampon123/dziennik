@@ -37,7 +37,10 @@ export default async function TodayPage() {
     isNotionConfigured(userId),
     closedDayStreak(userId),
     favoriteQuoteIds(userId),
-    prisma.user.findUnique({ where: { id: userId }, select: { dashboardJson: true } }),
+    prisma.user.findUnique({
+      where: { id: userId },
+      select: { dashboardJson: true, duduColor: true },
+    }),
     completedMilestoneCount(userId),
   ]);
   const character = computeCharacter(characterXp);
@@ -73,6 +76,7 @@ export default async function TodayPage() {
         characterStage={character.stageIndex}
         characterStageName={character.stageName}
         characterXp={characterXp}
+        characterColor={user?.duduColor}
       />
     ),
     nowNext: <NowNext />,
