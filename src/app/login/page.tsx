@@ -5,6 +5,7 @@ import { getSessionUserId } from "@/lib/session";
 import { buttonClass } from "@/components/ui/Button";
 import { inputClass } from "@/components/ui/Input";
 import { CredentialsLoginForm } from "@/components/CredentialsLoginForm";
+import { AuthShell } from "@/components/AuthShell";
 
 export const dynamic = "force-dynamic";
 
@@ -18,19 +19,11 @@ export default async function LoginPage() {
   const devLogin = isDevLoginEnabled();
 
   return (
-    <div className="mx-auto flex max-w-sm flex-col gap-6 pt-16">
-      <div className="text-center">
-        <div className="flex items-center justify-center gap-2.5">
-          <span aria-hidden className="h-2.5 w-2.5 rounded-full bg-violet-600" />
-          <h1 className="text-[28px] font-bold tracking-[-0.5px] text-neutral-900">Dziennik</h1>
-        </div>
-        <p className="mt-2 text-sm text-neutral-600">
-          Osobisty dziennik dnia — intencje, notatki, refleksje.
-        </p>
-      </div>
-
-      <div className="flex flex-col gap-3 rounded-card border border-neutral-200 bg-neutral-0 p-6 shadow-card">
-        {googleReady && (
+    <AuthShell
+      subtitle="Osobisty dziennik dnia — intencje, notatki, refleksje."
+      footer="Każdy użytkownik ma własny dziennik oraz własne połączenia Google Calendar i Notion."
+    >
+      {googleReady && (
           <>
             <form
               action={async () => {
@@ -85,11 +78,6 @@ export default async function LoginPage() {
             </button>
           </form>
         )}
-      </div>
-
-      <p className="text-center text-[13px] text-neutral-500">
-        Każdy użytkownik ma własny dziennik oraz własne połączenia Google Calendar i Notion.
-      </p>
-    </div>
+    </AuthShell>
   );
 }

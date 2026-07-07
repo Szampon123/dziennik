@@ -72,9 +72,9 @@ export default async function DayDetailPage({
         <div>
           <Link
             href="/history"
-            className="text-[13px] text-neutral-500 transition-colors hover:text-neutral-900"
+            className="group inline-flex items-center gap-1 text-[13px] text-neutral-500 transition-colors hover:text-neutral-900"
           >
-            ← Historia
+            <span className="transition-transform group-hover:-translate-x-0.5">←</span> Historia
           </Link>
           <h1 className="mt-1 text-[28px] font-semibold capitalize tracking-[-0.5px] text-neutral-900">
             {formatDayLong(day.date)}
