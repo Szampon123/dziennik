@@ -53,6 +53,7 @@ model User {
   favoriteQuotes   FavoriteQuote[]
   habits           Habit[]
   forumPosts       ForumPost[]
+  forumVotes       ForumVote[]
 }
 
 model Account {
@@ -296,11 +297,33 @@ model ForumPost {
   userId       String // author
   activitySlug String // the skill this post is about (Activity.slug)
   level        Int? // specific level (1..99); null = the whole skill ("Ogólne")
+  // Top-level message when null; a reply to another post when set. Replies copy
+  // their parent's activitySlug/level so listing/moderation stay uniform.
+  parentId     String?
   body         String
+  // Optional attachments: a proof/helper photo and/or a link to helpful material.
+  photoPath    String? // filesystem key or blob URL (see src/lib/uploads.ts)
+  linkUrl      String?
   createdAt    DateTime @default(now())
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent       ForumPost?  @relation("PostReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies      ForumPost[] @relation("PostReplies")
+  votes        ForumVote[]
 
-  @@index([activitySlug, level, createdAt])
+  @@index([activitySlug, level, parentId, createdAt])
+  @@index([parentId])
+}
+
+// A "Pomocne" (helpful) vote on a post. One per user per post; presence = voted.
+model ForumVote {
+  userId    String
+  postId    String
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@id([userId, postId])
+  @@index([postId])
 }
 
 // Google Calendar OAuth tokens, one row per user+provider.

@@ -1,7 +1,27 @@
 // Forum domain helpers (client-safe): limits, level labels, author formatting.
 
 export const MAX_POST_BODY = 5000;
+export const MAX_LINK = 500;
 export const MAX_LEVEL = 99;
+
+/** Accept only http(s) links (blocks javascript:, data:, etc.). */
+export function isValidHttpUrl(value: string): boolean {
+  try {
+    const u = new URL(value);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+/** Short host label for a link chip, e.g. "youtube.com". */
+export function linkHost(value: string): string {
+  try {
+    return new URL(value).hostname.replace(/^www\./, "");
+  } catch {
+    return value;
+  }
+}
 
 type AuthorLike = { name?: string | null; email?: string | null };
 

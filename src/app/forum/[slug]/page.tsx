@@ -7,10 +7,9 @@ import { parseLevelParam, levelLabel } from "@/lib/forum";
 import { ActivityIcon } from "@/lib/activity-icons";
 import { Card } from "@/components/Card";
 import { Badge } from "@/components/ui/Badge";
-import { AuthorChip } from "@/components/forum/AuthorChip";
 import { LevelPicker } from "@/components/forum/LevelPicker";
 import { PostComposer } from "@/components/forum/PostComposer";
-import { DeletePostButton } from "@/components/forum/DeletePostButton";
+import { PostCard } from "@/components/forum/PostCard";
 
 export const dynamic = "force-dynamic";
 
@@ -35,15 +34,24 @@ export default async function SkillForumPage({
       _count: { _all: true },
     }),
     prisma.forumPost.findMany({
-      where: { activitySlug: slug, level },
+      where: { activitySlug: slug, level, parentId: null },
       orderBy: { createdAt: "asc" },
-      include: { user: { select: { name: true, email: true } } },
+      include: {
+        user: { select: { name: true, email: true } },
+        _count: { select: { votes: true, replies: true } },
+      },
     }),
   ]);
   if (!activity) notFound();
 
   const isAdmin = isAdminRole(normalizeRole(me?.role));
-  const canDelete = (authorId: string) => authorId === userId || isAdmin;
+
+  // Which of these posts the current user has upvoted.
+  const myVotes = await prisma.forumVote.findMany({
+    where: { userId, postId: { in: posts.map((p) => p.id) } },
+    select: { postId: true },
+  });
+  const votedIds = new Set(myVotes.map((v) => v.postId));
 
   // Post counts split into the general space (level null) and per-level.
   let generalCount = 0;
@@ -129,22 +137,33 @@ export default async function SkillForumPage({
             Nikt jeszcze nic tu nie napisał — bądź pierwszy!
           </p>
         ) : (
-          <ul className="flex flex-col gap-4">
+          <ul className="flex flex-col gap-3">
             {posts.map((p) => (
-              <li key={p.id} className="border-b border-neutral-100 pb-4 last:border-b-0 last:pb-0">
-                <div className="flex items-start justify-between gap-3">
-                  <AuthorChip user={p.user} createdAt={p.createdAt} />
-                  {canDelete(p.userId) && <DeletePostButton id={p.id} />}
-                </div>
-                <p className="mt-2 whitespace-pre-wrap text-[15px] leading-relaxed text-neutral-800">
-                  {p.body}
-                </p>
+              <li key={p.id}>
+                <PostCard
+                  post={{
+                    id: p.id,
+                    userId: p.userId,
+                    body: p.body,
+                    linkUrl: p.linkUrl,
+                    photoPath: p.photoPath,
+                    createdAt: p.createdAt,
+                    user: p.user,
+                    voteCount: p._count.votes,
+                    votedByMe: votedIds.has(p.id),
+                    replyCount: p._count.replies,
+                  }}
+                  currentUserId={userId}
+                  isAdmin={isAdmin}
+                  href={`/forum/${slug}/${p.id}`}
+                />
               </li>
             ))}
           </ul>
         )}
 
         <div className="mt-5 border-t border-neutral-200 pt-5">
+          <p className="mb-2 text-[13px] font-medium text-neutral-800">Dodaj wiadomość</p>
           <PostComposer activitySlug={slug} level={level} />
         </div>
       </Card>
