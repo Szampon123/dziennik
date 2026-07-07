@@ -17,11 +17,11 @@ const links = [
 export function Nav({ userMenu }: { userMenu?: React.ReactNode }) {
   const pathname = usePathname();
 
-  // The login page has its own minimal layout.
-  if (pathname === "/login") return null;
+  // The login and register pages have their own minimal layout.
+  if (pathname === "/login" || pathname === "/register") return null;
 
   return (
-    <header className="sticky top-0 z-10 h-16 border-b border-neutral-200 bg-neutral-0">
+    <header className="sticky top-0 z-20 h-16 border-b border-neutral-200 bg-neutral-0/80 backdrop-blur-md supports-[backdrop-filter]:bg-neutral-0/70">
       <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between px-8">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2.5">
