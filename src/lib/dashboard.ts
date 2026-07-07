@@ -15,6 +15,7 @@ export const DASHBOARD_WIDGETS: DashboardWidget[] = [
   },
   { id: "calendar", label: "Kalendarz", description: "Tydzień i wydarzenia z Google Calendar" },
   { id: "morning", label: "Poranek", description: "Intencja i priorytety" },
+  { id: "todos", label: "Do zrobienia", description: "Krótka lista zadań z godziną" },
   { id: "notes", label: "Notatki z dnia", description: "Szybkie zapiski" },
   { id: "close", label: "Zamknięcie dnia", description: "Refleksja i oceny" },
 ];

@@ -91,6 +91,9 @@ model DayEntry {
   prioritiesJson String   @default("[]") // JSON array of strings, max 3 (validated in app)
   // Checkpoint flags aligned by index with prioritiesJson (JSON array of booleans).
   prioritiesDoneJson String @default("[]")
+  // Light per-day to-do checklist: JSON array of { id, title, time?, done }.
+  // Separate from priorities (which are capped at 3) — see src/lib/todos.ts.
+  todosJson          String @default("[]")
   // Calendar-checkpoint snapshot taken when the day is closed (for the Notion
   // brief and history) — live counts come from CalendarEventCheck + the API.
   tasksDone      Int?

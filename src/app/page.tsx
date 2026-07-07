@@ -2,6 +2,7 @@ import { Fragment, type ReactNode } from "react";
 import { getOrCreateToday, closedDayStreak, favoriteQuoteIds } from "@/lib/queries";
 import { formatDayLong, dayKeyDaysAgo } from "@/lib/dates";
 import { parsePriorities, parsePrioritiesDone } from "@/lib/day";
+import { parseTodos } from "@/lib/todos";
 import { dailyQuoteId } from "@/lib/quotes";
 import { resolveDashboard } from "@/lib/dashboard";
 import { isNotionConfigured } from "@/lib/notion";
@@ -15,6 +16,7 @@ import { NowNext } from "@/components/calendar/NowNext";
 import { WeekCalendar } from "@/components/calendar/WeekCalendar";
 import { QuotePanel } from "@/components/QuotePanel";
 import { MorningEntry } from "@/components/MorningEntry";
+import { TodoList } from "@/components/TodoList";
 import { NoteStream } from "@/components/NoteStream";
 import { CloseDayPanel } from "@/components/CloseDayPanel";
 import { DashboardCustomizer } from "@/components/DashboardCustomizer";
@@ -74,6 +76,11 @@ export default async function TodayPage() {
           disabled={closed}
           notionConfigured={notionConfigured}
         />
+      </Card>
+    ),
+    todos: (
+      <Card title="Do zrobienia" subtitle="Krótkie zadania na dziś — z opcjonalną godziną">
+        <TodoList date={day.date} todos={parseTodos(day.todosJson)} disabled={closed} />
       </Card>
     ),
     notes: (
