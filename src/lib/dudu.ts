@@ -132,3 +132,20 @@ export function normalizeDuduConfig(raw: unknown): DuduConfig {
 export function serializeDuduConfig(config: DuduConfig): string {
   return JSON.stringify(normalizeDuduConfig(config));
 }
+
+// ---------- Companion name ----------
+
+export const MAX_DUDU_NAME = 24;
+export const DEFAULT_DUDU_NAME = "Postać";
+
+/** Trim + cap a chosen name; empty → null (falls back to the default label). */
+export function normalizeDuduName(raw: unknown): string | null {
+  if (typeof raw !== "string") return null;
+  const trimmed = raw.trim().slice(0, MAX_DUDU_NAME);
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+/** Display name for the companion (custom name, or the default label). */
+export function duduDisplayName(name: unknown): string {
+  return normalizeDuduName(name) ?? DEFAULT_DUDU_NAME;
+}

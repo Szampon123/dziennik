@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { Check } from "lucide-react";
 import { CharacterAvatar } from "@/components/CharacterAvatar";
+import { DuduNameEditor } from "@/components/DuduNameEditor";
 import { setDuduAppearance } from "@/actions/dudu";
 import {
   DUDU_COLORS,
@@ -16,11 +17,13 @@ import {
 export function DuduCustomizer({
   initialColor,
   initialConfig,
+  initialName,
   stage,
   stageName,
 }: {
   initialColor: DuduColor;
   initialConfig: DuduConfig;
+  initialName: string | null;
   stage: number;
   stageName: string;
 }) {
@@ -69,7 +72,8 @@ export function DuduCustomizer({
           config={config}
           className="dudu-breathe"
         />
-        <p className="text-[15px] font-semibold text-neutral-900">{stageName}</p>
+        <DuduNameEditor initialName={initialName} />
+        <p className="text-[12px] text-neutral-500">Forma: {stageName}</p>
       </div>
 
       {/* Colour */}

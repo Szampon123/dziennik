@@ -14,7 +14,7 @@ export default async function DuduPage() {
   const [user, xp] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
-      select: { duduColor: true, duduConfigJson: true },
+      select: { duduColor: true, duduConfigJson: true, duduName: true },
     }),
     completedMilestoneCount(userId),
   ]);
@@ -35,6 +35,7 @@ export default async function DuduPage() {
         <DuduCustomizer
           initialColor={color}
           initialConfig={config}
+          initialName={user?.duduName ?? null}
           stage={c.stageIndex}
           stageName={c.stageName}
         />

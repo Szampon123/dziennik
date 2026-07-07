@@ -39,7 +39,12 @@ export default async function TodayPage() {
     favoriteQuoteIds(userId),
     prisma.user.findUnique({
       where: { id: userId },
-      select: { dashboardJson: true, duduColor: true, duduConfigJson: true },
+      select: {
+        dashboardJson: true,
+        duduColor: true,
+        duduConfigJson: true,
+        duduName: true,
+      },
     }),
     completedMilestoneCount(userId),
   ]);
@@ -78,6 +83,7 @@ export default async function TodayPage() {
         characterXp={characterXp}
         characterColor={user?.duduColor}
         characterConfig={user?.duduConfigJson}
+        characterName={user?.duduName ?? null}
       />
     ),
     nowNext: <NowNext />,

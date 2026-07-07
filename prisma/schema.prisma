@@ -35,6 +35,8 @@ model User {
   // Chosen accessories for Dudu (hat, glasses, outfit, pants, shoes, item,
   // background) as JSON { slot: optionId }. See src/lib/dudu.ts.
   duduConfigJson String   @default("{}")
+  // User-given name for the companion; null → the default label ("Postać").
+  duduName       String?
 
   // Per-user integration settings (entered in the Settings view).
   notionToken        String?

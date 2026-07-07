@@ -23,6 +23,7 @@ export function DayOverview({
   characterXp,
   characterColor,
   characterConfig,
+  characterName,
 }: {
   weekChecks: { eventId: string; dayKey: string }[];
   dayRating: number | null;
@@ -35,7 +36,9 @@ export function DayOverview({
   characterXp: number;
   characterColor?: string;
   characterConfig?: string | null;
+  characterName?: string | null;
 }) {
+  const companionLabel = characterName?.trim() || characterStageName;
   const { state, events, today, checked } = useCalendar();
 
   const todayEvents = events.filter((e) => e.dayKey === today);
@@ -121,7 +124,7 @@ export function DayOverview({
           {/* Mini Dudu companion → zakładka Dudu */}
           <Link
             href="/dudu"
-            aria-label={`Twój towarzysz: ${characterStageName}. Zaliczone poziomy: ${characterXp}. Przejdź do zakładki Dudu.`}
+            aria-label={`Twój towarzysz: ${companionLabel}. Zaliczone poziomy: ${characterXp}. Przejdź do zakładki Dudu.`}
             className="flex shrink-0 flex-col items-center gap-1 rounded-xl px-2 py-1 outline-none transition-colors hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-violet-200"
           >
             <CharacterAvatar
@@ -131,7 +134,7 @@ export function DayOverview({
               config={characterConfig}
               className="dudu-breathe"
             />
-            <span className="text-[11px] font-medium text-violet-700">{characterStageName}</span>
+            <span className="text-[11px] font-medium text-violet-700">{companionLabel}</span>
           </Link>
 
           {/* Metric tiles */}

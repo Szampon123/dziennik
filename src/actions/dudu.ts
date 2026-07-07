@@ -8,6 +8,7 @@ import {
   normalizeDuduColor,
   normalizeDuduConfig,
   serializeDuduConfig,
+  normalizeDuduName,
   type DuduColor,
   type DuduConfig,
 } from "@/lib/dudu";
@@ -40,6 +41,19 @@ export async function setDuduAppearance(input: {
   await prisma.user.update({
     where: { id: userId },
     data: { duduColor: color, duduConfigJson: configJson },
+  });
+  revalidatePath("/");
+  revalidatePath("/dudu");
+  return { ok: true };
+}
+
+/** Rename the companion. An empty name clears it back to the default label. */
+export async function setDuduName(name: string): Promise<ActionResult> {
+  const userId = await requireUserId();
+  const normalized = normalizeDuduName(name);
+  await prisma.user.update({
+    where: { id: userId },
+    data: { duduName: normalized },
   });
   revalidatePath("/");
   revalidatePath("/dudu");
