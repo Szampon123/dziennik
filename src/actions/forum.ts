@@ -72,7 +72,10 @@ export async function createPost(formData: FormData): Promise<CreatePostResult> 
     select: { id: true },
   });
 
-  // Optional photo: validate type/size, store, attach.
+  // Optional photo: validate type/size, store, attach. Any storage failure is
+  // handled gracefully (never throws out of the action → no full-page 500):
+  // the just-created post is removed and a friendly error is returned so the
+  // composer keeps the user's text for a retry.
   if (photo instanceof File && photo.size > 0) {
     const ext = PHOTO_TYPES[photo.type];
     if (!ext) {
@@ -83,9 +86,17 @@ export async function createPost(formData: FormData): Promise<CreatePostResult> 
       await prisma.forumPost.delete({ where: { id: post.id } });
       return { ok: false, error: "Zdjęcie może mieć maks. 4 MB." };
     }
-    const bytes = Buffer.from(await photo.arrayBuffer());
-    const ref = await savePhoto(`forum/${post.id}.${ext}`, bytes, photo.type);
-    await prisma.forumPost.update({ where: { id: post.id }, data: { photoPath: ref } });
+    try {
+      const bytes = Buffer.from(await photo.arrayBuffer());
+      const ref = await savePhoto(`forum/${post.id}.${ext}`, bytes, photo.type);
+      await prisma.forumPost.update({ where: { id: post.id }, data: { photoPath: ref } });
+    } catch {
+      await prisma.forumPost.delete({ where: { id: post.id } });
+      return {
+        ok: false,
+        error: "Nie udało się zapisać zdjęcia. Opublikuj bez zdjęcia lub spróbuj ponownie.",
+      };
+    }
   }
 
   revalidateSkill(slug, parentId ?? undefined);
