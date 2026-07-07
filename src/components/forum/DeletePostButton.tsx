@@ -3,32 +3,20 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
-import { deleteThread, deleteReply } from "@/actions/forum";
+import { deletePost } from "@/actions/forum";
 
-// Small trash button for a forum post the current user may remove (own post, or
-// admin/owner). Threads route back to the list on success; replies just refresh.
-export function DeletePostButton({
-  id,
-  kind,
-  label,
-}: {
-  id: string;
-  kind: "thread" | "reply";
-  label: string;
-}) {
+// Trash button for a forum message the current user may remove (own post, or
+// admin/owner). Refreshes the discussion on success.
+export function DeletePostButton({ id }: { id: string }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   function remove() {
-    if (!window.confirm(`Usunąć ${label}? Tej operacji nie można cofnąć.`)) return;
+    if (!window.confirm("Usunąć tę wiadomość? Tej operacji nie można cofnąć.")) return;
     startTransition(async () => {
-      const result = kind === "thread" ? await deleteThread({ id }) : await deleteReply({ id });
-      if (result.ok) {
-        if (kind === "thread") router.push("/forum");
-        else router.refresh();
-      } else {
-        window.alert(result.error);
-      }
+      const result = await deletePost({ id });
+      if (result.ok) router.refresh();
+      else window.alert(result.error);
     });
   }
 
@@ -37,8 +25,8 @@ export function DeletePostButton({
       type="button"
       onClick={remove}
       disabled={isPending}
-      aria-label={`Usuń ${label}`}
-      title={`Usuń ${label}`}
+      aria-label="Usuń wiadomość"
+      title="Usuń wiadomość"
       className="rounded-full p-2 text-neutral-400 transition-colors outline-none hover:text-danger focus-visible:ring-2 focus-visible:ring-violet-200 disabled:opacity-50"
     >
       <Trash2 aria-hidden className="h-4 w-4" />

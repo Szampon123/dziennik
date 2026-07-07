@@ -52,8 +52,7 @@ model User {
   eventChecks      CalendarEventCheck[]
   favoriteQuotes   FavoriteQuote[]
   habits           Habit[]
-  forumThreads     ForumThread[]
-  forumReplies     ForumReply[]
+  forumPosts       ForumPost[]
 }
 
 model Account {
@@ -285,36 +284,23 @@ model HabitCheck {
 }
 
 // ---------- Community forum ----------
-// Shared (all signed-in users) discussion about a skill and, optionally, one of
-// its levels. Threads are attributed to their author; replies are flat (one
-// level deep). Moderation: authors delete their own; admins/owner delete any.
+// Shared (all signed-in users) discussion, organised as a permanent board per
+// skill and level: every Activity is browsable, and within it every level
+// (1..99) plus a general "whole skill" space (level = null) exists implicitly.
+// A ForumPost is one message in such a space (no thread rows to pre-create —
+// empty spaces simply have no posts). Moderation: authors delete their own;
+// admins/owner delete any.
 
-model ForumThread {
-  id           String       @id @default(cuid())
+model ForumPost {
+  id           String   @id @default(cuid())
   userId       String // author
-  activitySlug String // the skill this thread is about (Activity.slug)
-  level        Int? // optional specific level (1..99); null = the whole skill
-  title        String
+  activitySlug String // the skill this post is about (Activity.slug)
+  level        Int? // specific level (1..99); null = the whole skill ("Ogólne")
   body         String
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  replies      ForumReply[]
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([activitySlug])
-  @@index([createdAt])
-}
-
-model ForumReply {
-  id        String      @id @default(cuid())
-  threadId  String
-  userId    String // author
-  body      String
-  createdAt DateTime    @default(now())
-  thread    ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([threadId])
+  @@index([activitySlug, level, createdAt])
 }
 
 // Google Calendar OAuth tokens, one row per user+provider.

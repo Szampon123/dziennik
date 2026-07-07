@@ -1,8 +1,6 @@
-// Forum domain helpers (client-safe: limits + author display formatting).
+// Forum domain helpers (client-safe): limits, level labels, author formatting.
 
-export const MAX_THREAD_TITLE = 140;
-export const MAX_THREAD_BODY = 5000;
-export const MAX_REPLY_BODY = 5000;
+export const MAX_POST_BODY = 5000;
 export const MAX_LEVEL = 99;
 
 type AuthorLike = { name?: string | null; email?: string | null };
@@ -18,4 +16,16 @@ export function authorName(user: AuthorLike | null | undefined): string {
 /** First letter for the avatar chip. */
 export function authorInitial(user: AuthorLike | null | undefined): string {
   return authorName(user).charAt(0).toUpperCase();
+}
+
+/** Human label for a discussion space's level (null = the whole skill). */
+export function levelLabel(level: number | null): string {
+  return level === null ? "Ogólne" : `Poziom ${level}`;
+}
+
+/** Parse a `?level=` search param into null (Ogólne) or a valid 1..99 level. */
+export function parseLevelParam(value: string | undefined): number | null {
+  if (!value || value === "ogolne") return null;
+  const n = parseInt(value, 10);
+  return Number.isInteger(n) && n >= 1 && n <= MAX_LEVEL ? n : null;
 }

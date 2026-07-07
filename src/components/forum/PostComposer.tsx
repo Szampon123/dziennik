@@ -2,11 +2,19 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { addReply } from "@/actions/forum";
+import { createPost } from "@/actions/forum";
+import { levelLabel } from "@/lib/forum";
 import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/Input";
 
-export function ReplyComposer({ threadId }: { threadId: string }) {
+// Compose a message in the currently selected skill+level space.
+export function PostComposer({
+  activitySlug,
+  level,
+}: {
+  activitySlug: string;
+  level: number | null;
+}) {
   const router = useRouter();
   const [body, setBody] = useState("");
   const [error, setError] = useState("");
@@ -16,7 +24,7 @@ export function ReplyComposer({ threadId }: { threadId: string }) {
     if (!body.trim()) return;
     setError("");
     startTransition(async () => {
-      const result = await addReply({ threadId, body });
+      const result = await createPost({ activitySlug, level, body });
       if (result.ok) {
         setBody("");
         router.refresh();
@@ -32,12 +40,12 @@ export function ReplyComposer({ threadId }: { threadId: string }) {
         value={body}
         onChange={(e) => setBody(e.target.value)}
         rows={3}
-        placeholder="Dodaj odpowiedź…"
-        aria-label="Treść odpowiedzi"
+        placeholder={`Napisz coś w: ${levelLabel(level)}…`}
+        aria-label="Treść wiadomości"
       />
       {error && <p className="text-[13px] text-danger">{error}</p>}
       <Button onClick={submit} disabled={isPending || !body.trim()} className="self-start">
-        {isPending ? "Wysyłanie…" : "Odpowiedz"}
+        {isPending ? "Wysyłanie…" : "Opublikuj"}
       </Button>
     </div>
   );
