@@ -23,10 +23,10 @@ export function RatingScale({
             disabled={disabled}
             onClick={() => onChange(n)}
             aria-pressed={value === n}
-            className={`h-10 w-10 rounded-lg border text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-200 disabled:opacity-50 ${
+            className={`h-10 w-10 rounded-lg border text-sm font-medium transition-all duration-150 outline-none focus-visible:ring-2 focus-visible:ring-violet-200 active:scale-95 disabled:opacity-50 ${
               value === n
-                ? "border-violet-200 bg-violet-100 text-violet-700"
-                : "border-neutral-300 bg-neutral-0 text-neutral-600 hover:bg-neutral-50"
+                ? "border-violet-600 bg-violet-600 text-white shadow-[0_2px_6px_-2px_rgba(110,86,207,0.5)]"
+                : "border-neutral-300 bg-neutral-0 text-neutral-600 hover:-translate-y-0.5 hover:border-violet-300 hover:bg-neutral-50"
             }`}
           >
             {n}

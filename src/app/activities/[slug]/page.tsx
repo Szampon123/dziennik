@@ -28,13 +28,13 @@ export default async function ActivityDetailPage({
       <div>
         <Link
           href="/activities"
-          className="text-[13px] text-neutral-500 transition-colors hover:text-neutral-900"
+          className="group inline-flex items-center gap-1 text-[13px] text-neutral-500 transition-colors hover:text-neutral-900"
         >
-          ← Aktywności
+          <span className="transition-transform group-hover:-translate-x-0.5">←</span> Aktywności
         </Link>
         <div className="mt-2 flex items-center gap-4">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-neutral-100">
-            <ActivityIcon slug={activity.slug} category={activity.category} className="h-6 w-6 text-neutral-600" />
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-100 shadow-[0_2px_8px_-3px_rgba(110,86,207,0.4)]">
+            <ActivityIcon slug={activity.slug} category={activity.category} className="h-6 w-6 text-violet-700" />
           </span>
           <div className="min-w-0 flex-1">
             <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">

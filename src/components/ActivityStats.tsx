@@ -73,8 +73,10 @@ export function ActivityStats({
       <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
         <Ring pct={pct} />
         <div className="min-w-0">
-          <p className="text-2xl font-semibold text-neutral-900">
-            {completedCount}
+          <p className="text-2xl font-semibold">
+            <span className="bg-gradient-to-r from-violet-600 to-azure-500 bg-clip-text text-transparent">
+              {completedCount}
+            </span>
             <span className="text-base font-normal text-neutral-500">/{maxLevel} poziomów</span>
           </p>
           <p className="mt-0.5 text-[13px] text-neutral-500">

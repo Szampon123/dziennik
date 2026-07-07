@@ -49,13 +49,21 @@ export default async function SettingsPage({
       )}
 
       <Card title="Konto" subtitle="Twoja tożsamość w aplikacji">
-        <p className="text-sm text-neutral-800">
-          Zalogowano jako{" "}
-          <span className="font-medium">
-            {session?.user?.email ?? session?.user?.name ?? "—"}
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-azure-500 text-base font-semibold text-white shadow-[0_2px_8px_-3px_rgba(110,86,207,0.5)]"
+          >
+            {(session?.user?.email ?? session?.user?.name ?? "?").charAt(0).toUpperCase()}
           </span>
-        </p>
-        <p className="mt-1 text-[13px] text-neutral-500">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-neutral-900">
+              {session?.user?.email ?? session?.user?.name ?? "—"}
+            </p>
+            <p className="text-[13px] text-neutral-500">Zalogowano</p>
+          </div>
+        </div>
+        <p className="mt-3 text-[13px] text-neutral-500">
           Twój dziennik oraz połączenia Google i Notion są prywatne — inni użytkownicy ich nie
           widzą.
         </p>
