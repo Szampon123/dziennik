@@ -1,5 +1,11 @@
 import { Fragment, type ReactNode } from "react";
-import { getOrCreateToday, closedDayStreak, favoriteQuoteIds } from "@/lib/queries";
+import {
+  getOrCreateToday,
+  closedDayStreak,
+  favoriteQuoteIds,
+  completedMilestoneCount,
+} from "@/lib/queries";
+import { computeCharacter } from "@/lib/character";
 import { formatDayLong, dayKeyDaysAgo } from "@/lib/dates";
 import { parsePriorities, parsePrioritiesDone } from "@/lib/day";
 import { parseTodos } from "@/lib/todos";
@@ -26,13 +32,15 @@ export const dynamic = "force-dynamic";
 
 export default async function TodayPage() {
   const userId = await requireUserId();
-  const [day, notionConfigured, streak, favQuoteIds, user] = await Promise.all([
+  const [day, notionConfigured, streak, favQuoteIds, user, characterXp] = await Promise.all([
     getOrCreateToday(userId),
     isNotionConfigured(userId),
     closedDayStreak(userId),
     favoriteQuoteIds(userId),
     prisma.user.findUnique({ where: { id: userId }, select: { dashboardJson: true } }),
+    completedMilestoneCount(userId),
   ]);
+  const character = computeCharacter(characterXp);
   const closed = day.status === "closed";
   const priorities = parsePriorities(day.prioritiesJson);
   const prioritiesDone = parsePrioritiesDone(day.prioritiesDoneJson, priorities.length);
@@ -62,6 +70,9 @@ export default async function TodayPage() {
         streak={streak}
         prioritiesTotal={priorities.length}
         prioritiesDone={prioritiesDone.filter(Boolean).length}
+        characterStage={character.stageIndex}
+        characterStageName={character.stageName}
+        characterXp={characterXp}
       />
     ),
     nowNext: <NowNext />,
