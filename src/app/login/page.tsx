@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { signIn, isDevLoginEnabled, isGoogleLoginConfigured } from "@/lib/auth";
 import { getSessionUserId } from "@/lib/session";
 import { buttonClass } from "@/components/ui/Button";
 import { inputClass } from "@/components/ui/Input";
+import { CredentialsLoginForm } from "@/components/CredentialsLoginForm";
 
 export const dynamic = "force-dynamic";
 
@@ -28,23 +30,34 @@ export default async function LoginPage() {
       </div>
 
       <div className="flex flex-col gap-3 rounded-card border border-neutral-200 bg-neutral-0 p-6 shadow-card">
-        {googleReady ? (
-          <form
-            action={async () => {
-              "use server";
-              await signIn("google", { redirectTo: "/" });
-            }}
-          >
-            <button type="submit" className={buttonClass("primary", "w-full")}>
-              Zaloguj się przez Google
-            </button>
-          </form>
-        ) : (
-          <p className="text-center text-sm text-neutral-600">
-            Logowanie Google jest nieskonfigurowane — uzupełnij klucze w{" "}
-            <code className="font-mono text-[13px]">.env.local</code> (instrukcja w README).
-          </p>
+        {googleReady && (
+          <>
+            <form
+              action={async () => {
+                "use server";
+                await signIn("google", { redirectTo: "/" });
+              }}
+            >
+              <button type="submit" className={buttonClass("secondary", "w-full")}>
+                Zaloguj się przez Google
+              </button>
+            </form>
+            <div className="flex items-center gap-3">
+              <span className="h-px flex-1 bg-neutral-200" />
+              <span className="text-[13px] text-neutral-400">lub e-mailem</span>
+              <span className="h-px flex-1 bg-neutral-200" />
+            </div>
+          </>
         )}
+
+        <CredentialsLoginForm />
+
+        <p className="text-center text-[13px] text-neutral-600">
+          Nie masz konta?{" "}
+          <Link href="/register" className="font-medium text-violet-600 hover:underline">
+            Zarejestruj się
+          </Link>
+        </p>
 
         {devLogin && (
           <form

@@ -26,6 +26,10 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  // bcrypt hash for email+password login; null for Google-only accounts.
+  passwordHash  String?
+  // Access role: "user" (default) | "admin" | "owner". Validated in src/lib/roles.ts.
+  role          String    @default("user")
 
   // Per-user integration settings (entered in the Settings view).
   notionToken        String?
