@@ -3,45 +3,78 @@
 import { useState, useTransition } from "react";
 import { Check } from "lucide-react";
 import { CharacterAvatar } from "@/components/CharacterAvatar";
-import { setDuduColor } from "@/actions/dudu";
-import { DUDU_COLORS, DUDU_COLOR_KEYS, type DuduColor } from "@/lib/dudu";
+import { setDuduAppearance } from "@/actions/dudu";
+import {
+  DUDU_COLORS,
+  DUDU_COLOR_KEYS,
+  DUDU_SLOTS,
+  DUDU_SLOT_KEYS,
+  type DuduColor,
+  type DuduConfig,
+} from "@/lib/dudu";
 
 export function DuduCustomizer({
   initialColor,
+  initialConfig,
   stage,
   stageName,
 }: {
   initialColor: DuduColor;
+  initialConfig: DuduConfig;
   stage: number;
   stageName: string;
 }) {
   const [color, setColor] = useState<DuduColor>(initialColor);
+  const [config, setConfig] = useState<DuduConfig>(initialConfig);
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
-  function pick(next: DuduColor) {
-    if (next === color) return;
-    const previous = color;
-    setColor(next); // optimistic
+  // Show a hatched body in the preview even for low-XP users, so accessories
+  // are always visible while customising.
+  const previewStage = Math.max(stage, 2);
+
+  function save(nextColor: DuduColor, nextConfig: DuduConfig, rollback: () => void) {
     setError("");
     startTransition(async () => {
-      const result = await setDuduColor(next);
+      const result = await setDuduAppearance({ color: nextColor, config: nextConfig });
       if (!result.ok) {
-        setColor(previous);
+        rollback();
         setError(result.error);
       }
     });
   }
 
+  function pickColor(next: DuduColor) {
+    if (next === color) return;
+    const prev = color;
+    setColor(next);
+    save(next, config, () => setColor(prev));
+  }
+
+  function pickSlot(slot: keyof DuduConfig, id: string) {
+    if (config[slot] === id) return;
+    const prev = config;
+    const next = { ...config, [slot]: id };
+    setConfig(next);
+    save(color, next, () => setConfig(prev));
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col items-center gap-3 rounded-card bg-neutral-100 py-8">
-        <CharacterAvatar stage={stage} size={140} color={color} className="dudu-breathe" />
+        <CharacterAvatar
+          stage={previewStage}
+          size={150}
+          color={color}
+          config={config}
+          className="dudu-breathe"
+        />
         <p className="text-[15px] font-semibold text-neutral-900">{stageName}</p>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <p className="text-[13px] font-medium text-neutral-600">Kolor</p>
+      {/* Colour */}
+      <div className="flex flex-col gap-2.5">
+        <p className="text-[13px] font-medium text-neutral-700">Kolor</p>
         <div className="flex flex-wrap gap-3">
           {DUDU_COLOR_KEYS.map((key) => {
             const active = key === color;
@@ -49,11 +82,11 @@ export function DuduCustomizer({
               <button
                 key={key}
                 type="button"
-                onClick={() => pick(key)}
+                onClick={() => pickColor(key)}
                 aria-pressed={active}
                 aria-label={DUDU_COLORS[key].label}
                 title={DUDU_COLORS[key].label}
-                className={`flex h-11 w-11 items-center justify-center rounded-full outline-none transition-transform focus-visible:ring-2 focus-visible:ring-violet-200 ${
+                className={`flex h-10 w-10 items-center justify-center rounded-full outline-none transition-transform focus-visible:ring-2 focus-visible:ring-violet-200 ${
                   active ? "ring-2 ring-offset-2 ring-neutral-900 ring-offset-neutral-0" : "hover:scale-105"
                 }`}
                 style={{ backgroundColor: DUDU_COLORS[key].accent }}
@@ -63,11 +96,41 @@ export function DuduCustomizer({
             );
           })}
         </div>
-        {error && <p className="text-[13px] text-danger">{error}</p>}
-        <p className="text-[12px] text-neutral-500">
-          {isPending ? "Zapisywanie…" : "Zmiana zapisuje się automatycznie i widać ją w przeglądzie dnia."}
-        </p>
       </div>
+
+      {/* Accessory slots */}
+      {DUDU_SLOT_KEYS.map((slot) => (
+        <div key={slot} className="flex flex-col gap-2.5">
+          <p className="text-[13px] font-medium text-neutral-700">{DUDU_SLOTS[slot].label}</p>
+          <div className="flex flex-wrap gap-2">
+            {DUDU_SLOTS[slot].options.map((opt) => {
+              const active = config[slot] === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => pickSlot(slot, opt.id)}
+                  aria-pressed={active}
+                  className={`rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-all duration-150 outline-none focus-visible:ring-2 focus-visible:ring-violet-200 ${
+                    active
+                      ? "border-violet-600 bg-violet-600 text-white shadow-[0_1px_4px_-1px_rgba(110,86,207,0.5)]"
+                      : "border-neutral-300 bg-neutral-0 text-neutral-700 hover:border-violet-300 hover:text-violet-700"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+
+      {error && <p className="text-[13px] text-danger">{error}</p>}
+      <p className="text-[12px] text-neutral-500">
+        {isPending
+          ? "Zapisywanie…"
+          : "Zmiany zapisują się automatycznie i widać je w przeglądzie dnia."}
+      </p>
     </div>
   );
 }

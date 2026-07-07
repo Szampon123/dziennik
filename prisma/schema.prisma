@@ -32,6 +32,9 @@ model User {
   role          String    @default("user")
   // Chosen colour palette for the Dudu companion. See src/lib/dudu.ts.
   duduColor     String    @default("violet")
+  // Chosen accessories for Dudu (hat, glasses, outfit, pants, shoes, item,
+  // background) as JSON { slot: optionId }. See src/lib/dudu.ts.
+  duduConfigJson String   @default("{}")
 
   // Per-user integration settings (entered in the Settings view).
   notionToken        String?

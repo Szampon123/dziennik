@@ -2,7 +2,7 @@ import { requireUserId } from "@/lib/session";
 import { completedMilestoneCount } from "@/lib/queries";
 import { computeCharacter, CHARACTER_STAGES } from "@/lib/character";
 import { prisma } from "@/lib/prisma";
-import { normalizeDuduColor } from "@/lib/dudu";
+import { normalizeDuduColor, normalizeDuduConfig } from "@/lib/dudu";
 import { Card } from "@/components/Card";
 import { Progress } from "@/components/ui/Progress";
 import { DuduCustomizer } from "@/components/DuduCustomizer";
@@ -12,11 +12,15 @@ export const dynamic = "force-dynamic";
 export default async function DuduPage() {
   const userId = await requireUserId();
   const [user, xp] = await Promise.all([
-    prisma.user.findUnique({ where: { id: userId }, select: { duduColor: true } }),
+    prisma.user.findUnique({
+      where: { id: userId },
+      select: { duduColor: true, duduConfigJson: true },
+    }),
     completedMilestoneCount(userId),
   ]);
   const c = computeCharacter(xp);
   const color = normalizeDuduColor(user?.duduColor);
+  const config = normalizeDuduConfig(user?.duduConfigJson);
 
   return (
     <div className="flex flex-col gap-6">
@@ -27,8 +31,13 @@ export default async function DuduPage() {
         </p>
       </div>
 
-      <Card title="Wygląd" subtitle="Wybierz kolor swojego Dudu">
-        <DuduCustomizer initialColor={color} stage={c.stageIndex} stageName={c.stageName} />
+      <Card title="Wygląd" subtitle="Kolor, kapelusz, ubranie i więcej — 8 kategorii do wyboru">
+        <DuduCustomizer
+          initialColor={color}
+          initialConfig={config}
+          stage={c.stageIndex}
+          stageName={c.stageName}
+        />
       </Card>
 
       <Card title="Postęp formy" subtitle="Ewolucja zależy od zaliczonych poziomów aktywności">

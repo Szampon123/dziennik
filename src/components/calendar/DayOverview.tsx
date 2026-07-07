@@ -22,6 +22,7 @@ export function DayOverview({
   characterStageName,
   characterXp,
   characterColor,
+  characterConfig,
 }: {
   weekChecks: { eventId: string; dayKey: string }[];
   dayRating: number | null;
@@ -33,6 +34,7 @@ export function DayOverview({
   characterStageName: string;
   characterXp: number;
   characterColor?: string;
+  characterConfig?: string | null;
 }) {
   const { state, events, today, checked } = useCalendar();
 
@@ -126,6 +128,7 @@ export function DayOverview({
               stage={characterStage}
               size={52}
               color={characterColor}
+              config={characterConfig}
               className="dudu-breathe"
             />
             <span className="text-[11px] font-medium text-violet-700">{characterStageName}</span>
