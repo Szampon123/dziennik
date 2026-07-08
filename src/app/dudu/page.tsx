@@ -25,7 +25,7 @@ export default async function DuduPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">Dudu</h1>
+        <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">Bohater</h1>
         <p className="mt-1 text-[13px] text-neutral-500">
           Twój towarzysz rośnie wraz z postępem w aktywnościach — tu dostosujesz jego wygląd.
         </p>

@@ -9,7 +9,7 @@ const links = [
   { href: "/history", label: "Historia" },
   { href: "/activities", label: "Aktywności" },
   { href: "/nawyki", label: "Nawyki" },
-  { href: "/dudu", label: "Dudu" },
+  { href: "/dudu", label: "Bohater" },
   { href: "/forum", label: "Forum" },
   { href: "/cytaty", label: "Cytaty" },
   { href: "/settings", label: "Ustawienia" },

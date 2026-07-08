@@ -8,12 +8,18 @@ import { isValidDayKey } from "@/lib/dates";
 import type { ActionResult } from "@/actions/day-entry";
 
 const nameSchema = z.string().trim().min(1, "Podaj nazwę nawyku.").max(100);
+const targetSchema = z.number().int().min(1).max(7);
 
 /** Create a new habit at the end of the user's list. */
-export async function createHabit(name: string): Promise<ActionResult> {
+export async function createHabit(
+  name: string,
+  targetPerWeek: number = 7
+): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = nameSchema.safeParse(name);
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0].message };
+  const target = targetSchema.safeParse(targetPerWeek);
+  if (!target.success) return { ok: false, error: "Cel musi być między 1 a 7 razy w tygodniu." };
 
   const last = await prisma.habit.findFirst({
     where: { userId },
@@ -21,7 +27,31 @@ export async function createHabit(name: string): Promise<ActionResult> {
     select: { sortOrder: true },
   });
   await prisma.habit.create({
-    data: { userId, name: parsed.data, sortOrder: (last?.sortOrder ?? 0) + 1 },
+    data: {
+      userId,
+      name: parsed.data,
+      targetPerWeek: target.data,
+      sortOrder: (last?.sortOrder ?? 0) + 1,
+    },
+  });
+
+  revalidatePath("/nawyki");
+  return { ok: true };
+}
+
+const setTargetSchema = z.object({ id: z.string().min(1), targetPerWeek: targetSchema });
+
+/** Change how many days a week a habit should be done (1..7). */
+export async function setHabitTarget(
+  input: z.input<typeof setTargetSchema>
+): Promise<ActionResult> {
+  const userId = await requireUserId();
+  const parsed = setTargetSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Cel musi być między 1 a 7 razy w tygodniu." };
+
+  await prisma.habit.updateMany({
+    where: { id: parsed.data.id, userId },
+    data: { targetPerWeek: parsed.data.targetPerWeek },
   });
 
   revalidatePath("/nawyki");

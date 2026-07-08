@@ -23,8 +23,8 @@ export default async function NawykiPage({
       <div>
         <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">Nawyki</h1>
         <p className="mt-1 text-[13px] text-neutral-500">
-          Określ swoje nawyki, a potem odklikuj kwadraty dzień po dniu. Postęp liczy się w każdym
-          miesiącu osobno.
+          Określ nawyki i ich cel na tydzień (np. 3×/tydz), a potem odklikuj dowolne dni. Postęp
+          liczy się względem celu tygodniowego.
         </p>
       </div>
 

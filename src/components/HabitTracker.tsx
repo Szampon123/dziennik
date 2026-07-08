@@ -22,6 +22,7 @@ import {
   setHabitArchived,
   deleteHabit,
   setHabitCheck,
+  setHabitTarget,
 } from "@/actions/habits";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -36,8 +37,12 @@ import {
   dayKeyToDate,
 } from "@/lib/dates";
 
-type Habit = { id: string; name: string; checkedDates: string[] };
+type Habit = { id: string; name: string; targetPerWeek: number; checkedDates: string[] };
 type ArchivedHabit = { id: string; name: string };
+
+function targetLabel(t: number) {
+  return t >= 7 ? "codziennie" : `${t}×/tydz`;
+}
 
 // Flexible day columns (1fr) so the whole month fits on desktop without
 // scrolling; the grid keeps a min-width so it still scrolls on narrow phones.
@@ -93,13 +98,38 @@ export function HabitTracker({
   const has = (habitId: string, d: string) => checked.has(`${habitId}|${d}`);
   const doneInMonth = (habitId: string) => days.filter((d) => has(habitId, d)).length;
 
-  // Per-day completion count (chart) + adherence over elapsed days (ring).
+  // Weekly-target progress: for each calendar week (its days within the month)
+  // the goal is min(target, days available); completions are credited up to that
+  // goal. This generalises the old daily model (target 7 → goal = # of days).
+  // `elapsedOnly` restricts to days up to today (used by the "so far" ring).
+  function progressOf(habitId: string, target: number, elapsedOnly: boolean) {
+    let credited = 0;
+    let goal = 0;
+    for (const week of weeks) {
+      const wdays = elapsedOnly ? week.filter((d) => d <= today) : week;
+      if (wdays.length === 0) continue;
+      const weekGoal = Math.min(target, wdays.length);
+      const doneWeek = wdays.filter((d) => has(habitId, d)).length;
+      credited += Math.min(doneWeek, weekGoal);
+      goal += weekGoal;
+    }
+    return { credited, goal };
+  }
+
+  // Per-day completion count (chart) + total raw completions (summary).
   const dailyCounts = days.map((d) => habits.reduce((n, h) => n + (has(h.id, d) ? 1 : 0), 0));
   const totalDone = dailyCounts.reduce((a, b) => a + b, 0);
   const lastIdx = days.reduce((acc, d, i) => (d <= today ? i : acc), -1);
-  const elapsed = lastIdx + 1;
-  const possibleSoFar = habits.length * elapsed;
-  const adherencePct = possibleSoFar > 0 ? Math.round((totalDone / possibleSoFar) * 100) : 0;
+
+  // Adherence ring: credited completions vs weekly goals, over elapsed days.
+  let adhDone = 0;
+  let adhGoal = 0;
+  for (const h of habits) {
+    const p = progressOf(h.id, h.targetPerWeek, true);
+    adhDone += p.credited;
+    adhGoal += p.goal;
+  }
+  const adherencePct = adhGoal > 0 ? Math.round((adhDone / adhGoal) * 100) : 0;
 
   // Current streak (consecutive done days ending today or yesterday — stays
   // alive during the day until you check in).
@@ -126,16 +156,19 @@ export function HabitTracker({
     return best;
   }
 
-  // This-week summary (current month only): done / possible over elapsed days.
+  // This-week summary (current month only): credited vs weekly goals, elapsed.
   const weekStart = startOfWeek(today);
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)).filter(
     (d) => d.slice(0, 7) === monthKey && d <= today
   );
-  const weekDone = weekDays.reduce(
-    (s, d) => s + habits.reduce((n, h) => n + (has(h.id, d) ? 1 : 0), 0),
-    0
-  );
-  const weekPossible = habits.length * weekDays.length;
+  const weekDoneOf = (habitId: string) => weekDays.filter((d) => has(habitId, d)).length;
+  let weekDone = 0;
+  let weekPossible = 0;
+  for (const h of habits) {
+    const wg = Math.min(h.targetPerWeek, weekDays.length);
+    weekDone += Math.min(weekDoneOf(h.id), wg);
+    weekPossible += wg;
+  }
 
   // Month summary stats.
   const bestStreak = habits.reduce((m, h) => Math.max(m, bestStreakInMonth(h.id)), 0);
@@ -208,9 +241,9 @@ export function HabitTracker({
           <div className="flex items-center gap-3">
             <Ring pct={adherencePct} />
             <div className="text-[13px] text-neutral-500">
-              <p className="font-semibold text-neutral-900">{adherencePct}% średnio</p>
+              <p className="font-semibold text-neutral-900">{adherencePct}% celu</p>
               <p>
-                {totalDone}/{possibleSoFar} z minionych dni
+                {adhDone}/{adhGoal} do tej pory
               </p>
             </div>
           </div>
@@ -240,6 +273,9 @@ export function HabitTracker({
                 {habits.map((h) => {
                   const done = has(h.id, today);
                   const streak = streakOf(h.id);
+                  const isDaily = h.targetPerWeek >= 7;
+                  const weekN = weekDoneOf(h.id);
+                  const weekMet = weekN >= h.targetPerWeek;
                   return (
                     <li key={h.id} className="flex items-center gap-3 py-1">
                       <button
@@ -261,16 +297,34 @@ export function HabitTracker({
                         }`}
                       >
                         {h.name}
+                        {!isDaily && (
+                          <span className="ml-1.5 text-[12px] text-neutral-400">
+                            {targetLabel(h.targetPerWeek)}
+                          </span>
+                        )}
                       </span>
-                      {streak > 0 && (
-                        <span
-                          className="flex shrink-0 items-center gap-1 rounded-full bg-warning-bg px-2 py-0.5 text-[12px] font-semibold text-warning"
-                          title={`Seria: ${streak} dni z rzędu`}
-                        >
-                          <Flame className="h-3.5 w-3.5" />
-                          {streak}
-                        </span>
-                      )}
+                      {isDaily
+                        ? streak > 0 && (
+                            <span
+                              className="flex shrink-0 items-center gap-1 rounded-full bg-warning-bg px-2 py-0.5 text-[12px] font-semibold text-warning"
+                              title={`Seria: ${streak} dni z rzędu`}
+                            >
+                              <Flame className="h-3.5 w-3.5" />
+                              {streak}
+                            </span>
+                          )
+                        : (
+                            <span
+                              className={`shrink-0 rounded-full px-2 py-0.5 text-[12px] font-semibold ${
+                                weekMet
+                                  ? "bg-success-bg text-success"
+                                  : "bg-neutral-100 text-neutral-600"
+                              }`}
+                              title="Wykonania w tym tygodniu"
+                            >
+                              {Math.min(weekN, h.targetPerWeek)}/{h.targetPerWeek} w tyg.
+                            </span>
+                          )}
                     </li>
                   );
                 })}
@@ -334,18 +388,21 @@ export function HabitTracker({
                 )}
 
                 {/* One row per habit */}
-                {habits.map((habit) => (
-                  <HabitRow
-                    key={habit.id}
-                    habit={habit}
-                    weeks={weeks}
-                    has={has}
-                    today={today}
-                    doneCount={doneInMonth(habit.id)}
-                    totalDays={days.length}
-                    onToggle={toggle}
-                  />
-                ))}
+                {habits.map((habit) => {
+                  const p = progressOf(habit.id, habit.targetPerWeek, false);
+                  return (
+                    <HabitRow
+                      key={habit.id}
+                      habit={habit}
+                      weeks={weeks}
+                      has={has}
+                      today={today}
+                      credited={p.credited}
+                      goal={p.goal}
+                      onToggle={toggle}
+                    />
+                  );
+                })}
               </div>
             </div>
             {error && <p className="mt-3 text-[13px] text-danger">{error}</p>}
@@ -387,30 +444,31 @@ function HabitRow({
   weeks,
   has,
   today,
-  doneCount,
-  totalDays,
+  credited,
+  goal,
   onToggle,
 }: {
   habit: Habit;
   weeks: string[][];
   has: (habitId: string, d: string) => boolean;
   today: string;
-  doneCount: number;
-  totalDays: number;
+  credited: number;
+  goal: number;
   onToggle: (habitId: string, date: string) => void;
 }) {
   return (
     <>
       <div className="sticky left-0 z-10 flex flex-col justify-center gap-1 border-t border-neutral-100 bg-neutral-0 py-2 pr-2">
         <div className="flex items-baseline justify-between gap-1.5">
-          <span className="truncate text-[12px] font-medium text-neutral-800" title={habit.name}>
+          <span className="min-w-0 truncate text-[12px] font-medium text-neutral-800" title={habit.name}>
             {habit.name}
+            <span className="ml-1 font-normal text-neutral-400">· {targetLabel(habit.targetPerWeek)}</span>
           </span>
           <span className="shrink-0 font-mono text-[11px] text-neutral-500">
-            {doneCount}/{totalDays}
+            {credited}/{goal}
           </span>
         </div>
-        <Progress value={doneCount} max={totalDays} className="h-1.5" />
+        <Progress value={credited} max={goal} className="h-1.5" />
       </div>
       {weeks.map((week, wi) =>
         week.map((d, di) => {
@@ -594,6 +652,32 @@ function Ring({ pct }: { pct: number }) {
   );
 }
 
+// Weekly-target picker (1..7; 7 = every day). Native select, compact.
+function TargetSelect({
+  value,
+  onChange,
+  ariaLabel,
+}: {
+  value: number;
+  onChange: (n: number) => void;
+  ariaLabel: string;
+}) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(Number(e.target.value))}
+      aria-label={ariaLabel}
+      className="shrink-0 rounded-lg border border-neutral-300 bg-neutral-0 px-2 py-2 text-[13px] text-neutral-700 outline-none transition-colors hover:border-neutral-400 focus-visible:ring-2 focus-visible:ring-violet-200"
+    >
+      {[1, 2, 3, 4, 5, 6, 7].map((n) => (
+        <option key={n} value={n}>
+          {n === 7 ? "codziennie" : `${n}×/tydz`}
+        </option>
+      ))}
+    </select>
+  );
+}
+
 function EmptyState() {
   return (
     <div className="rounded-card border border-dashed border-neutral-300 bg-neutral-0 p-8 text-center shadow-card">
@@ -612,6 +696,7 @@ function EmptyState() {
 function ManagePanel({ habits, archived }: { habits: Habit[]; archived: ArchivedHabit[] }) {
   const [open, setOpen] = useState(habits.length === 0);
   const [newName, setNewName] = useState("");
+  const [newTarget, setNewTarget] = useState(7);
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
@@ -619,13 +704,19 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
     const name = newName.trim();
     if (!name) return;
     startTransition(async () => {
-      const result = await createHabit(name);
+      const result = await createHabit(name, newTarget);
       if (result.ok) {
         setNewName("");
+        setNewTarget(7);
         setError("");
       } else {
         setError(result.error);
       }
+    });
+  }
+  function changeTarget(id: string, targetPerWeek: number) {
+    startTransition(async () => {
+      await setHabitTarget({ id, targetPerWeek });
     });
   }
   function rename(id: string, name: string, original: string) {
@@ -666,7 +757,7 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
 
       {open && (
         <div className="rounded-card border border-neutral-200 bg-neutral-0 p-4 shadow-card">
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Input
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
@@ -674,14 +765,23 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
                 if (e.key === "Enter") add();
               }}
               maxLength={100}
-              placeholder="Nowy nawyk (np. Ćwiczenia, 8 szklanek wody)"
+              placeholder="Nowy nawyk (np. Siłownia, 8 szklanek wody)"
               aria-label="Nazwa nowego nawyku"
+              className="min-w-[180px] flex-1"
+            />
+            <TargetSelect
+              value={newTarget}
+              onChange={setNewTarget}
+              ariaLabel="Ile razy w tygodniu"
             />
             <Button onClick={add} disabled={isPending || !newName.trim()}>
               <Plus aria-hidden className="h-4 w-4" />
               Dodaj
             </Button>
           </div>
+          <p className="mt-1.5 text-[12px] text-neutral-400">
+            Wybierz, ile razy w tygodniu chcesz wykonywać nawyk — dni odklikujesz dowolnie.
+          </p>
           {error && <p className="mt-2 text-[13px] text-danger">{error}</p>}
 
           {habits.length > 0 && (
@@ -700,6 +800,11 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
                       if (e.key === "Enter") e.currentTarget.blur();
                     }}
                     className="min-w-0 flex-1 rounded-md border border-transparent bg-transparent px-1.5 py-1 text-sm text-neutral-900 outline-none hover:border-neutral-200 focus:border-violet-600 focus:ring-2 focus:ring-violet-100"
+                  />
+                  <TargetSelect
+                    value={h.targetPerWeek}
+                    onChange={(n) => changeTarget(h.id, n)}
+                    ariaLabel={`Cel tygodniowy: ${h.name}`}
                   />
                   <div className="flex shrink-0 items-center">
                     <button

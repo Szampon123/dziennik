@@ -267,6 +267,9 @@ model Habit {
   userId     String
   name       String
   sortOrder  Int          @default(0)
+  // Weekly target: how many days a week the habit should be done (1..7).
+  // 7 = every day (the original behaviour). Any day of the week counts.
+  targetPerWeek Int       @default(7)
   archivedAt DateTime? // set when the user drops the habit; history (checks) kept
   createdAt  DateTime     @default(now())
   user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)

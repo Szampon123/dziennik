@@ -4,6 +4,8 @@ import { daysInMonth } from "@/lib/dates";
 export type HabitWithChecks = {
   id: string;
   name: string;
+  /** Weekly target: how many days a week to do it (1..7; 7 = every day). */
+  targetPerWeek: number;
   /** Day keys ("YYYY-MM-DD") in the requested month on which the habit is done. */
   checkedDates: string[];
 };
@@ -22,7 +24,7 @@ export async function listHabitsWithChecks(
     prisma.habit.findMany({
       where: { userId, archivedAt: null },
       orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
-      select: { id: true, name: true },
+      select: { id: true, name: true, targetPerWeek: true },
     }),
     prisma.habitCheck.findMany({
       where: { userId, date: { in: days } },
@@ -40,6 +42,7 @@ export async function listHabitsWithChecks(
   return habits.map((h) => ({
     id: h.id,
     name: h.name,
+    targetPerWeek: h.targetPerWeek,
     checkedDates: byHabit.get(h.id) ?? [],
   }));
 }
