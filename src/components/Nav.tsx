@@ -3,21 +3,24 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useT } from "@/components/i18n/I18nProvider";
+import type { MessageKey } from "@/lib/i18n/messages";
 
-const links = [
-  { href: "/", label: "Dziś" },
-  { href: "/history", label: "Historia" },
-  { href: "/activities", label: "Aktywności" },
-  { href: "/nawyki", label: "Nawyki" },
-  { href: "/dudu", label: "Bohater" },
-  { href: "/forum", label: "Forum" },
-  { href: "/cytaty", label: "Cytaty" },
-  { href: "/settings", label: "Ustawienia" },
+const links: { href: string; key: MessageKey }[] = [
+  { href: "/", key: "nav.today" },
+  { href: "/history", key: "nav.history" },
+  { href: "/activities", key: "nav.activities" },
+  { href: "/nawyki", key: "nav.habits" },
+  { href: "/dudu", key: "nav.hero" },
+  { href: "/forum", key: "nav.forum" },
+  { href: "/cytaty", key: "nav.quotes" },
+  { href: "/settings", key: "nav.settings" },
 ];
 
 // Design System v1.0 — 64px bar, dot logo, pill links, theme icon + avatar menu.
 export function Nav({ userMenu }: { userMenu?: React.ReactNode }) {
   const pathname = usePathname();
+  const t = useT();
 
   // The login and register pages have their own minimal layout.
   if (pathname === "/login" || pathname === "/register") return null;
@@ -33,7 +36,7 @@ export function Nav({ userMenu }: { userMenu?: React.ReactNode }) {
             </span>
           </Link>
           <nav className="flex items-center gap-1">
-            {links.map(({ href, label }) => {
+            {links.map(({ href, key }) => {
               const active =
                 href === "/" ? pathname === "/" : pathname.startsWith(href);
               return (
@@ -46,7 +49,7 @@ export function Nav({ userMenu }: { userMenu?: React.ReactNode }) {
                       : "font-medium text-neutral-600 hover:bg-neutral-100"
                   }`}
                 >
-                  {label}
+                  {t(key)}
                 </Link>
               );
             })}

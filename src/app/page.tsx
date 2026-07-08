@@ -14,6 +14,7 @@ import { resolveDashboard } from "@/lib/dashboard";
 import { isNotionConfigured } from "@/lib/notion";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
+import { getT } from "@/lib/i18n/server";
 import { Card } from "@/components/Card";
 import { Badge } from "@/components/ui/Badge";
 import { CalendarProvider } from "@/components/calendar/CalendarProvider";
@@ -32,7 +33,7 @@ export const dynamic = "force-dynamic";
 
 export default async function TodayPage() {
   const userId = await requireUserId();
-  const [day, notionConfigured, streak, favQuoteIds, user, characterXp] = await Promise.all([
+  const [day, notionConfigured, streak, favQuoteIds, user, characterXp, { t }] = await Promise.all([
     getOrCreateToday(userId),
     isNotionConfigured(userId),
     closedDayStreak(userId),
@@ -47,6 +48,7 @@ export default async function TodayPage() {
       },
     }),
     completedMilestoneCount(userId),
+    getT(),
   ]);
   const character = computeCharacter(characterXp);
   const closed = day.status === "closed";
@@ -138,7 +140,9 @@ export default async function TodayPage() {
     <div className="flex flex-col gap-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">Dziś</h1>
+          <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
+            {t("page.today.title")}
+          </h1>
           <p className="mt-1 text-[13px] capitalize text-neutral-500">{formatDayLong(day.date)}</p>
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">

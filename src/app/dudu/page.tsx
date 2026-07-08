@@ -3,6 +3,7 @@ import { completedMilestoneCount } from "@/lib/queries";
 import { computeCharacter, CHARACTER_STAGES } from "@/lib/character";
 import { prisma } from "@/lib/prisma";
 import { normalizeDuduColor, normalizeDuduConfig } from "@/lib/dudu";
+import { getT } from "@/lib/i18n/server";
 import { Card } from "@/components/Card";
 import { Progress } from "@/components/ui/Progress";
 import { DuduCustomizer } from "@/components/DuduCustomizer";
@@ -11,12 +12,13 @@ export const dynamic = "force-dynamic";
 
 export default async function DuduPage() {
   const userId = await requireUserId();
-  const [user, xp] = await Promise.all([
+  const [user, xp, { t }] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
       select: { duduColor: true, duduConfigJson: true, duduName: true },
     }),
     completedMilestoneCount(userId),
+    getT(),
   ]);
   const c = computeCharacter(xp);
   const color = normalizeDuduColor(user?.duduColor);
@@ -25,10 +27,10 @@ export default async function DuduPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">Bohater</h1>
-        <p className="mt-1 text-[13px] text-neutral-500">
-          Twój towarzysz rośnie wraz z postępem w aktywnościach — tu dostosujesz jego wygląd.
-        </p>
+        <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
+          {t("page.hero.title")}
+        </h1>
+        <p className="mt-1 text-[13px] text-neutral-500">{t("page.hero.subtitle")}</p>
       </div>
 
       <Card title="Wygląd" subtitle="Kolor, kapelusz, ubranie i więcej — 8 kategorii do wyboru">

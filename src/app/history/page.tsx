@@ -8,19 +8,26 @@ import { EmptyState } from "@/components/EmptyState";
 import { HistoryChart } from "@/components/HistoryChart";
 import { SyncStatusBadge } from "@/components/SyncStatusBadge";
 import { requireUserId } from "@/lib/session";
+import { getT } from "@/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function HistoryPage() {
   const userId = await requireUserId();
-  const [days, chartDays] = await Promise.all([listDays(userId), lastThirtyDays(userId)]);
+  const [days, chartDays, { t }] = await Promise.all([
+    listDays(userId),
+    lastThirtyDays(userId),
+    getT(),
+  ]);
   const ratedDays = chartDays.filter(
     (d) => d.dayRating !== null || d.energyLevel !== null
   ).length;
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">Historia</h1>
+      <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
+        {t("page.history.title")}
+      </h1>
 
       <Card title="Ostatnie 30 dni" subtitle="Ocena dnia i poziom energii">
         {ratedDays >= 1 ? (

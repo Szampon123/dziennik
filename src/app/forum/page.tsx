@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
+import { getT } from "@/lib/i18n/server";
 import { SkillForumList } from "@/components/forum/SkillForumList";
 
 export const dynamic = "force-dynamic";
@@ -7,12 +8,13 @@ export const dynamic = "force-dynamic";
 export default async function ForumPage() {
   await requireUserId();
 
-  const [activities, counts] = await Promise.all([
+  const [activities, counts, { t }] = await Promise.all([
     prisma.activity.findMany({
       select: { slug: true, name: true, category: true },
       orderBy: { sortOrder: "asc" },
     }),
     prisma.forumPost.groupBy({ by: ["activitySlug"], _count: { _all: true } }),
+    getT(),
   ]);
   const countBySlug = new Map(counts.map((c) => [c.activitySlug, c._count._all]));
 
@@ -26,11 +28,10 @@ export default async function ForumPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">Forum</h1>
-        <p className="mt-1 text-[13px] text-neutral-500">
-          Każda umiejętność ma własną przestrzeń dyskusji. Wejdź, wybierz poziom i zobacz, co
-          napisali inni — albo zacznij rozmowę.
-        </p>
+        <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
+          {t("page.forum.title")}
+        </h1>
+        <p className="mt-1 text-[13px] text-neutral-500">{t("page.forum.subtitle")}</p>
       </div>
 
       <SkillForumList skills={skills} />

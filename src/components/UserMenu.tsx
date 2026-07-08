@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { auth, signOut } from "@/lib/auth";
+import { getT } from "@/lib/i18n/server";
 
 function initialsOf(name: string | null | undefined, email: string | null | undefined) {
   const source = name?.trim() || email?.trim() || "";
@@ -12,16 +13,16 @@ function initialsOf(name: string | null | undefined, email: string | null | unde
 // Design System v1.0 — avatar with a dropdown (e-mail, Ustawienia, Wyloguj).
 // Native <details> keeps this a server component (sign-out is a form action).
 export async function UserMenu() {
-  const session = await auth();
+  const [session, { t }] = await Promise.all([auth(), getT()]);
   if (!session?.user) return null;
 
-  const email = session.user.email ?? session.user.name ?? "Zalogowano";
+  const email = session.user.email ?? session.user.name ?? t("user.loggedInAs");
   const initials = initialsOf(session.user.name, session.user.email);
 
   return (
     <details className="group relative">
       <summary
-        aria-label="Menu użytkownika"
+        aria-label={email}
         title={email}
         className="flex h-[34px] w-[34px] cursor-pointer list-none items-center justify-center rounded-full bg-violet-100 text-xs font-semibold text-violet-700 outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-violet-200 [&::-webkit-details-marker]:hidden"
       >
@@ -36,7 +37,7 @@ export async function UserMenu() {
           href="/settings"
           className="block px-3.5 py-2 text-sm text-neutral-800 transition-colors hover:bg-neutral-100"
         >
-          Ustawienia
+          {t("nav.settings")}
         </Link>
         <form
           action={async () => {
@@ -48,7 +49,7 @@ export async function UserMenu() {
             type="submit"
             className="block w-full px-3.5 py-2 text-left text-sm text-neutral-800 transition-colors hover:bg-neutral-100"
           >
-            Wyloguj
+            {t("user.logout")}
           </button>
         </form>
       </div>
