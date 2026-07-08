@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { inputClass } from "@/components/ui/Input";
+import { useT } from "@/components/i18n/I18nProvider";
 
 export function TodoList({
   date,
@@ -25,6 +26,7 @@ export function TodoList({
   const [time, setTime] = useState("");
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const t = useT();
 
   const sorted = sortTodosForDisplay(items);
   const doneCount = items.filter((t) => t.done).length;
@@ -88,19 +90,19 @@ export function TodoList({
                 }
               }}
               maxLength={MAX_TODO_TITLE}
-              placeholder="Nowe zadanie (np. zakupy, pranie)…"
-              aria-label="Treść zadania"
+              placeholder={t("todo.placeholder")}
+              aria-label={t("todo.contentLabel")}
               className={`${inputClass} min-w-[180px] flex-1`}
             />
             <input
               type="time"
               value={time}
               onChange={(e) => setTime(e.target.value)}
-              aria-label="Godzina (opcjonalnie)"
+              aria-label={t("todo.timeLabel")}
               className={`${inputClass} w-auto`}
             />
             <Button onClick={submit} disabled={isPending || !title.trim()}>
-              Dodaj
+              {t("common.add")}
             </Button>
           </div>
           {error && <p className="text-[13px] text-danger">{error}</p>}
@@ -108,10 +110,7 @@ export function TodoList({
       )}
 
       {items.length === 0 ? (
-        <EmptyState
-          title="Brak zadań"
-          hint="Dodaj krótkie rzeczy do odhaczenia na dziś — z godziną lub bez."
-        />
+        <EmptyState title={t("todo.emptyTitle")} hint={t("todo.emptyHint")} />
       ) : (
         <>
           <ul className="flex flex-col gap-0.5">
@@ -125,7 +124,10 @@ export function TodoList({
                   onChange={() => toggle(todo)}
                   disabled={disabled}
                   size="sm"
-                  aria-label={`Oznacz „${todo.title}” jako ${todo.done ? "niezrobione" : "zrobione"}`}
+                  aria-label={t("todo.markAria", {
+                    title: todo.title,
+                    state: todo.done ? t("todo.stateUndone") : t("todo.stateDone"),
+                  })}
                 />
                 {todo.time && (
                   <span className="shrink-0 font-mono text-[13px] tabular-nums text-neutral-500">
@@ -143,8 +145,8 @@ export function TodoList({
                   <button
                     type="button"
                     onClick={() => remove(todo)}
-                    aria-label={`Usuń „${todo.title}”`}
-                    title="Usuń zadanie"
+                    aria-label={t("todo.deleteAria", { title: todo.title })}
+                    title={t("todo.deleteTitle")}
                     className="rounded p-1 text-neutral-500 opacity-0 transition-opacity hover:text-danger focus-visible:opacity-100 group-hover:opacity-100"
                   >
                     <X className="h-3.5 w-3.5" />
@@ -154,7 +156,7 @@ export function TodoList({
             ))}
           </ul>
           <p className="px-2 text-[13px] text-neutral-500">
-            {doneCount} / {items.length} zrobione
+            {t("todo.doneCount", { done: doneCount, total: items.length })}
           </p>
         </>
       )}

@@ -91,7 +91,7 @@ export default async function TodayPage() {
     nowNext: <NowNext />,
     calendar: <WeekCalendar />,
     morning: (
-      <Card title="Poranek" subtitle="Intencja dnia i 1–3 priorytety">
+      <Card title={t("card.morning.title")} subtitle={t("card.morning.subtitle")}>
         <MorningEntry
           date={day.date}
           initialIntent={day.morningIntent ?? ""}
@@ -103,17 +103,17 @@ export default async function TodayPage() {
       </Card>
     ),
     todos: (
-      <Card title="Do zrobienia" subtitle="Krótkie zadania na dziś — z opcjonalną godziną">
+      <Card title={t("card.todos.title")} subtitle={t("card.todos.subtitle")}>
         <TodoList date={day.date} todos={parseTodos(day.todosJson)} disabled={closed} />
       </Card>
     ),
     notes: (
-      <Card title="Notatki z dnia" subtitle="Szybkie zapiski z timestampem">
+      <Card title={t("card.notes.title")} subtitle={t("card.notes.subtitle")}>
         <NoteStream date={day.date} notes={day.notes} disabled={closed} />
       </Card>
     ),
     close: (
-      <Card title="Zamknięcie dnia" subtitle="Wieczorna refleksja i oceny">
+      <Card title={t("card.close.title")} subtitle={t("card.close.subtitle")}>
         <CloseDayPanel
           date={day.date}
           initialGood={day.reflectionGood ?? ""}
@@ -147,19 +147,17 @@ export default async function TodayPage() {
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">
           {morningFilled ? (
-            <Badge variant="success">● Poranek zapisany</Badge>
+            <Badge variant="success">● {t("today.morningSaved")}</Badge>
           ) : (
-            <Badge variant="warning">○ Poranek niewypełniony</Badge>
+            <Badge variant="warning">○ {t("today.morningEmpty")}</Badge>
           )}
           <DashboardCustomizer order={order} hidden={[...hidden]} />
         </div>
       </div>
 
       {visible.length === 0 ? (
-        <Card title="Pusty widok" subtitle="Wszystkie sekcje są ukryte">
-          <p className="text-sm text-neutral-600">
-            Włącz sekcje w „Dostosuj widok”, aby znów zobaczyć swój dzień.
-          </p>
+        <Card title={t("today.emptyTitle")} subtitle={t("today.emptySubtitle")}>
+          <p className="text-sm text-neutral-600">{t("today.emptyHint")}</p>
         </Card>
       ) : needsCalendar ? (
         <CalendarProvider initialCheckedIds={todayCheckedIds}>{list}</CalendarProvider>

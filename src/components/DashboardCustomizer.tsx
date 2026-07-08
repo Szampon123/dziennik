@@ -12,6 +12,7 @@ import {
 import { DASHBOARD_WIDGETS, DASHBOARD_WIDGET_IDS } from "@/lib/dashboard";
 import { saveDashboard, resetDashboard } from "@/actions/dashboard";
 import { Button } from "@/components/ui/Button";
+import { useT } from "@/components/i18n/I18nProvider";
 
 const WIDGET = Object.fromEntries(DASHBOARD_WIDGETS.map((w) => [w.id, w]));
 
@@ -31,6 +32,7 @@ export function DashboardCustomizer({
   const [hid, setHid] = useState<Set<string>>(() => new Set(hidden));
   const [status, setStatus] = useState<"idle" | "saved">("idle");
   const [isPending, startTransition] = useTransition();
+  const t = useT();
 
   function move(index: number, dir: -1 | 1) {
     const j = index + dir;
@@ -80,7 +82,7 @@ export function DashboardCustomizer({
         className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200"
       >
         <SlidersHorizontal aria-hidden className="h-3.5 w-3.5" />
-        Dostosuj widok
+        {t("today.customize")}
       </button>
 
       {open && (

@@ -8,6 +8,7 @@ import { setFavoriteQuote } from "@/actions/quotes";
 import { QuoteBody } from "@/components/QuoteBody";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/ui/Button";
+import { useT } from "@/components/i18n/I18nProvider";
 
 // "Cytat na dziś" panel: a stable quote for the day plus a shuffle for a fresh
 // one, and a heart to save favourites (persisted per user).
@@ -21,6 +22,7 @@ export function QuotePanel({
   const [currentId, setCurrentId] = useState(dailyId);
   const [favs, setFavs] = useState<Set<string>>(() => new Set(favoriteIds));
   const [, startTransition] = useTransition();
+  const t = useT();
 
   const quote = QUOTE_BY_ID[currentId];
   const isFav = favs.has(currentId);
@@ -49,14 +51,14 @@ export function QuotePanel({
 
   return (
     <Card
-      title="Cytat na dziś"
-      subtitle={isDaily ? "Codzienna inspiracja z różnych dziedzin" : "Losowy cytat"}
+      title={t("quote.title")}
+      subtitle={isDaily ? t("quote.daily") : t("quote.random")}
       action={
         <Link
           href="/cytaty?fav=1"
           className="shrink-0 text-[13px] font-medium text-azure-700 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-violet-200"
         >
-          ★ Ulubione ({favs.size}) →
+          {t("quote.favorites", { n: favs.size })}
         </Link>
       }
     >
@@ -66,7 +68,7 @@ export function QuotePanel({
         <div className="flex flex-wrap items-center gap-2 border-t border-neutral-200 pt-4">
           <Button variant="secondary" onClick={() => setCurrentId((id) => randomQuoteId(id))}>
             <Shuffle aria-hidden className="h-4 w-4" />
-            Nowy cytat
+            {t("quote.new")}
           </Button>
           <button
             type="button"
@@ -82,7 +84,7 @@ export function QuotePanel({
               aria-hidden
               className={`h-4 w-4 ${isFav ? "fill-violet-600 text-violet-600" : ""}`}
             />
-            {isFav ? "W ulubionych" : "Do ulubionych"}
+            {isFav ? t("quote.inFav") : t("quote.toFav")}
           </button>
         </div>
       </div>

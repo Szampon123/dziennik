@@ -3,11 +3,19 @@
 import { useState, useTransition } from "react";
 import { X } from "lucide-react";
 import { addNote, deleteNote } from "@/actions/notes";
-import { NOTE_TYPES, NOTE_TYPE_LABELS, type NoteType } from "@/lib/day";
+import { NOTE_TYPES, type NoteType } from "@/lib/day";
 import { formatTime } from "@/lib/dates";
 import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/Button";
 import { Textarea, inputClass } from "@/components/ui/Input";
+import { useT } from "@/components/i18n/I18nProvider";
+import type { MessageKey } from "@/lib/i18n/messages";
+
+const NOTE_TYPE_KEY: Record<NoteType, MessageKey> = {
+  log: "note.type.log",
+  distraction: "note.type.distraction",
+  idea: "note.type.idea",
+};
 
 export type NoteItem = {
   id: string;
@@ -35,6 +43,7 @@ export function NoteStream({
   const [type, setType] = useState<NoteType>("log");
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const t = useT();
 
   function submit() {
     if (!content.trim()) return;
@@ -69,38 +78,33 @@ export function NoteStream({
                 submit();
               }
             }}
-            placeholder="Co się właśnie wydarzyło? Zapisz myśl, zadanie lub rozproszenie…"
+            placeholder={t("note.placeholder")}
             rows={3}
           />
           <div className="flex flex-wrap items-center gap-2">
             <select
               value={type}
               onChange={(e) => setType(e.target.value as NoteType)}
-              aria-label="Typ notatki"
+              aria-label={t("note.typeLabel")}
               className={`${inputClass} w-auto`}
             >
-              {NOTE_TYPES.map((t) => (
-                <option key={t} value={t}>
-                  {NOTE_TYPE_LABELS[t]}
+              {NOTE_TYPES.map((nt) => (
+                <option key={nt} value={nt}>
+                  {t(NOTE_TYPE_KEY[nt])}
                 </option>
               ))}
             </select>
             <Button onClick={submit} disabled={isPending || !content.trim()}>
-              Dodaj
+              {t("common.add")}
             </Button>
-            <span className="text-[13px] text-neutral-400">
-              Enter — dodaj · Shift+Enter — nowa linia
-            </span>
+            <span className="text-[13px] text-neutral-400">{t("note.enterHint")}</span>
           </div>
           {error && <p className="text-[13px] text-danger">{error}</p>}
         </div>
       )}
 
       {notes.length === 0 ? (
-        <EmptyState
-          title="Brak notatek"
-          hint="Zapisuj w ciągu dnia, co zrobiłeś i co Cię rozproszyło."
-        />
+        <EmptyState title={t("note.emptyTitle")} hint={t("note.emptyHint")} />
       ) : (
         <ul className="flex flex-col gap-1">
           {notes.map((note) => (
@@ -116,7 +120,9 @@ export function NoteStream({
                   TYPE_BADGE[(note.type as NoteType) in TYPE_BADGE ? (note.type as NoteType) : "log"]
                 }`}
               >
-                {NOTE_TYPE_LABELS[(note.type as NoteType)] ?? note.type}
+                {(note.type as NoteType) in NOTE_TYPE_KEY
+                  ? t(NOTE_TYPE_KEY[note.type as NoteType])
+                  : note.type}
               </span>
               <span className="flex-1 text-[15px] text-neutral-800">{note.content}</span>
               {!disabled && (

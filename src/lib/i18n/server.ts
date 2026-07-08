@@ -3,8 +3,19 @@ import { cookies } from "next/headers";
 import { LOCALE_COOKIE, normalizeLocale, type Locale } from "./config";
 import { MESSAGES, type MessageKey } from "./messages";
 
-export function translate(locale: Locale, key: MessageKey): string {
-  return MESSAGES[locale][key] ?? MESSAGES.pl[key] ?? key;
+export type TFunc = (key: MessageKey, params?: Record<string, string | number>) => string;
+
+function interpolate(template: string, params?: Record<string, string | number>): string {
+  if (!params) return template;
+  return template.replace(/\{(\w+)\}/g, (m, k) => (k in params ? String(params[k]) : m));
+}
+
+export function translate(
+  locale: Locale,
+  key: MessageKey,
+  params?: Record<string, string | number>
+): string {
+  return interpolate(MESSAGES[locale][key] ?? MESSAGES.pl[key] ?? key, params);
 }
 
 /** The active locale from the request cookie (defaults to pl). */
@@ -14,7 +25,7 @@ export async function getLocale(): Promise<Locale> {
 }
 
 /** Server-component translator: `const { t } = await getT();`. */
-export async function getT(): Promise<{ locale: Locale; t: (key: MessageKey) => string }> {
+export async function getT(): Promise<{ locale: Locale; t: TFunc }> {
   const locale = await getLocale();
-  return { locale, t: (key: MessageKey) => translate(locale, key) };
+  return { locale, t: (key, params) => translate(locale, key, params) };
 }

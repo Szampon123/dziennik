@@ -6,6 +6,7 @@ import { MAX_PRIORITIES } from "@/lib/day";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Input, Textarea } from "@/components/ui/Input";
+import { useT } from "@/components/i18n/I18nProvider";
 
 export function MorningEntry({
   date,
@@ -33,6 +34,7 @@ export function MorningEntry({
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const t = useT();
 
   function setPriority(i: number, value: string) {
     setPriorities((prev) => prev.map((p, j) => (j === i ? value : p)));
@@ -67,7 +69,7 @@ export function MorningEntry({
   return (
     <div className="flex flex-col gap-4">
       <label className="flex flex-col gap-1.5">
-        <span className="text-[13px] font-medium text-neutral-800">Intencja dnia</span>
+        <span className="text-[13px] font-medium text-neutral-800">{t("morning.intent")}</span>
         <Textarea
           value={intent}
           onChange={(e) => {
@@ -76,12 +78,12 @@ export function MorningEntry({
           }}
           disabled={disabled}
           rows={2}
-          placeholder="Na czym dziś naprawdę mi zależy?"
+          placeholder={t("morning.intentPlaceholder")}
         />
       </label>
 
       <div className="flex flex-col gap-2">
-        <span className="text-[13px] font-medium text-neutral-800">Priorytety (max 3)</span>
+        <span className="text-[13px] font-medium text-neutral-800">{t("morning.priorities")}</span>
         {priorities.map((p, i) => {
           const savedText = initialPriorities[i];
           const checkable = Boolean(savedText) && !disabled;
@@ -92,12 +94,8 @@ export function MorningEntry({
                 disabled={!checkable}
                 onChange={() => toggleDone(i)}
                 size="sm"
-                aria-label={`Priorytet ${i + 1} wykonany`}
-                title={
-                  checkable
-                    ? "Oznacz priorytet jako wykonany"
-                    : "Zapisz treść priorytetu, aby móc go odhaczyć"
-                }
+                aria-label={t("morning.priorityDone", { n: i + 1 })}
+                title={checkable ? t("morning.markDone") : t("morning.saveFirst")}
               />
               <span
                 aria-hidden
@@ -115,8 +113,10 @@ export function MorningEntry({
                 value={p}
                 onChange={(e) => setPriority(i, e.target.value)}
                 disabled={disabled}
-                aria-label={`Priorytet ${i + 1}`}
-                placeholder={i === 0 ? "Najważniejsza rzecz dnia" : `Priorytet ${i + 1}`}
+                aria-label={t("morning.priorityN", { n: i + 1 })}
+                placeholder={
+                  i === 0 ? t("morning.priorityFirst") : t("morning.priorityN", { n: i + 1 })
+                }
                 className={done[i] && savedText ? "line-through text-neutral-400" : ""}
               />
             </div>
@@ -127,17 +127,15 @@ export function MorningEntry({
       {!disabled && (
         <div className="flex flex-wrap items-center gap-3">
           <Button onClick={save} disabled={isPending}>
-            {isPending ? "Zapisywanie…" : "Zapisz wpis poranny"}
+            {isPending ? t("common.saving") : t("morning.save")}
           </Button>
           {status === "saved" ? (
-            <span className="text-[13px] text-success">Zapisano ✓</span>
+            <span className="text-[13px] text-success">{t("common.saved")}</span>
           ) : status === "error" ? (
             <span className="text-[13px] text-danger">{error}</span>
           ) : (
             notionConfigured && (
-              <span className="text-[13px] text-neutral-500">
-                Zapisze się też jako daily brief w Notion
-              </span>
+              <span className="text-[13px] text-neutral-500">{t("morning.notionHint")}</span>
             )
           )}
         </div>

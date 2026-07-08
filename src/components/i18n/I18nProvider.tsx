@@ -17,8 +17,16 @@ export function useLocale(): Locale {
   return useContext(LocaleContext);
 }
 
+export type TFunc = (key: MessageKey, params?: Record<string, string | number>) => string;
+
+function interpolate(template: string, params?: Record<string, string | number>): string {
+  if (!params) return template;
+  return template.replace(/\{(\w+)\}/g, (m, k) => (k in params ? String(params[k]) : m));
+}
+
 /** Client-component translator: `const t = useT(); t("nav.today")`. */
-export function useT(): (key: MessageKey) => string {
+export function useT(): TFunc {
   const locale = useContext(LocaleContext);
-  return (key: MessageKey) => MESSAGES[locale][key] ?? MESSAGES.pl[key] ?? key;
+  return (key, params) =>
+    interpolate(MESSAGES[locale][key] ?? MESSAGES.pl[key] ?? key, params);
 }

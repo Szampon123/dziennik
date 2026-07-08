@@ -6,6 +6,7 @@ import { Card } from "@/components/Card";
 import { CharacterAvatar } from "@/components/CharacterAvatar";
 import { formatDayShort, dayKeyDaysAgo } from "@/lib/dates";
 import { useCalendar } from "./CalendarProvider";
+import { useT } from "@/components/i18n/I18nProvider";
 
 // "Przegląd dnia" — hero: a progress ring (share of the day's tasks done), the
 // mini Dudu companion, and metric tiles (rating, energy, streak), with the
@@ -40,6 +41,7 @@ export function DayOverview({
 }) {
   const companionLabel = characterName?.trim() || characterStageName;
   const { state, events, today, checked } = useCalendar();
+  const t = useT();
 
   const todayEvents = events.filter((e) => e.dayKey === today);
   const calDone = todayEvents.filter((e) => checked.has(e.id)).length;
@@ -55,18 +57,22 @@ export function DayOverview({
 
   const breakdown = hasTasks
     ? [
-        todayEvents.length > 0 ? `kalendarz ${calDone}/${todayEvents.length}` : null,
-        prioritiesTotal > 0 ? `priorytety ${prioritiesDone}/${prioritiesTotal}` : null,
+        todayEvents.length > 0
+          ? t("overview.calDone", { done: calDone, total: todayEvents.length })
+          : null,
+        prioritiesTotal > 0
+          ? t("overview.priDone", { done: prioritiesDone, total: prioritiesTotal })
+          : null,
       ]
         .filter(Boolean)
         .join(" · ")
     : state.phase === "loading"
-      ? "Ładowanie wydarzeń…"
+      ? t("overview.loadingEvents")
       : prioritiesTotal > 0
-        ? `priorytety ${prioritiesDone}/${prioritiesTotal}`
+        ? t("overview.priDone", { done: prioritiesDone, total: prioritiesTotal })
         : state.phase === "ok"
-          ? "Brak zadań na dziś"
-          : "Kalendarz niepołączony";
+          ? t("overview.noTasks")
+          : t("overview.calNotConnected");
 
   const trendDays = Array.from({ length: 7 }, (_, i) => dayKeyDaysAgo(6 - i));
   const trend = trendDays.map((dayKey) => {
@@ -85,7 +91,7 @@ export function DayOverview({
   const hasTrend = state.phase === "ok" && trend.some((t) => t.total > 0);
 
   return (
-    <Card title="Przegląd dnia" subtitle="Postęp dnia, oceny, seria i trend z kalendarza">
+    <Card title={t("overview.title")} subtitle={t("overview.subtitle")}>
       <div className="flex flex-col gap-5">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-5">
           {/* Progress ring — share of today's tasks done */}
@@ -117,14 +123,14 @@ export function DayOverview({
               <span className="text-[23px] font-semibold tabular-nums text-neutral-900">
                 {dayPct === null ? "—" : `${dayPct}%`}
               </span>
-              <span className="text-[11px] text-neutral-500">dnia</span>
+              <span className="text-[11px] text-neutral-500">{t("overview.ofDay")}</span>
             </div>
           </div>
 
           {/* Mini Dudu companion → zakładka Dudu */}
           <Link
             href="/dudu"
-            aria-label={`Twój towarzysz: ${companionLabel}. Zaliczone poziomy: ${characterXp}. Przejdź do zakładki Dudu.`}
+            aria-label={t("overview.companionAria", { name: companionLabel, xp: characterXp })}
             className="flex shrink-0 flex-col items-center gap-1 rounded-xl px-2 py-1 outline-none transition-colors hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-violet-200"
           >
             <CharacterAvatar
@@ -140,7 +146,7 @@ export function DayOverview({
           {/* Metric tiles */}
           <div className="grid min-w-[220px] flex-1 grid-cols-3 gap-3">
             <div className="rounded-xl bg-neutral-100 p-3">
-              <p className="text-[12px] text-neutral-500">Ocena dnia</p>
+              <p className="text-[12px] text-neutral-500">{t("overview.rating")}</p>
               {dayRating !== null ? (
                 <div className="mt-1.5 flex gap-0.5 text-warning">
                   {[1, 2, 3, 4, 5].map((n) => (
@@ -157,7 +163,7 @@ export function DayOverview({
               )}
             </div>
             <div className="rounded-xl bg-neutral-100 p-3">
-              <p className="text-[12px] text-neutral-500">Energia</p>
+              <p className="text-[12px] text-neutral-500">{t("overview.energy")}</p>
               {energyLevel !== null ? (
                 <p className="mt-1 flex items-center gap-1 text-[22px] font-semibold text-azure-700">
                   <Zap aria-hidden className="h-[18px] w-[18px]" />
@@ -169,7 +175,7 @@ export function DayOverview({
               )}
             </div>
             <div className="rounded-xl bg-neutral-100 p-3">
-              <p className="text-[12px] text-neutral-500">Seria</p>
+              <p className="text-[12px] text-neutral-500">{t("overview.streak")}</p>
               <p
                 className={`mt-1 flex items-center gap-1 text-[22px] font-semibold ${
                   streak > 0 ? "text-warning" : "text-neutral-400"
@@ -178,7 +184,7 @@ export function DayOverview({
                 <Flame aria-hidden className="h-[18px] w-[18px]" />
                 {streak}
                 <span className="text-sm font-normal text-neutral-500">
-                  {streak === 1 ? "dzień" : "dni"}
+                  {streak === 1 ? t("overview.dayLabel") : t("overview.daysLabel")}
                 </span>
               </p>
             </div>
@@ -189,7 +195,7 @@ export function DayOverview({
 
         {hasTrend && (
           <div className="flex flex-col gap-2 border-t border-neutral-200 pt-4">
-            <p className="text-[13px] text-neutral-500">Trend 7 dni · % zadań z kalendarza</p>
+            <p className="text-[13px] text-neutral-500">{t("overview.trendTitle")}</p>
             <div className="flex items-end gap-2">
               {trend.map((t) => (
                 <div key={t.dayKey} className="flex flex-1 flex-col items-center gap-1">

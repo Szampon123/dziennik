@@ -8,6 +8,7 @@ import { RetrySyncButton } from "@/components/RetrySyncButton";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Textarea } from "@/components/ui/Input";
+import { useT } from "@/components/i18n/I18nProvider";
 
 export function CloseDayPanel({
   date,
@@ -36,10 +37,11 @@ export function CloseDayPanel({
   const [energy, setEnergy] = useState<number | null>(initialEnergy);
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const t = useT();
 
   function submitClose() {
     if (rating === null || energy === null) {
-      setError("Wybierz ocenę dnia i poziom energii (1–5), aby zamknąć dzień.");
+      setError(t("close.needRatings"));
       return;
     }
     startTransition(async () => {
@@ -66,7 +68,7 @@ export function CloseDayPanel({
       <div className="flex flex-col gap-3">
         <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm">
           <div className="flex items-center justify-between gap-3">
-            <p className="font-medium text-neutral-900">Dzień zamknięty ✓</p>
+            <p className="font-medium text-neutral-900">{t("close.closed")}</p>
             <SyncStatusBadge status={syncStatus} />
           </div>
           {syncError && <p className="mt-1 text-[13px] text-danger">{syncError}</p>}
@@ -80,18 +82,18 @@ export function CloseDayPanel({
           </div>
           {initialGood && (
             <p className="mt-2 text-neutral-600">
-              <span className="text-neutral-900">Co poszło dobrze:</span> {initialGood}
+              <span className="text-neutral-900">{t("close.goodLabel")}</span> {initialGood}
             </p>
           )}
           {initialBad && (
             <p className="mt-1 text-neutral-600">
-              <span className="text-neutral-900">Do poprawy:</span> {initialBad}
+              <span className="text-neutral-900">{t("close.badLabel")}</span> {initialBad}
             </p>
           )}
         </div>
         <div className="flex items-center gap-2">
           <Button variant="secondary" onClick={submitReopen} disabled={isPending}>
-            {isPending ? "Otwieranie…" : "Otwórz dzień ponownie"}
+            {isPending ? t("close.reopening") : t("close.reopen")}
           </Button>
           {showRetry && <RetrySyncButton date={date} />}
         </div>
@@ -103,31 +105,31 @@ export function CloseDayPanel({
   return (
     <div className="flex flex-col gap-4">
       <label className="flex flex-col gap-1.5">
-        <span className="text-[13px] font-medium text-neutral-800">Co poszło dobrze?</span>
+        <span className="text-[13px] font-medium text-neutral-800">{t("close.good")}</span>
         <Textarea
           value={good}
           onChange={(e) => setGood(e.target.value)}
           rows={2}
-          placeholder="Sukcesy, momenty flow, dobre decyzje…"
+          placeholder={t("close.goodPlaceholder")}
         />
       </label>
       <label className="flex flex-col gap-1.5">
-        <span className="text-[13px] font-medium text-neutral-800">Co poprawić?</span>
+        <span className="text-[13px] font-medium text-neutral-800">{t("close.bad")}</span>
         <Textarea
           value={bad}
           onChange={(e) => setBad(e.target.value)}
           rows={2}
-          placeholder="Rozproszenia, zgrzyty, wnioski na jutro…"
+          placeholder={t("close.badPlaceholder")}
         />
       </label>
 
       <div className="flex flex-col gap-2 py-1">
-        <RatingScale label="Ocena dnia" value={rating} onChange={setRating} disabled={isPending} />
-        <RatingScale label="Poziom energii" value={energy} onChange={setEnergy} disabled={isPending} />
+        <RatingScale label={t("close.rating")} value={rating} onChange={setRating} disabled={isPending} />
+        <RatingScale label={t("close.energy")} value={energy} onChange={setEnergy} disabled={isPending} />
       </div>
 
       <Button onClick={submitClose} disabled={isPending} className="self-start">
-        {isPending ? "Zamykanie…" : "Zamknij dzień"}
+        {isPending ? t("close.closing") : t("close.closeDay")}
       </Button>
       {error && <p className="text-[13px] text-danger">{error}</p>}
     </div>
