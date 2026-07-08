@@ -1,4 +1,5 @@
 import { startOfWeek, addDays, todayKey, dayKeyToDate } from "@/lib/dates";
+import { getT } from "@/lib/i18n/server";
 
 type WorkoutLite = { date: string; distanceKm: number; durationMin: number };
 
@@ -14,8 +15,9 @@ const WEEKS = 12;
 // Training summary for distance activities: lifetime stats (total km, longest,
 // best pace, count) + a 12-week volume bar chart. Server component — computed
 // from the loaded workout history. Rendered only when there are workouts.
-export function WorkoutChart({ workouts }: { workouts: WorkoutLite[] }) {
+export async function WorkoutChart({ workouts }: { workouts: WorkoutLite[] }) {
   if (workouts.length === 0) return null;
+  const { t } = await getT();
 
   const totalKm = workouts.reduce((s, w) => s + w.distanceKm, 0);
   const longest = workouts.reduce((m, w) => Math.max(m, w.distanceKm), 0);
@@ -43,15 +45,15 @@ export function WorkoutChart({ workouts }: { workouts: WorkoutLite[] }) {
   return (
     <div className="flex flex-col gap-4 border-b border-neutral-200 pb-4">
       <div className="flex flex-wrap gap-2">
-        <Stat label="Łącznie" value={`${round1(totalKm)} km`} />
-        <Stat label="Treningów" value={String(workouts.length)} />
-        <Stat label="Najdłuższy" value={`${round1(longest)} km`} />
-        {bestPace !== null && <Stat label="Najlepsze tempo" value={formatPace(1, bestPace)} />}
+        <Stat label={t("workout.total")} value={`${round1(totalKm)} km`} />
+        <Stat label={t("workout.count")} value={String(workouts.length)} />
+        <Stat label={t("workout.longest")} value={`${round1(longest)} km`} />
+        {bestPace !== null && <Stat label={t("workout.bestPace")} value={formatPace(1, bestPace)} />}
       </div>
 
       <div className="flex flex-col gap-1.5">
         <p className="text-[12px] font-medium text-neutral-500">
-          Objętość — ostatnie {WEEKS} tygodni (km/tydz.)
+          {t("workout.volume", { weeks: WEEKS })}
         </p>
         <div className="flex h-24 items-end gap-1">
           {data.map((d, i) => {

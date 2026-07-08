@@ -2,6 +2,7 @@ import { Flame } from "lucide-react";
 import { TIERS, tierForLevel } from "@/lib/activity-tiers";
 import { formatDate, startOfWeek, addDays, todayKey, dayKeyToDate } from "@/lib/dates";
 import { Progress } from "@/components/ui/Progress";
+import { getT } from "@/lib/i18n/server";
 
 type MilestoneLite = { level: number; title: string; done: boolean; completedAt: number | null };
 type WorkoutLite = { date: string; distanceKm: number };
@@ -24,7 +25,7 @@ function weeklyTrainingStreak(dates: string[]): number {
 // Rich header for an activity: completion ring, per-tier breakdown, next goals
 // and this-week momentum (levels gained; for distance activities also a weekly
 // training streak + this week's distance). Server component (pure display).
-export function ActivityStats({
+export async function ActivityStats({
   completedCount,
   maxLevel,
   level,
@@ -41,6 +42,7 @@ export function ActivityStats({
   milestones: MilestoneLite[];
   workouts: WorkoutLite[];
 }) {
+  const { t } = await getT();
   const pct = maxLevel > 0 ? Math.round((completedCount / maxLevel) * 100) : 0;
   const allDone = completedCount === maxLevel;
 
@@ -77,24 +79,29 @@ export function ActivityStats({
             <span className="bg-gradient-to-r from-violet-600 to-azure-500 bg-clip-text text-transparent">
               {completedCount}
             </span>
-            <span className="text-base font-normal text-neutral-500">/{maxLevel} poziomów</span>
+            <span className="text-base font-normal text-neutral-500">
+              /{maxLevel} {t("stats.levelsWord")}
+            </span>
           </p>
           <p className="mt-0.5 text-[13px] text-neutral-500">
-            Etap: <span className="text-neutral-700">{tierForLevel(level > 0 ? level : 1).name}</span>
-            {levelAchievedAt !== null && <> · ostatnio {formatDate(levelAchievedAt)}</>}
+            {t("stats.stage")}{" "}
+            <span className="text-neutral-700">{tierForLevel(level > 0 ? level : 1).name}</span>
+            {levelAchievedAt !== null && (
+              <> · {t("stats.lastly", { date: formatDate(levelAchievedAt) })}</>
+            )}
           </p>
         </div>
         <div className="ml-auto flex flex-wrap justify-end gap-2">
           {gainedThisWeek > 0 && (
-            <Pill tone="success">+{gainedThisWeek} w tym tygodniu</Pill>
+            <Pill tone="success">{t("stats.gained", { n: gainedThisWeek })}</Pill>
           )}
           {isDistance && streak > 0 && (
             <Pill tone="warning">
-              <Flame aria-hidden className="h-3.5 w-3.5" /> Seria {streak} tyg.
+              <Flame aria-hidden className="h-3.5 w-3.5" /> {t("stats.streakWeeks", { n: streak })}
             </Pill>
           )}
           {isDistance && kmThisWeek > 0 && (
-            <Pill tone="azure">{Math.round(kmThisWeek * 10) / 10} km w tym tyg.</Pill>
+            <Pill tone="azure">{t("stats.kmThisWeek", { km: Math.round(kmThisWeek * 10) / 10 })}</Pill>
           )}
         </div>
       </div>
@@ -130,13 +137,11 @@ export function ActivityStats({
       {/* Next goals / done */}
       <div className="mt-4 border-t border-neutral-100 pt-4">
         {allDone ? (
-          <p className="text-[13px] font-medium text-success">
-            Wszystkie poziomy zaliczone — amatorski szczyt osiągnięty! 🏆
-          </p>
+          <p className="text-[13px] font-medium text-success">{t("stats.allDone")}</p>
         ) : (
           <div className="flex flex-col gap-1.5">
             <p className="text-[12px] font-semibold uppercase tracking-wide text-neutral-400">
-              Następne cele
+              {t("stats.nextGoals")}
             </p>
             <ul className="flex flex-col gap-1">
               {nextGoals.map((m) => (

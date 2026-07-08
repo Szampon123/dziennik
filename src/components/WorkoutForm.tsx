@@ -6,6 +6,7 @@ import { todayKey } from "@/lib/dates";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { inputClass } from "@/components/ui/Input";
+import { useT } from "@/components/i18n/I18nProvider";
 
 export function WorkoutForm({ activitySlug }: { activitySlug: string }) {
   const [date, setDate] = useState(todayKey());
@@ -14,6 +15,7 @@ export function WorkoutForm({ activitySlug }: { activitySlug: string }) {
   const [isRace, setIsRace] = useState(false);
   const [message, setMessage] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
   const [isPending, startTransition] = useTransition();
+  const t = useT();
 
   function submit() {
     const distanceKm = Number(distance.replace(",", "."));
@@ -28,8 +30,8 @@ export function WorkoutForm({ activitySlug }: { activitySlug: string }) {
           tone: "ok",
           text:
             result.newLevels.length > 0
-              ? `Trening zapisany — automatycznie zaliczone poziomy: ${result.newLevels.join(", ")} 🎉`
-              : "Trening zapisany — bez nowych poziomów (automat zalicza tylko udowodnione).",
+              ? t("workout.savedLevels", { levels: result.newLevels.join(", ") })
+              : t("workout.savedNone"),
         });
       } else {
         setMessage({ tone: "error", text: result.error });
@@ -41,7 +43,7 @@ export function WorkoutForm({ activitySlug }: { activitySlug: string }) {
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-end gap-2">
         <label className="flex flex-col gap-1">
-          <span className="text-[13px] font-medium text-neutral-800">Data</span>
+          <span className="text-[13px] font-medium text-neutral-800">{t("workout.date")}</span>
           <input
             type="date"
             value={date}
@@ -51,22 +53,22 @@ export function WorkoutForm({ activitySlug }: { activitySlug: string }) {
           />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="text-[13px] font-medium text-neutral-800">Dystans (km)</span>
+          <span className="text-[13px] font-medium text-neutral-800">{t("workout.distance")}</span>
           <input
             inputMode="decimal"
             value={distance}
             onChange={(e) => setDistance(e.target.value)}
-            placeholder="np. 5"
+            placeholder={t("workout.distancePlaceholder")}
             className={`${inputClass} w-28`}
           />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="text-[13px] font-medium text-neutral-800">Czas (min)</span>
+          <span className="text-[13px] font-medium text-neutral-800">{t("workout.duration")}</span>
           <input
             inputMode="decimal"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
-            placeholder="np. 32"
+            placeholder={t("workout.durationPlaceholder")}
             className={`${inputClass} w-28`}
           />
         </label>
@@ -75,18 +77,18 @@ export function WorkoutForm({ activitySlug }: { activitySlug: string }) {
             checked={isRace}
             onChange={() => setIsRace(!isRace)}
             size="sm"
-            aria-label="Zawody / bieg oficjalny"
+            aria-label={t("workout.race")}
           />
           <button
             type="button"
             onClick={() => setIsRace(!isRace)}
             className="text-sm text-neutral-600"
           >
-            Zawody / bieg oficjalny
+            {t("workout.race")}
           </button>
         </div>
         <Button onClick={submit} disabled={isPending || !distance.trim() || !duration.trim()}>
-          {isPending ? "Analizuję…" : "Zapisz trening"}
+          {isPending ? t("workout.analyzing") : t("workout.save")}
         </Button>
       </div>
       {message && (

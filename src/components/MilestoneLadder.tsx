@@ -20,6 +20,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Progress } from "@/components/ui/Progress";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { MilestoneEntryEditor } from "@/components/MilestoneEntryEditor";
+import { useT } from "@/components/i18n/I18nProvider";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 export type MilestoneItem = {
   id: string;
@@ -54,10 +56,10 @@ const RESOURCE_ICON: Record<ResourceKind, typeof Play> = {
 
 type View = "all" | "todo" | "next";
 
-const VIEWS: { key: View; label: string }[] = [
-  { key: "all", label: "Wszystkie" },
-  { key: "todo", label: "Nieukończone" },
-  { key: "next", label: "Kolejne cele" },
+const VIEWS: { key: View; labelKey: MessageKey }[] = [
+  { key: "all", labelKey: "ladder.view.all" },
+  { key: "todo", labelKey: "ladder.view.todo" },
+  { key: "next", labelKey: "ladder.view.next" },
 ];
 
 const NEXT_COUNT = 8;
@@ -74,6 +76,7 @@ export function MilestoneLadder({
   const [openId, setOpenId] = useState<string | null>(null);
   const [view, setView] = useState<View>("all");
   const [, startTransition] = useTransition();
+  const t = useT();
 
   function toggle(m: MilestoneItem) {
     const next = !m.done;
@@ -89,10 +92,10 @@ export function MilestoneLadder({
         : [];
       if (impliedUnchecked.length > 0) {
         cascade = window.confirm(
-          `Ten wynik udowadnia też ${impliedUnchecked.length} ${
-            impliedUnchecked.length === 1 ? "niższy poziom" : "niższych poziomów"
-          } (poziomy: ${impliedUnchecked.map((x) => x.level).join(", ")}). Zaznaczyć je również? ` +
-            `Pozostałych niższych nie ruszamy — nie wynikają z tego osiągnięcia.`
+          t("ladder.cascade", {
+            n: impliedUnchecked.length,
+            levels: impliedUnchecked.map((x) => x.level).join(", "),
+          })
         );
       }
     }
@@ -118,12 +121,8 @@ export function MilestoneLadder({
             disabled={pendingId !== null || m.auto}
             onChange={() => toggle(m)}
             size="sm"
-            aria-label={`Poziom ${m.level}: ${m.title}`}
-            title={
-              m.auto
-                ? "Zaliczone automatycznie na podstawie treningu — usuń trening, aby cofnąć."
-                : undefined
-            }
+            aria-label={t("ladder.levelAria", { level: m.level, title: m.title })}
+            title={m.auto ? t("ladder.autoTooltip") : undefined}
             className="mt-1"
           />
           <span
@@ -141,17 +140,17 @@ export function MilestoneLadder({
             >
               {m.title}
               {m.auto && (
-                <Badge variant="success" className="ml-2" title="Zaliczone automatycznie na podstawie treningu">
-                  auto
+                <Badge variant="success" className="ml-2" title={t("ladder.autoTitle")}>
+                  {t("ladder.auto")}
                 </Badge>
               )}
               {m.customized && (
                 <Badge
                   variant="neutral"
                   className="ml-2 align-middle no-underline"
-                  title="Ten poziom dostosowałeś — oryginał jest zachowany"
+                  title={t("ladder.customizedTitle")}
                 >
-                  zmodyfikowany
+                  {t("ladder.customized")}
                 </Badge>
               )}
             </span>
@@ -165,22 +164,22 @@ export function MilestoneLadder({
                   className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-2.5 py-1 font-medium text-violet-700 transition-colors hover:bg-violet-200"
                   title={
                     m.video.kind === "technika"
-                      ? "Obejrzyj lekcję tej techniki na YouTube"
-                      : "Obejrzyj wzorcowe wykonanie na YouTube"
+                      ? t("ladder.lessonTitle")
+                      : t("ladder.performanceTitle")
                   }
                 >
                   <Play aria-hidden className="h-3.5 w-3.5 fill-current" />{" "}
-                  {m.video.kind === "technika" ? "Lekcja" : "Wykonanie"}
+                  {m.video.kind === "technika" ? t("ladder.lesson") : t("ladder.performance")}
                 </a>
                 <a
                   href={`https://www.youtube.com/results?search_query=${encodeURIComponent(m.video.tut)}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1 rounded-full bg-azure-100 px-2.5 py-1 font-medium text-azure-700 transition-colors hover:bg-azure-300"
-                  title="Znajdź więcej materiałów na YouTube"
+                  title={t("ladder.moreTitle")}
                 >
                   <GraduationCap aria-hidden className="h-3.5 w-3.5" />{" "}
-                  {m.video.kind === "technika" ? "Więcej ćwiczeń" : "Jak zagrać"}
+                  {m.video.kind === "technika" ? t("ladder.moreExercises") : t("ladder.howToPlay")}
                 </a>
               </span>
             )}
@@ -206,22 +205,24 @@ export function MilestoneLadder({
             {(m.done || m.note || m.hasPhoto) && (
               <span className="mt-1 flex flex-wrap items-center gap-2 text-[13px]">
                 {m.done && m.completedAt !== null && (
-                  <span className="font-medium text-success">✓ Zaliczono {formatDate(m.completedAt)}</span>
+                  <span className="font-medium text-success">
+                    {t("ladder.completedOn", { date: formatDate(m.completedAt) })}
+                  </span>
                 )}
                 {m.note && (
                   <span
                     className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700"
-                    title="Poziom ma notatkę"
+                    title={t("ladder.noteTitle")}
                   >
-                    <StickyNote aria-hidden className="h-3.5 w-3.5" /> notatka
+                    <StickyNote aria-hidden className="h-3.5 w-3.5" /> {t("ladder.noteBadge")}
                   </span>
                 )}
                 {m.hasPhoto && (
                   <span
                     className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-700"
-                    title="Poziom ma zdjęcie"
+                    title={t("ladder.photoTitle")}
                   >
-                    <ImageIcon aria-hidden className="h-3.5 w-3.5" /> zdjęcie
+                    <ImageIcon aria-hidden className="h-3.5 w-3.5" /> {t("ladder.photoBadge")}
                   </span>
                 )}
               </span>
@@ -232,8 +233,8 @@ export function MilestoneLadder({
             type="button"
             onClick={() => setOpenId(open ? null : m.id)}
             aria-expanded={open}
-            aria-label={`Notatka i zdjęcie — poziom ${m.level}`}
-            title="Notatka i zdjęcie"
+            aria-label={t("ladder.noteEditAria", { level: m.level })}
+            title={t("ladder.noteEditTitle")}
             className={`rounded-lg p-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-200 ${
               m.note || m.hasPhoto
                 ? "bg-violet-100 text-violet-700 hover:bg-violet-200"
@@ -283,7 +284,7 @@ export function MilestoneLadder({
                   : "text-neutral-600 hover:text-neutral-900"
               }`}
             >
-              {v.label}
+              {t(v.labelKey)}
             </button>
           ))}
         </div>
@@ -294,14 +295,14 @@ export function MilestoneLadder({
       {view === "next" ? (
         nextGoals.length === 0 ? (
           <div className="rounded-card border border-neutral-200 bg-neutral-0 p-6 text-center shadow-card">
-            <p className="text-[15px] font-medium text-success">Wszystkie poziomy zaliczone! 🏆</p>
+            <p className="text-[15px] font-medium text-success">{t("ladder.allDone")}</p>
           </div>
         ) : (
           <div className="rounded-card border border-neutral-200 bg-neutral-0 shadow-card">
             <p className="px-4 py-3 text-sm font-semibold text-neutral-900">
-              Kolejne cele
+              {t("ladder.view.next")}
               <span className="ml-2 font-normal text-neutral-500">
-                najbliższe {nextGoals.length} do zaliczenia
+                {t("ladder.nextGoalsCount", { n: nextGoals.length })}
               </span>
             </p>
             <ul className="flex flex-col border-t border-neutral-200">{nextGoals.map(itemLi)}</ul>
@@ -326,7 +327,7 @@ export function MilestoneLadder({
                 <span className="text-sm font-semibold text-neutral-900">
                   {tier.name}
                   <span className="ml-2 font-normal text-neutral-500">
-                    poziomy {tier.from}–{tier.to}
+                    {t("ladder.tierLevels", { from: tier.from, to: tier.to })}
                   </span>
                 </span>
                 <span className="flex shrink-0 items-center gap-2">

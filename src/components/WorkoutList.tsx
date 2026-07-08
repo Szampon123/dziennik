@@ -6,6 +6,7 @@ import { deleteWorkout } from "@/actions/workouts";
 import { formatDayShort } from "@/lib/dates";
 import { EmptyState } from "@/components/EmptyState";
 import { Badge } from "@/components/ui/Badge";
+import { useT } from "@/components/i18n/I18nProvider";
 
 export type WorkoutItem = {
   id: string;
@@ -26,9 +27,10 @@ function formatPace(distanceKm: number, durationMin: number): string {
 export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const t = useT();
 
   function remove(id: string) {
-    if (!window.confirm("Usunąć trening? Automatycznie zaliczone poziomy zostaną przeliczone.")) {
+    if (!window.confirm(t("workout.deleteConfirm"))) {
       return;
     }
     startTransition(async () => {
@@ -39,10 +41,7 @@ export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
 
   if (workouts.length === 0) {
     return (
-      <EmptyState
-        title="Brak zapisanych treningów"
-        hint="Dodaj trening powyżej — automat odhaczy udowodnione poziomy."
-      />
+      <EmptyState title={t("workout.emptyTitle")} hint={t("workout.emptyHint")} />
     );
   }
 
@@ -62,7 +61,7 @@ export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
               </span>
               {w.isRace && (
                 <Badge variant="azure" className="ml-2">
-                  Zawody
+                  {t("workout.raceBadge")}
                 </Badge>
               )}
             </span>
@@ -70,8 +69,8 @@ export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
               type="button"
               onClick={() => remove(w.id)}
               disabled={isPending}
-              aria-label="Usuń trening"
-              title="Usuń trening"
+              aria-label={t("workout.deleteAria")}
+              title={t("workout.deleteAria")}
               className="rounded p-1 text-neutral-500 opacity-0 transition-opacity hover:text-danger focus-visible:opacity-100 group-hover:opacity-100 disabled:opacity-50"
             >
               <X className="h-3.5 w-3.5" />
