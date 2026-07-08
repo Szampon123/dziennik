@@ -5,6 +5,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
 import { isValidDayKey } from "@/lib/dates";
+import { normalizeHabitColor } from "@/lib/habit-colors";
 import type { ActionResult } from "@/actions/day-entry";
 
 const nameSchema = z.string().trim().min(1, "Podaj nazwę nawyku.").max(100);
@@ -13,7 +14,8 @@ const targetSchema = z.number().int().min(1).max(7);
 /** Create a new habit at the end of the user's list. */
 export async function createHabit(
   name: string,
-  targetPerWeek: number = 7
+  targetPerWeek: number = 7,
+  color: string = "green"
 ): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = nameSchema.safeParse(name);
@@ -31,8 +33,28 @@ export async function createHabit(
       userId,
       name: parsed.data,
       targetPerWeek: target.data,
+      color: normalizeHabitColor(color),
       sortOrder: (last?.sortOrder ?? 0) + 1,
     },
+  });
+
+  revalidatePath("/nawyki");
+  return { ok: true };
+}
+
+const setColorSchema = z.object({ id: z.string().min(1), color: z.string() });
+
+/** Change a habit's checkbox colour. */
+export async function setHabitColor(
+  input: z.input<typeof setColorSchema>
+): Promise<ActionResult> {
+  const userId = await requireUserId();
+  const parsed = setColorSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: "Nieprawidłowe żądanie." };
+
+  await prisma.habit.updateMany({
+    where: { id: parsed.data.id, userId },
+    data: { color: normalizeHabitColor(parsed.data.color) },
   });
 
   revalidatePath("/nawyki");

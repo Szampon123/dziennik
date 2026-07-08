@@ -270,6 +270,8 @@ model Habit {
   // Weekly target: how many days a week the habit should be done (1..7).
   // 7 = every day (the original behaviour). Any day of the week counts.
   targetPerWeek Int       @default(7)
+  // Checkbox colour so habits are easy to tell apart. See src/lib/habit-colors.ts.
+  color         String    @default("green")
   archivedAt DateTime? // set when the user drops the habit; history (checks) kept
   createdAt  DateTime     @default(now())
   user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
