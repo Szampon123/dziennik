@@ -2,12 +2,14 @@
 
 import { formatTime, formatDayShort } from "@/lib/dates";
 import { useCalendar, type EventItem } from "./CalendarProvider";
+import { useT } from "@/components/i18n/I18nProvider";
 
 // "Teraz / Następne wydarzenie" — the current timed event (if any) and the next
 // upcoming one, today-centric. Renders nothing when there's neither (same as
 // before the split), so a disconnected calendar simply shows no bar.
 export function NowNext() {
   const { state, events, today, now } = useCalendar();
+  const t = useT();
   if (state.phase !== "ok") return null;
 
   const todayEvents = events.filter((e) => e.dayKey === today);
@@ -30,7 +32,7 @@ export function NowNext() {
           <span aria-hidden className="h-2.5 w-2.5 shrink-0 rounded-full bg-violet-600" />
           <div className="min-w-0 flex-1">
             <p className="text-xs font-medium uppercase tracking-wide text-violet-700">
-              Teraz · do {formatTime(new Date(currentEvent.end))}
+              {t("nownext.now", { time: formatTime(new Date(currentEvent.end)) })}
             </p>
             <p className="truncate text-[15px] font-semibold text-neutral-900">
               {currentEvent.summary}
@@ -43,10 +45,12 @@ export function NowNext() {
       {nextEvent && (
         <div className={`min-w-0 ${currentEvent ? "text-right" : "flex-1"}`}>
           <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
-            Następnie ·{" "}
-            {nextEvent.dayKey === today
-              ? formatTime(new Date(nextEvent.start))
-              : formatDayShort(nextEvent.dayKey)}
+            {t("nownext.next", {
+              when:
+                nextEvent.dayKey === today
+                  ? formatTime(new Date(nextEvent.start))
+                  : formatDayShort(nextEvent.dayKey),
+            })}
           </p>
           <p className="truncate text-sm text-neutral-600">{nextEvent.summary}</p>
         </div>

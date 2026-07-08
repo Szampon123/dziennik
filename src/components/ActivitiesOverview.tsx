@@ -2,11 +2,13 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { ActivityListItem } from "@/lib/activities";
 import { Progress } from "@/components/ui/Progress";
+import { getT } from "@/lib/i18n/server";
 
 // Aggregate snapshot across all activities, shown atop the list: total levels
 // earned, momentum this week, how many started, and the most recently active
 // one. Server component (pure display, computed from the same list).
-export function ActivitiesOverview({ activities }: { activities: ActivityListItem[] }) {
+export async function ActivitiesOverview({ activities }: { activities: ActivityListItem[] }) {
+  const { t } = await getT();
   const totalLevels = activities.reduce((s, a) => s + a.completedCount, 0);
   const totalPossible = activities.reduce((s, a) => s + a.maxLevel, 0);
   const levelsThisWeek = activities.reduce((s, a) => s + a.completedThisWeek, 0);
@@ -23,7 +25,7 @@ export function ActivitiesOverview({ activities }: { activities: ActivityListIte
     <div className="rounded-card border border-neutral-200 bg-neutral-0 p-5 shadow-card">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="flex flex-col gap-0.5">
-          <p className="text-[13px] text-neutral-500">Zaliczone poziomy</p>
+          <p className="text-[13px] text-neutral-500">{t("act.overview.totalLevels")}</p>
           <p className="text-2xl font-semibold">
             <span className="bg-gradient-to-r from-violet-600 to-azure-500 bg-clip-text text-transparent">
               {totalLevels}
@@ -32,23 +34,25 @@ export function ActivitiesOverview({ activities }: { activities: ActivityListIte
           </p>
         </div>
         <div className="flex flex-col gap-0.5">
-          <p className="text-[13px] text-neutral-500">W tym tygodniu</p>
+          <p className="text-[13px] text-neutral-500">{t("act.overview.thisWeek")}</p>
           <p className={`text-2xl font-semibold ${levelsThisWeek > 0 ? "text-success" : "text-neutral-400"}`}>
             {levelsThisWeek > 0 ? `+${levelsThisWeek}` : "0"}
           </p>
         </div>
         <div className="flex flex-col gap-0.5">
-          <p className="text-[13px] text-neutral-500">Rozpoczęte</p>
+          <p className="text-[13px] text-neutral-500">{t("act.overview.started")}</p>
           <p className="text-2xl font-semibold text-neutral-900">
             {startedCount}
             <span className="text-sm font-normal text-neutral-500">/{activities.length}</span>
           </p>
           {completedCount > 0 && (
-            <p className="text-[12px] text-neutral-500">{completedCount} ukończonych 🏆</p>
+            <p className="text-[12px] text-neutral-500">
+              {t("act.overview.completed", { n: completedCount })}
+            </p>
           )}
         </div>
         <div className="flex flex-col gap-0.5">
-          <p className="text-[13px] text-neutral-500">Ostatnio aktywna</p>
+          <p className="text-[13px] text-neutral-500">{t("act.overview.lastActive")}</p>
           {mostActive ? (
             <Link
               href={`/activities/${mostActive.slug}`}

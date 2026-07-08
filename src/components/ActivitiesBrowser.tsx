@@ -13,6 +13,8 @@ import { Badge } from "@/components/ui/Badge";
 import { Chip } from "@/components/ui/Chip";
 import { Input, inputClass } from "@/components/ui/Input";
 import { Progress } from "@/components/ui/Progress";
+import { useT } from "@/components/i18n/I18nProvider";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 type StatusFilter = "all" | "started" | "notStarted" | "completed";
 type SortKey =
@@ -24,21 +26,21 @@ type SortKey =
   | "name"
   | "recent";
 
-const STATUS_OPTIONS: { key: StatusFilter; label: string }[] = [
-  { key: "all", label: "Wszystkie" },
-  { key: "started", label: "Rozpoczęte" },
-  { key: "notStarted", label: "Nierozpoczęte" },
-  { key: "completed", label: "Ukończone" },
+const STATUS_OPTIONS: { key: StatusFilter; labelKey: MessageKey }[] = [
+  { key: "all", labelKey: "act.status.all" },
+  { key: "started", labelKey: "act.status.started" },
+  { key: "notStarted", labelKey: "act.status.notStarted" },
+  { key: "completed", labelKey: "act.status.completed" },
 ];
 
-const SORT_OPTIONS: { key: SortKey; label: string }[] = [
-  { key: "default", label: "Domyślne" },
-  { key: "favorite", label: "Ulubione najpierw" },
-  { key: "levelDesc", label: "Poziom: malejąco" },
-  { key: "levelAsc", label: "Poziom: rosnąco" },
-  { key: "progress", label: "Postęp %" },
-  { key: "name", label: "Nazwa: A–Z" },
-  { key: "recent", label: "Ostatnia aktywność" },
+const SORT_OPTIONS: { key: SortKey; labelKey: MessageKey }[] = [
+  { key: "default", labelKey: "act.sort.default" },
+  { key: "favorite", labelKey: "act.sort.favorite" },
+  { key: "levelDesc", labelKey: "act.sort.levelDesc" },
+  { key: "levelAsc", labelKey: "act.sort.levelAsc" },
+  { key: "progress", labelKey: "act.sort.progress" },
+  { key: "name", labelKey: "act.sort.name" },
+  { key: "recent", labelKey: "act.sort.recent" },
 ];
 
 export function ActivitiesBrowser({ activities }: { activities: ActivityListItem[] }) {
@@ -50,6 +52,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
   // Optimistic favorite state so the star flips instantly.
   const [favOverrides, setFavOverrides] = useState<Record<string, boolean>>({});
   const [, startTransition] = useTransition();
+  const t = useT();
 
   const isFav = (a: ActivityListItem) => favOverrides[a.slug] ?? a.favorite;
 
@@ -127,11 +130,11 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Szukaj aktywności…"
+          placeholder={t("act.search")}
           className="min-w-48 flex-1"
         />
         <label className="flex items-center gap-2 text-sm text-neutral-600">
-          Sortuj:
+          {t("act.sort")}
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as SortKey)}
@@ -139,7 +142,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.key} value={o.key}>
-                {o.label}
+                {t(o.labelKey)}
               </option>
             ))}
           </select>
@@ -170,7 +173,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
                   : "text-neutral-600 hover:text-neutral-900"
               }`}
             >
-              {o.label}
+              {t(o.labelKey)}
             </button>
           ))}
         </div>
@@ -179,32 +182,27 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
             aria-hidden
             className={`mr-1 inline h-3.5 w-3.5 ${favoritesOnly ? "fill-current" : ""}`}
           />
-          Tylko ulubione
+          {t("act.favoritesOnly")}
         </Chip>
       </div>
 
       {/* Result count + clear */}
       <div className="flex items-center justify-between text-[13px] text-neutral-500">
-        <span>
-          Pokazano {visible.length} z {activities.length}
-        </span>
+        <span>{t("act.shown", { n: visible.length, total: activities.length })}</span>
         {filtersActive && (
           <button
             type="button"
             onClick={clearFilters}
             className="font-medium text-violet-700 hover:underline"
           >
-            Wyczyść filtry
+            {t("act.clearFilters")}
           </button>
         )}
       </div>
 
       {/* List */}
       {visible.length === 0 ? (
-        <EmptyState
-          title="Brak pasujących aktywności"
-          hint="Zmień kryteria filtrowania lub wyczyść filtry."
-        />
+        <EmptyState title={t("act.noneTitle")} hint={t("act.noneHint")} />
       ) : (
         <ul className="flex flex-col gap-3">
           {visible.map((a) => {
@@ -224,7 +222,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
                         {a.name}
                       </span>
                       <Badge variant="neutral" className="shrink-0">
-                        Poziom {a.completedCount}/{a.maxLevel}
+                        {t("act.level", { done: a.completedCount, max: a.maxLevel })}
                       </Badge>
                     </span>
                     <Progress value={a.completedCount} max={a.maxLevel} className="mt-2" />
@@ -232,7 +230,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
                       <span>{CATEGORY_LABELS[a.category] ?? "Inne"}</span>
                       {a.levelAchievedAt !== null && (
                         <span className="font-medium text-success">
-                          ✓ poziom osiągnięty {formatDate(a.levelAchievedAt)}
+                          {t("act.levelAchieved", { date: formatDate(a.levelAchievedAt) })}
                         </span>
                       )}
                     </span>
@@ -241,9 +239,9 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
                 <button
                   type="button"
                   onClick={() => toggleFav(a)}
-                  aria-label={fav ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+                  aria-label={fav ? t("act.removeFav") : t("act.addFav")}
                   aria-pressed={fav}
-                  title={fav ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+                  title={fav ? t("act.removeFav") : t("act.addFav")}
                   className={`absolute right-2 top-2 rounded-full p-2.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-200 ${
                     fav ? "text-violet-600" : "text-neutral-400 hover:text-violet-600"
                   }`}

@@ -24,10 +24,7 @@ export default async function ActivitiesPage() {
       </div>
 
       {activities.length === 0 ? (
-        <EmptyState
-          title="Brak aktywności"
-          hint="Uruchom `npx prisma db seed`, aby załadować bazę aktywności."
-        />
+        <EmptyState title={t("act.emptyTitle")} hint={t("act.emptyHint")} />
       ) : (
         <>
           <ActivitiesOverview activities={activities} />

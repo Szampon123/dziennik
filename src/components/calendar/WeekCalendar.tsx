@@ -16,6 +16,7 @@ import {
   startOfWeek,
 } from "@/lib/dates";
 import { useCalendar, PAST_DAYS, FUTURE_DAYS, type EventItem } from "./CalendarProvider";
+import { useT } from "@/components/i18n/I18nProvider";
 
 // "Kalendarz": a week navigator (flip through the loaded window) + the selected
 // day's Google events. Today is interactive (checkpoints); other days are a
@@ -23,35 +24,34 @@ import { useCalendar, PAST_DAYS, FUTURE_DAYS, type EventItem } from "./CalendarP
 export function WeekCalendar() {
   const { state, events, today, now, selectedDay, setSelectedDay, checked, toggleCheck, reload } =
     useCalendar();
+  const t = useT();
 
   if (state.phase !== "ok") {
     return (
-      <Card title="Kalendarz" subtitle="Google Calendar">
+      <Card title={t("cal.title")} subtitle="Google Calendar">
         {state.phase === "loading" && (
-          <p className="py-4 text-sm text-neutral-500">Ładowanie wydarzeń…</p>
+          <p className="py-4 text-sm text-neutral-500">{t("overview.loadingEvents")}</p>
         )}
         {(state.phase === "not_configured" || state.phase === "not_connected") && (
           <EmptyState
             title={
-              state.phase === "not_configured"
-                ? "Integracja Google nieskonfigurowana"
-                : "Kalendarz niepołączony"
+              state.phase === "not_configured" ? t("cal.notConfigured") : t("cal.notConnected")
             }
             hint={
               state.phase === "not_configured"
-                ? "Uzupełnij klucze w .env.local — instrukcja w README."
-                : "Połącz Google Calendar, aby zobaczyć tu dzisiejsze wydarzenia."
+                ? t("cal.notConfiguredHint")
+                : t("cal.notConnectedHint")
             }
             action={
               <Link href="/settings" className="text-[13px] font-medium text-azure-700 hover:underline">
-                Przejdź do Ustawień →
+                {t("cal.goSettings")}
               </Link>
             }
           />
         )}
         {state.phase === "error" && (
           <EmptyState
-            title="Błąd pobierania wydarzeń"
+            title={t("cal.error")}
             hint={state.message}
             action={
               <button
@@ -59,7 +59,7 @@ export function WeekCalendar() {
                 onClick={() => reload(true)}
                 className="text-[13px] font-medium text-azure-700 hover:underline"
               >
-                Spróbuj ponownie
+                {t("cal.tryAgain")}
               </button>
             }
           />
@@ -87,8 +87,8 @@ export function WeekCalendar() {
 
   return (
     <Card
-      title="Kalendarz"
-      subtitle="Google Calendar — wybierz dzień, aby zobaczyć jego wydarzenia"
+      title={t("cal.title")}
+      subtitle={t("cal.subtitle")}
       action={
         selectedDay !== today ? (
           <button
@@ -96,7 +96,7 @@ export function WeekCalendar() {
             onClick={() => setSelectedDay(today)}
             className="shrink-0 text-[13px] font-medium text-azure-700 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-violet-200"
           >
-            Dziś →
+            {t("cal.today")}
           </button>
         ) : undefined
       }
@@ -109,7 +109,7 @@ export function WeekCalendar() {
               type="button"
               onClick={() => setSelectedDay((d) => clampDay(addDays(d, -7)))}
               disabled={!canPrev}
-              aria-label="Poprzedni tydzień"
+              aria-label={t("cal.prevWeek")}
               className="rounded-lg p-1.5 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 disabled:pointer-events-none disabled:opacity-30"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -121,7 +121,7 @@ export function WeekCalendar() {
               type="button"
               onClick={() => setSelectedDay((d) => clampDay(addDays(d, 7)))}
               disabled={!canNext}
-              aria-label="Następny tydzień"
+              aria-label={t("cal.nextWeek")}
               className="rounded-lg p-1.5 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 disabled:pointer-events-none disabled:opacity-30"
             >
               <ChevronRight className="h-4 w-4" />
@@ -175,17 +175,15 @@ export function WeekCalendar() {
         <div className="flex flex-col gap-3 border-t border-neutral-200 pt-4">
           <p className="text-[13px] font-medium capitalize text-neutral-700">
             {formatDayLong(selectedDay)}
-            {interactive && <span className="ml-1.5 font-normal text-neutral-400">· dziś</span>}
+            {interactive && (
+              <span className="ml-1.5 font-normal text-neutral-400">· {t("cal.todaySuffix")}</span>
+            )}
           </p>
 
           {selectedEvents.length === 0 ? (
             <EmptyState
-              title="Brak wydarzeń"
-              hint={
-                interactive
-                  ? "Czysty kalendarz — dzień należy do Ciebie."
-                  : "Ten dzień jest wolny w Twoim kalendarzu."
-              }
+              title={t("cal.noEvents")}
+              hint={interactive ? t("cal.noEventsTodayHint") : t("cal.noEventsHint")}
             />
           ) : (
             <div className="flex flex-col gap-1">
@@ -198,12 +196,12 @@ export function WeekCalendar() {
                         checked={done}
                         onChange={() => toggleCheck(e)}
                         size="sm"
-                        aria-label={`Wykonane: ${e.summary}`}
-                        title="Oznacz jako wykonane"
+                        aria-label={t("cal.doneAria", { summary: e.summary })}
+                        title={t("cal.markDone")}
                       />
                     )}
                     <span className="shrink-0 rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-medium text-neutral-600">
-                      Cały dzień
+                      {t("cal.allDay")}
                     </span>
                     <span
                       className={`text-[15px] ${
@@ -231,8 +229,8 @@ export function WeekCalendar() {
                         checked={done}
                         onChange={() => toggleCheck(e)}
                         size="sm"
-                        aria-label={`Wykonane: ${e.summary}`}
-                        title="Oznacz jako wykonane"
+                        aria-label={t("cal.doneAria", { summary: e.summary })}
+                        title={t("cal.markDone")}
                       />
                     )}
                     <span
