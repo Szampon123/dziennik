@@ -4,6 +4,7 @@
 // target, never the source of truth; sync failures must never block local writes.
 import { Client, APIResponseError } from "@notionhq/client";
 import { prisma } from "@/lib/prisma";
+import { decrypt } from "@/lib/crypto";
 import { parsePriorities, parsePrioritiesDone, NOTE_TYPE_LABELS, type NoteType } from "@/lib/day";
 import { formatDayLong, formatTime } from "@/lib/dates";
 import type { DayEntry, Note } from "@prisma/client";
@@ -24,7 +25,8 @@ export async function getNotionConfig(userId: string): Promise<NotionConfig | nu
     select: { notionToken: true, notionParentPageId: true },
   });
   if (!user?.notionToken || !user.notionParentPageId) return null;
-  return { token: user.notionToken, parentPageId: user.notionParentPageId };
+  // notionToken is stored encrypted; parentPageId is a public id (kept plain).
+  return { token: decrypt(user.notionToken), parentPageId: user.notionParentPageId };
 }
 
 export async function isNotionConfigured(userId: string): Promise<boolean> {

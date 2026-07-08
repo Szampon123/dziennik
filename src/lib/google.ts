@@ -7,6 +7,7 @@
 // incompatible private fields, so named type imports would mismatch.
 import { google } from "googleapis";
 import { prisma } from "@/lib/prisma";
+import { encrypt, decrypt } from "@/lib/crypto";
 import { toDayKey, dayKeyToDate } from "@/lib/dates";
 
 type OAuth2Client = InstanceType<typeof google.auth.OAuth2>;
@@ -53,9 +54,12 @@ export function getAuthUrl(): string {
 }
 
 async function saveCredentials(userId: string, creds: Credentials, email?: string | null) {
+  // Encrypt the bearer secrets before they ever touch the database.
+  const encryptedRefresh =
+    typeof creds.refresh_token === "string" ? encrypt(creds.refresh_token) : undefined;
   const data = {
-    accessToken: creds.access_token ?? "",
-    refreshToken: creds.refresh_token ?? undefined, // keep existing if absent
+    accessToken: encrypt(creds.access_token ?? ""),
+    refreshToken: encryptedRefresh, // undefined → keep existing on update
     expiryDate: creds.expiry_date ? BigInt(creds.expiry_date) : null,
     scope: creds.scope ?? null,
     ...(email !== undefined ? { accountEmail: email } : {}),
@@ -67,7 +71,7 @@ async function saveCredentials(userId: string, creds: Credentials, email?: strin
       userId,
       provider: PROVIDER,
       ...data,
-      refreshToken: creds.refresh_token ?? null,
+      refreshToken: encryptedRefresh ?? null,
     },
   });
 }
@@ -100,8 +104,8 @@ export async function getAuthorizedClient(userId: string): Promise<OAuth2Client 
 
   const client = createOAuthClient();
   client.setCredentials({
-    access_token: stored.accessToken,
-    refresh_token: stored.refreshToken,
+    access_token: stored.accessToken ? decrypt(stored.accessToken) : undefined,
+    refresh_token: stored.refreshToken ? decrypt(stored.refreshToken) : undefined,
     expiry_date: stored.expiryDate ? Number(stored.expiryDate) : undefined,
   });
   // Persist refreshed access tokens so restarts don't re-trigger refresh.
