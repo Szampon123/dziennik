@@ -21,9 +21,6 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      // A user who already registered with email+password (verified by us) can
-      // also sign in with Google using the same address — link to that account.
-      allowDangerousEmailAccountLinking: true,
     })
   );
 }
@@ -84,7 +81,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: { signIn: "/login" },
   callbacks: {
     async jwt({ token, user }) {
-      // `user` is only set at sign-in — resolve the role once here (not per request).
+      // First sign-in: resolve userId and bootstrap the role from env vars.
       if (user?.id) {
         token.userId = user.id;
         const dbUser = await prisma.user.findUnique({
@@ -98,7 +95,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           role = desired;
         }
         token.role = role;
+        return token;
       }
+
+      // Every later request: re-read the role so a suspension, promotion or
+      // demotion takes effect on the next page load instead of at JWT expiry.
+      // One indexed primary-key lookup — cheap enough to pay per request.
+      if (typeof token.userId === "string") {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.userId },
+          select: { role: true },
+        });
+        if (!dbUser) {
+          // The User row is gone (deleted account, DB reset) — strip the claims
+          // so nothing downstream trusts this token.
+          token.userId = undefined;
+          token.role = undefined;
+          return token;
+        }
+        token.role = normalizeRole(dbUser.role);
+      }
+
       return token;
     },
     session({ session, token }) {

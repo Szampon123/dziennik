@@ -14,7 +14,7 @@ import { getToken } from "next-auth/jwt";
 // Paths that must stay reachable without a session. Everything else is gated.
 // (Static assets and image files are already excluded by `config.matcher`
 // below, so this list only covers the auth surface and Next.js internals.)
-const PUBLIC_PATHS = ["/login", "/register", "/api/auth", "/_next", "/favicon.ico"];
+const PUBLIC_PATHS = ["/login", "/register", "/suspended", "/api/auth", "/_next", "/favicon.ico"];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some(
@@ -47,6 +47,17 @@ export default async function proxy(req: NextRequest) {
     const loginUrl = new URL("/login", req.nextUrl);
     loginUrl.searchParams.set("callbackUrl", pathname + req.nextUrl.search);
     return NextResponse.redirect(loginUrl);
+  }
+
+  // Suspended accounts are locked out entirely. The jwt callback re-reads the
+  // role from the DB on every request, so a suspension lands on the next page
+  // load. Only /suspended and the auth routes stay reachable (both already
+  // public above) so the user can read the notice and sign out.
+  if (token.role === "suspended") {
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Account suspended" }, { status: 403 });
+    }
+    return NextResponse.redirect(new URL("/suspended", req.nextUrl));
   }
 
   return NextResponse.next();

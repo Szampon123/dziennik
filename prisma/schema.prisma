@@ -28,7 +28,8 @@ model User {
   image         String?
   // bcrypt hash for email+password login; null for Google-only accounts.
   passwordHash  String?
-  // Access role: "user" (default) | "admin" | "owner". Validated in src/lib/roles.ts.
+  // Access role: "suspended" | "user" (default) | "admin" | "owner".
+  // Validated in src/lib/roles.ts.
   role          String    @default("user")
   // Chosen colour palette for the Dudu companion. See src/lib/dudu.ts.
   duduColor     String    @default("violet")
@@ -46,6 +47,10 @@ model User {
   // null = default (all widgets visible in the default order).
   dashboardJson String?
 
+  // Registration date, shown in the admin user list. Rows that predate this
+  // column were backfilled with the migration timestamp.
+  createdAt DateTime @default(now())
+
   accounts         Account[]
   sessions         Session[]
   dayEntries       DayEntry[]
@@ -59,6 +64,9 @@ model User {
   habits           Habit[]
   forumPosts       ForumPost[]
   forumVotes       ForumVote[]
+
+  roleChangesReceived RoleChange[] @relation("RoleChangeTarget")
+  roleChangesMade     RoleChange[] @relation("RoleChangeChanger")
 }
 
 model Account {
@@ -334,6 +342,29 @@ model ForumVote {
 
   @@id([userId, postId])
   @@index([postId])
+}
+
+// ---------- Admin audit log ----------
+// Every role change is recorded: who changed whose role, from what to what,
+// and when. Immutable — rows are never updated or deleted by the app.
+// (Deleting a User does cascade its audit rows away; keeping history past
+// account deletion would need nullable actor/target columns.)
+
+model RoleChange {
+  id        String   @id @default(cuid())
+  targetId  String // the user whose role was changed
+  changedBy String // the admin/owner who made the change
+  oldRole   String
+  newRole   String
+  reason    String? // optional note from the admin
+  createdAt DateTime @default(now())
+
+  target  User @relation("RoleChangeTarget", fields: [targetId], references: [id], onDelete: Cascade)
+  changer User @relation("RoleChangeChanger", fields: [changedBy], references: [id], onDelete: Cascade)
+
+  @@index([targetId])
+  @@index([changedBy])
+  @@index([createdAt])
 }
 
 // Google Calendar OAuth tokens, one row per user+provider.
