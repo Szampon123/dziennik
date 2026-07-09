@@ -53,6 +53,31 @@ export async function sendVerificationEmail(email: string): Promise<boolean> {
   });
 }
 
+const INVALID_TOKEN_ERROR = "Nieprawidłowy lub wygasły link weryfikacyjny.";
+const EXPIRED_TOKEN_ERROR = "Link weryfikacyjny wygasł. Zaloguj się i poproś o nowy link.";
+
+/**
+ * Read-only check that a token exists and has not expired. Consumes nothing,
+ * so it is safe to run while merely *rendering* the /verify-email page: mail
+ * scanners and link prefetchers (Gmail, Outlook Safe Links, corporate proxies)
+ * fetch that URL before the human ever sees it. The token is only spent by
+ * verifyEmailToken(), behind an explicit button press.
+ */
+export async function checkTokenValid(
+  email: string,
+  token: string
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const record = await prisma.verificationToken.findUnique({
+    where: { identifier_token: { identifier: email, token } },
+    select: { expires: true },
+  });
+
+  if (!record) return { ok: false, error: INVALID_TOKEN_ERROR };
+  // Deliberately not deleted here — this function must never write.
+  if (record.expires < new Date()) return { ok: false, error: EXPIRED_TOKEN_ERROR };
+  return { ok: true };
+}
+
 /**
  * Consume a verification token: if it exists and is still valid, mark the
  * address as verified and delete the token. Expired tokens are deleted too.
@@ -65,15 +90,12 @@ export async function verifyEmailToken(
   const record = await prisma.verificationToken.findUnique({ where });
 
   if (!record) {
-    return { ok: false, error: "Nieprawidłowy lub wygasły link weryfikacyjny." };
+    return { ok: false, error: INVALID_TOKEN_ERROR };
   }
 
   if (record.expires < new Date()) {
     await prisma.verificationToken.delete({ where });
-    return {
-      ok: false,
-      error: "Link weryfikacyjny wygasł. Zaloguj się i poproś o nowy link.",
-    };
+    return { ok: false, error: EXPIRED_TOKEN_ERROR };
   }
 
   // updateMany, not update: the account may have been deleted since the token
