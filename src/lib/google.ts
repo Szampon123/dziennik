@@ -45,11 +45,13 @@ function createOAuthClient(): OAuth2Client {
   );
 }
 
-export function getAuthUrl(): string {
+/** `state` is the CSRF token minted in src/lib/oauth-state.ts; Google echoes it back. */
+export function getAuthUrl(state: string): string {
   return createOAuthClient().generateAuthUrl({
     access_type: "offline",
     prompt: "consent", // always return a refresh token
     scope: SCOPES,
+    state,
   });
 }
 
