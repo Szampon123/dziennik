@@ -14,7 +14,15 @@ import { getToken } from "next-auth/jwt";
 // Paths that must stay reachable without a session. Everything else is gated.
 // (Static assets and image files are already excluded by `config.matcher`
 // below, so this list only covers the auth surface and Next.js internals.)
-const PUBLIC_PATHS = ["/login", "/register", "/suspended", "/api/auth", "/_next", "/favicon.ico"];
+const PUBLIC_PATHS = [
+  "/login",
+  "/register",
+  "/suspended",
+  "/verify-email",
+  "/api/auth",
+  "/_next",
+  "/favicon.ico",
+];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some(

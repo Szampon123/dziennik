@@ -3,18 +3,18 @@
 import { headers } from "next/headers";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { hashPassword, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from "@/lib/passwords";
+import { hashPassword, validatePasswordStrength } from "@/lib/passwords";
 import { rateLimit } from "@/lib/rate-limit";
+import { sendVerificationEmail } from "@/lib/verification";
 
 export type RegisterResult = { ok: true } | { ok: false; error: string };
 
 const schema = z.object({
   name: z.string().trim().max(80, "Imię jest za długie.").optional().default(""),
   email: z.string().trim().toLowerCase().email("Podaj prawidłowy adres e-mail."),
-  password: z
-    .string()
-    .min(MIN_PASSWORD_LENGTH, `Hasło musi mieć co najmniej ${MIN_PASSWORD_LENGTH} znaków.`)
-    .max(MAX_PASSWORD_LENGTH, "Hasło jest za długie."),
+  // Length and complexity are checked by validatePasswordStrength() below, so
+  // that one function is the single source of truth for the password policy.
+  password: z.string(),
 });
 
 /**
@@ -38,6 +38,12 @@ export async function registerAccount(
     return { ok: false, error: parsed.error.issues[0].message };
   }
   const { email, password } = parsed.data;
+
+  const pwCheck = validatePasswordStrength(password);
+  if (!pwCheck.valid) {
+    return { ok: false, error: pwCheck.error };
+  }
+
   const name = parsed.data.name?.trim() || email.split("@")[0];
 
   const existing = await prisma.user.findUnique({
@@ -50,6 +56,12 @@ export async function registerAccount(
 
   const passwordHash = await hashPassword(password);
   await prisma.user.create({ data: { email, name, passwordHash } });
+
+  // Best-effort: a dead mail provider must not cost the user their account.
+  // They can re-request the link from the banner once signed in.
+  await sendVerificationEmail(email).catch((e) =>
+    console.error("[REGISTER] Verification email failed:", e)
+  );
 
   return { ok: true };
 }

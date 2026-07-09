@@ -24,6 +24,10 @@ export function RegisterForm() {
       setError(`Hasło musi mieć co najmniej ${MIN_PASSWORD} znaków.`);
       return;
     }
+    if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/\d/.test(password)) {
+      setError("Hasło musi zawierać małą literę, wielką literę i cyfrę.");
+      return;
+    }
     if (password !== confirm) {
       setError("Hasła nie są takie same.");
       return;
@@ -66,7 +70,7 @@ export function RegisterForm() {
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder={`Hasło (min. ${MIN_PASSWORD} znaków)`}
+        placeholder={`Hasło (min. ${MIN_PASSWORD} zn., mała + wielka litera + cyfra)`}
         autoComplete="new-password"
         required
         className={inputClass}

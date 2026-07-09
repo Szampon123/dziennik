@@ -3,8 +3,29 @@ import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
 import { UserMenu } from "@/components/UserMenu";
+import { VerificationBanner } from "@/components/VerificationBanner";
 import { I18nProvider } from "@/components/i18n/I18nProvider";
 import { getLocale } from "@/lib/i18n/server";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+
+/**
+ * Credentials accounts start unverified; Google accounts arrive verified. The
+ * role comes from the session (the jwt callback re-reads it every request), so
+ * only emailVerified needs a lookup — and only for signed-in, non-suspended
+ * users, who are the only ones who can act on the banner.
+ */
+async function needsEmailVerification(): Promise<boolean> {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId || session.user.role === "suspended") return false;
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { emailVerified: true },
+  });
+  return user != null && user.emailVerified == null;
+}
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,6 +54,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
+  const showVerificationBanner = await needsEmailVerification();
   return (
     <html
       lang={locale}
@@ -45,6 +67,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col">
         <I18nProvider locale={locale}>
           <Nav userMenu={<UserMenu />} />
+          {showVerificationBanner && <VerificationBanner />}
           <main className="mx-auto w-full max-w-[760px] flex-1 px-6 py-12">{children}</main>
         </I18nProvider>
       </body>
