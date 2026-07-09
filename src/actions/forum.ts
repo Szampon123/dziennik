@@ -6,6 +6,7 @@ import { requireUserId } from "@/lib/session";
 import { normalizeRole, isAdminRole } from "@/lib/roles";
 import { MAX_POST_BODY, MAX_LINK, MAX_LEVEL, isValidHttpUrl } from "@/lib/forum";
 import { PHOTO_TYPES, MAX_PHOTO_BYTES, savePhoto, deletePhoto } from "@/lib/uploads";
+import { rateLimit } from "@/lib/rate-limit";
 import type { ActionResult } from "@/actions/day-entry";
 
 export type CreatePostResult = { ok: true; id: string } | { ok: false; error: string };
@@ -22,6 +23,10 @@ function revalidateSkill(slug: string, postId?: string) {
  */
 export async function createPost(formData: FormData): Promise<CreatePostResult> {
   const userId = await requireUserId();
+
+  if (!rateLimit(`forum:post:${userId}`, 10, 60).allowed) {
+    return { ok: false, error: "Publikujesz za szybko. Poczekaj chwilę." };
+  }
 
   const activitySlug = String(formData.get("activitySlug") ?? "").trim();
   const parentId = String(formData.get("parentId") ?? "").trim() || null;
@@ -142,6 +147,11 @@ export async function togglePostVote(input: {
   postId: string;
 }): Promise<{ ok: true; voted: boolean; count: number } | { ok: false; error: string }> {
   const userId = await requireUserId();
+
+  if (!rateLimit(`forum:vote:${userId}`, 30, 60).allowed) {
+    return { ok: false, error: "Zbyt wiele głosów. Poczekaj chwilę." };
+  }
+
   const postId = String(input?.postId ?? "");
   if (!postId) return { ok: false, error: "Nieprawidłowe żądanie." };
 

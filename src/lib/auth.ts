@@ -8,6 +8,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import { verifyPassword } from "@/lib/passwords";
 import { normalizeRole, bootstrapRole } from "@/lib/roles";
+import { rateLimit } from "@/lib/rate-limit";
 
 // Dev-only login (no Google keys needed): active only in development with
 // DEV_LOGIN=1. Lets you exercise the multi-user flow with fake accounts.
@@ -38,6 +39,12 @@ providers.push(
       const email = typeof creds?.email === "string" ? creds.email.trim().toLowerCase() : "";
       const password = typeof creds?.password === "string" ? creds.password : "";
       if (!email || !password) return null;
+
+      // Brute-force guard, keyed per email: authorize() never sees the request,
+      // so there is no IP to key on — but an attacker grinding one account keeps
+      // sending the same address. A rejection is indistinguishable from a wrong
+      // password, which is what we want.
+      if (!rateLimit(`login:${email}`, 5, 15 * 60).allowed) return null;
 
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user?.passwordHash) return null; // no account, or Google-only account

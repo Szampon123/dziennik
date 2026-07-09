@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionUserId } from "@/lib/session";
 import { getCachedEvents } from "@/lib/calendar-cache";
 import { getGoogleStatus } from "@/lib/google";
+import { rateLimit } from "@/lib/rate-limit";
 
 // GET /api/calendar/events?days=7[&past=6][&fresh=1]
 // Returns the signed-in user's events, `past` days back through `days` ahead
@@ -10,6 +11,14 @@ export async function GET(request: Request) {
   const userId = await getSessionUserId();
   if (!userId) {
     return NextResponse.json({ status: "unauthorized", events: [] }, { status: 401 });
+  }
+
+  const rl = rateLimit(`api:calendar:${userId}`, 60, 60);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { status: "rate_limited", error: "Too many requests. Try again later.", events: [] },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfterSeconds) } }
+    );
   }
 
   const url = new URL(request.url);

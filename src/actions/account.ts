@@ -1,8 +1,10 @@
 "use server";
 
+import { headers } from "next/headers";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { hashPassword, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from "@/lib/passwords";
+import { rateLimit } from "@/lib/rate-limit";
 
 export type RegisterResult = { ok: true } | { ok: false; error: string };
 
@@ -24,6 +26,13 @@ const schema = z.object({
 export async function registerAccount(
   input: z.input<typeof schema>
 ): Promise<RegisterResult> {
+  // Signup spam guard, keyed per caller IP (3 per hour).
+  const headersList = await headers();
+  const ip = headersList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  if (!rateLimit(`register:${ip}`, 3, 60 * 60).allowed) {
+    return { ok: false, error: "Zbyt wiele prób rejestracji. Spróbuj ponownie później." };
+  }
+
   const parsed = schema.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0].message };
