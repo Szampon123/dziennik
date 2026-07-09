@@ -161,6 +161,7 @@ const pl = {
   "overview.loadingEvents": "Ładowanie wydarzeń…",
   "overview.noTasks": "Brak zadań na dziś",
   "overview.calNotConnected": "Kalendarz niepołączony",
+  "overview.connect": "Połącz",
   "overview.trendTitle": "Trend 7 dni · % zadań z kalendarza",
   "overview.companionAria": "Twój towarzysz: {name}. Zaliczone poziomy: {xp}. Przejdź do zakładki Bohater.",
 
@@ -171,6 +172,7 @@ const pl = {
   "cal.notConfiguredHint": "Uzupełnij klucze w .env.local — instrukcja w README.",
   "cal.notConnected": "Kalendarz niepołączony",
   "cal.notConnectedHint": "Połącz Google Calendar, aby zobaczyć tu dzisiejsze wydarzenia.",
+  "cal.connectGoogle": "Połącz Google Calendar",
   "cal.goSettings": "Przejdź do Ustawień →",
   "cal.error": "Błąd pobierania wydarzeń",
   "cal.tryAgain": "Spróbuj ponownie",
@@ -429,6 +431,7 @@ const en: Dict = {
   "overview.loadingEvents": "Loading events…",
   "overview.noTasks": "No tasks for today",
   "overview.calNotConnected": "Calendar not connected",
+  "overview.connect": "Connect",
   "overview.trendTitle": "7-day trend · % of calendar tasks",
   "overview.companionAria": "Your companion: {name}. Completed levels: {xp}. Go to the Hero tab.",
 
@@ -438,6 +441,7 @@ const en: Dict = {
   "cal.notConfiguredHint": "Fill in the keys in .env.local — see the README.",
   "cal.notConnected": "Calendar not connected",
   "cal.notConnectedHint": "Connect Google Calendar to see today's events here.",
+  "cal.connectGoogle": "Connect Google Calendar",
   "cal.goSettings": "Go to Settings →",
   "cal.error": "Error loading events",
   "cal.tryAgain": "Try again",
@@ -689,6 +693,7 @@ const de: Dict = {
   "overview.loadingEvents": "Ereignisse werden geladen…",
   "overview.noTasks": "Keine Aufgaben für heute",
   "overview.calNotConnected": "Kalender nicht verbunden",
+  "overview.connect": "Verbinden",
   "overview.trendTitle": "7-Tage-Trend · % der Kalenderaufgaben",
   "overview.companionAria": "Dein Begleiter: {name}. Abgeschlossene Stufen: {xp}. Zum Held-Tab.",
 
@@ -698,6 +703,7 @@ const de: Dict = {
   "cal.notConfiguredHint": "Trage die Schlüssel in .env.local ein — siehe README.",
   "cal.notConnected": "Kalender nicht verbunden",
   "cal.notConnectedHint": "Verbinde Google Kalender, um hier die heutigen Termine zu sehen.",
+  "cal.connectGoogle": "Google Kalender verbinden",
   "cal.goSettings": "Zu den Einstellungen →",
   "cal.error": "Fehler beim Laden der Termine",
   "cal.tryAgain": "Erneut versuchen",
@@ -949,6 +955,7 @@ const es: Dict = {
   "overview.loadingEvents": "Cargando eventos…",
   "overview.noTasks": "Sin tareas para hoy",
   "overview.calNotConnected": "Calendario no conectado",
+  "overview.connect": "Conectar",
   "overview.trendTitle": "Tendencia de 7 días · % de tareas del calendario",
   "overview.companionAria": "Tu compañero: {name}. Niveles completados: {xp}. Ir a la pestaña Héroe.",
 
@@ -958,6 +965,7 @@ const es: Dict = {
   "cal.notConfiguredHint": "Rellena las claves en .env.local — consulta el README.",
   "cal.notConnected": "Calendario no conectado",
   "cal.notConnectedHint": "Conecta Google Calendar para ver aquí los eventos de hoy.",
+  "cal.connectGoogle": "Conectar Google Calendar",
   "cal.goSettings": "Ir a Ajustes →",
   "cal.error": "Error al cargar eventos",
   "cal.tryAgain": "Intentar de nuevo",

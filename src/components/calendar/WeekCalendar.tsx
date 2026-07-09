@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Card } from "@/components/Card";
 import { EmptyState } from "@/components/EmptyState";
 import { Checkbox } from "@/components/ui/Checkbox";
+import { buttonClass } from "@/components/ui/Button";
 import {
   formatTime,
   formatDayLong,
@@ -43,9 +44,30 @@ export function WeekCalendar() {
                 : t("cal.notConnectedHint")
             }
             action={
-              <Link href="/settings" className="text-[13px] font-medium text-azure-700 hover:underline">
-                {t("cal.goSettings")}
-              </Link>
+              state.phase === "not_connected" ? (
+                // Plain <a>, not <Link>: /api/auth/google is a route handler that
+                // mints a CSRF state cookie and 307s to Google. A <Link> would
+                // prefetch it on hover and start the flow behind the user's back.
+                <div className="flex flex-col items-center gap-2">
+                  {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                  <a href="/api/auth/google" className={buttonClass("primary", "text-sm")}>
+                    {t("cal.connectGoogle")}
+                  </a>
+                  <Link
+                    href="/settings"
+                    className="text-[13px] font-medium text-azure-700 hover:underline"
+                  >
+                    {t("cal.goSettings")}
+                  </Link>
+                </div>
+              ) : (
+                <Link
+                  href="/settings"
+                  className="text-[13px] font-medium text-azure-700 hover:underline"
+                >
+                  {t("cal.goSettings")}
+                </Link>
+              )
             }
           />
         )}

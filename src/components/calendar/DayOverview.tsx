@@ -191,7 +191,19 @@ export function DayOverview({
           </div>
         </div>
 
-        <p className="text-[13px] text-neutral-500">{breakdown}</p>
+        <p className="text-[13px] text-neutral-500">
+          {breakdown}
+          {state.phase === "not_connected" && (
+            <>
+              {" · "}
+              {/* Plain <a>: /api/auth/google redirects to Google, it is not a page. */}
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+              <a href="/api/auth/google" className="font-medium text-azure-700 hover:underline">
+                {t("overview.connect")}
+              </a>
+            </>
+          )}
+        </p>
 
         {hasTrend && (
           <div className="flex flex-col gap-2 border-t border-neutral-200 pt-4">
