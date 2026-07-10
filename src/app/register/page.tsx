@@ -22,17 +22,18 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RegisterPage() {
   const userId = await getSessionUserId();
   if (userId) redirect("/dzis");
+  const { t } = await getT();
 
   return (
     <AuthShell
-      subtitle="Załóż konto, aby prowadzić swój dziennik."
-      footer="Każdy użytkownik ma własny dziennik oraz własne połączenia Google Calendar i Notion."
+      subtitle={t("auth.registerSubtitle")}
+      footer={t("auth.everyUserOwn")}
     >
       <RegisterForm />
       <p className="text-center text-[13px] text-neutral-600">
-        Masz już konto?{" "}
+        {t("auth.haveAccount")}{" "}
         <Link href="/login" className="font-medium text-violet-600 hover:underline">
-          Zaloguj się
+          {t("auth.signIn")}
         </Link>
       </p>
     </AuthShell>

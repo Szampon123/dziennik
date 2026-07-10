@@ -5,8 +5,10 @@ import { saveNotionSettings, disconnectNotion } from "@/actions/notion-settings"
 import type { NotionStatus } from "@/lib/notion";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useT } from "@/components/i18n/I18nProvider";
 
 export function NotionSettings({ status }: { status: NotionStatus }) {
+  const t = useT();
   const [token, setToken] = useState("");
   const [parentPageId, setParentPageId] = useState("");
   const [showForm, setShowForm] = useState(status.state === "not_configured");
@@ -30,7 +32,7 @@ export function NotionSettings({ status }: { status: NotionStatus }) {
   function disconnect() {
     if (
       !window.confirm(
-        "Rozłączyć Notion? Zamknięte dni przestaną publikować się jako daily brief."
+        t("notion.disconnectConfirm")
       )
     ) {
       return;
@@ -52,15 +54,15 @@ export function NotionSettings({ status }: { status: NotionStatus }) {
         <div className="flex items-center justify-between gap-4">
           <p className="text-sm text-neutral-800">
             <span className="mr-2 inline-block h-2 w-2 rounded-full bg-success" />
-            Połączono — strona-rodzic:{" "}
-            <span className="font-medium">{status.parentTitle ?? "(bez tytułu)"}</span>
+            {t("notion.connectedParent")}{" "}
+            <span className="font-medium">{status.parentTitle ?? t("notion.untitled")}</span>
           </p>
           <div className="flex shrink-0 gap-2">
             <Button variant="secondary" onClick={() => setShowForm((v) => !v)}>
-              Zmień konfigurację
+              {t("notion.changeConfig")}
             </Button>
             <Button variant="destructive" onClick={disconnect} disabled={isPending}>
-              Rozłącz
+              {t("notion.disconnect")}
             </Button>
           </div>
         </div>
@@ -71,20 +73,19 @@ export function NotionSettings({ status }: { status: NotionStatus }) {
       {(showForm || status.state === "error") && (
         <div className="flex flex-col gap-2">
           <p className="text-[13px] text-neutral-500">
-            Utwórz integrację wewnętrzną na notion.so/my-integrations, udostępnij jej stronę-rodzica
-            (Connections) i wklej dane poniżej — szczegóły w README.
+            {t("notion.setupHint")}
           </p>
           <Input
             type="password"
             value={token}
             onChange={(e) => setToken(e.target.value)}
-            placeholder="Token integracji (ntn_… lub secret_…)"
+            placeholder={t("notion.tokenPlaceholder")}
             autoComplete="off"
           />
           <Input
             value={parentPageId}
             onChange={(e) => setParentPageId(e.target.value)}
-            placeholder="ID strony-rodzica (32 znaki)"
+            placeholder={t("notion.parentIdPlaceholder")}
             autoComplete="off"
           />
           <div className="flex items-center gap-3">
@@ -93,7 +94,7 @@ export function NotionSettings({ status }: { status: NotionStatus }) {
               disabled={isPending || !token.trim() || !parentPageId.trim()}
               className="self-start"
             >
-              {isPending ? "Testowanie połączenia…" : "Zapisz i przetestuj"}
+              {isPending ? t("notion.testing") : t("notion.saveTest")}
             </Button>
             {error && <span className="text-[13px] text-danger">{error}</span>}
           </div>

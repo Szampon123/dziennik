@@ -3,8 +3,10 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { useT } from "@/components/i18n/I18nProvider";
 
 export function RetrySyncButton({ date }: { date: string }) {
+  const t = useT();
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -20,7 +22,7 @@ export function RetrySyncButton({ date }: { date: string }) {
         const data = await res.json();
         setError(data.ok ? "" : data.error);
       } catch {
-        setError("Nie udało się połączyć z aplikacją.");
+        setError(t("calendar.connectFailed"));
       }
       router.refresh();
     });
@@ -29,7 +31,7 @@ export function RetrySyncButton({ date }: { date: string }) {
   return (
     <span className="inline-flex items-center gap-2">
       <Button variant="secondary" onClick={retry} disabled={isPending}>
-        {isPending ? "Synchronizowanie…" : "Ponów synchronizację"}
+        {isPending ? t("sync.syncing") : t("sync.retry")}
       </Button>
       {error && <span className="text-[13px] text-danger">{error}</span>}
     </span>

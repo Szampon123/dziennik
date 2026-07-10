@@ -85,7 +85,7 @@ export async function ActivityStats({
           </p>
           <p className="mt-0.5 text-[13px] text-neutral-500">
             {t("stats.stage")}{" "}
-            <span className="text-neutral-700">{tierForLevel(level > 0 ? level : 1).name}</span>
+            <span className="text-neutral-700">{t(tierForLevel(level > 0 ? level : 1).nameKey)}</span>
             {levelAchievedAt !== null && (
               <> · {t("stats.lastly", { date: formatDate(levelAchievedAt, locale) })}</>
             )}
@@ -108,27 +108,27 @@ export async function ActivityStats({
 
       {/* Tier breakdown */}
       <div className="mt-5 grid grid-cols-3 gap-2 sm:grid-cols-6">
-        {tiers.map((t) => {
-          const isCurrent = t.name === currentTier.name && !allDone;
-          const full = t.done === t.total && t.total > 0;
+        {tiers.map((tier) => {
+          const isCurrent = tier.nameKey === currentTier.nameKey && !allDone;
+          const full = tier.done === tier.total && tier.total > 0;
           return (
             <div
-              key={t.name}
+              key={tier.nameKey}
               className={`rounded-lg border p-2 ${
                 isCurrent ? "border-violet-300 bg-violet-100/40" : "border-neutral-200"
               }`}
             >
-              <p className="truncate text-[11px] font-medium text-neutral-600" title={t.name}>
-                {t.name}
+              <p className="truncate text-[11px] font-medium text-neutral-600" title={t(tier.nameKey)}>
+                {t(tier.nameKey)}
               </p>
               <p
                 className={`mb-1 text-[11px] tabular-nums ${
                   full ? "font-semibold text-success" : "text-neutral-400"
                 }`}
               >
-                {t.done}/{t.total}
+                {tier.done}/{tier.total}
               </p>
-              <Progress value={t.done} max={t.total} className="h-1" />
+              <Progress value={tier.done} max={tier.total} className="h-1" />
             </div>
           );
         })}

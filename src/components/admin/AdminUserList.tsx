@@ -3,15 +3,17 @@
 import { useState, useTransition } from "react";
 import { changeUserRole, type AdminUserRow } from "@/actions/admin";
 import { buttonClass } from "@/components/ui/Button";
+import { useT } from "@/components/i18n/I18nProvider";
 
 // "owner" is deliberately absent: it is granted only by the OWNER_EMAIL env var.
 const ASSIGNABLE_ROLES = ["suspended", "user", "admin"] as const;
 
 export function AdminUserList({ users }: { users: AdminUserRow[] }) {
+  const t = useT();
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Użytkownicy ({users.length})</h2>
+        <h2 className="text-xl font-semibold">{t("admin.usersHeading", { count: users.length })}</h2>
         <a href="/admin/history" className={buttonClass("secondary", "text-sm")}>
           Historia zmian
         </a>
@@ -37,6 +39,7 @@ export function AdminUserList({ users }: { users: AdminUserRow[] }) {
 
 function UserRow({ user }: { user: AdminUserRow }) {
   const [selectedRole, setSelectedRole] = useState(user.role);
+  const t = useT();
   const [isPending, startTransition] = useTransition();
   const [message, setMessage] = useState("");
 
@@ -76,7 +79,7 @@ function UserRow({ user }: { user: AdminUserRow }) {
       <td className="py-2">
         {!isOwner && changed && (
           <button onClick={save} disabled={isPending} className={buttonClass("primary", "text-sm")}>
-            {isPending ? "Zapisuję…" : "Zapisz"}
+            {isPending ? t("common.saving") : t("common.save")}
           </button>
         )}
         {message && (

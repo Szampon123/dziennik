@@ -320,13 +320,13 @@ export function MilestoneLadder({
           const openByDefault = view === "todo" ? true : tier === activeTier;
           return (
             <details
-              key={tier.name}
+              key={tier.nameKey}
               open={openByDefault}
               className="rounded-card border border-neutral-200 bg-neutral-0 shadow-card"
             >
               <summary className="flex min-h-10 cursor-pointer items-center justify-between gap-3 px-4 py-3">
                 <span className="text-sm font-semibold text-neutral-900">
-                  {tier.name}
+                  {t(tier.nameKey)}
                   <span className="ml-2 font-normal text-neutral-500">
                     {t("ladder.tierLevels", { from: tier.from, to: tier.to })}
                   </span>

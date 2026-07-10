@@ -11,6 +11,7 @@ import {
 } from "react";
 import { setEventCheck } from "@/actions/event-check";
 import { todayKey } from "@/lib/dates";
+import { useT } from "@/components/i18n/I18nProvider";
 
 export type EventItem = {
   id: string;
@@ -65,6 +66,7 @@ export function CalendarProvider({
 }) {
   const today = todayKey();
   const [state, setState] = useState<FetchState>({ phase: "loading" });
+  const t = useT();
   const [selectedDay, setSelectedDay] = useState(today);
   const [now, setNow] = useState(() => Date.now());
   const [checked, setChecked] = useState<Set<string>>(() => new Set(initialCheckedIds));
@@ -81,14 +83,14 @@ export function CalendarProvider({
       } else if (data.status === "not_configured" || data.status === "not_connected") {
         setState({ phase: data.status });
       } else if (data.status === "unauthorized") {
-        setState({ phase: "error", message: "Sesja wygasła — zaloguj się ponownie." });
+        setState({ phase: "error", message: t("calendar.sessionExpired") });
       } else {
-        setState({ phase: "error", message: data.error ?? "Nieznany błąd" });
+        setState({ phase: "error", message: data.error ?? t("calendar.unknownError") });
       }
     } catch {
-      setState({ phase: "error", message: "Nie udało się połączyć z aplikacją." });
+      setState({ phase: "error", message: t("calendar.connectFailed") });
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     // Fetch-on-mount: reload() only calls setState after awaiting the network.

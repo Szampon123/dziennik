@@ -3,11 +3,13 @@ import { getSessionUserId } from "@/lib/session";
 import { getCachedEvents } from "@/lib/calendar-cache";
 import { getGoogleStatus } from "@/lib/google";
 import { rateLimit } from "@/lib/rate-limit";
+import { getT } from "@/lib/i18n/server";
 
 // GET /api/calendar/events?days=7[&past=6][&fresh=1]
 // Returns the signed-in user's events, `past` days back through `days` ahead
 // (5 min cache). The past window feeds the 7-day completion trend.
 export async function GET(request: Request) {
+  const { t } = await getT();
   const userId = await getSessionUserId();
   if (!userId) {
     return NextResponse.json({ status: "unauthorized", events: [] }, { status: 401 });
@@ -38,8 +40,8 @@ export async function GET(request: Request) {
     console.error("Calendar fetch failed:", e);
     const message =
       e instanceof Error && e.message === "NOT_CONNECTED"
-        ? "Brak połączenia z Google. Autoryzuj ponownie w Ustawieniach."
-        : "Nie udało się pobrać wydarzeń z Google Calendar.";
+        ? t("calendar.noGoogleConnection")
+        : t("calendar.fetchFailed");
     return NextResponse.json({ status: "error", error: message, events: [] }, { status: 502 });
   }
 }

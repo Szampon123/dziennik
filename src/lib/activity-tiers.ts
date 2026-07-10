@@ -1,13 +1,15 @@
 // Tier bands for the 1-99 milestone ladder (client-safe constants).
-export type Tier = { from: number; to: number; name: string };
+import type { MessageKey } from "@/lib/i18n/messages";
+
+export type Tier = { from: number; to: number; nameKey: MessageKey };
 
 export const TIERS: Tier[] = [
-  { from: 1, to: 10, name: "Pierwsze kroki" },
-  { from: 11, to: 25, name: "Regularny" },
-  { from: 26, to: 45, name: "Średniozaawansowany" },
-  { from: 46, to: 65, name: "Zaawansowany" },
-  { from: 66, to: 85, name: "Wyczynowy" },
-  { from: 86, to: 99, name: "Elita" },
+  { from: 1, to: 10, nameKey: "tier.firstSteps" },
+  { from: 11, to: 25, nameKey: "tier.regular" },
+  { from: 26, to: 45, nameKey: "tier.intermediate" },
+  { from: 46, to: 65, nameKey: "tier.advanced" },
+  { from: 66, to: 85, nameKey: "tier.competitive" },
+  { from: 86, to: 99, nameKey: "tier.elite" },
 ];
 
 export function tierForLevel(level: number): Tier {

@@ -5,15 +5,17 @@ import { disconnectGoogleAction } from "@/actions/google";
 import type { GoogleStatus } from "@/lib/google";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { useT } from "@/components/i18n/I18nProvider";
 
 export function GoogleSettings({ status }: { status: GoogleStatus }) {
+  const t = useT();
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
   function disconnect() {
     if (
       !window.confirm(
-        "Rozłączyć Google Calendar? Wydarzenia przestaną się pokazywać do czasu ponownej autoryzacji."
+        t("google.disconnectConfirm")
       )
     ) {
       return;
@@ -27,14 +29,9 @@ export function GoogleSettings({ status }: { status: GoogleStatus }) {
   if (status.state === "not_configured") {
     return (
       <div className="flex items-center justify-between gap-4">
-        <p className="text-sm text-neutral-600">
-          Brak kluczy API. Uzupełnij <code className="font-mono text-[13px]">GOOGLE_CLIENT_ID</code>{" "}
-          i <code className="font-mono text-[13px]">GOOGLE_CLIENT_SECRET</code> w{" "}
-          <code className="font-mono text-[13px]">.env.local</code> — instrukcja krok po kroku w
-          README.
-        </p>
+        <p className="text-sm text-neutral-600">{t("google.noKeys")}</p>
         <Badge variant="neutral" className="shrink-0">
-          Nieskonfigurowane
+          {t("google.notConfigured")}
         </Badge>
       </div>
     );
@@ -44,10 +41,10 @@ export function GoogleSettings({ status }: { status: GoogleStatus }) {
     return (
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm text-neutral-600">
-          Klucze skonfigurowane — autoryzuj dostęp do kalendarza.
+          {t("google.keysConfigured")}
         </p>
         <Button onClick={() => window.location.assign("/api/auth/google")} className="shrink-0">
-          Połącz z Google
+          {t("google.connect")}
         </Button>
       </div>
     );
@@ -58,14 +55,14 @@ export function GoogleSettings({ status }: { status: GoogleStatus }) {
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm text-neutral-800">
           <span className="mr-2 inline-block h-2 w-2 rounded-full bg-success" />
-          Połączono{status.email ? ` jako ${status.email}` : ""}
+          {status.email ? t("google.connectedAs", { email: status.email }) : t("google.connected")}
         </p>
         <div className="flex shrink-0 gap-2">
           <Button variant="secondary" onClick={() => window.location.assign("/api/auth/google")}>
-            Autoryzuj ponownie
+            {t("google.reauthorize")}
           </Button>
           <Button variant="destructive" onClick={disconnect} disabled={isPending}>
-            {isPending ? "Rozłączanie…" : "Rozłącz"}
+            {isPending ? t("google.disconnecting") : t("google.disconnect")}
           </Button>
         </div>
       </div>

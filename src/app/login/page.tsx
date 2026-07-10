@@ -28,13 +28,14 @@ export default async function LoginPage() {
   const userId = await getSessionUserId();
   if (userId) redirect("/dzis");
 
+  const { t } = await getT();
   const googleReady = isGoogleLoginConfigured();
   const devLogin = isDevLoginEnabled();
 
   return (
     <AuthShell
-      subtitle="Osobisty dziennik dnia — intencje, notatki, refleksje."
-      footer="Każdy użytkownik ma własny dziennik oraz własne połączenia Google Calendar i Notion."
+      subtitle={t("auth.loginSubtitle")}
+      footer={t("auth.everyUserOwn")}
     >
       {googleReady && (
           <>
@@ -45,7 +46,7 @@ export default async function LoginPage() {
               }}
             >
               <button type="submit" className={buttonClass("secondary", "w-full")}>
-                Zaloguj się przez Google
+                {t("auth.googleSignIn")}
               </button>
             </form>
             <div className="flex items-center gap-3">
@@ -61,7 +62,7 @@ export default async function LoginPage() {
         <p className="text-center text-[13px] text-neutral-600">
           Nie masz konta?{" "}
           <Link href="/register" className="font-medium text-violet-600 hover:underline">
-            Zarejestruj się
+            {t("auth.register")}
           </Link>
         </p>
 
@@ -77,7 +78,7 @@ export default async function LoginPage() {
             className="flex flex-col gap-2 border-t border-neutral-200 pt-3"
           >
             <p className="text-xs font-medium uppercase tracking-wide text-warning">
-              Dev login (tylko środowisko deweloperskie)
+              {t("auth.devLogin")}
             </p>
             <input
               type="email"
@@ -87,7 +88,7 @@ export default async function LoginPage() {
               className={inputClass}
             />
             <button type="submit" className={buttonClass("secondary")}>
-              Wejdź jako użytkownik testowy
+              {t("auth.devLoginAs")}
             </button>
           </form>
         )}

@@ -23,13 +23,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const GOOGLE_BANNERS: Record<string, { text: string; tone: "ok" | "error" }> = {
-  connected: { text: "Google Calendar połączony pomyślnie.", tone: "ok" },
-  error: { text: "Autoryzacja Google nie powiodła się. Spróbuj ponownie.", tone: "error" },
-  not_configured: {
-    text: "Najpierw uzupełnij klucze Google w .env.local (instrukcja w README).",
-    tone: "error",
-  },
+import type { MessageKey } from "@/lib/i18n/messages";
+
+const GOOGLE_BANNERS: Record<string, { key: MessageKey; tone: "ok" | "error" }> = {
+  connected: { key: "settings.googleConnected", tone: "ok" },
+  error: { key: "settings.googleFailed", tone: "error" },
+  not_configured: { key: "settings.googleNoKeys", tone: "error" },
 };
 
 export default async function SettingsPage({
@@ -61,7 +60,7 @@ export default async function SettingsPage({
               : "border-danger-border bg-danger-bg text-danger"
           }`}
         >
-          {banner.text}
+          {t(banner.key)}
         </p>
       )}
 
