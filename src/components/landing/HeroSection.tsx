@@ -1,52 +1,30 @@
+import Image from "next/image";
 import { LandingNav } from "./LandingNav";
 import { LandingButton } from "./LandingButton";
 
 /**
- * PLACEHOLDER. Stands in for the angel-writing-in-a-book illustration until the
- * artwork lands at public/images/landing/icon.png. Matched to the final art's
- * footprint (200px square, white lineart, violet glow) so swapping it in is a
- * one-element change and nothing around it reflows:
+ * The app icon: a black squircle carrying white lineart. It sits on the black
+ * hero, so the squircle's fill disappears and only the drawing and the violet
+ * glow read — which is why the asset is masked to transparent corners rather
+ * than kept on its original gray backdrop.
  *
- *   <Image src="/images/landing/icon.png" alt="" width={200} height={200}
- *          priority className="drop-shadow-[0_0_40px_rgba(110,86,207,0.4)]" />
- *
- * The favicon, the PWA 192/512 icons and the OG card still need regenerating
- * from that same source.
+ * `priority` because it is the largest element above the fold; leaving it lazy
+ * would make it the LCP candidate *and* delay it.
  */
-function HeroIconPlaceholder() {
+function HeroIcon() {
   return (
     <div className="relative flex h-[200px] w-[200px] items-center justify-center">
-      {/* Violet radial glow behind the mark. */}
-      <div
+      {/* Violet radial bloom behind the mark. */}
+      <div aria-hidden className="absolute inset-0 rounded-full bg-brand-violet/25 blur-3xl" />
+      <Image
+        src="/images/landing/icon.png"
+        alt=""
         aria-hidden
-        className="absolute inset-0 rounded-full bg-brand-violet/25 blur-3xl"
+        width={200}
+        height={200}
+        priority
+        className="relative h-[200px] w-[200px] drop-shadow-[0_0_40px_rgba(110,86,207,0.45)]"
       />
-      <svg
-        viewBox="0 0 100 100"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden
-        className="relative h-[140px] w-[140px] text-white drop-shadow-[0_0_40px_rgba(110,86,207,0.45)]"
-      >
-        {/* Halo */}
-        <ellipse cx="50" cy="16" rx="13" ry="4.5" />
-        {/* Head */}
-        <circle cx="50" cy="30" r="8" />
-        {/* Wings */}
-        <path d="M38 40C28 36 18 40 12 50c8-2 14 0 18 4" />
-        <path d="M62 40c10-4 20 0 26 10-8-2-14 0-18 4" />
-        {/* Body */}
-        <path d="M50 38v18" />
-        {/* Open book */}
-        <path d="M50 62c-6-5-14-7-22-6v20c8-1 16 1 22 6 6-5 14-7 22-6V56c-8-1-16 1-22 6Z" />
-        <path d="M50 62v20" />
-        {/* Quill */}
-        <path d="M64 48 78 34" />
-        <path d="M74 30l6 6-3 3-6-6 3-3Z" />
-      </svg>
     </div>
   );
 }
@@ -63,7 +41,7 @@ export function HeroSection() {
       />
 
       <div className="relative mx-auto flex max-w-[880px] flex-col items-center px-6 pb-24 pt-32 text-center sm:pb-32 sm:pt-40">
-        <HeroIconPlaceholder />
+        <HeroIcon />
 
         <h1 className="mt-8 text-balance text-4xl font-bold leading-[1.05] tracking-[-1.5px] text-white sm:text-6xl lg:text-7xl">
           Level Up Your Real Life

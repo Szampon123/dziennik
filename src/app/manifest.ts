@@ -2,8 +2,12 @@ import type { MetadataRoute } from "next";
 import { SITE_NAME, SITE_DESCRIPTION, BRAND } from "@/lib/seo";
 
 // Served at /manifest.webmanifest — the root layout points <link rel="manifest">
-// at that path. Only favicon.ico exists today; add maskable 192/512 PNGs under
-// public/ (and list them here) before this counts as installable.
+// at that path.
+//
+// The icons are `purpose: "any"`: they keep the artwork's own squircle, with
+// transparent corners. They are deliberately not declared "maskable" — a
+// maskable icon must fill the whole square and survive an aggressive circular
+// crop, and this one would lose its rounded edge and clip the drawing.
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: `${SITE_NAME} — osobisty dziennik dnia`,
@@ -16,11 +20,9 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: BRAND.violet,
     lang: "pl",
     icons: [
-      {
-        src: "/favicon.ico",
-        sizes: "any",
-        type: "image/x-icon",
-      },
+      { src: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+      { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
     ],
   };
 }
