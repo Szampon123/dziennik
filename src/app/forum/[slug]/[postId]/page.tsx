@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
 import { normalizeRole, isAdminRole } from "@/lib/roles";
 import { levelLabel } from "@/lib/forum";
+import { getT } from "@/lib/i18n/server";
 import { Card } from "@/components/Card";
 import { Badge } from "@/components/ui/Badge";
 import { PostCard } from "@/components/forum/PostCard";
@@ -17,6 +18,7 @@ export default async function PostDetailPage({
   params: Promise<{ slug: string; postId: string }>;
 }) {
   const userId = await requireUserId();
+  const { t } = await getT();
   const { slug, postId } = await params;
 
   const [post, me] = await Promise.all([
@@ -57,15 +59,15 @@ export default async function PostDetailPage({
           href={backHref}
           className="group inline-flex items-center gap-1 text-[13px] text-neutral-500 transition-colors hover:text-neutral-900"
         >
-          <span className="transition-transform group-hover:-translate-x-0.5">←</span> Wróć do
-          dyskusji
+          <span className="transition-transform group-hover:-translate-x-0.5">←</span>{" "}
+          {t("forum.backToDiscussion")}
         </Link>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <Link href={`/forum/${slug}`}>
             <Badge variant="violet">{post.activitySlug}</Badge>
           </Link>
           <Link href={backHref}>
-            <Badge variant="azure">{levelLabel(post.level)}</Badge>
+            <Badge variant="azure">{levelLabel(post.level, t)}</Badge>
           </Link>
         </div>
       </div>
@@ -87,12 +89,12 @@ export default async function PostDetailPage({
       />
 
       <Card
-        title={`Odpowiedzi (${post.replies.length})`}
-        subtitle="Podziel się wskazówką, materiałem lub własnym doświadczeniem"
+        title={t("forum.repliesHeading", { count: post.replies.length })}
+        subtitle={t("forum.replyPlaceholder")}
       >
         {post.replies.length === 0 ? (
           <p className="py-6 text-center text-[13px] text-neutral-500">
-            Jeszcze nikt nie odpowiedział. Bądź pierwszy!
+            {t("forum.noRepliesYet")}
           </p>
         ) : (
           <ul className="flex flex-col gap-3">
@@ -119,7 +121,7 @@ export default async function PostDetailPage({
         )}
 
         <div className="mt-5 border-t border-neutral-200 pt-5">
-          <p className="mb-2 text-[13px] font-medium text-neutral-800">Twoja odpowiedź</p>
+          <p className="mb-2 text-[13px] font-medium text-neutral-800">{t("forum.yourReply")}</p>
           <PostComposer
             activitySlug={slug}
             level={post.level}

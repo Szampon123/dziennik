@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
-import { getLocale } from "@/lib/i18n/server";
+import { getLocale, getT } from "@/lib/i18n/server";
 import { getActivityName } from "@/lib/i18n/translate";
 import { normalizeRole, isAdminRole } from "@/lib/roles";
 import { parseLevelParam, levelLabel } from "@/lib/forum";
@@ -27,6 +27,7 @@ export default async function SkillForumPage({
   const { level: levelParam } = await searchParams;
   const level = parseLevelParam(levelParam);
   const locale = await getLocale();
+  const { t } = await getT();
 
   const [activity, me, counts, posts] = await Promise.all([
     prisma.activity.findUnique({
@@ -77,7 +78,8 @@ export default async function SkillForumPage({
           href="/forum"
           className="group inline-flex items-center gap-1 text-[13px] text-neutral-500 transition-colors hover:text-neutral-900"
         >
-          <span className="transition-transform group-hover:-translate-x-0.5">←</span> Forum
+          <span className="transition-transform group-hover:-translate-x-0.5">←</span>{" "}
+          {t("nav.forum")}
         </Link>
         <div className="mt-2 flex items-center gap-4">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-100 shadow-[0_2px_8px_-3px_rgba(110,86,207,0.4)]">
@@ -87,7 +89,7 @@ export default async function SkillForumPage({
             <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
               {getActivityName(activity, locale)}
             </h1>
-            <p className="mt-0.5 text-[13px] text-neutral-500">Dyskusja o umiejętności i poziomach</p>
+            <p className="mt-0.5 text-[13px] text-neutral-500">{t("forum.headerSubtitle")}</p>
           </div>
         </div>
       </div>
@@ -102,24 +104,24 @@ export default async function SkillForumPage({
             levelCounts={levelCounts}
           />
           <div className="flex flex-col gap-1.5">
-            <p className="text-[13px] font-medium text-neutral-800">Gdzie już coś napisano</p>
+            <p className="text-[13px] font-medium text-neutral-800">{t("forum.whereWritten")}</p>
             {generalCount === 0 && activeLevels.length === 0 ? (
               <p className="text-[13px] text-neutral-500">
-                Jeszcze nikt nie pisał w tej umiejętności. Bądź pierwszy!
+                {t("forum.noPostsInSkill")}
               </p>
             ) : (
               <div className="flex flex-wrap gap-2">
                 {generalCount > 0 && (
                   <Link href={`/forum/${slug}`}>
                     <Badge variant={level === null ? "violet" : "neutral"}>
-                      Ogólne · {generalCount}
+                      {t("forum.generalWithCount", { count: generalCount })}
                     </Badge>
                   </Link>
                 )}
                 {activeLevels.map((lvl) => (
                   <Link key={lvl} href={`/forum/${slug}?level=${lvl}`}>
                     <Badge variant={level === lvl ? "violet" : "neutral"}>
-                      Poziom {lvl} · {levelCounts[lvl]}
+                      {t("forum.levelWithCount", { level: lvl, count: levelCounts[lvl] })}
                     </Badge>
                   </Link>
                 ))}
@@ -131,16 +133,16 @@ export default async function SkillForumPage({
 
       {/* Selected space */}
       <Card
-        title={levelLabel(level)}
+        title={levelLabel(level, t)}
         subtitle={
           level === null
-            ? "Ogólna dyskusja o całej umiejętności"
-            : `Rozmowa o poziomie ${level}`
+            ? t("forum.generalDiscussion")
+            : t("forum.levelDiscussion", { level })
         }
       >
         {posts.length === 0 ? (
           <p className="py-6 text-center text-[13px] text-neutral-500">
-            Nikt jeszcze nic tu nie napisał — bądź pierwszy!
+            {t("forum.beFirst")}
           </p>
         ) : (
           <ul className="flex flex-col gap-3">
@@ -169,7 +171,7 @@ export default async function SkillForumPage({
         )}
 
         <div className="mt-5 border-t border-neutral-200 pt-5">
-          <p className="mb-2 text-[13px] font-medium text-neutral-800">Dodaj wiadomość</p>
+          <p className="mb-2 text-[13px] font-medium text-neutral-800">{t("forum.addMessage")}</p>
           <PostComposer activitySlug={slug} level={level} />
         </div>
       </Card>

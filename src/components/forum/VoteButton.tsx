@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { ThumbsUp } from "lucide-react";
 import { togglePostVote } from "@/actions/forum";
+import { useT } from "@/components/i18n/I18nProvider";
 
 // "Pomocne" (helpful) toggle. Optimistic; the server returns the authoritative
 // count. A user can't vote on their own post.
@@ -17,6 +18,7 @@ export function VoteButton({
   initialVoted: boolean;
   disabled?: boolean;
 }) {
+  const t = useT();
   const [count, setCount] = useState(initialCount);
   const [voted, setVoted] = useState(initialVoted);
   const [isPending, startTransition] = useTransition();
@@ -45,7 +47,7 @@ export function VoteButton({
       onClick={toggle}
       disabled={disabled || isPending}
       aria-pressed={voted}
-      title={disabled ? "Nie możesz ocenić własnej wiadomości" : "Oznacz jako pomocne"}
+      title={disabled ? t("forum.cantVoteOwn") : t("forum.markHelpful")}
       className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13px] font-medium transition-all duration-150 outline-none focus-visible:ring-2 focus-visible:ring-violet-200 disabled:opacity-50 ${
         voted
           ? "border-violet-600 bg-violet-600 text-white shadow-[0_1px_4px_-1px_rgba(110,86,207,0.5)]"
@@ -53,7 +55,7 @@ export function VoteButton({
       }`}
     >
       <ThumbsUp aria-hidden className={`h-4 w-4 ${voted ? "fill-current" : ""}`} />
-      Pomocne
+      {t("forum.helpful")}
       <span className="tabular-nums">{count}</span>
     </button>
   );

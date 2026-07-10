@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ExternalLink, MessageSquare } from "lucide-react";
 import { linkHost } from "@/lib/forum";
+import { getT } from "@/lib/i18n/server";
+import { plural } from "@/lib/i18n/plural";
 import { AuthorChip } from "@/components/forum/AuthorChip";
 import { VoteButton } from "@/components/forum/VoteButton";
 import { DeletePostButton } from "@/components/forum/DeletePostButton";
@@ -21,7 +23,7 @@ export type PostCardData = {
 // One forum post: author, body, optional link + photo attachment, a "Pomocne"
 // vote, delete (when allowed), and — on the level list — an "open" footer that
 // links into the comment's own page + reply count.
-export function PostCard({
+export async function PostCard({
   post,
   currentUserId,
   isAdmin,
@@ -32,6 +34,7 @@ export function PostCard({
   isAdmin: boolean;
   href?: string;
 }) {
+  const { t, locale } = await getT();
   const canDelete = post.userId === currentUserId || isAdmin;
   const isOwn = post.userId === currentUserId;
 
@@ -69,7 +72,7 @@ export function PostCard({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`/api/forum-photo/${post.id}?v=${post.createdAt.getTime()}`}
-            alt="Załączone zdjęcie"
+            alt={t("forum.attachedPhoto")}
             className="max-h-80 rounded-lg border border-neutral-200 object-contain"
           />
         </a>
@@ -89,8 +92,8 @@ export function PostCard({
           >
             <MessageSquare aria-hidden className="h-4 w-4" />
             {(post.replyCount ?? 0) === 0
-              ? "Otwórz i odpowiedz"
-              : `${post.replyCount} ${post.replyCount === 1 ? "odpowiedź" : "odpowiedzi"} · otwórz`}
+              ? t("forum.openAndReply")
+              : plural(locale, "forum.replyCountOpen", post.replyCount ?? 0)}
           </Link>
         )}
       </div>

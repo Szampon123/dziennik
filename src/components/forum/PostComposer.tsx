@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Paperclip, ImagePlus, X } from "lucide-react";
 import { createPost } from "@/actions/forum";
 import { levelLabel } from "@/lib/forum";
+import { useT } from "@/components/i18n/I18nProvider";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
 
@@ -21,6 +22,7 @@ export function PostComposer({
   parentId?: string;
   variant?: "post" | "reply";
 }) {
+  const t = useT();
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const [body, setBody] = useState("");
@@ -63,8 +65,8 @@ export function PostComposer({
 
   const placeholder =
     variant === "reply"
-      ? "Napisz odpowiedź…"
-      : `Napisz coś w: ${levelLabel(level)}…`;
+      ? t("forum.writeReply")
+      : t("forum.writeInLevel", { level: levelLabel(level, t) });
 
   return (
     <div className="flex flex-col gap-2">
@@ -73,29 +75,29 @@ export function PostComposer({
         onChange={(e) => setBody(e.target.value)}
         rows={3}
         placeholder={placeholder}
-        aria-label="Treść wiadomości"
+        aria-label={t("forum.bodyAria")}
       />
 
       {showExtras && (
         <div className="flex flex-col gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
           <label className="flex flex-col gap-1">
-            <span className="text-[12px] font-medium text-neutral-700">Link do materiału</span>
+            <span className="text-[12px] font-medium text-neutral-700">{t("forum.linkLabel")}</span>
             <Input
               type="url"
               value={linkUrl}
               onChange={(e) => setLinkUrl(e.target.value)}
               placeholder="https://…"
-              aria-label="Link do materiału"
+              aria-label={t("forum.linkLabel")}
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span className="text-[12px] font-medium text-neutral-700">Zdjęcie (maks. 4 MB)</span>
+            <span className="text-[12px] font-medium text-neutral-700">{t("forum.photoMaxSize")}</span>
             <input
               ref={fileRef}
               type="file"
               accept="image/jpeg,image/png,image/webp,image/gif"
               onChange={(e) => setPhotoName(e.target.files?.[0]?.name ?? "")}
-              aria-label="Załącz zdjęcie"
+              aria-label={t("forum.attachPhoto")}
               className="text-[13px] text-neutral-600 file:mr-3 file:rounded-lg file:border-0 file:bg-violet-100 file:px-3 file:py-1.5 file:text-[13px] file:font-medium file:text-violet-700 hover:file:bg-violet-200"
             />
             {photoName && (
@@ -107,7 +109,7 @@ export function PostComposer({
                     setPhotoName("");
                     if (fileRef.current) fileRef.current.value = "";
                   }}
-                  aria-label="Usuń wybrane zdjęcie"
+                  aria-label={t("forum.removePhoto")}
                   className="rounded-full p-0.5 hover:text-danger"
                 >
                   <X className="h-3.5 w-3.5" />
@@ -122,16 +124,16 @@ export function PostComposer({
 
       <div className="flex items-center gap-2">
         <Button onClick={submit} disabled={isPending || !body.trim()}>
-          {isPending ? "Wysyłanie…" : variant === "reply" ? "Odpowiedz" : "Opublikuj"}
+          {isPending ? t("forum.sending") : variant === "reply" ? t("forum.replyButton") : t("forum.publishButton")}
         </Button>
         {!showExtras && (
           <Button variant="ghost" onClick={() => setShowExtras(true)}>
-            <Paperclip aria-hidden className="h-4 w-4" /> Dodaj zdjęcie lub link
+            <Paperclip aria-hidden className="h-4 w-4" /> {t("forum.addPhotoOrLink")}
           </Button>
         )}
         {showExtras && (
           <span className="inline-flex items-center gap-1 text-[13px] text-neutral-500">
-            <ImagePlus aria-hidden className="h-4 w-4" /> Załącznik opcjonalny
+            <ImagePlus aria-hidden className="h-4 w-4" /> {t("forum.attachmentOptional")}
           </span>
         )}
       </div>

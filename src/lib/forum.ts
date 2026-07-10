@@ -1,4 +1,9 @@
 // Forum domain helpers (client-safe): limits, level labels, author formatting.
+import type { MessageKey } from "@/lib/i18n/messages";
+
+/** Structurally what both getT()'s `t` and useT() satisfy, without importing
+ *  either (this file stays free of the server-only cookies() dependency). */
+type Translate = (key: MessageKey, params?: Record<string, string | number>) => string;
 
 export const MAX_POST_BODY = 5000;
 export const MAX_LINK = 500;
@@ -25,25 +30,29 @@ export function linkHost(value: string): string {
 
 type AuthorLike = { name?: string | null; email?: string | null };
 
-/** Public display name for a post author (never leaks the full e-mail). */
-export function authorName(user: AuthorLike | null | undefined): string {
+/**
+ * Public display name for a post author (never leaks the full e-mail).
+ * `fallback` is shown only when there is neither a name nor an email — the
+ * caller passes the localized "User" string.
+ */
+export function authorName(user: AuthorLike | null | undefined, fallback: string): string {
   const name = user?.name?.trim();
   if (name) return name;
   const local = user?.email?.split("@")[0]?.trim();
-  return local || "Użytkownik";
+  return local || fallback;
 }
 
 /** First letter for the avatar chip. */
-export function authorInitial(user: AuthorLike | null | undefined): string {
-  return authorName(user).charAt(0).toUpperCase();
+export function authorInitial(user: AuthorLike | null | undefined, fallback: string): string {
+  return authorName(user, fallback).charAt(0).toUpperCase();
 }
 
 /** Human label for a discussion space's level (null = the whole skill). */
-export function levelLabel(level: number | null): string {
-  return level === null ? "Ogólne" : `Poziom ${level}`;
+export function levelLabel(level: number | null, t: Translate): string {
+  return level === null ? t("forum.levelGeneral") : t("forum.levelN", { level });
 }
 
-/** Parse a `?level=` search param into null (Ogólne) or a valid 1..99 level. */
+/** Parse a `?level=` search param into null (General) or a valid 1..99 level. */
 export function parseLevelParam(value: string | undefined): number | null {
   if (!value || value === "ogolne") return null;
   const n = parseInt(value, 10);

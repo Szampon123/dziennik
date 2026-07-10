@@ -5,6 +5,8 @@ import Link from "next/link";
 import { MessageSquare } from "lucide-react";
 import { ActivityIcon } from "@/lib/activity-icons";
 import { Input } from "@/components/ui/Input";
+import { useT, useLocale } from "@/components/i18n/I18nProvider";
+import { plural } from "@/lib/i18n/plural";
 import { EmptyState } from "@/components/EmptyState";
 
 type SkillItem = { slug: string; name: string; category: string; count: number };
@@ -12,6 +14,8 @@ type SkillItem = { slug: string; name: string; category: string; count: number }
 // Searchable board of every skill: each is a permanent discussion space. The
 // count badge shows how many messages have been posted across all its levels.
 export function SkillForumList({ skills }: { skills: SkillItem[] }) {
+  const t = useT();
+  const locale = useLocale();
   const [query, setQuery] = useState("");
 
   const visible = useMemo(() => {
@@ -25,12 +29,12 @@ export function SkillForumList({ skills }: { skills: SkillItem[] }) {
       <Input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Szukaj umiejętności…"
-        aria-label="Szukaj umiejętności"
+        placeholder={t("forum.searchSkills")}
+        aria-label={t("forum.searchSkillsAria")}
       />
 
       {visible.length === 0 ? (
-        <EmptyState title="Brak pasujących umiejętności" hint="Zmień frazę wyszukiwania." />
+        <EmptyState title={t("forum.noMatchingSkills")} hint={t("forum.changeSearch")} />
       ) : (
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {visible.map((s) => (
@@ -49,8 +53,8 @@ export function SkillForumList({ skills }: { skills: SkillItem[] }) {
                   <span className="mt-0.5 flex items-center gap-1.5 text-[13px] text-neutral-500">
                     <MessageSquare aria-hidden className="h-3.5 w-3.5" />
                     {s.count === 0
-                      ? "brak wiadomości"
-                      : `${s.count} ${s.count === 1 ? "wiadomość" : s.count >= 2 && s.count <= 4 ? "wiadomości" : "wiadomości"}`}
+                      ? t("forum.noMessages")
+                      : plural(locale, "forum.messageCount", s.count)}
                   </span>
                 </span>
               </Link>
