@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useT } from "@/components/i18n/I18nProvider";
 import { buttonClass } from "@/components/ui/Button";
 import { inputClass } from "@/components/ui/Input";
 
 /** Email + password sign-in. On success the browser lands on the Dziś screen. */
 export function CredentialsLoginForm() {
+  const t = useT();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -48,6 +51,12 @@ export function CredentialsLoginForm() {
         required
         className={inputClass}
       />
+      <Link
+        href="/forgot-password"
+        className="self-end text-[13px] text-neutral-600 hover:text-violet-600 hover:underline"
+      >
+        {t("auth.forgotPassword")}
+      </Link>
       <button type="submit" disabled={isPending} className={buttonClass("primary", "w-full")}>
         {isPending ? "Logowanie…" : "Zaloguj się"}
       </button>

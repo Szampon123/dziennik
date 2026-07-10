@@ -4,21 +4,9 @@
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
+import { resolveBaseUrl } from "@/lib/base-url";
 
 const VERIFICATION_EXPIRY_HOURS = 24;
-
-/**
- * Absolute origin for links we email out. AUTH_URL is what this project sets
- * (Auth.js reads the same var); VERCEL_URL is the preview/production fallback
- * and carries no scheme.
- */
-function resolveBaseUrl(): string {
-  const explicit = process.env.AUTH_URL?.trim();
-  if (explicit) return explicit.replace(/\/+$/, "");
-  const vercel = process.env.VERCEL_URL?.trim();
-  if (vercel) return `https://${vercel}`;
-  return "http://localhost:3000";
-}
 
 /**
  * Issue a fresh verification token for `email` and mail the link. Any pending

@@ -51,8 +51,14 @@ model User {
   // column were backfilled with the migration timestamp.
   createdAt DateTime @default(now())
 
+  // Cut-off for JWT sessions: any token issued before this instant is rejected
+  // by the jwt callback in src/lib/auth.ts. Set on password reset so the old
+  // password's sessions die with it. null = no cut-off (never reset).
+  sessionsValidFrom DateTime?
+
   accounts         Account[]
   sessions         Session[]
+  passwordResetTokens PasswordResetToken[]
   dayEntries       DayEntry[]
   oauthTokens      OAuthToken[]
   milestones       UserMilestone[]
@@ -100,6 +106,24 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
+}
+
+// One outstanding "forgot password" link. `token` is the SHA-256 hash of the
+// random value that went out in the email, never the value itself — a dump of
+// this table must not let the reader reset anybody's password. Rows are kept
+// after use (usedAt set) so a second click on a spent link can say "already
+// used" rather than the misleading "invalid or expired".
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  userId    String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 // ---------- Journal domain ----------

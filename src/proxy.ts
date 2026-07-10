@@ -26,6 +26,10 @@ const PUBLIC_PATHS = [
   "/register",
   "/suspended",
   "/verify-email",
+  // Someone who has forgotten their password is signed out by definition —
+  // gating these would make the reset flow unreachable.
+  "/forgot-password",
+  "/reset-password",
   "/api/auth",
   "/_next",
   "/favicon.ico",
