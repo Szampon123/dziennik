@@ -88,8 +88,7 @@ export function DashboardCustomizer({
       {open && (
         <div className="w-full rounded-card border border-neutral-200 bg-neutral-0 p-4 shadow-card">
           <p className="mb-3 text-[13px] text-neutral-500">
-            Wybierz, które sekcje widzisz na ekranie Dziś i w jakiej kolejności. To opcjonalne — bez
-            zmian zobaczysz wszystko.
+            {t("dashboard.intro")}
           </p>
 
           <ul className="flex flex-col gap-1.5">
@@ -108,8 +107,8 @@ export function DashboardCustomizer({
                     type="button"
                     onClick={() => toggle(id)}
                     aria-pressed={visible}
-                    aria-label={visible ? `Ukryj: ${w.label}` : `Pokaż: ${w.label}`}
-                    title={visible ? "Ukryj" : "Pokaż"}
+                    aria-label={visible ? t("dashboard.hideAria", { label: t(w.labelKey) }) : t("dashboard.showAria", { label: t(w.labelKey) })}
+                    title={visible ? t("dashboard.hide") : t("dashboard.show")}
                     className={`shrink-0 rounded-md p-1.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-violet-200 ${
                       visible
                         ? "bg-violet-100 text-violet-700 hover:bg-violet-200"
@@ -125,9 +124,9 @@ export function DashboardCustomizer({
                         visible ? "text-neutral-900" : "text-neutral-400"
                       }`}
                     >
-                      {w.label}
+                      {t(w.labelKey)}
                     </p>
-                    <p className="truncate text-[12px] text-neutral-400">{w.description}</p>
+                    <p className="truncate text-[12px] text-neutral-400">{t(w.descriptionKey)}</p>
                   </div>
 
                   <div className="flex shrink-0 items-center">
@@ -135,8 +134,8 @@ export function DashboardCustomizer({
                       type="button"
                       onClick={() => move(i, -1)}
                       disabled={i === 0}
-                      aria-label={`Przesuń wyżej: ${w.label}`}
-                      title="Wyżej"
+                      aria-label={t("dashboard.moveUpAria", { label: t(w.labelKey) })}
+                      title={t("dashboard.moveUp")}
                       className="rounded p-1 text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-30"
                     >
                       <ChevronUp className="h-4 w-4" />
@@ -145,8 +144,8 @@ export function DashboardCustomizer({
                       type="button"
                       onClick={() => move(i, 1)}
                       disabled={i === ord.length - 1}
-                      aria-label={`Przesuń niżej: ${w.label}`}
-                      title="Niżej"
+                      aria-label={t("dashboard.moveDownAria", { label: t(w.labelKey) })}
+                      title={t("dashboard.moveDown")}
                       className="rounded p-1 text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-30"
                     >
                       <ChevronDown className="h-4 w-4" />
@@ -159,14 +158,14 @@ export function DashboardCustomizer({
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <Button onClick={save} disabled={isPending}>
-              {isPending ? "Zapisywanie…" : "Zapisz układ"}
+              {isPending ? t("common.saving") : t("dashboard.saveLayout")}
             </Button>
             <Button variant="ghost" onClick={reset} disabled={isPending}>
               <RotateCcw aria-hidden className="h-4 w-4" />
-              Domyślny układ
+              {t("dashboard.defaultLayout")}
             </Button>
             {status === "saved" ? (
-              <span className="text-[13px] text-success">Zapisano ✓</span>
+              <span className="text-[13px] text-success">{t("common.saved")}</span>
             ) : (
               <span className="text-[13px] text-neutral-400">
                 Widoczne sekcje: {visibleCount}/{ord.length}

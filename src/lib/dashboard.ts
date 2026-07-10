@@ -3,21 +3,19 @@
 // customising is optional — a user who never touches it sees the full view.
 // Client-safe (pure data); the config is stored per user as JSON on User.
 
-export type DashboardWidget = { id: string; label: string; description: string };
+import type { MessageKey } from "@/lib/i18n/messages";
+
+export type DashboardWidget = { id: string; labelKey: MessageKey; descriptionKey: MessageKey };
 
 export const DASHBOARD_WIDGETS: DashboardWidget[] = [
-  { id: "quote", label: "Cytat na dziś", description: "Codzienna inspiracja" },
-  { id: "dayOverview", label: "Przegląd dnia", description: "Postęp, oceny, seria, trend" },
-  {
-    id: "nowNext",
-    label: "Teraz / Następne wydarzenie",
-    description: "Bieżące i najbliższe wydarzenie",
-  },
-  { id: "calendar", label: "Kalendarz", description: "Tydzień i wydarzenia z Google Calendar" },
-  { id: "morning", label: "Poranek", description: "Intencja i priorytety" },
-  { id: "todos", label: "Do zrobienia", description: "Krótka lista zadań z godziną" },
-  { id: "notes", label: "Notatki z dnia", description: "Szybkie zapiski" },
-  { id: "close", label: "Zamknięcie dnia", description: "Refleksja i oceny" },
+  { id: "quote", labelKey: "dashboard.widget.quote.label", descriptionKey: "dashboard.widget.quote.description" },
+  { id: "dayOverview", labelKey: "dashboard.widget.dayOverview.label", descriptionKey: "dashboard.widget.dayOverview.description" },
+  { id: "nowNext", labelKey: "dashboard.widget.nowNext.label", descriptionKey: "dashboard.widget.nowNext.description" },
+  { id: "calendar", labelKey: "dashboard.widget.calendar.label", descriptionKey: "dashboard.widget.calendar.description" },
+  { id: "morning", labelKey: "dashboard.widget.morning.label", descriptionKey: "dashboard.widget.morning.description" },
+  { id: "todos", labelKey: "dashboard.widget.todos.label", descriptionKey: "dashboard.widget.todos.description" },
+  { id: "notes", labelKey: "dashboard.widget.notes.label", descriptionKey: "dashboard.widget.notes.description" },
+  { id: "close", labelKey: "dashboard.widget.close.label", descriptionKey: "dashboard.widget.close.description" },
 ];
 
 export const DASHBOARD_WIDGET_IDS = DASHBOARD_WIDGETS.map((w) => w.id);

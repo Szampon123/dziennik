@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/components/i18n/I18nProvider";
 import {
   THEME_OPTIONS,
   THEME_CHANGE_EVENT,
@@ -12,6 +13,7 @@ import { CustomThemeEditor } from "@/components/CustomThemeEditor";
 
 // Design System v1.0 — segmented control on a neutral-100 track.
 export function ThemeSegmented() {
+  const t = useT();
   const [theme, setTheme] = useState<ThemeId>("system");
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export function ThemeSegmented() {
                 : "text-neutral-600 hover:text-neutral-900"
             }`}
           >
-            {o.label}
+            {t(o.labelKey)}
           </button>
         ))}
       </div>

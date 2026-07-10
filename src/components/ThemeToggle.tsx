@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 import { applyTheme } from "@/lib/theme";
+import { useT } from "@/components/i18n/I18nProvider";
 
 // Watch the <html> class list so the icon always reflects the active theme
 // (the initial class is set by the inline script in layout.tsx before paint).
@@ -16,6 +17,7 @@ function subscribe(callback: () => void) {
 }
 
 export function ThemeToggle() {
+  const t = useT();
   const dark = useSyncExternalStore(
     subscribe,
     () => document.documentElement.classList.contains("dark"),
@@ -31,8 +33,8 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-label="Przełącz tryb ciemny"
-      title="Przełącz tryb ciemny"
+      aria-label={t("theme.toggleDark")}
+      title={t("theme.toggleDark")}
       className="flex h-10 w-10 items-center justify-center rounded-lg text-neutral-600 transition-colors outline-none hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-violet-200"
     >
       {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}

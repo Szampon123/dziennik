@@ -10,10 +10,13 @@ import {
   type CustomVars,
 } from "@/lib/theme";
 import { Button } from "@/components/ui/Button";
+import { useT } from "@/components/i18n/I18nProvider";
+import type { MessageKey } from "@/lib/i18n/messages";
 
 // Lets the user recolour individual UI elements (the "Custom" theme). Changes
 // apply live and persist to localStorage; each token can be reset to default.
 export function CustomThemeEditor() {
+  const tr = useT();
   const [vars, setVars] = useState<CustomVars>({});
 
   useEffect(() => {
@@ -23,10 +26,10 @@ export function CustomThemeEditor() {
 
   const groups = useMemo(() => {
     const order: string[] = [];
-    for (const t of CUSTOM_TOKENS) if (!order.includes(t.group)) order.push(t.group);
+    for (const t of CUSTOM_TOKENS) if (!order.includes(t.groupKey)) order.push(t.groupKey);
     return order.map((group) => ({
       group,
-      tokens: CUSTOM_TOKENS.filter((t) => t.group === group),
+      tokens: CUSTOM_TOKENS.filter((t) => t.groupKey === group),
     }));
   }, []);
 
@@ -55,13 +58,12 @@ export function CustomThemeEditor() {
   return (
     <div className="flex flex-col gap-5 rounded-lg border border-neutral-200 bg-neutral-50 p-4">
       <p className="text-[13px] text-neutral-500">
-        Dostosuj kolory poszczególnych elementów. Zmiany zapisują się od razu i tylko na tym
-        urządzeniu.
+        {tr("theme.customIntro")}
       </p>
 
       {groups.map(({ group, tokens }) => (
         <div key={group} className="flex flex-col gap-2">
-          <p className="text-[13px] font-medium text-neutral-800">{group}</p>
+          <p className="text-[13px] font-medium text-neutral-800">{tr(group as MessageKey)}</p>
           <div className="flex flex-col gap-2">
             {tokens.map((t) => {
               const current = vars[t.cssVar] ?? t.default;
@@ -71,17 +73,17 @@ export function CustomThemeEditor() {
                   <label
                     className="relative h-8 w-8 shrink-0 cursor-pointer overflow-hidden rounded-md border border-neutral-300"
                     style={{ backgroundColor: current }}
-                    title={`Zmień: ${t.label}`}
+                    title={tr("theme.changeColor", { label: tr(t.labelKey) })}
                   >
                     <input
                       type="color"
                       value={current}
                       onChange={(e) => setColor(t.cssVar, e.target.value)}
-                      aria-label={t.label}
+                      aria-label={tr(t.labelKey)}
                       className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
                     />
                   </label>
-                  <span className="flex-1 text-sm text-neutral-800">{t.label}</span>
+                  <span className="flex-1 text-sm text-neutral-800">{tr(t.labelKey)}</span>
                   <span className="font-mono text-[13px] uppercase text-neutral-500">
                     {current}
                   </span>
@@ -89,8 +91,8 @@ export function CustomThemeEditor() {
                     type="button"
                     onClick={() => resetToken(t.cssVar)}
                     disabled={!overridden}
-                    aria-label={`Przywróć domyślny: ${t.label}`}
-                    title="Przywróć domyślny"
+                    aria-label={tr("theme.resetDefaultAria", { label: tr(t.labelKey) })}
+                    title={tr("theme.resetDefault")}
                     className="rounded p-1 text-neutral-500 transition-colors hover:text-neutral-900 disabled:pointer-events-none disabled:opacity-30"
                   >
                     <RotateCcw className="h-3.5 w-3.5" />
@@ -104,7 +106,7 @@ export function CustomThemeEditor() {
 
       <div>
         <Button variant="secondary" onClick={resetAll} disabled={!hasOverrides}>
-          Przywróć wszystkie domyślne
+          {tr("theme.resetAll")}
         </Button>
       </div>
     </div>

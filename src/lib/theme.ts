@@ -7,37 +7,39 @@
 // The pre-paint inline script in layout.tsx mirrors applyTheme() to avoid a
 // flash of the wrong theme; keep the two in sync.
 
+import type { MessageKey } from "@/lib/i18n/messages";
+
 export type ThemeId = "light" | "dark" | "system" | "colorful" | "custom";
 
 export type CustomVars = Record<string, string>;
 
-export const THEME_OPTIONS: { id: ThemeId; label: string }[] = [
-  { id: "light", label: "Jasny" },
-  { id: "dark", label: "Ciemny" },
-  { id: "system", label: "System" },
-  { id: "colorful", label: "Kolorowy" },
-  { id: "custom", label: "Custom" },
+export const THEME_OPTIONS: { id: ThemeId; labelKey: MessageKey }[] = [
+  { id: "light", labelKey: "theme.opt.light" },
+  { id: "dark", labelKey: "theme.opt.dark" },
+  { id: "system", labelKey: "theme.opt.system" },
+  { id: "colorful", labelKey: "theme.opt.colorful" },
+  { id: "custom", labelKey: "theme.opt.custom" },
 ];
 
 export type CustomToken = {
   cssVar: string;
-  label: string;
-  group: string;
+  labelKey: MessageKey;
+  groupKey: MessageKey;
   default: string; // light-theme value — shown initially and on reset
 };
 
 // A curated, understandable subset of the palette the user can recolour.
 // (The full palette has ~40 vars; these are the ones with visible impact.)
 export const CUSTOM_TOKENS: CustomToken[] = [
-  { cssVar: "--neutral-50", label: "Tło strony", group: "Tło i tekst", default: "#fafafc" },
-  { cssVar: "--neutral-0", label: "Tło kart", group: "Tło i tekst", default: "#ffffff" },
-  { cssVar: "--neutral-200", label: "Obramowania", group: "Tło i tekst", default: "#e8e8ee" },
-  { cssVar: "--neutral-900", label: "Tekst główny", group: "Tło i tekst", default: "#17171d" },
-  { cssVar: "--neutral-600", label: "Tekst drugorzędny", group: "Tło i tekst", default: "#5c5c68" },
-  { cssVar: "--violet-600", label: "Akcent / przyciski", group: "Akcenty", default: "#6e56cf" },
-  { cssVar: "--violet-100", label: "Akcent — tło aktywne", group: "Akcenty", default: "#f1edfd" },
-  { cssVar: "--azure-500", label: "Dane / wykresy", group: "Akcenty", default: "#0ea5e9" },
-  { cssVar: "--success", label: "Ukończenie", group: "Akcenty", default: "#16a34a" },
+  { cssVar: "--neutral-50", labelKey: "theme.token.pageBg", groupKey: "theme.group.bgText", default: "#fafafc" },
+  { cssVar: "--neutral-0", labelKey: "theme.token.cardBg", groupKey: "theme.group.bgText", default: "#ffffff" },
+  { cssVar: "--neutral-200", labelKey: "theme.token.borders", groupKey: "theme.group.bgText", default: "#e8e8ee" },
+  { cssVar: "--neutral-900", labelKey: "theme.token.textMain", groupKey: "theme.group.bgText", default: "#17171d" },
+  { cssVar: "--neutral-600", labelKey: "theme.token.textSecondary", groupKey: "theme.group.bgText", default: "#5c5c68" },
+  { cssVar: "--violet-600", labelKey: "theme.token.accent", groupKey: "theme.group.accents", default: "#6e56cf" },
+  { cssVar: "--violet-100", labelKey: "theme.token.accentActive", groupKey: "theme.group.accents", default: "#f1edfd" },
+  { cssVar: "--azure-500", labelKey: "theme.token.dataCharts", groupKey: "theme.group.accents", default: "#0ea5e9" },
+  { cssVar: "--success", labelKey: "theme.token.completion", groupKey: "theme.group.accents", default: "#16a34a" },
 ];
 
 const THEME_KEY = "theme";
