@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { PATHNAME_HEADER } from "@/lib/pathname-header";
@@ -13,21 +14,55 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 /**
+ * Routes the onboarding gate must never fire on, or a brand-new user is stuck
+ * in a redirect loop: the wizard itself, and every page reachable while signed
+ * in but not yet set up.
+ *
+ * "/" is here because the landing page already bounces a signed-in visitor to
+ * /dzis, where the gate does fire. Gating "/" as well would just add a hop.
+ */
+const ONBOARDING_EXEMPT = new Set([
+  "/",
+  "/login",
+  "/register",
+  "/suspended",
+  "/verify-email",
+  "/forgot-password",
+  "/reset-password",
+  "/privacy",
+  "/terms",
+]);
+
+function isOnboardingExempt(pathname: string): boolean {
+  return ONBOARDING_EXEMPT.has(pathname) || pathname.startsWith("/onboarding");
+}
+
+/**
+ * The one user lookup the chrome needs, resolved once.
+ *
  * Credentials accounts start unverified; Google accounts arrive verified. The
  * role comes from the session (the jwt callback re-reads it every request), so
- * only emailVerified needs a lookup — and only for signed-in, non-suspended
- * users, who are the only ones who can act on the banner.
+ * only emailVerified and onboardingComplete need a lookup — and only for
+ * signed-in, non-suspended users, the only ones who can act on either.
  */
-async function needsEmailVerification(): Promise<boolean> {
+async function loadChromeUser(): Promise<{
+  needsVerification: boolean;
+  needsOnboarding: boolean;
+} | null> {
   const session = await auth();
   const userId = session?.user?.id;
-  if (!userId || session.user.role === "suspended") return false;
+  if (!userId || session.user.role === "suspended") return null;
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { emailVerified: true },
+    select: { emailVerified: true, onboardingComplete: true },
   });
-  return user != null && user.emailVerified == null;
+  if (!user) return null;
+
+  return {
+    needsVerification: user.emailVerified == null,
+    needsOnboarding: !user.onboardingComplete,
+  };
 }
 
 const inter = Inter({
@@ -90,19 +125,33 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // The landing page is the one route that is not "the app": it brings its own
-  // nav and needs the full viewport width, so it renders on a bare canvas.
-  // A server component cannot see the pathname, hence the header the proxy sets.
-  const isLanding = (await headers()).get(PATHNAME_HEADER) === "/";
+  // The landing page and the onboarding wizard are the two routes that are not
+  // "the app": each brings its own frame and needs the full viewport width, so
+  // both render on a bare canvas. A server component cannot see the pathname,
+  // hence the header the proxy sets.
+  const pathname = (await headers()).get(PATHNAME_HEADER) ?? "";
+  const isLanding = pathname === "/";
+  const isOnboarding = pathname.startsWith("/onboarding");
+  const isBare = isLanding || isOnboarding;
 
   const locale = await getLocale();
+
   // Skipped for the landing page: an anonymous visitor has no session to read
   // and no banner to act on, so this would be an auth() round-trip for nothing.
-  const showVerificationBanner = isLanding ? false : await needsEmailVerification();
+  const chromeUser = isLanding ? null : await loadChromeUser();
+
+  // Send a user who has not finished setup back to the wizard. Placed here, and
+  // not in the proxy, because the proxy runs on the Edge and cannot read the
+  // database — the flag lives on the User row, not in the JWT.
+  if (chromeUser?.needsOnboarding && !isOnboardingExempt(pathname)) {
+    redirect("/onboarding");
+  }
+
+  const showVerificationBanner = chromeUser?.needsVerification ?? false;
 
   return (
     <html
-      lang={isLanding ? "en" : locale}
+      lang={isBare ? "en" : locale}
       suppressHydrationWarning
       className={`${inter.variable} ${robotoMono.variable} h-full antialiased`}
     >
@@ -111,7 +160,7 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <I18nProvider locale={locale}>
-          {isLanding ? (
+          {isBare ? (
             children
           ) : (
             <>

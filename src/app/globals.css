@@ -209,6 +209,57 @@ body {
   }
 }
 
+/* Onboarding: one-shot confetti on the final step. Pure CSS, no library. */
+@keyframes onboarding-confetti {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(150px) rotate(420deg);
+    opacity: 0;
+  }
+}
+.onboarding-confetti {
+  position: absolute;
+  top: 0;
+  width: 7px;
+  height: 11px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: onboarding-confetti 1.6s ease-in forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-confetti {
+    animation: none;
+    /* No fall, and no stranded squares hanging at the top of the card. */
+    display: none;
+  }
+}
+
+/* Onboarding: each step fades and lifts in as it becomes current. */
+@keyframes onboarding-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.onboarding-step {
+  animation: onboarding-step-in 260ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-step {
+    animation: none;
+  }
+}
+
 /* Landing page: slow drift of the violet bloom behind the Dudu section. */
 @keyframes landing-drift {
   0%,

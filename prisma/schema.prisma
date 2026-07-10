@@ -56,6 +56,12 @@ model User {
   // password's sessions die with it. null = no cut-off (never reset).
   sessionsValidFrom DateTime?
 
+  // Has this user been through the post-registration wizard? The root layout
+  // sends anyone still false to /onboarding. Backfilled to true for every row
+  // that existed when the column was added, so only accounts registered after
+  // the deploy ever see it.
+  onboardingComplete Boolean @default(false)
+
   accounts         Account[]
   sessions         Session[]
   passwordResetTokens PasswordResetToken[]
