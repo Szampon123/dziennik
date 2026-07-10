@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { requireUserId } from "@/lib/session";
 import { auth } from "@/lib/auth";
 import { getGoogleStatus } from "@/lib/google";
@@ -10,6 +11,14 @@ import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { getT } from "@/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
+
+// Behind the auth proxy: a signed-out crawler is redirected away, so this page
+// must never be indexed. noindex takes the place of a canonical — a canonical
+// would only assert that this URL duplicates another one.
+export const metadata: Metadata = {
+  title: "Ustawienia",
+  robots: { index: false, follow: false },
+};
 
 const GOOGLE_BANNERS: Record<string, { text: string; tone: "ok" | "error" }> = {
   connected: { text: "Google Calendar połączony pomyślnie.", tone: "ok" },

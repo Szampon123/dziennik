@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUserId } from "@/lib/session";
@@ -5,6 +6,14 @@ import { RegisterForm } from "@/components/RegisterForm";
 import { AuthShell } from "@/components/AuthShell";
 
 export const dynamic = "force-dynamic";
+
+// One of the two pages a signed-out crawler can actually reach, so it carries a
+// real canonical rather than the noindex the gated pages use.
+export const metadata: Metadata = {
+  title: "Rejestracja",
+  description: "Załóż konto i zacznij prowadzić swój dziennik dnia.",
+  alternates: { canonical: "/register" },
+};
 
 export default async function RegisterPage() {
   const userId = await getSessionUserId();

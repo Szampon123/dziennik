@@ -13,7 +13,14 @@ import { getToken } from "next-auth/jwt";
 
 // Paths that must stay reachable without a session. Everything else is gated.
 // (Static assets and image files are already excluded by `config.matcher`
-// below, so this list only covers the auth surface and Next.js internals.)
+// below, so this list only covers the auth surface, the crawler surface and
+// Next.js internals.)
+//
+// The crawler entries are load-bearing, not cosmetic: `config.matcher` only
+// exempts `_next/*` and image extensions, so without them `/robots.txt` and
+// `/sitemap.xml` would answer a crawler with a 307 to /login, and `/api/og`
+// — matching the `/api/` branch below — would answer link-preview scrapers
+// with a 401 JSON body instead of the Open Graph card.
 const PUBLIC_PATHS = [
   "/login",
   "/register",
@@ -22,6 +29,11 @@ const PUBLIC_PATHS = [
   "/api/auth",
   "/_next",
   "/favicon.ico",
+  // Crawler + link-preview surface.
+  "/robots.txt",
+  "/sitemap.xml",
+  "/manifest.webmanifest",
+  "/api/og",
 ];
 
 function isPublicPath(pathname: string): boolean {

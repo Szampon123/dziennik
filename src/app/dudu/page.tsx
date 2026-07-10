@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { requireUserId } from "@/lib/session";
 import { completedMilestoneCount } from "@/lib/queries";
 import { computeCharacter, CHARACTER_STAGES } from "@/lib/character";
@@ -9,6 +10,14 @@ import { Progress } from "@/components/ui/Progress";
 import { DuduCustomizer } from "@/components/DuduCustomizer";
 
 export const dynamic = "force-dynamic";
+
+// Behind the auth proxy: a signed-out crawler is redirected away, so this page
+// must never be indexed. noindex takes the place of a canonical — a canonical
+// would only assert that this URL duplicates another one.
+export const metadata: Metadata = {
+  title: "Bohater",
+  robots: { index: false, follow: false },
+};
 
 export default async function DuduPage() {
   const userId = await requireUserId();

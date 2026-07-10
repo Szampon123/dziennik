@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { requireUserId } from "@/lib/session";
 import { listActivitiesWithProgress } from "@/lib/activities";
 import { getT } from "@/lib/i18n/server";
@@ -6,6 +7,14 @@ import { ActivitiesOverview } from "@/components/ActivitiesOverview";
 import { ActivitiesBrowser } from "@/components/ActivitiesBrowser";
 
 export const dynamic = "force-dynamic";
+
+// Behind the auth proxy: a signed-out crawler is redirected away, so this page
+// must never be indexed. noindex takes the place of a canonical — a canonical
+// would only assert that this URL duplicates another one.
+export const metadata: Metadata = {
+  title: "Aktywności",
+  robots: { index: false, follow: false },
+};
 
 export default async function ActivitiesPage() {
   const userId = await requireUserId();

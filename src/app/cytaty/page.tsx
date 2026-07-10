@@ -1,9 +1,18 @@
+import type { Metadata } from "next";
 import { requireUserId } from "@/lib/session";
 import { favoriteQuoteIds } from "@/lib/queries";
 import { getT } from "@/lib/i18n/server";
 import { QuotesBrowser } from "@/components/QuotesBrowser";
 
 export const dynamic = "force-dynamic";
+
+// Behind the auth proxy: a signed-out crawler is redirected away, so this page
+// must never be indexed. noindex takes the place of a canonical — a canonical
+// would only assert that this URL duplicates another one.
+export const metadata: Metadata = {
+  title: "Cytaty",
+  robots: { index: false, follow: false },
+};
 
 export default async function CytatyPage({
   searchParams,

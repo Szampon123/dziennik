@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, BRAND } from "@/lib/seo";
 import { Nav } from "@/components/Nav";
 import { UserMenu } from "@/components/UserMenu";
 import { VerificationBanner } from "@/components/VerificationBanner";
@@ -40,8 +41,42 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dziennik",
-  description: "Osobisty dziennik dnia — intencje, notatki, refleksje.",
+  // Lets every metadata field below (and in child routes) use a relative URL.
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    // Child routes set a bare title ("Nawyki") and inherit the suffix.
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  manifest: "/manifest.webmanifest",
+  // No `alternates.canonical` here: metadata is inherited, so a root canonical
+  // would declare every page a duplicate of "/". Public routes set their own.
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "pl_PL",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: "/",
+    images: [{ url: "/api/og", width: 1200, height: 630, alt: SITE_NAME }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: ["/api/og"],
+  },
+};
+
+// themeColor lives here, not in `metadata` — it has been deprecated on the
+// metadata export since Next 14 and warns at build time.
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: BRAND.surface },
+    { media: "(prefers-color-scheme: dark)", color: BRAND.ink },
+  ],
 };
 
 // Applies the saved (or system) theme before first paint to avoid a flash.
