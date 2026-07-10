@@ -10,7 +10,7 @@ import { SITE_NAME, SITE_DESCRIPTION, BRAND } from "@/lib/seo";
 // crop, and this one would lose its rounded edge and clip the drawing.
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${SITE_NAME} — osobisty dziennik dnia`,
+    name: `${SITE_NAME} — daily journal`,
     short_name: SITE_NAME,
     description: SITE_DESCRIPTION,
     start_url: "/",

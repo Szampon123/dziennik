@@ -199,7 +199,10 @@ async function listEventsInRange(
       const dayKey = allDay ? (e.start?.date ?? "") : toDayKey(new Date(start));
       return {
         id: e.id ?? `${start}-${e.summary}`,
-        summary: e.summary ?? "(bez tytułu)",
+        // Fallback for an event with no title. A plain English literal, not a
+        // localized string: this runs in the calendar data layer, which isn't
+        // always request-scoped, so getLocale() can't be relied on here.
+        summary: e.summary ?? "(untitled)",
         start,
         end,
         allDay,

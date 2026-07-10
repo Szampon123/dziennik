@@ -92,13 +92,13 @@ export default async function HistoryPage() {
                     )}
                     <Badge
                       variant={day.dayRating !== null ? "violet" : "neutral"}
-                      title="Ocena dnia"
+                      title={t("close.rating")}
                     >
                       ★ {day.dayRating ?? "—"}/5
                     </Badge>
                     <Badge
                       variant={day.energyLevel !== null ? "azure" : "neutral"}
-                      title="Poziom energii"
+                      title={t("close.energy")}
                     >
                       ⚡ {day.energyLevel ?? "—"}/5
                     </Badge>

@@ -25,7 +25,7 @@ export const SITE_URL = "https://vincendio.com";
 export const SITE_NAME = "Vincendio";
 
 export const SITE_DESCRIPTION =
-  "Osobisty dziennik dnia — intencje, notatki, refleksje. Prowadź nawyki, rozwijaj umiejętności i śledź postępy.";
+  "Your personal daily journal — intentions, notes, reflections. Build habits, grow skills, and track your progress.";
 
 /**
  * The Open Graph card, as a shared value.

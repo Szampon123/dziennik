@@ -30,7 +30,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 providers.push(
   Credentials({
     id: "credentials",
-    name: "E-mail i hasło",
+    name: "Email and password",
     credentials: { email: {}, password: {} },
     async authorize(creds) {
       const email = typeof creds?.email === "string" ? creds.email.trim().toLowerCase() : "";

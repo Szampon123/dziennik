@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import { formatDayShort } from "@/lib/dates";
 import { useLocale } from "@/components/i18n/I18nProvider";
+import { useT } from "@/components/i18n/I18nProvider";
 
 export type ChartPoint = {
   date: string;
@@ -24,6 +25,7 @@ export type ChartPoint = {
 // Design System v1.0 — data belongs to azure; day rating keeps the violet accent.
 // Tasks completion is a % on its own right-hand axis (success/green = done).
 export function HistoryChart({ data }: { data: ChartPoint[] }) {
+  const t = useT();
   const locale = useLocale();
   const points = data.map((d) => ({
     ...d,
@@ -74,7 +76,7 @@ export function HistoryChart({ data }: { data: ChartPoint[] }) {
             yAxisId="rating"
             type="monotone"
             dataKey="dayRating"
-            name="Ocena dnia"
+            name={t("close.rating")}
             stroke="var(--violet-600)"
             strokeWidth={2}
             dot={{ r: 2 }}
@@ -84,7 +86,7 @@ export function HistoryChart({ data }: { data: ChartPoint[] }) {
             yAxisId="rating"
             type="monotone"
             dataKey="energyLevel"
-            name="Energia"
+            name={t("chart.energy")}
             stroke="var(--azure-500)"
             strokeWidth={2}
             dot={{ r: 2 }}
@@ -94,7 +96,7 @@ export function HistoryChart({ data }: { data: ChartPoint[] }) {
             yAxisId="pct"
             type="monotone"
             dataKey="tasksPct"
-            name="Zadania (%)"
+            name={t("chart.tasksPct")}
             stroke="var(--success)"
             strokeWidth={2}
             strokeDasharray="5 3"

@@ -104,10 +104,10 @@ export default async function DayDetailPage({
               {headerTasksDone ?? 0}/{headerTasksTotal}
             </Badge>
           )}
-          <Badge variant={day.dayRating !== null ? "violet" : "neutral"} title="Ocena dnia">
+          <Badge variant={day.dayRating !== null ? "violet" : "neutral"} title={t("close.rating")}>
             ★ {day.dayRating ?? "—"}/5
           </Badge>
-          <Badge variant={day.energyLevel !== null ? "azure" : "neutral"} title="Poziom energii">
+          <Badge variant={day.energyLevel !== null ? "azure" : "neutral"} title={t("close.energy")}>
             ⚡ {day.energyLevel ?? "—"}/5
           </Badge>
         </div>
@@ -125,7 +125,7 @@ export default async function DayDetailPage({
       </Card>
 
       <Card
-        title="Zadania z kalendarza"
+        title={t("history.calendarTasks")}
         subtitle={
           hasEvents
             ? t("history.tasksHintOpen")
@@ -146,7 +146,7 @@ export default async function DayDetailPage({
         )}
       </Card>
 
-      <Card title="Notatki z dnia" subtitle="Zapiski z timestampem">
+      <Card title={t("notes.sectionTitle")} subtitle={t("notes.sectionSubtitle")}>
         <NoteStream date={day.date} notes={day.notes} disabled={closed} />
       </Card>
 

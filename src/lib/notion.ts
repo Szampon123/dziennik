@@ -4,10 +4,11 @@
 // target, never the source of truth; sync failures must never block local writes.
 import { Client, APIResponseError } from "@notionhq/client";
 import { prisma } from "@/lib/prisma";
-import { getLocale } from "@/lib/i18n/server";
+import { getLocale, translate } from "@/lib/i18n/server";
+import type { MessageKey } from "@/lib/i18n/messages";
 import type { Locale } from "@/lib/i18n/config";
 import { decrypt } from "@/lib/crypto";
-import { parsePriorities, parsePrioritiesDone, NOTE_TYPE_LABELS, type NoteType } from "@/lib/day";
+import { parsePriorities, parsePrioritiesDone } from "@/lib/day";
 import { formatDayLong, formatTime } from "@/lib/dates";
 import type { DayEntry, Note } from "@prisma/client";
 
@@ -35,28 +36,29 @@ export async function isNotionConfigured(userId: string): Promise<boolean> {
   return (await getNotionConfig(userId)) !== null;
 }
 
-/** Human-readable message for common Notion API failures. */
-function describeError(e: unknown): string {
+/** Human-readable message for common Notion API failures, in `locale`. */
+function describeError(e: unknown, locale: Locale): string {
   if (e instanceof APIResponseError) {
     switch (e.code) {
       case "rate_limited":
-        return "Notion ograniczył liczbę zapytań (rate limit). Spróbuj ponownie za chwilę.";
+        return translate(locale, "notion.errRateLimited");
       case "unauthorized":
-        return "Nieprawidłowy token Notion. Sprawdź token w Ustawieniach.";
+        return translate(locale, "notion.errUnauthorized");
       case "object_not_found":
-        return "Nie znaleziono strony w Notion. Sprawdź ID strony-rodzica i udostępnij ją integracji.";
+        return translate(locale, "notion.errNotFound");
       default:
-        return `Błąd API Notion: ${e.code}`;
+        return translate(locale, "notion.errApi", { code: e.code });
     }
   }
   if (e instanceof Error && "code" in e && (e as NodeJS.ErrnoException).code === "ENOTFOUND") {
-    return "Brak połączenia z internetem — nie udało się połączyć z Notion.";
+    return translate(locale, "notion.errNoInternet");
   }
-  return "Nieznany błąd synchronizacji z Notion.";
+  return translate(locale, "notion.errUnknown");
 }
 
 /** Verify a token by fetching the parent page. Used by Settings (form test + status). */
 export async function testNotionConnection(config: NotionConfig): Promise<NotionStatus> {
+  const locale = await getLocale();
   try {
     const notion = new Client({ auth: config.token });
     const page = await notion.pages.retrieve({ page_id: config.parentPageId });
@@ -69,7 +71,7 @@ export async function testNotionConnection(config: NotionConfig): Promise<Notion
     }
     return { state: "ok", parentTitle };
   } catch (e) {
-    return { state: "error", message: describeError(e) };
+    return { state: "error", message: describeError(e, locale) };
   }
 }
 
@@ -97,10 +99,10 @@ function buildBlocks(day: DayWithNotes, locale: Locale): Block[] {
   const priorities = parsePriorities(day.prioritiesJson);
   const prioritiesDone = parsePrioritiesDone(day.prioritiesDoneJson, priorities.length);
 
-  blocks.push(heading("Intencja"));
+  blocks.push(heading(translate(locale, "notion.intention")));
   blocks.push(paragraph(day.morningIntent?.trim() || "—"));
 
-  blocks.push(heading("Priorytety"));
+  blocks.push(heading(translate(locale, "notion.priorities")));
   if (priorities.length === 0) {
     blocks.push(paragraph("—"));
   } else {
@@ -112,13 +114,13 @@ function buildBlocks(day: DayWithNotes, locale: Locale): Block[] {
     });
   }
 
-  blocks.push(heading("Notatki z dnia"));
+  blocks.push(heading(translate(locale, "notion.dayNotes")));
   if (day.notes.length === 0) {
     blocks.push(paragraph("—"));
   } else {
     for (const note of day.notes) {
       const time = formatTime(new Date(note.createdAt), locale);
-      const label = NOTE_TYPE_LABELS[note.type as NoteType] ?? note.type;
+      const label = translate(locale, `note.type.${note.type}` as MessageKey);
       blocks.push({
         type: "bulleted_list_item",
         bulleted_list_item: { rich_text: richText(`${time} · ${label} — ${note.content}`) },
@@ -126,27 +128,27 @@ function buildBlocks(day: DayWithNotes, locale: Locale): Block[] {
     }
   }
 
-  blocks.push(heading("Refleksja"));
-  blocks.push(paragraph(`Co poszło dobrze: ${day.reflectionGood?.trim() || "—"}`));
-  blocks.push(paragraph(`Do poprawy: ${day.reflectionBad?.trim() || "—"}`));
+  blocks.push(heading(translate(locale, "notion.reflection")));
+  blocks.push(paragraph(translate(locale, "notion.wentWell", { text: day.reflectionGood?.trim() || "—" })));
+  blocks.push(paragraph(translate(locale, "notion.toImprove", { text: day.reflectionBad?.trim() || "—" })));
 
-  blocks.push(heading("Oceny"));
-  blocks.push(paragraph(`Ocena dnia: ${day.dayRating ?? "—"}/5 · Poziom energii: ${day.energyLevel ?? "—"}/5`));
+  blocks.push(heading(translate(locale, "notion.ratings")));
+  blocks.push(paragraph(translate(locale, "notion.ratingLine", { rating: day.dayRating ?? "—", energy: day.energyLevel ?? "—" })));
 
   // Day-progress line: calendar checkpoints (snapshot taken at close) + priorities.
   const progressParts: string[] = [];
   if (day.tasksTotal !== null && day.tasksTotal > 0) {
     const pct = Math.round(((day.tasksDone ?? 0) / day.tasksTotal) * 100);
-    progressParts.push(`kalendarz ${day.tasksDone ?? 0}/${day.tasksTotal} (${pct}%)`);
+    progressParts.push(translate(locale, "notion.calendarPart", { done: day.tasksDone ?? 0, total: day.tasksTotal, pct }));
   }
   if (priorities.length > 0) {
     progressParts.push(
-      `priorytety ${prioritiesDone.filter(Boolean).length}/${priorities.length}`
+      translate(locale, "notion.prioritiesPart", { done: prioritiesDone.filter(Boolean).length, total: priorities.length })
     );
   }
   if (progressParts.length > 0) {
-    blocks.push(heading("Postęp dnia"));
-    blocks.push(paragraph(`Zadania: ${progressParts.join(" · ")}`));
+    blocks.push(heading(translate(locale, "notion.dayProgress")));
+    blocks.push(paragraph(translate(locale, "notion.tasksLine", { parts: progressParts.join(" · ") })));
   }
 
   return blocks;
@@ -182,15 +184,16 @@ export type SyncResult = { ok: true } | { ok: false; error: string };
  * Persists notionPageId / syncStatus / syncError on the DayEntry.
  */
 export async function syncDayToNotion(userId: string, date: string): Promise<SyncResult> {
+  const locale = await getLocale();
   const day = await prisma.dayEntry.findUnique({
     where: { userId_date: { userId, date } },
     include: { notes: { orderBy: { createdAt: "asc" } } },
   });
-  if (!day) return { ok: false, error: "Nie znaleziono wpisu dla tego dnia." };
+  if (!day) return { ok: false, error: translate(locale, "errors.dayEntryNotFound") };
 
   const config = await getNotionConfig(userId);
   if (!config) {
-    const error = "Integracja Notion nieskonfigurowana — uzupełnij token i stronę-rodzica w Ustawieniach.";
+    const error = translate(locale, "notion.errNotConfigured");
     await prisma.dayEntry.update({
       where: { id: day.id },
       data: { syncStatus: "error", syncError: error },
@@ -207,7 +210,6 @@ export async function syncDayToNotion(userId: string, date: string): Promise<Syn
   // The Notion page is written for the person who owns it, so it follows the
   // locale of the request that triggered the sync (a server action or the
   // /api/notion/sync route — both carry the cookie).
-  const locale = await getLocale();
   const blocks = buildBlocks(day, locale);
 
   try {
@@ -248,7 +250,7 @@ export async function syncDayToNotion(userId: string, date: string): Promise<Syn
     return { ok: true };
   } catch (e) {
     console.error("Notion sync failed:", e);
-    const error = describeError(e);
+    const error = describeError(e, locale);
     await prisma.dayEntry.update({
       where: { id: day.id },
       data: { syncStatus: "error", syncError: error },

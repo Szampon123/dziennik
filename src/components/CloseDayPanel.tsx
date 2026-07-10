@@ -73,10 +73,10 @@ export function CloseDayPanel({
           </div>
           {syncError && <p className="mt-1 text-[13px] text-danger">{syncError}</p>}
           <div className="mt-2 flex items-center gap-2">
-            <Badge variant="violet" title="Ocena dnia">
+            <Badge variant="violet" title={t("close.rating")}>
               ★ {initialRating}/5
             </Badge>
-            <Badge variant="azure" title="Poziom energii">
+            <Badge variant="azure" title={t("close.energy")}>
               ⚡ {initialEnergy}/5
             </Badge>
           </div>

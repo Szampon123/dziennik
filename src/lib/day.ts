@@ -5,12 +5,6 @@
 export const NOTE_TYPES = ["log", "distraction", "idea"] as const;
 export type NoteType = (typeof NOTE_TYPES)[number];
 
-export const NOTE_TYPE_LABELS: Record<NoteType, string> = {
-  log: "Log",
-  distraction: "Rozproszenie",
-  idea: "Pomysł",
-};
-
 export const DAY_STATUSES = ["open", "closed"] as const;
 export type DayStatus = (typeof DAY_STATUSES)[number];
 
