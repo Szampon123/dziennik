@@ -18,7 +18,7 @@ export function translate(
   return interpolate(MESSAGES[locale][key] ?? MESSAGES[DEFAULT_LOCALE][key] ?? key, params);
 }
 
-/** The active locale from the request cookie (defaults to pl). */
+/** The active locale from the request cookie (defaults to DEFAULT_LOCALE). */
 export async function getLocale(): Promise<Locale> {
   const store = await cookies();
   return normalizeLocale(store.get(LOCALE_COOKIE)?.value);

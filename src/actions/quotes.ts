@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isKnownQuoteId } from "@/lib/quotes";
 import type { ActionResult } from "@/actions/day-entry";
@@ -17,7 +18,7 @@ export async function setFavoriteQuote(input: z.input<typeof schema>): Promise<A
   const userId = await requireUserId();
   const parsed = schema.safeParse(input);
   if (!parsed.success || !isKnownQuoteId(parsed.data.quoteId)) {
-    return { ok: false, error: "Nieprawidłowy cytat." };
+    return fail("errors.invalidQuote");
   }
   const { quoteId, favorite } = parsed.data;
 

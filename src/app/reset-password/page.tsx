@@ -8,10 +8,13 @@ import { ResetPasswordForm } from "@/components/ResetPasswordForm";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Nowe hasło",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT();
+  return {
+    title: t("page.resetPassword.title"),
+    robots: { index: false, follow: false },
+  };
+}
 
 // Next 16: searchParams is a Promise and must be awaited.
 type Props = { searchParams: Promise<{ token?: string }> };

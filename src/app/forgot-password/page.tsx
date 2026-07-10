@@ -9,10 +9,13 @@ export const dynamic = "force-dynamic";
 
 // Reachable while signed out (see PUBLIC_PATHS in src/proxy.ts) but not worth
 // indexing — it is a form, not content.
-export const metadata: Metadata = {
-  title: "Reset hasła",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT();
+  return {
+    title: t("page.forgotPassword.title"),
+    robots: { index: false, follow: false },
+  };
+}
 
 export default async function ForgotPasswordPage() {
   // Already signed in? Then this page has nothing to offer — change the

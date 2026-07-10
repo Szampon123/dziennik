@@ -7,6 +7,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { fail } from "@/lib/action-errors";
 import { requireAdmin } from "@/lib/session";
 import { normalizeRole, isOwnerRole, isAdminRole, type Role, ROLES } from "@/lib/roles";
 
@@ -60,7 +61,7 @@ export async function changeUserRole(input: {
 
   const { targetUserId, newRole: newRoleRaw, reason } = input;
   if (!(ROLES as readonly string[]).includes(newRoleRaw)) {
-    return { ok: false, error: "Nieprawidłowa rola." };
+    return fail("errors.invalidRole");
   }
   const newRole = newRoleRaw as Role;
 
@@ -68,21 +69,21 @@ export async function changeUserRole(input: {
     prisma.user.findUnique({ where: { id: actorId }, select: { role: true } }),
     prisma.user.findUnique({ where: { id: targetUserId }, select: { id: true, role: true } }),
   ]);
-  if (!target) return { ok: false, error: "Nie znaleziono użytkownika." };
+  if (!target) return fail("errors.userNotFound");
 
   const actorIsOwner = isOwnerRole(normalizeRole(actor?.role));
   const oldRole = normalizeRole(target.role);
   if (oldRole === newRole) return { ok: true }; // no-op
 
   if (isOwnerRole(oldRole)) {
-    return { ok: false, error: "Roli właściciela nie można zmienić w panelu." };
+    return fail("errors.ownerRoleImmutable");
   }
   if (isOwnerRole(newRole)) {
-    return { ok: false, error: "Rolę właściciela nadaje wyłącznie zmienna OWNER_EMAIL." };
+    return fail("errors.ownerRoleEnvOnly");
   }
   // Touching an admin — either promoting to or demoting from — is owner-only.
   if ((isAdminRole(oldRole) || isAdminRole(newRole)) && !actorIsOwner) {
-    return { ok: false, error: "Tylko właściciel może zarządzać administratorami." };
+    return fail("errors.ownerOnlyAdmins");
   }
 
   await prisma.$transaction([

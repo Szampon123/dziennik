@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail, issueKey } from "@/lib/action-errors";
 import { hashPassword, validatePasswordStrength } from "@/lib/passwords";
 import { rateLimit } from "@/lib/rate-limit";
 import { sendVerificationEmail } from "@/lib/verification";
@@ -10,8 +11,8 @@ import { sendVerificationEmail } from "@/lib/verification";
 export type RegisterResult = { ok: true } | { ok: false; error: string };
 
 const schema = z.object({
-  name: z.string().trim().max(80, "Imię jest za długie.").optional().default(""),
-  email: z.string().trim().toLowerCase().email("Podaj prawidłowy adres e-mail."),
+  name: z.string().trim().max(80, "errors.nameTooLong").optional().default(""),
+  email: z.string().trim().toLowerCase().email("errors.invalidEmail"),
   // Length and complexity are checked by validatePasswordStrength() below, so
   // that one function is the single source of truth for the password policy.
   password: z.string(),
@@ -30,12 +31,12 @@ export async function registerAccount(
   const headersList = await headers();
   const ip = headersList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (!rateLimit(`register:${ip}`, 3, 60 * 60).allowed) {
-    return { ok: false, error: "Zbyt wiele prób rejestracji. Spróbuj ponownie później." };
+    return fail("errors.tooManyRegistrations");
   }
 
   const parsed = schema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0].message };
+    return fail(issueKey(parsed.error));
   }
   const { email, password } = parsed.data;
 
@@ -51,7 +52,7 @@ export async function registerAccount(
     select: { id: true },
   });
   if (existing) {
-    return { ok: false, error: "Konto z tym adresem już istnieje. Zaloguj się." };
+    return fail("errors.emailTaken");
   }
 
   const passwordHash = await hashPassword(password);

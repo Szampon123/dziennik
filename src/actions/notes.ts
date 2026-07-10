@@ -3,14 +3,15 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail, issueKey } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isValidDayKey } from "@/lib/dates";
 import { NOTE_TYPES } from "@/lib/day";
 import type { ActionResult } from "@/actions/day-entry";
 
 const addNoteSchema = z.object({
-  date: z.string().refine(isValidDayKey, "Nieprawidłowa data"),
-  content: z.string().trim().min(1, "Notatka nie może być pusta").max(2000, "Notatka jest za długa"),
+  date: z.string().refine(isValidDayKey, "errors.invalidDate"),
+  content: z.string().trim().min(1, "errors.noteEmpty").max(2000, "errors.noteTooLong"),
   type: z.enum(NOTE_TYPES),
 });
 
@@ -18,7 +19,7 @@ export async function addNote(input: z.input<typeof addNoteSchema>): Promise<Act
   const userId = await requireUserId();
   const parsed = addNoteSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0].message };
+    return fail(issueKey(parsed.error));
   }
   const { date, content, type } = parsed.data;
 
@@ -28,7 +29,7 @@ export async function addNote(input: z.input<typeof addNoteSchema>): Promise<Act
     create: { userId, date },
   });
   if (day.status === "closed") {
-    return { ok: false, error: "Dzień jest zamknięty. Otwórz go ponownie, aby dodać notatkę." };
+    return fail("errors.dayClosedAddNote");
   }
 
   await prisma.note.create({
@@ -45,10 +46,10 @@ export async function deleteNote(id: string): Promise<ActionResult> {
   const note = await prisma.note.findUnique({ where: { id }, include: { dayEntry: true } });
   // Ownership check: never touch another user's notes.
   if (!note || note.dayEntry.userId !== userId) {
-    return { ok: false, error: "Nie znaleziono notatki" };
+    return fail("errors.noteNotFound");
   }
   if (note.dayEntry.status === "closed") {
-    return { ok: false, error: "Dzień jest zamknięty. Otwórz go ponownie, aby usunąć notatkę." };
+    return fail("errors.dayClosedDeleteNote");
   }
 
   await prisma.note.delete({ where: { id } });

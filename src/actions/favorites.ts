@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import type { ActionResult } from "@/actions/day-entry";
 
@@ -15,13 +16,13 @@ export async function setFavorite(input: z.input<typeof schema>): Promise<Action
   const userId = await requireUserId();
   const parsed = schema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: "Nieprawidłowe żądanie." };
+    return fail("errors.badRequest");
   }
   const { activitySlug, favorite } = parsed.data;
 
   const activity = await prisma.activity.findUnique({ where: { slug: activitySlug } });
   if (!activity) {
-    return { ok: false, error: "Nie znaleziono aktywności." };
+    return fail("errors.activityNotFound");
   }
 
   if (favorite) {

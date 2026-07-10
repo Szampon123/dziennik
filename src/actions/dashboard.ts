@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { serializeDashboard } from "@/lib/dashboard";
 import type { ActionResult } from "@/actions/day-entry";
@@ -17,7 +18,7 @@ export async function saveDashboard(input: z.input<typeof schema>): Promise<Acti
   const userId = await requireUserId();
   const parsed = schema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: "Nieprawidłowe dane układu." };
+    return fail("errors.invalidLayout");
   }
   const json = serializeDashboard(parsed.data.order, parsed.data.hidden);
   await prisma.user.update({ where: { id: userId }, data: { dashboardJson: json } });

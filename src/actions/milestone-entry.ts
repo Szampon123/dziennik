@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail, issueKey } from "@/lib/action-errors";
 import { getLocale } from "@/lib/i18n/server";
 import { getMilestoneTitle, getMilestoneDetail } from "@/lib/i18n/translate";
 import { requireUserId } from "@/lib/session";
@@ -47,7 +48,7 @@ async function pruneEmptyEntry(userId: string, milestoneId: string) {
 
 const noteSchema = z.object({
   milestoneId: z.string().min(1),
-  note: z.string().max(MAX_NOTE_LENGTH, `Notatka może mieć maks. ${MAX_NOTE_LENGTH} znaków.`),
+  note: z.string().max(MAX_NOTE_LENGTH, "errors.milestoneNoteTooLong"),
 });
 
 export async function saveMilestoneNote(
@@ -56,13 +57,13 @@ export async function saveMilestoneNote(
   const userId = await requireUserId();
   const parsed = noteSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0]?.message ?? "Nieprawidłowe żądanie." };
+    return fail(issueKey(parsed.error), { maxNote: MAX_NOTE_LENGTH, maxTitle: MAX_TITLE_LENGTH, maxDetail: MAX_DETAIL_LENGTH });
   }
   const { milestoneId } = parsed.data;
   const note = parsed.data.note.trim() || null;
 
   const slug = await findMilestoneSlug(milestoneId);
-  if (!slug) return { ok: false, error: "Nie znaleziono poziomu." };
+  if (!slug) return fail("errors.milestoneNotFound");
 
   await prisma.milestoneEntry.upsert({
     where: { userId_milestoneId: { userId, milestoneId } },
@@ -77,8 +78,8 @@ export async function saveMilestoneNote(
 
 const levelSchema = z.object({
   milestoneId: z.string().min(1),
-  customTitle: z.string().max(MAX_TITLE_LENGTH, `Nazwa poziomu może mieć maks. ${MAX_TITLE_LENGTH} znaków.`),
-  customDetail: z.string().max(MAX_DETAIL_LENGTH, `Opis może mieć maks. ${MAX_DETAIL_LENGTH} znaków.`),
+  customTitle: z.string().max(MAX_TITLE_LENGTH, "errors.levelTitleTooLong"),
+  customDetail: z.string().max(MAX_DETAIL_LENGTH, "errors.levelDetailTooLong"),
 });
 
 /**
@@ -92,7 +93,7 @@ export async function saveMilestoneLevel(
   const userId = await requireUserId();
   const parsed = levelSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0]?.message ?? "Nieprawidłowe żądanie." };
+    return fail(issueKey(parsed.error), { maxNote: MAX_NOTE_LENGTH, maxTitle: MAX_TITLE_LENGTH, maxDetail: MAX_DETAIL_LENGTH });
   }
   const { milestoneId } = parsed.data;
 
@@ -110,10 +111,10 @@ export async function saveMilestoneLevel(
       activity: { select: { slug: true } },
     },
   });
-  if (!milestone) return { ok: false, error: "Nie znaleziono poziomu." };
+  if (!milestone) return fail("errors.milestoneNotFound");
 
   if (!parsed.data.customTitle.trim()) {
-    return { ok: false, error: "Nazwa poziomu nie może być pusta." };
+    return fail("errors.levelTitleEmpty");
   }
 
   // Only store what actually differs from the seeded original — and "original"
@@ -146,11 +147,11 @@ export async function resetMilestoneLevel(
 ): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = deleteSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Nieprawidłowe żądanie." };
+  if (!parsed.success) return fail("errors.badRequest");
   const { milestoneId } = parsed.data;
 
   const slug = await findMilestoneSlug(milestoneId);
-  if (!slug) return { ok: false, error: "Nie znaleziono poziomu." };
+  if (!slug) return fail("errors.milestoneNotFound");
 
   const entry = await prisma.milestoneEntry.findUnique({
     where: { userId_milestoneId: { userId, milestoneId } },
@@ -174,22 +175,22 @@ export async function uploadMilestonePhoto(formData: FormData): Promise<ActionRe
   const milestoneId = formData.get("milestoneId");
   const file = formData.get("photo");
   if (typeof milestoneId !== "string" || !milestoneId || !(file instanceof File)) {
-    return { ok: false, error: "Nieprawidłowe żądanie." };
+    return fail("errors.badRequest");
   }
 
   const ext = PHOTO_TYPES[file.type];
   if (!ext) {
-    return { ok: false, error: "Obsługiwane formaty: JPG, PNG, WEBP, GIF." };
+    return fail("errors.photoFormats");
   }
   if (file.size === 0) {
-    return { ok: false, error: "Plik jest pusty." };
+    return fail("errors.fileEmpty");
   }
   if (file.size > MAX_PHOTO_BYTES) {
-    return { ok: false, error: "Zdjęcie może mieć maks. 4 MB." };
+    return fail("errors.photoTooLarge");
   }
 
   const slug = await findMilestoneSlug(milestoneId);
-  if (!slug) return { ok: false, error: "Nie znaleziono poziomu." };
+  if (!slug) return fail("errors.milestoneNotFound");
 
   // One photo per (user, milestone): a re-upload replaces the previous file.
   const previous = await prisma.milestoneEntry.findUnique({
@@ -202,7 +203,7 @@ export async function uploadMilestonePhoto(formData: FormData): Promise<ActionRe
   try {
     photoRef = await savePhoto(key, Buffer.from(await file.arrayBuffer()), file.type);
   } catch {
-    return { ok: false, error: "Błąd zapisu pliku." };
+    return fail("errors.fileWriteFailed");
   }
 
   // Same milestone re-uploaded with a different extension → remove the old file.
@@ -227,11 +228,11 @@ export async function deleteMilestonePhoto(
 ): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = deleteSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Nieprawidłowe żądanie." };
+  if (!parsed.success) return fail("errors.badRequest");
   const { milestoneId } = parsed.data;
 
   const slug = await findMilestoneSlug(milestoneId);
-  if (!slug) return { ok: false, error: "Nie znaleziono poziomu." };
+  if (!slug) return fail("errors.milestoneNotFound");
 
   const entry = await prisma.milestoneEntry.findUnique({
     where: { userId_milestoneId: { userId, milestoneId } },

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { fail } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { normalizeRole, isAdminRole } from "@/lib/roles";
 import { MAX_POST_BODY, MAX_LINK, MAX_LEVEL, isValidHttpUrl } from "@/lib/forum";
@@ -25,7 +26,7 @@ export async function createPost(formData: FormData): Promise<CreatePostResult> 
   const userId = await requireUserId();
 
   if (!rateLimit(`forum:post:${userId}`, 10, 60).allowed) {
-    return { ok: false, error: "Publikujesz za szybko. Poczekaj chwilę." };
+    return fail("errors.postingTooFast");
   }
 
   const activitySlug = String(formData.get("activitySlug") ?? "").trim();
@@ -35,9 +36,9 @@ export async function createPost(formData: FormData): Promise<CreatePostResult> 
   const linkRaw = String(formData.get("linkUrl") ?? "").trim();
   const photo = formData.get("photo");
 
-  if (!body) return { ok: false, error: "Napisz wiadomość." };
+  if (!body) return fail("errors.postBodyEmpty");
   if (body.length > MAX_POST_BODY)
-    return { ok: false, error: `Wiadomość może mieć maks. ${MAX_POST_BODY} znaków.` };
+    return { ok: false, error: "errors.postBodyTooLong" };
 
   let linkUrl: string | null = null;
   if (linkRaw) {
@@ -55,21 +56,21 @@ export async function createPost(formData: FormData): Promise<CreatePostResult> 
       where: { id: parentId },
       select: { activitySlug: true, level: true },
     });
-    if (!parent) return { ok: false, error: "Komentarz nie istnieje." };
+    if (!parent) return fail("errors.commentNotFound");
     slug = parent.activitySlug;
     level = parent.level;
   } else {
     if (levelRaw) {
       const n = parseInt(levelRaw, 10);
       if (!Number.isInteger(n) || n < 1 || n > MAX_LEVEL)
-        return { ok: false, error: `Poziom musi być liczbą 1–${MAX_LEVEL}.` };
+        return { ok: false, error: "errors.levelRange" };
       level = n;
     }
     const activity = await prisma.activity.findUnique({
       where: { slug },
       select: { slug: true },
     });
-    if (!activity) return { ok: false, error: "Nieznana umiejętność." };
+    if (!activity) return fail("errors.unknownSkill");
   }
 
   const post = await prisma.forumPost.create({
@@ -85,11 +86,11 @@ export async function createPost(formData: FormData): Promise<CreatePostResult> 
     const ext = PHOTO_TYPES[photo.type];
     if (!ext) {
       await prisma.forumPost.delete({ where: { id: post.id } });
-      return { ok: false, error: "Zdjęcie musi być JPG, PNG, WEBP lub GIF." };
+      return fail("errors.photoFormatInvalid");
     }
     if (photo.size > MAX_PHOTO_BYTES) {
       await prisma.forumPost.delete({ where: { id: post.id } });
-      return { ok: false, error: "Zdjęcie może mieć maks. 4 MB." };
+      return fail("errors.photoTooLarge");
     }
     try {
       const bytes = Buffer.from(await photo.arrayBuffer());
@@ -99,7 +100,7 @@ export async function createPost(formData: FormData): Promise<CreatePostResult> 
       await prisma.forumPost.delete({ where: { id: post.id } });
       return {
         ok: false,
-        error: "Nie udało się zapisać zdjęcia. Opublikuj bez zdjęcia lub spróbuj ponownie.",
+        error: "errors.photoSaveFailedPost",
       };
     }
   }
@@ -111,7 +112,7 @@ export async function createPost(formData: FormData): Promise<CreatePostResult> 
 export async function deletePost(input: { id: string }): Promise<ActionResult> {
   const userId = await requireUserId();
   const id = String(input?.id ?? "");
-  if (!id) return { ok: false, error: "Nieprawidłowe żądanie." };
+  if (!id) return fail("errors.badRequest");
 
   const post = await prisma.forumPost.findUnique({
     where: { id },
@@ -123,13 +124,13 @@ export async function deletePost(input: { id: string }): Promise<ActionResult> {
       replies: { select: { photoPath: true } },
     },
   });
-  if (!post) return { ok: false, error: "Wiadomość nie istnieje." };
+  if (!post) return fail("errors.postNotFound");
 
   const isOwn = post.userId === userId;
   if (!isOwn) {
     const me = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
     if (!isAdminRole(normalizeRole(me?.role)))
-      return { ok: false, error: "Brak uprawnień do usunięcia tej wiadomości." };
+      return fail("errors.postDeleteForbidden");
   }
 
   await prisma.forumPost.delete({ where: { id } }); // cascade removes replies + votes
@@ -149,17 +150,17 @@ export async function togglePostVote(input: {
   const userId = await requireUserId();
 
   if (!rateLimit(`forum:vote:${userId}`, 30, 60).allowed) {
-    return { ok: false, error: "Zbyt wiele głosów. Poczekaj chwilę." };
+    return fail("errors.tooManyVotes");
   }
 
   const postId = String(input?.postId ?? "");
-  if (!postId) return { ok: false, error: "Nieprawidłowe żądanie." };
+  if (!postId) return fail("errors.badRequest");
 
   const post = await prisma.forumPost.findUnique({
     where: { id: postId },
     select: { id: true, activitySlug: true, parentId: true },
   });
-  if (!post) return { ok: false, error: "Wiadomość nie istnieje." };
+  if (!post) return fail("errors.postNotFound");
 
   const existing = await prisma.forumVote.findUnique({
     where: { userId_postId: { userId, postId } },

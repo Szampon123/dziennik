@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { signIn, isDevLoginEnabled, isGoogleLoginConfigured } from "@/lib/auth";
 import { getSessionUserId } from "@/lib/session";
+import { getT } from "@/lib/i18n/server";
 import { buttonClass } from "@/components/ui/Button";
 import { inputClass } from "@/components/ui/Input";
 import { CredentialsLoginForm } from "@/components/CredentialsLoginForm";
@@ -13,10 +14,13 @@ export const dynamic = "force-dynamic";
 // "/" redirects here for signed-out visitors, so in practice this is the page
 // crawlers and link-preview scrapers land on. It inherits the Open Graph card
 // from the root layout and claims its own canonical.
-export const metadata: Metadata = {
-  title: "Zaloguj się",
-  alternates: { canonical: "/login" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT();
+  return {
+    title: t("page.login.title"),
+    alternates: { canonical: "/login" },
+  };
+}
 
 export default async function LoginPage() {
   // Existence-verified check (not raw auth()): a stale JWT whose user row was

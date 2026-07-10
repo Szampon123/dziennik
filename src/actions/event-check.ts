@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isValidDayKey } from "@/lib/dates";
 import type { ActionResult } from "@/actions/day-entry";
@@ -18,7 +19,7 @@ export async function setEventCheck(input: z.input<typeof schema>): Promise<Acti
   const userId = await requireUserId();
   const parsed = schema.safeParse(input);
   if (!parsed.success || !isValidDayKey(parsed.data.dayKey)) {
-    return { ok: false, error: "Nieprawidłowe żądanie." };
+    return fail("errors.badRequest");
   }
   const { eventId, dayKey, checked } = parsed.data;
 
@@ -55,7 +56,7 @@ export async function setPastDayEventCheck(
   const userId = await requireUserId();
   const parsed = pastDaySchema.safeParse(input);
   if (!parsed.success || !isValidDayKey(parsed.data.date)) {
-    return { ok: false, error: "Nieprawidłowe żądanie." };
+    return fail("errors.badRequest");
   }
   const { date, eventId, checked, eventIds } = parsed.data;
 

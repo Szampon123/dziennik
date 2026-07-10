@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail, issueKey } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isValidDayKey, todayKey, dayKeyToDate } from "@/lib/dates";
 import { MAX_PRIORITIES, parsePriorities, parsePrioritiesDone } from "@/lib/day";
@@ -10,28 +11,32 @@ import { isNotionConfigured, syncDayToNotion } from "@/lib/notion";
 import { getCachedEvents } from "@/lib/calendar-cache";
 import { getGoogleStatus } from "@/lib/google";
 
-export type ActionResult = { ok: true } | { ok: false; error: string };
+// Defined in lib/action-errors alongside fail(), which produces its failure
+// branch. Re-exported here because every action already imports it from this
+// module. Type-only, so the "use server" export rule doesn't apply.
+import type { ActionResult } from "@/lib/action-errors";
+export type { ActionResult };
 
 const morningSchema = z.object({
-  date: z.string().refine(isValidDayKey, "Nieprawidłowa data"),
-  morningIntent: z.string().max(2000, "Intencja jest za długa").optional().default(""),
+  date: z.string().refine(isValidDayKey, "errors.invalidDate"),
+  morningIntent: z.string().max(2000, "errors.intentTooLong").optional().default(""),
   priorities: z
-    .array(z.string().max(300, "Priorytet jest za długi"))
-    .max(MAX_PRIORITIES, `Maksymalnie ${MAX_PRIORITIES} priorytety`),
+    .array(z.string().max(300, "errors.priorityTooLong"))
+    .max(MAX_PRIORITIES, "errors.tooManyPriorities"),
 });
 
 export async function saveMorning(input: z.input<typeof morningSchema>): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = morningSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0].message };
+    return fail(issueKey(parsed.error), { max: MAX_PRIORITIES });
   }
   const { date, morningIntent, priorities } = parsed.data;
   const cleaned = priorities.map((p) => p.trim()).filter(Boolean);
 
   const day = await prisma.dayEntry.findUnique({ where: { userId_date: { userId, date } } });
   if (day?.status === "closed") {
-    return { ok: false, error: "Dzień jest zamknięty. Otwórz go ponownie, aby edytować." };
+    return fail("errors.dayClosedEdit");
   }
 
   // Re-saving priorities keeps done-flags for texts that are still present
@@ -63,7 +68,7 @@ export async function saveMorning(input: z.input<typeof morningSchema>): Promise
 }
 
 const priorityCheckSchema = z.object({
-  date: z.string().refine(isValidDayKey, "Nieprawidłowa data"),
+  date: z.string().refine(isValidDayKey, "errors.invalidDate"),
   index: z.number().int().min(0).max(MAX_PRIORITIES - 1),
   checked: z.boolean(),
 });
@@ -75,19 +80,19 @@ export async function setPriorityCheck(
   const userId = await requireUserId();
   const parsed = priorityCheckSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: "Nieprawidłowe żądanie." };
+    return fail("errors.badRequest");
   }
   const { date, index, checked } = parsed.data;
 
   const day = await prisma.dayEntry.findUnique({ where: { userId_date: { userId, date } } });
-  if (!day) return { ok: false, error: "Nie znaleziono wpisu dla tego dnia." };
+  if (!day) return fail("errors.dayEntryNotFound");
   if (day.status === "closed") {
-    return { ok: false, error: "Dzień jest zamknięty." };
+    return fail("errors.dayClosed");
   }
 
   const priorities = parsePriorities(day.prioritiesJson);
   if (index >= priorities.length) {
-    return { ok: false, error: "Najpierw zapisz treść priorytetu." };
+    return fail("errors.savePriorityFirst");
   }
   const done = parsePrioritiesDone(day.prioritiesDoneJson, priorities.length);
   done[index] = checked;
@@ -102,18 +107,18 @@ export async function setPriorityCheck(
 }
 
 const closeSchema = z.object({
-  date: z.string().refine(isValidDayKey, "Nieprawidłowa data"),
-  reflectionGood: z.string().max(5000, "Refleksja jest za długa").optional().default(""),
-  reflectionBad: z.string().max(5000, "Refleksja jest za długa").optional().default(""),
-  dayRating: z.number().int().min(1, "Wybierz ocenę dnia").max(5),
-  energyLevel: z.number().int().min(1, "Wybierz poziom energii").max(5),
+  date: z.string().refine(isValidDayKey, "errors.invalidDate"),
+  reflectionGood: z.string().max(5000, "errors.reflectionTooLong").optional().default(""),
+  reflectionBad: z.string().max(5000, "errors.reflectionTooLong").optional().default(""),
+  dayRating: z.number().int().min(1, "errors.pickDayRating").max(5),
+  energyLevel: z.number().int().min(1, "errors.pickEnergyLevel").max(5),
 });
 
 export async function closeDay(input: z.input<typeof closeSchema>): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = closeSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0].message };
+    return fail(issueKey(parsed.error), { max: MAX_PRIORITIES });
   }
   const { date, reflectionGood, reflectionBad, dayRating, energyLevel } = parsed.data;
 
@@ -194,11 +199,11 @@ export async function closeDay(input: z.input<typeof closeSchema>): Promise<Acti
 export async function reopenDay(date: string): Promise<ActionResult> {
   const userId = await requireUserId();
   if (!isValidDayKey(date)) {
-    return { ok: false, error: "Nieprawidłowa data" };
+    return fail("errors.invalidDate");
   }
   const day = await prisma.dayEntry.findUnique({ where: { userId_date: { userId, date } } });
   if (!day) {
-    return { ok: false, error: "Nie znaleziono wpisu dla tego dnia" };
+    return fail("errors.dayEntryNotFound");
   }
 
   await prisma.dayEntry.update({
@@ -213,7 +218,7 @@ export async function reopenDay(date: string): Promise<ActionResult> {
 }
 
 const tasksSchema = z.object({
-  date: z.string().refine(isValidDayKey, "Nieprawidłowa data"),
+  date: z.string().refine(isValidDayKey, "errors.invalidDate"),
   tasksDone: z.number().int().min(0).max(100).nullable(),
   tasksTotal: z.number().int().min(0).max(100).nullable(),
 });
@@ -230,7 +235,7 @@ export async function updateDayTasks(
   const userId = await requireUserId();
   const parsed = tasksSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0].message };
+    return fail(issueKey(parsed.error), { max: MAX_PRIORITIES });
   }
   const { date } = parsed.data;
 
@@ -247,7 +252,7 @@ export async function updateDayTasks(
     select: { status: true },
   });
   if (!day) {
-    return { ok: false, error: "Nie znaleziono wpisu dla tego dnia" };
+    return fail("errors.dayEntryNotFound");
   }
 
   await prisma.dayEntry.update({

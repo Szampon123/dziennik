@@ -16,10 +16,13 @@ export const dynamic = "force-dynamic";
 // Behind the auth proxy: a signed-out crawler is redirected away, so this page
 // must never be indexed. noindex takes the place of a canonical — a canonical
 // would only assert that this URL duplicates another one.
-export const metadata: Metadata = {
-  title: "Historia",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT();
+  return {
+    title: t("page.history.title"),
+    robots: { index: false, follow: false },
+  };
+}
 
 export default async function HistoryPage() {
   const userId = await requireUserId();

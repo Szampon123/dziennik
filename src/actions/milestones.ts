@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { parseCriteria, implies } from "@/lib/milestone-criteria";
 import type { ActionResult } from "@/actions/day-entry";
@@ -19,7 +20,7 @@ export async function setMilestone(input: z.input<typeof setSchema>): Promise<Ac
   const userId = await requireUserId();
   const parsed = setSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: "Nieprawidłowe żądanie." };
+    return fail("errors.badRequest");
   }
   const { milestoneId, done, cascade } = parsed.data;
 
@@ -34,7 +35,7 @@ export async function setMilestone(input: z.input<typeof setSchema>): Promise<Ac
     },
   });
   if (!milestone) {
-    return { ok: false, error: "Nie znaleziono milestone'u." };
+    return fail("errors.milestoneMissing");
   }
 
   if (done) {

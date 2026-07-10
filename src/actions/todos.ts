@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail, issueKey } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isValidDayKey } from "@/lib/dates";
 import {
@@ -19,15 +20,15 @@ import type { ActionResult } from "@/actions/day-entry";
 /** addTodo also returns the created row so the client can render it optimistically. */
 export type AddTodoResult = { ok: true; todo: Todo } | { ok: false; error: string };
 
-const CLOSED_ERR = "Dzień jest zamknięty. Otwórz go ponownie, aby edytować.";
+const CLOSED_ERR = "errors.dayClosedEdit";
 
 const addSchema = z.object({
-  date: z.string().refine(isValidDayKey, "Nieprawidłowa data"),
+  date: z.string().refine(isValidDayKey, "errors.invalidDate"),
   title: z
     .string()
     .trim()
-    .min(1, "Wpisz treść zadania.")
-    .max(MAX_TODO_TITLE, `Zadanie może mieć maks. ${MAX_TODO_TITLE} znaków.`),
+    .min(1, "errors.todoTitleRequired")
+    .max(MAX_TODO_TITLE, "errors.todoTitleTooLong"),
   time: z.string().optional().nullable(),
 });
 
@@ -35,7 +36,7 @@ export async function addTodo(input: z.input<typeof addSchema>): Promise<AddTodo
   const userId = await requireUserId();
   const parsed = addSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0].message };
+    return fail(issueKey(parsed.error), { max: MAX_TODOS, maxTitle: MAX_TODO_TITLE });
   }
   const { date } = parsed.data;
   const title = parsed.data.title.trim();
@@ -49,7 +50,7 @@ export async function addTodo(input: z.input<typeof addSchema>): Promise<AddTodo
 
   const todos = parseTodos(day?.todosJson);
   if (todos.length >= MAX_TODOS) {
-    return { ok: false, error: `Maksymalnie ${MAX_TODOS} zadań na dzień.` };
+    return { ok: false, error: "errors.tooManyTodos" };
   }
 
   const todo: Todo = { id: randomUUID(), title, time, done: false };
@@ -66,7 +67,7 @@ export async function addTodo(input: z.input<typeof addSchema>): Promise<AddTodo
 }
 
 const toggleSchema = z.object({
-  date: z.string().refine(isValidDayKey, "Nieprawidłowa data"),
+  date: z.string().refine(isValidDayKey, "errors.invalidDate"),
   id: z.string().min(1),
   done: z.boolean(),
 });
@@ -74,14 +75,14 @@ const toggleSchema = z.object({
 export async function toggleTodo(input: z.input<typeof toggleSchema>): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = toggleSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Nieprawidłowe żądanie." };
+  if (!parsed.success) return fail("errors.badRequest");
   const { date, id, done } = parsed.data;
 
   const day = await prisma.dayEntry.findUnique({
     where: { userId_date: { userId, date } },
     select: { status: true, todosJson: true },
   });
-  if (!day) return { ok: false, error: "Nie znaleziono wpisu dla tego dnia." };
+  if (!day) return fail("errors.dayEntryNotFound");
   if (day.status === "closed") return { ok: false, error: CLOSED_ERR };
 
   const todos = parseTodos(day.todosJson);
@@ -97,21 +98,21 @@ export async function toggleTodo(input: z.input<typeof toggleSchema>): Promise<A
 }
 
 const deleteSchema = z.object({
-  date: z.string().refine(isValidDayKey, "Nieprawidłowa data"),
+  date: z.string().refine(isValidDayKey, "errors.invalidDate"),
   id: z.string().min(1),
 });
 
 export async function deleteTodo(input: z.input<typeof deleteSchema>): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = deleteSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Nieprawidłowe żądanie." };
+  if (!parsed.success) return fail("errors.badRequest");
   const { date, id } = parsed.data;
 
   const day = await prisma.dayEntry.findUnique({
     where: { userId_date: { userId, date } },
     select: { status: true, todosJson: true },
   });
-  if (!day) return { ok: false, error: "Nie znaleziono wpisu dla tego dnia." };
+  if (!day) return fail("errors.dayEntryNotFound");
   if (day.status === "closed") return { ok: false, error: CLOSED_ERR };
 
   const todos = parseTodos(day.todosJson);

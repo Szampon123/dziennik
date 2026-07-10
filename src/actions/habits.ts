@@ -3,12 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail, issueKey } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isValidDayKey } from "@/lib/dates";
 import { normalizeHabitColor } from "@/lib/habit-colors";
 import type { ActionResult } from "@/actions/day-entry";
 
-const nameSchema = z.string().trim().min(1, "Podaj nazwę nawyku.").max(100);
+const nameSchema = z.string().trim().min(1, "errors.habitNameRequired").max(100);
 const targetSchema = z.number().int().min(1).max(7);
 
 /** Create a new habit at the end of the user's list. */
@@ -19,9 +20,9 @@ export async function createHabit(
 ): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = nameSchema.safeParse(name);
-  if (!parsed.success) return { ok: false, error: parsed.error.issues[0].message };
+  if (!parsed.success) return fail(issueKey(parsed.error));
   const target = targetSchema.safeParse(targetPerWeek);
-  if (!target.success) return { ok: false, error: "Cel musi być między 1 a 7 razy w tygodniu." };
+  if (!target.success) return fail("errors.habitTargetRange");
 
   const last = await prisma.habit.findFirst({
     where: { userId },
@@ -50,7 +51,7 @@ export async function setHabitColor(
 ): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = setColorSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Nieprawidłowe żądanie." };
+  if (!parsed.success) return fail("errors.badRequest");
 
   await prisma.habit.updateMany({
     where: { id: parsed.data.id, userId },
@@ -69,7 +70,7 @@ export async function setHabitTarget(
 ): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = setTargetSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Cel musi być między 1 a 7 razy w tygodniu." };
+  if (!parsed.success) return fail("errors.habitTargetRange");
 
   await prisma.habit.updateMany({
     where: { id: parsed.data.id, userId },
@@ -85,7 +86,7 @@ const renameSchema = z.object({ id: z.string().min(1), name: nameSchema });
 export async function renameHabit(input: z.input<typeof renameSchema>): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = renameSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: parsed.error.issues[0].message };
+  if (!parsed.success) return fail(issueKey(parsed.error));
 
   // updateMany with the userId in the filter = ownership check.
   await prisma.habit.updateMany({
@@ -103,7 +104,7 @@ const moveSchema = z.object({ id: z.string().min(1), direction: z.enum(["up", "d
 export async function moveHabit(input: z.input<typeof moveSchema>): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = moveSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Nieprawidłowe żądanie." };
+  if (!parsed.success) return fail("errors.badRequest");
   const { id, direction } = parsed.data;
 
   const habits = await prisma.habit.findMany({
@@ -112,7 +113,7 @@ export async function moveHabit(input: z.input<typeof moveSchema>): Promise<Acti
     select: { id: true, sortOrder: true },
   });
   const i = habits.findIndex((h) => h.id === id);
-  if (i < 0) return { ok: false, error: "Nie znaleziono nawyku." };
+  if (i < 0) return fail("errors.habitNotFound");
   const j = direction === "up" ? i - 1 : i + 1;
   if (j < 0 || j >= habits.length) return { ok: true }; // already at the edge
 
@@ -135,7 +136,7 @@ export async function setHabitArchived(
 ): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = archiveSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Nieprawidłowe żądanie." };
+  if (!parsed.success) return fail("errors.badRequest");
 
   await prisma.habit.updateMany({
     where: { id: parsed.data.id, userId },
@@ -152,7 +153,7 @@ const deleteSchema = z.object({ id: z.string().min(1) });
 export async function deleteHabit(input: z.input<typeof deleteSchema>): Promise<ActionResult> {
   const userId = await requireUserId();
   const parsed = deleteSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: "Nieprawidłowe żądanie." };
+  if (!parsed.success) return fail("errors.badRequest");
 
   await prisma.habit.deleteMany({ where: { id: parsed.data.id, userId } });
 
@@ -171,7 +172,7 @@ export async function setHabitCheck(input: z.input<typeof checkSchema>): Promise
   const userId = await requireUserId();
   const parsed = checkSchema.safeParse(input);
   if (!parsed.success || !isValidDayKey(parsed.data.date)) {
-    return { ok: false, error: "Nieprawidłowe żądanie." };
+    return fail("errors.badRequest");
   }
   const { habitId, date, checked } = parsed.data;
 
@@ -180,7 +181,7 @@ export async function setHabitCheck(input: z.input<typeof checkSchema>): Promise
     where: { id: habitId, userId },
     select: { id: true },
   });
-  if (!owned) return { ok: false, error: "Nie znaleziono nawyku." };
+  if (!owned) return fail("errors.habitNotFound");
 
   if (checked) {
     await prisma.habitCheck.upsert({

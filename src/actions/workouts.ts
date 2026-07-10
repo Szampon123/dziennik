@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail, issueKey } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isValidDayKey } from "@/lib/dates";
 import { recomputeAutoMilestones } from "@/lib/milestone-engine";
@@ -13,24 +14,24 @@ export type WorkoutResult =
 
 const addSchema = z.object({
   activitySlug: z.string().min(1),
-  date: z.string().refine(isValidDayKey, "Nieprawidłowa data"),
-  distanceKm: z.number().positive("Dystans musi być większy od zera").max(500, "Dystans jest nierealny"),
-  durationMin: z.number().positive("Czas musi być większy od zera").max(1440, "Czas jest nierealny"),
+  date: z.string().refine(isValidDayKey, "errors.invalidDate"),
+  distanceKm: z.number().positive("errors.distancePositive").max(500, "errors.distanceUnrealistic"),
+  durationMin: z.number().positive("errors.durationPositive").max(1440, "errors.durationUnrealistic"),
   isRace: z.boolean().default(false),
-  note: z.string().trim().max(500, "Notatka jest za długa").optional(),
+  note: z.string().trim().max(500, "errors.noteTooLong").optional(),
 });
 
 export async function addWorkout(input: z.input<typeof addSchema>): Promise<WorkoutResult> {
   const userId = await requireUserId();
   const parsed = addSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0].message };
+    return fail(issueKey(parsed.error));
   }
   const { activitySlug, date, distanceKm, durationMin, isRace, note } = parsed.data;
 
   const activity = await prisma.activity.findUnique({ where: { slug: activitySlug } });
   if (!activity) {
-    return { ok: false, error: "Nie znaleziono aktywności." };
+    return fail("errors.activityNotFound");
   }
 
   await prisma.workout.create({
@@ -52,7 +53,7 @@ export async function deleteWorkout(id: string): Promise<WorkoutResult> {
   });
   // Ownership check: never touch another user's workouts.
   if (!workout || workout.userId !== userId) {
-    return { ok: false, error: "Nie znaleziono treningu." };
+    return fail("errors.workoutNotFound");
   }
 
   await prisma.workout.delete({ where: { id } });

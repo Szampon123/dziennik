@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { requireAdmin } from "@/lib/session";
+import { getT } from "@/lib/i18n/server";
 
-export const metadata = { title: "Panel administracyjny — Dziennik" };
+// The suffix comes from the root layout's "%s — Vincendio" template, as on
+// every other page; spelling it out here bypassed that.
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT();
+  return { title: t("page.admin.title") };
+}
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   await requireAdmin();

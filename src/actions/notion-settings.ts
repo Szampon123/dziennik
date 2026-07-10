@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { fail, issueKey } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { encrypt } from "@/lib/crypto";
 import { testNotionConnection } from "@/lib/notion";
@@ -14,7 +15,7 @@ const settingsSchema = z.object({
     .string()
     .trim()
     .regex(/^[0-9a-f]{32}$|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, {
-      message: "ID strony to 32 znaki hex (z myślnikami lub bez)",
+      message: "errors.notionPageId",
     }),
 });
 
@@ -25,7 +26,7 @@ export async function saveNotionSettings(
   const userId = await requireUserId();
   const parsed = settingsSchema.safeParse(input);
   if (!parsed.success) {
-    return { ok: false, error: parsed.error.issues[0].message };
+    return fail(issueKey(parsed.error));
   }
   const { token, parentPageId } = parsed.data;
 

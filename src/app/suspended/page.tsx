@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import { signOut } from "@/lib/auth";
+import { getT } from "@/lib/i18n/server";
 
-export const metadata = { title: "Konto zawieszone — Dziennik" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT();
+  return { title: t("page.suspended.title") };
+}
 
 // Reachable without a session (see PUBLIC_PATHS in src/proxy.ts) — the proxy
 // sends every suspended user here, and this is the only page they can open.
