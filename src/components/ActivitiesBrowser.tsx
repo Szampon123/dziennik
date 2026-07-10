@@ -4,7 +4,7 @@ import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { Star } from "lucide-react";
 import { setFavorite } from "@/actions/favorites";
-import { CATEGORIES, CATEGORY_LABELS, type CategoryKey } from "@/lib/activity-categories";
+import { CATEGORIES, categoryLabelKey, type CategoryKey } from "@/lib/activity-categories";
 import { ActivityIcon } from "@/lib/activity-icons";
 import { formatDate } from "@/lib/dates";
 import type { ActivityListItem } from "@/lib/activities";
@@ -114,7 +114,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
         case "progress":
           return pct(b) - pct(a);
         case "name":
-          return a.name.localeCompare(b.name, "pl");
+          return a.name.localeCompare(b.name, locale);
         case "recent":
           return (b.lastActiveAt ?? 0) - (a.lastActiveAt ?? 0);
         default:
@@ -122,7 +122,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
       }
     });
     return list;
-  }, [activities, query, cats, favoritesOnly, status, sort, favOverrides]);
+  }, [activities, query, cats, favoritesOnly, status, sort, favOverrides, locale]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -154,7 +154,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
       <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
         {CATEGORIES.map((c) => (
           <Chip key={c.key} active={cats.has(c.key)} onClick={() => toggleCat(c.key)}>
-            {c.label}
+            {t(c.labelKey)}
           </Chip>
         ))}
       </div>
@@ -228,7 +228,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
                     </span>
                     <Progress value={a.completedCount} max={a.maxLevel} className="mt-2" />
                     <span className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-neutral-500">
-                      <span>{CATEGORY_LABELS[a.category] ?? "Inne"}</span>
+                      <span>{t(categoryLabelKey(a.category))}</span>
                       {a.levelAchievedAt !== null && (
                         <span className="font-medium text-success">
                           {t("act.levelAchieved", { date: formatDate(a.levelAchievedAt, locale) })}

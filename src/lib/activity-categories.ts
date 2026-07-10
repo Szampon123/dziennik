@@ -1,31 +1,41 @@
 // Activity categories — client-safe constants shared by the seed and the UI.
+//
+// Labels are message keys, not literals: the browser renders category chips in
+// the reader's locale. `import type` keeps this file free of runtime imports,
+// so prisma/seed.ts can still pull CATEGORY_BY_SLUG from it.
+import type { MessageKey } from "@/lib/i18n/messages";
 
 export const CATEGORIES = [
-  { key: "wytrzymalosciowe", label: "Wytrzymałościowe", icon: "🏃" },
-  { key: "outdoor", label: "Górskie i outdoor", icon: "🏔️" },
-  { key: "wodne", label: "Wodne", icon: "🌊" },
-  { key: "zimowe", label: "Zimowe", icon: "❄️" },
-  { key: "sila", label: "Siła i ciało", icon: "💪" },
-  { key: "fitness", label: "Fitness i cardio", icon: "🔥" },
-  { key: "druzynowe", label: "Drużynowe", icon: "⚽" },
-  { key: "rakietowe", label: "Rakietowe", icon: "🎾" },
-  { key: "precyzyjne", label: "Precyzyjne", icon: "🎯" },
-  { key: "taniec-walki", label: "Taniec i sztuki walki", icon: "🥋" },
-  { key: "motorowe", label: "Motorowe", icon: "🏍️" },
-  { key: "umyslowe", label: "Umysłowe", icon: "♟️" },
-  { key: "wizualne", label: "Sztuki wizualne", icon: "🎨" },
-  { key: "rekodzielo", label: "Rękodzieło", icon: "🧶" },
-  { key: "cyfrowe", label: "Sztuki cyfrowe", icon: "🖥️" },
-  { key: "artyzm", label: "Artyzm", icon: "🎭" },
-  { key: "instrumenty", label: "Instrumenty", icon: "🎸" },
-  { key: "kuchnie", label: "Kuchnie świata", icon: "🍳" },
+  { key: "wytrzymalosciowe", labelKey: "category.wytrzymalosciowe", icon: "🏃" },
+  { key: "outdoor", labelKey: "category.outdoor", icon: "🏔️" },
+  { key: "wodne", labelKey: "category.wodne", icon: "🌊" },
+  { key: "zimowe", labelKey: "category.zimowe", icon: "❄️" },
+  { key: "sila", labelKey: "category.sila", icon: "💪" },
+  { key: "fitness", labelKey: "category.fitness", icon: "🔥" },
+  { key: "druzynowe", labelKey: "category.druzynowe", icon: "⚽" },
+  { key: "rakietowe", labelKey: "category.rakietowe", icon: "🎾" },
+  { key: "precyzyjne", labelKey: "category.precyzyjne", icon: "🎯" },
+  { key: "taniec-walki", labelKey: "category.taniec-walki", icon: "🥋" },
+  { key: "motorowe", labelKey: "category.motorowe", icon: "🏍️" },
+  { key: "umyslowe", labelKey: "category.umyslowe", icon: "♟️" },
+  { key: "wizualne", labelKey: "category.wizualne", icon: "🎨" },
+  { key: "rekodzielo", labelKey: "category.rekodzielo", icon: "🧶" },
+  { key: "cyfrowe", labelKey: "category.cyfrowe", icon: "🖥️" },
+  { key: "artyzm", labelKey: "category.artyzm", icon: "🎭" },
+  { key: "instrumenty", labelKey: "category.instrumenty", icon: "🎸" },
+  { key: "kuchnie", labelKey: "category.kuchnie", icon: "🍳" },
 ] as const;
 
 export type CategoryKey = (typeof CATEGORIES)[number]["key"];
 
-export const CATEGORY_LABELS: Record<string, string> = Object.fromEntries(
-  CATEGORIES.map((c) => [c.key, c.label])
+/** Category key → message key. Unknown/legacy keys fall back to `category.inne`. */
+const CATEGORY_LABEL_KEYS: Record<string, MessageKey> = Object.fromEntries(
+  CATEGORIES.map((c) => [c.key, c.labelKey])
 );
+
+export function categoryLabelKey(category: string): MessageKey {
+  return CATEGORY_LABEL_KEYS[category] ?? "category.inne";
+}
 
 // Slug → category. Single source of truth; the seed writes Activity.category from here.
 export const CATEGORY_BY_SLUG: Record<string, CategoryKey> = {

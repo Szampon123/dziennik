@@ -5,6 +5,8 @@ import { ONBOARDING_SLUGS } from "@/lib/onboarding-activities";
 import { normalizeDuduColor, normalizeDuduConfig } from "@/lib/dudu";
 import { normalizeHabitColor } from "@/lib/habit-colors";
 import { OnboardingWizard } from "@/components/onboarding/OnboardingWizard";
+import { getLocale } from "@/lib/i18n/server";
+import { getActivityName } from "@/lib/i18n/translate";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +21,7 @@ export const dynamic = "force-dynamic";
  */
 export default async function OnboardingPage() {
   const userId = await requireUserId();
+  const locale = await getLocale();
 
   const [user, activities, favorites, habit] = await Promise.all([
     prisma.user.findUnique({
@@ -34,7 +37,7 @@ export default async function OnboardingPage() {
     }),
     prisma.activity.findMany({
       where: { slug: { in: [...ONBOARDING_SLUGS] } },
-      select: { slug: true, name: true, category: true },
+      select: { slug: true, name: true, nameEn: true, nameDe: true, nameEs: true, category: true },
     }),
     prisma.favoriteActivity.findMany({
       where: { userId, activity: { slug: { in: [...ONBOARDING_SLUGS] } } },
@@ -62,7 +65,11 @@ export default async function OnboardingPage() {
     <OnboardingWizard
       initial={{
         displayName,
-        activities,
+        activities: activities.map((a) => ({
+          slug: a.slug,
+          name: getActivityName(a, locale),
+          category: a.category,
+        })),
         selectedSlugs: favorites.map((f) => f.activity.slug),
         habit: habit
           ? {

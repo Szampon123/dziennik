@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
 import { getT } from "@/lib/i18n/server";
+import { getActivityName } from "@/lib/i18n/translate";
 import { SkillForumList } from "@/components/forum/SkillForumList";
 
 export const dynamic = "force-dynamic";
@@ -17,9 +18,9 @@ export const metadata: Metadata = {
 export default async function ForumPage() {
   await requireUserId();
 
-  const [activities, counts, { t }] = await Promise.all([
+  const [activities, counts, { locale, t }] = await Promise.all([
     prisma.activity.findMany({
-      select: { slug: true, name: true, category: true },
+      select: { slug: true, name: true, nameEn: true, nameDe: true, nameEs: true, category: true },
       orderBy: { sortOrder: "asc" },
     }),
     prisma.forumPost.groupBy({ by: ["activitySlug"], _count: { _all: true } }),
@@ -29,7 +30,7 @@ export default async function ForumPage() {
 
   const skills = activities.map((a) => ({
     slug: a.slug,
-    name: a.name,
+    name: getActivityName(a, locale),
     category: a.category,
     count: countBySlug.get(a.slug) ?? 0,
   }));

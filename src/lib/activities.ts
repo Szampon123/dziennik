@@ -3,6 +3,8 @@
 import { prisma } from "@/lib/prisma";
 import { startOfWeek, todayKey, dayKeyToDate } from "@/lib/dates";
 import { parseResources } from "@/lib/milestone-resources";
+import { getLocale } from "@/lib/i18n/server";
+import { getActivityName, getMilestoneTitle, getMilestoneDetail } from "@/lib/i18n/translate";
 
 /** Epoch ms of Monday 00:00 of the current week (local tz). */
 function weekStartMs(): number {
@@ -42,6 +44,9 @@ export function highestLevel(completedLevels: Set<number>): number {
 
 export async function listActivitiesWithProgress(userId: string) {
   const since = weekStartMs();
+  // Seed copy is stored per locale; resolve it here so every caller downstream
+  // receives display-ready strings and never sees the raw Polish columns.
+  const locale = await getLocale();
   const activities = await prisma.activity.findMany({
     orderBy: { sortOrder: "asc" },
     include: {
@@ -97,7 +102,7 @@ export async function listActivitiesWithProgress(userId: string) {
     return {
       id: a.id,
       slug: a.slug,
-      name: a.name,
+      name: getActivityName(a, locale),
       icon: a.icon,
       description: a.description,
       category: a.category,
@@ -117,6 +122,7 @@ export async function listActivitiesWithProgress(userId: string) {
 export type ActivityListItem = Awaited<ReturnType<typeof listActivitiesWithProgress>>[number];
 
 export async function getActivityWithMilestones(userId: string, slug: string) {
+  const locale = await getLocale();
   const activity = await prisma.activity.findUnique({
     where: { slug },
     include: {
@@ -150,15 +156,19 @@ export async function getActivityWithMilestones(userId: string, slug: string) {
     // Per-user overrides win for display; the seeded original stays available.
     const customTitle = m.entries[0]?.customTitle ?? null;
     const customDetail = m.entries[0]?.customDetail ?? null;
+    // "Original" means the seeded text as this reader sees it, not the raw
+    // Polish — it prefills the edit form and is what a reset restores.
+    const originalTitle = getMilestoneTitle(m, locale);
+    const originalDetail = getMilestoneDetail(m, locale);
     return {
       video: parseVideo(m.videoJson),
       resources: parseResources(m.resourcesJson),
       id: m.id,
       level: m.level,
-      title: customTitle ?? m.title,
-      detail: customDetail ?? m.detail,
-      originalTitle: m.title,
-      originalDetail: m.detail,
+      title: customTitle ?? originalTitle,
+      detail: customDetail ?? originalDetail,
+      originalTitle,
+      originalDetail,
       customTitle,
       customDetail,
       customized: customTitle !== null || customDetail !== null,
@@ -181,7 +191,7 @@ export async function getActivityWithMilestones(userId: string, slug: string) {
   return {
     id: activity.id,
     slug: activity.slug,
-    name: activity.name,
+    name: getActivityName(activity, locale),
     icon: activity.icon,
     description: activity.description,
     category: activity.category,

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
+import { getLocale } from "@/lib/i18n/server";
+import { getActivityName } from "@/lib/i18n/translate";
 import { normalizeRole, isAdminRole } from "@/lib/roles";
 import { parseLevelParam, levelLabel } from "@/lib/forum";
 import { ActivityIcon } from "@/lib/activity-icons";
@@ -24,9 +26,13 @@ export default async function SkillForumPage({
   const { slug } = await params;
   const { level: levelParam } = await searchParams;
   const level = parseLevelParam(levelParam);
+  const locale = await getLocale();
 
   const [activity, me, counts, posts] = await Promise.all([
-    prisma.activity.findUnique({ where: { slug }, select: { name: true, category: true } }),
+    prisma.activity.findUnique({
+      where: { slug },
+      select: { name: true, nameEn: true, nameDe: true, nameEs: true, category: true },
+    }),
     prisma.user.findUnique({ where: { id: userId }, select: { role: true } }),
     prisma.forumPost.groupBy({
       by: ["level"],
@@ -79,7 +85,7 @@ export default async function SkillForumPage({
           </span>
           <div className="min-w-0 flex-1">
             <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
-              {activity.name}
+              {getActivityName(activity, locale)}
             </h1>
             <p className="mt-0.5 text-[13px] text-neutral-500">Dyskusja o umiejętności i poziomach</p>
           </div>

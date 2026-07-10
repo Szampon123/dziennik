@@ -181,7 +181,14 @@ model Note {
 model Activity {
   id          String      @id @default(cuid())
   slug        String      @unique // "bieganie"
+  // Polish is the source language: `name` is human-written and always present.
+  // The *En/*De/*Es columns are machine translations backfilled by
+  // scripts/translate-seed.mjs; null means "not translated yet" and the
+  // display helpers in src/lib/i18n/translate.ts fall back to Polish.
   name        String
+  nameEn      String?
+  nameDe      String?
+  nameEs      String?
   icon        String?
   description String?
   sortOrder   Int         @default(0)
@@ -218,8 +225,15 @@ model Milestone {
   id           String           @id @default(cuid())
   activityId   String
   level        Int // 1..99
+  // Polish is canonical; see the note on Activity.name.
   title        String
+  titleEn      String?
+  titleDe      String?
+  titleEs      String?
   detail       String?
+  detailEn     String?
+  detailDe     String?
+  detailEs     String?
   criteriaJson String? // machine-readable criteria (see src/lib/milestone-criteria.ts); null = manual-only
   videoJson    String? // optional learning videos for a piece: {"yt":"<id>","tut":"<search query>"}
   resourcesJson String? // curated learning resources (videos + verified sites): see src/lib/milestone-resources.ts

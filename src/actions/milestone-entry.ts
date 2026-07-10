@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { getLocale } from "@/lib/i18n/server";
+import { getMilestoneTitle, getMilestoneDetail } from "@/lib/i18n/translate";
 import { requireUserId } from "@/lib/session";
 import {
   PHOTO_TYPES,
@@ -96,7 +98,17 @@ export async function saveMilestoneLevel(
 
   const milestone = await prisma.milestone.findUnique({
     where: { id: milestoneId },
-    select: { title: true, detail: true, activity: { select: { slug: true } } },
+    select: {
+      title: true,
+      titleEn: true,
+      titleDe: true,
+      titleEs: true,
+      detail: true,
+      detailEn: true,
+      detailDe: true,
+      detailEs: true,
+      activity: { select: { slug: true } },
+    },
   });
   if (!milestone) return { ok: false, error: "Nie znaleziono poziomu." };
 
@@ -104,12 +116,18 @@ export async function saveMilestoneLevel(
     return { ok: false, error: "Nazwa poziomu nie może być pusta." };
   }
 
-  // Only store what actually differs from the seeded original.
+  // Only store what actually differs from the seeded original — and "original"
+  // means the text this user was shown, i.e. the seed resolved to their locale.
+  // Comparing against the raw Polish would turn "opened the form in English and
+  // saved it untouched" into a permanent per-user override of every level.
+  const locale = await getLocale();
+  const seededTitle = getMilestoneTitle(milestone, locale);
+  const seededDetail = getMilestoneDetail(milestone, locale);
+
   const title = parsed.data.customTitle.trim();
   const detail = parsed.data.customDetail.trim();
-  const customTitle = title === milestone.title.trim() ? null : title;
-  const customDetail =
-    detail === (milestone.detail ?? "").trim() ? null : detail || null;
+  const customTitle = title === seededTitle.trim() ? null : title;
+  const customDetail = detail === (seededDetail ?? "").trim() ? null : detail || null;
 
   await prisma.milestoneEntry.upsert({
     where: { userId_milestoneId: { userId, milestoneId } },
