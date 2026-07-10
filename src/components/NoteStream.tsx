@@ -8,7 +8,7 @@ import { formatTime } from "@/lib/dates";
 import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/Button";
 import { Textarea, inputClass } from "@/components/ui/Input";
-import { useT } from "@/components/i18n/I18nProvider";
+import { useT, useLocale } from "@/components/i18n/I18nProvider";
 import type { MessageKey } from "@/lib/i18n/messages";
 
 const NOTE_TYPE_KEY: Record<NoteType, MessageKey> = {
@@ -44,6 +44,7 @@ export function NoteStream({
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
   const t = useT();
+  const locale = useLocale();
 
   function submit() {
     if (!content.trim()) return;
@@ -113,7 +114,7 @@ export function NoteStream({
               className="group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-neutral-50"
             >
               <span className="mt-0.5 shrink-0 font-mono text-[13px] text-neutral-500">
-                {formatTime(new Date(note.createdAt))}
+                {formatTime(new Date(note.createdAt), locale)}
               </span>
               <span
                 className={`mt-0.5 inline-flex shrink-0 items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${

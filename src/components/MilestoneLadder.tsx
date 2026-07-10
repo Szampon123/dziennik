@@ -20,7 +20,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Progress } from "@/components/ui/Progress";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { MilestoneEntryEditor } from "@/components/MilestoneEntryEditor";
-import { useT } from "@/components/i18n/I18nProvider";
+import { useT, useLocale } from "@/components/i18n/I18nProvider";
 import type { MessageKey } from "@/lib/i18n/messages";
 
 export type MilestoneItem = {
@@ -77,6 +77,7 @@ export function MilestoneLadder({
   const [view, setView] = useState<View>("all");
   const [, startTransition] = useTransition();
   const t = useT();
+  const locale = useLocale();
 
   function toggle(m: MilestoneItem) {
     const next = !m.done;
@@ -206,7 +207,7 @@ export function MilestoneLadder({
               <span className="mt-1 flex flex-wrap items-center gap-2 text-[13px]">
                 {m.done && m.completedAt !== null && (
                   <span className="font-medium text-success">
-                    {t("ladder.completedOn", { date: formatDate(m.completedAt) })}
+                    {t("ladder.completedOn", { date: formatDate(m.completedAt, locale) })}
                   </span>
                 )}
                 {m.note && (

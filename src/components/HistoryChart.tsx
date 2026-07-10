@@ -11,6 +11,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import { formatDayShort } from "@/lib/dates";
+import { useLocale } from "@/components/i18n/I18nProvider";
 
 export type ChartPoint = {
   date: string;
@@ -23,9 +24,10 @@ export type ChartPoint = {
 // Design System v1.0 — data belongs to azure; day rating keeps the violet accent.
 // Tasks completion is a % on its own right-hand axis (success/green = done).
 export function HistoryChart({ data }: { data: ChartPoint[] }) {
+  const locale = useLocale();
   const points = data.map((d) => ({
     ...d,
-    label: formatDayShort(d.date),
+    label: formatDayShort(d.date, locale),
     tasksPct:
       d.tasksTotal !== null && d.tasksTotal > 0
         ? Math.round(((d.tasksDone ?? 0) / d.tasksTotal) * 100)

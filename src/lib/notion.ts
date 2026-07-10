@@ -4,6 +4,8 @@
 // target, never the source of truth; sync failures must never block local writes.
 import { Client, APIResponseError } from "@notionhq/client";
 import { prisma } from "@/lib/prisma";
+import { getLocale } from "@/lib/i18n/server";
+import type { Locale } from "@/lib/i18n/config";
 import { decrypt } from "@/lib/crypto";
 import { parsePriorities, parsePrioritiesDone, NOTE_TYPE_LABELS, type NoteType } from "@/lib/day";
 import { formatDayLong, formatTime } from "@/lib/dates";
@@ -90,7 +92,7 @@ function paragraph(text: string): Block {
 }
 
 /** Build the daily-brief block list for a day entry. */
-function buildBlocks(day: DayWithNotes): Block[] {
+function buildBlocks(day: DayWithNotes, locale: Locale): Block[] {
   const blocks: Block[] = [];
   const priorities = parsePriorities(day.prioritiesJson);
   const prioritiesDone = parsePrioritiesDone(day.prioritiesDoneJson, priorities.length);
@@ -115,7 +117,7 @@ function buildBlocks(day: DayWithNotes): Block[] {
     blocks.push(paragraph("—"));
   } else {
     for (const note of day.notes) {
-      const time = formatTime(new Date(note.createdAt));
+      const time = formatTime(new Date(note.createdAt), locale);
       const label = NOTE_TYPE_LABELS[note.type as NoteType] ?? note.type;
       blocks.push({
         type: "bulleted_list_item",
@@ -150,8 +152,8 @@ function buildBlocks(day: DayWithNotes): Block[] {
   return blocks;
 }
 
-function pageTitle(day: DayWithNotes): string {
-  return `${day.date} — ${formatDayLong(day.date)}`;
+function pageTitle(day: DayWithNotes, locale: Locale): string {
+  return `${day.date} — ${formatDayLong(day.date, locale)}`;
 }
 
 /** Remove all existing content blocks from a page (used before re-sync). */
@@ -202,7 +204,11 @@ export async function syncDayToNotion(userId: string, date: string): Promise<Syn
   });
 
   const notion = new Client({ auth: config.token });
-  const blocks = buildBlocks(day);
+  // The Notion page is written for the person who owns it, so it follows the
+  // locale of the request that triggered the sync (a server action or the
+  // /api/notion/sync route — both carry the cookie).
+  const locale = await getLocale();
+  const blocks = buildBlocks(day, locale);
 
   try {
     let pageId = day.notionPageId;
@@ -212,7 +218,7 @@ export async function syncDayToNotion(userId: string, date: string): Promise<Syn
       try {
         await notion.pages.update({
           page_id: pageId,
-          properties: { title: { title: richText(pageTitle(day)) } },
+          properties: { title: { title: richText(pageTitle(day, locale)) } },
         });
         await clearPageBlocks(notion, pageId);
         await notion.blocks.children.append({ block_id: pageId, children: blocks });
@@ -229,7 +235,7 @@ export async function syncDayToNotion(userId: string, date: string): Promise<Syn
     if (!pageId) {
       const page = await notion.pages.create({
         parent: { page_id: config.parentPageId },
-        properties: { title: { title: richText(pageTitle(day)) } },
+        properties: { title: { title: richText(pageTitle(day, locale)) } },
         children: blocks,
       });
       pageId = page.id;

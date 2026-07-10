@@ -28,5 +28,5 @@ function interpolate(template: string, params?: Record<string, string | number>)
 export function useT(): TFunc {
   const locale = useContext(LocaleContext);
   return (key, params) =>
-    interpolate(MESSAGES[locale][key] ?? MESSAGES.pl[key] ?? key, params);
+    interpolate(MESSAGES[locale][key] ?? MESSAGES[DEFAULT_LOCALE][key] ?? key, params);
 }

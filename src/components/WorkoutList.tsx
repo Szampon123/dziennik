@@ -6,7 +6,7 @@ import { deleteWorkout } from "@/actions/workouts";
 import { formatDayShort } from "@/lib/dates";
 import { EmptyState } from "@/components/EmptyState";
 import { Badge } from "@/components/ui/Badge";
-import { useT } from "@/components/i18n/I18nProvider";
+import { useT, useLocale } from "@/components/i18n/I18nProvider";
 
 export type WorkoutItem = {
   id: string;
@@ -28,6 +28,7 @@ export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
   const t = useT();
+  const locale = useLocale();
 
   function remove(id: string) {
     if (!window.confirm(t("workout.deleteConfirm"))) {
@@ -52,7 +53,7 @@ export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
         {workouts.map((w) => (
           <li key={w.id} className="group flex items-center gap-3 px-1 py-2.5">
             <span className="w-14 shrink-0 font-mono text-[13px] text-neutral-500">
-              {formatDayShort(w.date)}
+              {formatDayShort(w.date, locale)}
             </span>
             <span className="flex-1 text-[15px] text-neutral-800">
               <span className="font-medium">{w.distanceKm} km</span>

@@ -39,11 +39,15 @@ import {
   daysInMonth,
   firstDayOfMonth,
   formatMonthYear,
+  formatDayLong,
+  formatWeekdayShort,
   addMonths,
   addDays,
   startOfWeek,
   dayKeyToDate,
 } from "@/lib/dates";
+import { useLocale, useT, type TFunc } from "@/components/i18n/I18nProvider";
+import type { Locale } from "@/lib/i18n/config";
 
 type Habit = {
   id: string;
@@ -65,8 +69,8 @@ function ColorDot({ color }: { color: string }) {
   );
 }
 
-function targetLabel(t: number) {
-  return t >= 7 ? "codziennie" : `${t}×/tydz`;
+function targetLabel(n: number, t: TFunc) {
+  return n >= 7 ? t("habits.everyDay") : t("habits.timesPerWeek", { n });
 }
 
 // Sets the --hc CSS var used by coloured checkboxes.
@@ -77,14 +81,14 @@ function hcVar(color: string): CSSProperties {
 // Flexible day columns (1fr) so the whole month fits on desktop without
 // scrolling; the grid keeps a min-width so it still scrolls on narrow phones.
 const NAME_COL = "minmax(72px,120px)";
-// Two-letter weekday labels (index = Date.getDay(); 0 = Sunday).
-const WEEKDAY = ["Nd", "Pn", "Wt", "Śr", "Cz", "Pt", "So"];
+// Weekday labels come from Intl per locale — a hardcoded array can only ever
+// be right for one language.
 
 function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
-function weekdayOf(dayKey: string) {
-  return WEEKDAY[dayKeyToDate(dayKey).getDay()];
+function weekdayOf(dayKey: string, locale: Locale) {
+  return formatWeekdayShort(dayKey, locale);
 }
 function isWeekendKey(dayKey: string) {
   const g = dayKeyToDate(dayKey).getDay();
@@ -106,6 +110,8 @@ export function HabitTracker({
   monthKey: string;
   today: string;
 }) {
+  const locale = useLocale();
+  const t = useT();
   const [checked, setChecked] = useState<Set<string>>(
     () => new Set(habits.flatMap((h) => h.checkedDates.map((d) => `${h.id}|${d}`)))
   );
@@ -114,7 +120,7 @@ export function HabitTracker({
 
   const days = daysInMonth(monthKey);
   const isCurrentMonth = monthKey === today.slice(0, 7);
-  const monthLabel = capitalize(formatMonthYear(firstDayOfMonth(monthKey)));
+  const monthLabel = capitalize(formatMonthYear(firstDayOfMonth(monthKey), locale));
 
   // Group day keys into calendar weeks (Mon–Sun).
   const weeks: string[][] = [];
@@ -243,7 +249,7 @@ export function HabitTracker({
         <div className="flex items-center gap-2">
           <Link
             href={`/nawyki?m=${addMonths(monthKey, -1)}`}
-            aria-label="Poprzedni miesiąc"
+            aria-label={t("habits.prevMonth")}
             className="rounded-lg p-2 text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -254,13 +260,13 @@ export function HabitTracker({
             </p>
             <p className="text-[12px] text-neutral-500">
               {isCurrentMonth && weekPossible > 0
-                ? `${weekDone}/${weekPossible} w tym tygodniu`
-                : "Dashboard nawyków"}
+                ? t("habits.weekProgress", { done: weekDone, possible: weekPossible })
+                : t("habits.dashboard")}
             </p>
           </div>
           <Link
             href={`/nawyki?m=${addMonths(monthKey, 1)}`}
-            aria-label="Następny miesiąc"
+            aria-label={t("habits.nextMonth")}
             className="rounded-lg p-2 text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200"
           >
             <ChevronRight className="h-5 w-5" />
@@ -271,10 +277,10 @@ export function HabitTracker({
           <div className="flex items-center gap-3">
             <Ring pct={adherencePct} />
             <div className="text-[13px] text-neutral-500">
-              <p className="font-semibold text-neutral-900">{adherencePct}% celu</p>
-              <p>
-                {adhDone}/{adhGoal} do tej pory
+              <p className="font-semibold text-neutral-900">
+                {t("habits.goalPct", { pct: adherencePct })}
               </p>
+              <p>{t("habits.goalSoFar", { done: adhDone, possible: adhGoal })}</p>
             </div>
           </div>
         )}
@@ -288,15 +294,11 @@ export function HabitTracker({
           {isCurrentMonth && (
             <div className="rounded-card border border-neutral-200 bg-neutral-0 p-4 shadow-card">
               <div className="mb-3 flex items-baseline justify-between">
-                <h2 className="text-[15px] font-semibold text-neutral-900">Dzisiaj</h2>
+                <h2 className="text-[15px] font-semibold text-neutral-900">
+                  {t("habits.today")}
+                </h2>
                 <span className="text-[12px] text-neutral-500">
-                  {capitalize(
-                    new Intl.DateTimeFormat("pl-PL", {
-                      weekday: "long",
-                      day: "numeric",
-                      month: "long",
-                    }).format(dayKeyToDate(today))
-                  )}
+                  {capitalize(formatDayLong(today, locale))}
                 </span>
               </div>
               <ul className="flex flex-col gap-1">
@@ -312,7 +314,11 @@ export function HabitTracker({
                         type="button"
                         onClick={() => toggle(h.id, today)}
                         aria-pressed={done}
-                        aria-label={`${h.name}${done ? " (zrobione dziś)" : " — odhacz dziś"}`}
+                        aria-label={
+                          done
+                            ? t("habits.checkDone", { name: h.name })
+                            : t("habits.checkTodo", { name: h.name })
+                        }
                         style={hcVar(h.color)}
                         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-300 ${
                           done
@@ -330,7 +336,7 @@ export function HabitTracker({
                         {h.name}
                         {!isDaily && (
                           <span className="ml-1.5 text-[12px] text-neutral-400">
-                            {targetLabel(h.targetPerWeek)}
+                            {targetLabel(h.targetPerWeek, t)}
                           </span>
                         )}
                       </span>
@@ -338,7 +344,7 @@ export function HabitTracker({
                         ? streak > 0 && (
                             <span
                               className="flex shrink-0 items-center gap-1 rounded-full bg-warning-bg px-2 py-0.5 text-[12px] font-semibold text-warning"
-                              title={`Seria: ${streak} dni z rzędu`}
+                              title={t("habits.streakTitle", { n: streak })}
                             >
                               <Flame className="h-3.5 w-3.5" />
                               {streak}
@@ -353,11 +359,11 @@ export function HabitTracker({
                               }`}
                               title={
                                 weekN > h.targetPerWeek
-                                  ? "Powyżej celu tygodniowego — świetnie!"
-                                  : "Wykonania w tym tygodniu"
+                                  ? t("habits.aboveWeeklyGoal")
+                                  : t("habits.doneThisWeek")
                               }
                             >
-                              {weekN}/{h.targetPerWeek} w tyg.
+                              {t("habits.weekCount", { done: weekN, target: h.targetPerWeek })}
                             </span>
                           )}
                     </li>
@@ -384,7 +390,7 @@ export function HabitTracker({
                       wi > 0 ? "border-l border-neutral-200" : ""
                     }`}
                   >
-                    Tydz. {wi + 1}
+                    {t("habits.weekN", { n: wi + 1 })}
                   </div>
                 ))}
 
@@ -408,7 +414,7 @@ export function HabitTracker({
                             weekend ? "text-neutral-400" : "text-neutral-400"
                           }`}
                         >
-                          {weekdayOf(d)}
+                          {weekdayOf(d, locale)}
                         </span>
                         <span
                           className={`text-[11px] leading-tight ${
@@ -446,11 +452,16 @@ export function HabitTracker({
           {/* Monthly activity chart + summary stats */}
           <div className="rounded-card border border-neutral-200 bg-neutral-0 p-4 shadow-card">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-[15px] font-semibold text-neutral-900">Aktywność w miesiącu</h2>
+              <h2 className="text-[15px] font-semibold text-neutral-900">
+                {t("habits.monthActivity")}
+              </h2>
               <div className="flex flex-wrap gap-1.5">
-                <Stat label="Najlepsza seria" value={`${bestStreak} dni`} />
-                <Stat label="Łącznie" value={`${totalDone} ✓`} />
-                <Stat label="Top nawyk" value={topHabit ? topHabit.name : "—"} />
+                <Stat
+                  label={t("habits.bestStreak")}
+                  value={t("habits.daysCount", { n: bestStreak })}
+                />
+                <Stat label={t("habits.total")} value={`${totalDone} ✓`} />
+                <Stat label={t("habits.topHabit")} value={topHabit ? topHabit.name : "—"} />
               </div>
             </div>
             <MonthActivityChart counts={dailyCounts} lastIdx={lastIdx} max={habits.length} days={days} />
@@ -491,6 +502,7 @@ function HabitRow({
   goal: number;
   onToggle: (habitId: string, date: string) => void;
 }) {
+  const t = useT();
   const over = done > goal;
   return (
     <>
@@ -500,12 +512,12 @@ function HabitRow({
             <ColorDot color={habit.color} />
             <span className="truncate" title={habit.name}>
               {habit.name}
-              <span className="ml-1 font-normal text-neutral-400">· {targetLabel(habit.targetPerWeek)}</span>
+              <span className="ml-1 font-normal text-neutral-400">· {targetLabel(habit.targetPerWeek, t)}</span>
             </span>
           </span>
           <span
             className={`shrink-0 font-mono text-[11px] ${over ? "font-semibold text-success" : "text-neutral-500"}`}
-            title={over ? "Powyżej celu — świetnie!" : undefined}
+            title={over ? t("habits.aboveGoal") : undefined}
           >
             {done}/{goal}
           </span>
@@ -565,6 +577,7 @@ function MonthActivityChart({
   max: number;
   days: string[];
 }) {
+  const t = useT();
   const N = days.length;
   const W = 1000;
   const H = 200;
@@ -573,7 +586,7 @@ function MonthActivityChart({
   if (lastIdx < 0) {
     return (
       <p className="py-8 text-center text-[13px] text-neutral-500">
-        Ten miesiąc jeszcze się nie zaczął — brak danych.
+        {t("habits.monthNotStarted")}
       </p>
     );
   }
@@ -609,7 +622,7 @@ function MonthActivityChart({
           preserveAspectRatio="none"
           className="h-[170px] w-full"
           role="img"
-          aria-label="Wykres wykonanych nawyków dzień po dniu"
+          aria-label={t("habits.chartAria")}
         >
           <defs>
             <linearGradient id="habitArea" x1="0" y1="0" x2="0" y2="1">
@@ -705,6 +718,7 @@ function ColorPicker({
   onChange: (c: HabitColorKey) => void;
   habitName: string;
 }) {
+  const t = useT();
   return (
     <div className="flex shrink-0 items-center gap-1">
       {HABIT_COLOR_KEYS.map((key) => {
@@ -715,8 +729,11 @@ function ColorPicker({
             type="button"
             onClick={() => onChange(key)}
             aria-pressed={active}
-            aria-label={`Kolor ${HABIT_COLORS[key].label} dla ${habitName}`}
-            title={HABIT_COLORS[key].label}
+            aria-label={t("habits.colorAria", {
+              color: t(HABIT_COLORS[key].labelKey),
+              name: habitName,
+            })}
+            title={t(HABIT_COLORS[key].labelKey)}
             style={{ backgroundColor: HABIT_COLORS[key].value }}
             className={`h-6 w-6 rounded-full outline-none transition-transform focus-visible:ring-2 focus-visible:ring-violet-200 ${
               active
@@ -740,6 +757,7 @@ function TargetSelect({
   onChange: (n: number) => void;
   ariaLabel: string;
 }) {
+  const t = useT();
   return (
     <select
       value={value}
@@ -749,7 +767,7 @@ function TargetSelect({
     >
       {[1, 2, 3, 4, 5, 6, 7].map((n) => (
         <option key={n} value={n}>
-          {n === 7 ? "codziennie" : `${n}×/tydz`}
+          {targetLabel(n, t)}
         </option>
       ))}
     </select>
@@ -757,13 +775,11 @@ function TargetSelect({
 }
 
 function EmptyState() {
+  const t = useT();
   return (
     <div className="rounded-card border border-dashed border-neutral-300 bg-neutral-0 p-8 text-center shadow-card">
-      <p className="text-[15px] font-semibold text-neutral-900">Zacznij od nawyków</p>
-      <p className="mt-1 text-[13px] text-neutral-500">
-        Dodaj swój pierwszy nawyk poniżej — pojawi się w siatce na każdy dzień miesiąca, a Ty
-        będziesz go odklikiwać.
-      </p>
+      <p className="text-[15px] font-semibold text-neutral-900">{t("habits.emptyTitle")}</p>
+      <p className="mt-1 text-[13px] text-neutral-500">{t("habits.emptyBody")}</p>
     </div>
   );
 }
@@ -772,6 +788,7 @@ function EmptyState() {
 // a restore section for archived habits. Each control calls a server action that
 // revalidates /nawyki, so the grid above re-renders with the new list.
 function ManagePanel({ habits, archived }: { habits: Habit[]; archived: ArchivedHabit[] }) {
+  const t = useT();
   const [open, setOpen] = useState(habits.length === 0);
   const [newName, setNewName] = useState("");
   const [newTarget, setNewTarget] = useState(7);
@@ -822,7 +839,7 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
     });
   }
   function remove(id: string, name: string) {
-    if (!confirm(`Usunąć nawyk „${name}” wraz z całą historią odhaczeń?`)) return;
+    if (!confirm(t("habits.confirmDelete", { name }))) return;
     startTransition(async () => {
       await deleteHabit({ id });
     });
@@ -837,7 +854,7 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
         className="inline-flex w-fit items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[13px] font-medium text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200"
       >
         <SlidersHorizontal aria-hidden className="h-3.5 w-3.5" />
-        Zarządzaj nawykami
+        {t("habits.manage")}
       </button>
 
       {open && (
@@ -850,14 +867,14 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
                 if (e.key === "Enter") add();
               }}
               maxLength={100}
-              placeholder="Nowy nawyk (np. Siłownia, 8 szklanek wody)"
+              placeholder={t("habits.newPlaceholder")}
               aria-label="Nazwa nowego nawyku"
               className="min-w-[180px] flex-1"
             />
             <TargetSelect
               value={newTarget}
               onChange={setNewTarget}
-              ariaLabel="Ile razy w tygodniu"
+              ariaLabel={t("habits.timesPerWeekAria")}
             />
             <Button onClick={add} disabled={isPending || !newName.trim()}>
               <Plus aria-hidden className="h-4 w-4" />
@@ -866,12 +883,10 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
           </div>
           <div className="mt-2 flex items-center gap-2">
             <span className="text-[12px] text-neutral-500">Kolor:</span>
-            <ColorPicker value={newColor} onChange={setNewColor} habitName="nowego nawyku" />
+            <ColorPicker value={newColor} onChange={setNewColor} habitName={t("habits.newHabitLabel")} />
           </div>
           <p className="mt-2 text-[12px] text-neutral-400">
-            Wybierz, ile razy w tygodniu chcesz wykonywać nawyk — dni odklikujesz dowolnie.
-            Możesz wykonać go częściej niż cel: licznik pokaże np. <strong>3/2</strong> i nic Cię
-            nie zablokuje.
+            {t("habits.targetHelp", { example: "3/2" })}
           </p>
           {error && <p className="mt-2 text-[13px] text-danger">{error}</p>}
 
@@ -900,15 +915,15 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
                   <TargetSelect
                     value={h.targetPerWeek}
                     onChange={(n) => changeTarget(h.id, n)}
-                    ariaLabel={`Cel tygodniowy: ${h.name}`}
+                    ariaLabel={t("habits.weeklyGoalAria", { name: h.name })}
                   />
                   <div className="flex shrink-0 items-center">
                     <button
                       type="button"
                       onClick={() => move(h.id, "up")}
                       disabled={i === 0 || isPending}
-                      aria-label={`Przesuń wyżej: ${h.name}`}
-                      title="Wyżej"
+                      aria-label={t("habits.moveUpAria", { name: h.name })}
+                      title={t("habits.moveUp")}
                       className="rounded p-1 text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-30"
                     >
                       <ChevronUp className="h-4 w-4" />
@@ -917,8 +932,8 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
                       type="button"
                       onClick={() => move(h.id, "down")}
                       disabled={i === habits.length - 1 || isPending}
-                      aria-label={`Przesuń niżej: ${h.name}`}
-                      title="Niżej"
+                      aria-label={t("habits.moveDownAria", { name: h.name })}
+                      title={t("habits.moveDown")}
                       className="rounded p-1 text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-30"
                     >
                       <ChevronDown className="h-4 w-4" />
@@ -927,8 +942,8 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
                       type="button"
                       onClick={() => setArchived(h.id, true)}
                       disabled={isPending}
-                      aria-label={`Zarchiwizuj: ${h.name}`}
-                      title="Archiwizuj (zachowuje historię)"
+                      aria-label={t("habits.archiveTitle")}
+                      title={t("habits.archiveTitle")}
                       className="rounded p-1 text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-30"
                     >
                       <Archive className="h-4 w-4" />
@@ -937,8 +952,8 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
                       type="button"
                       onClick={() => remove(h.id, h.name)}
                       disabled={isPending}
-                      aria-label={`Usuń: ${h.name}`}
-                      title="Usuń na stałe"
+                      aria-label={t("habits.deleteAria", { name: h.name })}
+                      title={t("habits.deleteTitle")}
                       className="rounded p-1 text-neutral-500 outline-none transition-colors hover:bg-danger-bg hover:text-danger focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-30"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -970,14 +985,14 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
                       className="inline-flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-[13px] font-medium text-violet-700 outline-none transition-colors hover:bg-violet-100 focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-40"
                     >
                       <RotateCcw className="h-3.5 w-3.5" />
-                      Przywróć
+                      {t("habits.restore")}
                     </button>
                     <button
                       type="button"
                       onClick={() => remove(h.id, h.name)}
                       disabled={isPending}
-                      aria-label={`Usuń na stałe: ${h.name}`}
-                      title="Usuń na stałe"
+                      aria-label={t("habits.deletePermAria", { name: h.name })}
+                      title={t("habits.deleteTitle")}
                       className="rounded p-1 text-neutral-500 outline-none transition-colors hover:bg-danger-bg hover:text-danger focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-30"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -989,7 +1004,7 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
           )}
 
           <p className="mt-3 text-[12px] text-neutral-400">
-            Archiwizacja ukrywa nawyk, ale zachowuje historię odhaczeń. Usunięcie kasuje go na stałe.
+            {t("habits.archiveHelp")}
           </p>
         </div>
       )}

@@ -2,12 +2,24 @@
 
 import { Check } from "lucide-react";
 import { HABIT_COLORS, HABIT_COLOR_KEYS, type HabitColorKey } from "@/lib/habit-colors";
-import { useT } from "@/components/i18n/I18nProvider";
+import { useT, useLocale } from "@/components/i18n/I18nProvider";
+import { formatWeekdayShort } from "@/lib/dates";
 import { inputClass } from "@/components/ui/Input";
 
 export type HabitDraft = { name: string; targetPerWeek: number; color: HabitColorKey };
 
-const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
+// An arbitrary Mon–Sun week (2024-01-01 was a Monday) used purely to source
+// weekday names from Intl. The preview isn't tied to real dates, but the
+// labels still have to be in the reader's language.
+const PREVIEW_WEEK = [
+  "2024-01-01",
+  "2024-01-02",
+  "2024-01-03",
+  "2024-01-04",
+  "2024-01-05",
+  "2024-01-06",
+  "2024-01-07",
+];
 
 export function StepHabit({
   draft,
@@ -17,6 +29,7 @@ export function StepHabit({
   onChange: (next: HabitDraft) => void;
 }) {
   const t = useT();
+  const locale = useLocale();
   const swatch = HABIT_COLORS[draft.color].value;
 
   return (
@@ -60,7 +73,7 @@ export function StepHabit({
               className="h-1.5 flex-1 cursor-pointer appearance-none rounded-full bg-neutral-200 accent-violet-600"
             />
             <span className="w-16 shrink-0 text-right text-sm font-semibold text-neutral-900">
-              {draft.targetPerWeek}×/week
+              {t("habits.timesPerWeek", { n: draft.targetPerWeek })}
             </span>
           </div>
         </div>
@@ -76,7 +89,7 @@ export function StepHabit({
                 <button
                   key={key}
                   type="button"
-                  aria-label={HABIT_COLORS[key].label}
+                  aria-label={t(HABIT_COLORS[key].labelKey)}
                   aria-pressed={active}
                   onClick={() => onChange({ ...draft, color: key })}
                   style={{ backgroundColor: HABIT_COLORS[key].value }}
@@ -99,11 +112,13 @@ export function StepHabit({
             {t("onboarding.habit.preview")}
           </p>
           <div className="mt-3 flex items-center gap-2">
-            {WEEKDAYS.map((day, i) => {
+            {PREVIEW_WEEK.map((dayKey, i) => {
               const filled = i < draft.targetPerWeek;
               return (
-                <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
-                  <span className="text-[11px] text-neutral-400">{day}</span>
+                <div key={dayKey} className="flex flex-1 flex-col items-center gap-1.5">
+                  <span className="text-[11px] text-neutral-400">
+                    {formatWeekdayShort(dayKey, locale)}
+                  </span>
                   <span
                     aria-hidden
                     style={filled ? { backgroundColor: swatch } : undefined}

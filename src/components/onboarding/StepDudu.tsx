@@ -7,7 +7,7 @@ import {
   DUDU_COLOR_KEYS,
   DUDU_SLOTS,
   DEFAULT_DUDU_CONFIG,
-  DEFAULT_DUDU_NAME,
+  DEFAULT_DUDU_NAME_KEY,
   MAX_DUDU_NAME,
   type DuduColor,
 } from "@/lib/dudu";
@@ -53,7 +53,7 @@ export function StepDudu({
           config={{ ...DEFAULT_DUDU_CONFIG, hat: draft.hat, item: draft.item }}
         />
         <p className="mt-3 text-sm font-semibold text-violet-700">
-          {draft.name.trim() || DEFAULT_DUDU_NAME}
+          {draft.name.trim() || t(DEFAULT_DUDU_NAME_KEY)}
         </p>
       </div>
 
@@ -66,7 +66,7 @@ export function StepDudu({
             type="text"
             value={draft.name}
             maxLength={MAX_DUDU_NAME}
-            placeholder={DEFAULT_DUDU_NAME}
+            placeholder={t(DEFAULT_DUDU_NAME_KEY)}
             onChange={(e) => onChange({ ...draft, name: e.target.value })}
             className={inputClass}
           />
@@ -83,7 +83,7 @@ export function StepDudu({
                 <button
                   key={key}
                   type="button"
-                  aria-label={DUDU_COLORS[key].label}
+                  aria-label={t(DUDU_COLORS[key].labelKey)}
                   aria-pressed={active}
                   onClick={() => onChange({ ...draft, color: key })}
                   style={{ backgroundColor: DUDU_COLORS[key].accent }}
@@ -126,6 +126,7 @@ function SlotRow({
   value: string;
   onPick: (id: string) => void;
 }) {
+  const t = useT();
   return (
     <div className="flex flex-col gap-2">
       <span className="text-[13px] font-medium text-neutral-700">{label}</span>
@@ -144,7 +145,7 @@ function SlotRow({
                   : "border-neutral-300 bg-neutral-0 text-neutral-700 hover:bg-neutral-50"
               }`}
             >
-              {option.label}
+              {t(option.labelKey)}
             </button>
           );
         })}

@@ -17,6 +17,7 @@ import { getGoogleStatus } from "@/lib/google";
 import { getCachedDayEvents } from "@/lib/calendar-cache";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
+import { getLocale } from "@/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
@@ -29,9 +30,10 @@ export default async function DayDetailPage({
   const { date } = await params;
   if (!isValidDayKey(date)) notFound();
 
-  const [day, notionConfigured] = await Promise.all([
+  const [day, notionConfigured, locale] = await Promise.all([
     getDayWithNotes(userId, date),
     isNotionConfigured(userId),
+    getLocale(),
   ]);
   if (!day) notFound();
 
@@ -77,7 +79,7 @@ export default async function DayDetailPage({
             <span className="transition-transform group-hover:-translate-x-0.5">←</span> Historia
           </Link>
           <h1 className="mt-1 text-[28px] font-semibold capitalize tracking-[-0.5px] text-neutral-900">
-            {formatDayLong(day.date)}
+            {formatDayLong(day.date, locale)}
           </h1>
           {closed ? (
             <p className="mt-1 text-[13px] text-neutral-500">

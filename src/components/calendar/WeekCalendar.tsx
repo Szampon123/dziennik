@@ -17,7 +17,7 @@ import {
   startOfWeek,
 } from "@/lib/dates";
 import { useCalendar, PAST_DAYS, FUTURE_DAYS, type EventItem } from "./CalendarProvider";
-import { useT } from "@/components/i18n/I18nProvider";
+import { useT, useLocale } from "@/components/i18n/I18nProvider";
 
 // "Kalendarz": a week navigator (flip through the loaded window) + the selected
 // day's Google events. Today is interactive (checkpoints); other days are a
@@ -26,6 +26,7 @@ export function WeekCalendar() {
   const { state, events, today, now, selectedDay, setSelectedDay, checked, toggleCheck, reload } =
     useCalendar();
   const t = useT();
+  const locale = useLocale();
 
   if (state.phase !== "ok") {
     return (
@@ -137,7 +138,7 @@ export function WeekCalendar() {
               <ChevronLeft className="h-4 w-4" />
             </button>
             <span className="text-[13px] font-medium capitalize text-neutral-700">
-              {formatMonthYear(selectedDay)}
+              {formatMonthYear(selectedDay, locale)}
             </span>
             <button
               type="button"
@@ -161,7 +162,7 @@ export function WeekCalendar() {
                   type="button"
                   disabled={outside}
                   onClick={() => setSelectedDay(day)}
-                  aria-label={formatDayLong(day)}
+                  aria-label={formatDayLong(day, locale)}
                   aria-pressed={isSelected}
                   className={`flex flex-col items-center gap-0.5 rounded-lg py-1.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-30 ${
                     isSelected
@@ -176,7 +177,7 @@ export function WeekCalendar() {
                       isSelected ? "text-violet-100" : "text-neutral-400"
                     }`}
                   >
-                    {formatWeekdayShort(day)}
+                    {formatWeekdayShort(day, locale)}
                   </span>
                   <span className="text-[15px] font-semibold tabular-nums">
                     {dayKeyToDate(day).getDate()}
@@ -196,7 +197,7 @@ export function WeekCalendar() {
         {/* Selected day's events */}
         <div className="flex flex-col gap-3 border-t border-neutral-200 pt-4">
           <p className="text-[13px] font-medium capitalize text-neutral-700">
-            {formatDayLong(selectedDay)}
+            {formatDayLong(selectedDay, locale)}
             {interactive && (
               <span className="ml-1.5 font-normal text-neutral-400">· {t("cal.todaySuffix")}</span>
             )}
@@ -266,7 +267,7 @@ export function WeekCalendar() {
                               : "text-neutral-500"
                       }`}
                     >
-                      {formatTime(new Date(e.start))}–{formatTime(new Date(e.end))}
+                      {formatTime(new Date(e.start), locale)}–{formatTime(new Date(e.end), locale)}
                     </span>
                     {current && !done && (
                       <span aria-hidden className="h-2 w-2 shrink-0 rounded-full bg-violet-600" />

@@ -42,7 +42,7 @@ export async function ActivityStats({
   milestones: MilestoneLite[];
   workouts: WorkoutLite[];
 }) {
-  const { t } = await getT();
+  const { t, locale } = await getT();
   const pct = maxLevel > 0 ? Math.round((completedCount / maxLevel) * 100) : 0;
   const allDone = completedCount === maxLevel;
 
@@ -87,7 +87,7 @@ export async function ActivityStats({
             {t("stats.stage")}{" "}
             <span className="text-neutral-700">{tierForLevel(level > 0 ? level : 1).name}</span>
             {levelAchievedAt !== null && (
-              <> · {t("stats.lastly", { date: formatDate(levelAchievedAt) })}</>
+              <> · {t("stats.lastly", { date: formatDate(levelAchievedAt, locale) })}</>
             )}
           </p>
         </div>

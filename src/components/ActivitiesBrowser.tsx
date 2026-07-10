@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Chip } from "@/components/ui/Chip";
 import { Input, inputClass } from "@/components/ui/Input";
 import { Progress } from "@/components/ui/Progress";
-import { useT } from "@/components/i18n/I18nProvider";
+import { useT, useLocale } from "@/components/i18n/I18nProvider";
 import type { MessageKey } from "@/lib/i18n/messages";
 
 type StatusFilter = "all" | "started" | "notStarted" | "completed";
@@ -53,6 +53,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
   const [favOverrides, setFavOverrides] = useState<Record<string, boolean>>({});
   const [, startTransition] = useTransition();
   const t = useT();
+  const locale = useLocale();
 
   const isFav = (a: ActivityListItem) => favOverrides[a.slug] ?? a.favorite;
 
@@ -230,7 +231,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
                       <span>{CATEGORY_LABELS[a.category] ?? "Inne"}</span>
                       {a.levelAchievedAt !== null && (
                         <span className="font-medium text-success">
-                          {t("act.levelAchieved", { date: formatDate(a.levelAchievedAt) })}
+                          {t("act.levelAchieved", { date: formatDate(a.levelAchievedAt, locale) })}
                         </span>
                       )}
                     </span>

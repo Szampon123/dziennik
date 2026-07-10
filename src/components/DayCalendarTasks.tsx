@@ -5,6 +5,7 @@ import { setPastDayEventCheck } from "@/actions/event-check";
 import { Progress } from "@/components/ui/Progress";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { formatTime } from "@/lib/dates";
+import { useLocale } from "@/components/i18n/I18nProvider";
 
 type EventItem = {
   id: string;
@@ -28,6 +29,7 @@ export function DayCalendarTasks({
   events: EventItem[];
   initialCheckedIds: string[];
 }) {
+  const locale = useLocale();
   const [checked, setChecked] = useState<Set<string>>(() => new Set(initialCheckedIds));
   const [error, setError] = useState("");
   const [, startTransition] = useTransition();
@@ -124,7 +126,7 @@ export function DayCalendarTasks({
                   isDone ? "text-neutral-400" : "text-neutral-500"
                 }`}
               >
-                {formatTime(new Date(e.start))}–{formatTime(new Date(e.end))}
+                {formatTime(new Date(e.start), locale)}–{formatTime(new Date(e.end), locale)}
               </span>
               <span
                 className={`truncate text-[15px] ${

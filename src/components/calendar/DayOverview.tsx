@@ -6,7 +6,7 @@ import { Card } from "@/components/Card";
 import { CharacterAvatar } from "@/components/CharacterAvatar";
 import { formatDayShort, dayKeyDaysAgo } from "@/lib/dates";
 import { useCalendar } from "./CalendarProvider";
-import { useT } from "@/components/i18n/I18nProvider";
+import { useT, useLocale } from "@/components/i18n/I18nProvider";
 
 // "Przegląd dnia" — hero: a progress ring (share of the day's tasks done), the
 // mini Dudu companion, and metric tiles (rating, energy, streak), with the
@@ -42,6 +42,7 @@ export function DayOverview({
   const companionLabel = characterName?.trim() || characterStageName;
   const { state, events, today, checked } = useCalendar();
   const t = useT();
+  const locale = useLocale();
 
   const todayEvents = events.filter((e) => e.dayKey === today);
   const calDone = todayEvents.filter((e) => checked.has(e.id)).length;
@@ -226,8 +227,8 @@ export function DayOverview({
                     className="relative h-14 w-full max-w-9 overflow-hidden rounded-md bg-neutral-100"
                     title={
                       t.pct === null
-                        ? `${formatDayShort(t.dayKey)}: brak wydarzeń`
-                        : `${formatDayShort(t.dayKey)}: ${t.pct}% (${t.total} ${
+                        ? `${formatDayShort(t.dayKey, locale)}: brak wydarzeń`
+                        : `${formatDayShort(t.dayKey, locale)}: ${t.pct}% (${t.total} ${
                             t.total === 1 ? "wydarzenie" : "wydarzeń"
                           })`
                     }
@@ -244,7 +245,7 @@ export function DayOverview({
                       t.dayKey === today ? "font-semibold text-neutral-900" : "text-neutral-500"
                     }`}
                   >
-                    {formatDayShort(t.dayKey)}
+                    {formatDayShort(t.dayKey, locale)}
                   </span>
                 </div>
               ))}

@@ -42,7 +42,7 @@ export const metadata: Metadata = {
 
 export default async function TodayPage() {
   const userId = await requireUserId();
-  const [day, notionConfigured, streak, favQuoteIds, user, characterXp, { t }] = await Promise.all([
+  const [day, notionConfigured, streak, favQuoteIds, user, characterXp, { t, locale }] = await Promise.all([
     getOrCreateToday(userId),
     isNotionConfigured(userId),
     closedDayStreak(userId),
@@ -152,7 +152,7 @@ export default async function TodayPage() {
           <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
             {t("page.today.title")}
           </h1>
-          <p className="mt-1 text-[13px] capitalize text-neutral-500">{formatDayLong(day.date)}</p>
+          <p className="mt-1 text-[13px] capitalize text-neutral-500">{formatDayLong(day.date, locale)}</p>
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">
           {morningFilled ? (

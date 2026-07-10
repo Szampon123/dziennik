@@ -1,5 +1,19 @@
 // Date helpers. Day keys are "YYYY-MM-DD" in the *local* timezone —
 // the journal follows the user's wall clock, not UTC.
+//
+// Every formatter takes the active locale explicitly. It is deliberately not
+// optional: a default would silently render English dates for a Polish user at
+// any call site that forgot to pass one, and the compiler would never say so.
+// Server components get it from getLocale(); client components from useLocale().
+import type { Locale } from "./i18n/config";
+
+/** Intl wants a BCP 47 tag; our locale codes are the bare language subtags. */
+const INTL_LOCALE: Record<Locale, string> = {
+  pl: "pl-PL",
+  en: "en-GB",
+  de: "de-DE",
+  es: "es-ES",
+};
 
 export function toDayKey(date: Date): string {
   const y = date.getFullYear();
@@ -22,9 +36,9 @@ export function isValidDayKey(key: string): boolean {
   return /^\d{4}-\d{2}-\d{2}$/.test(key) && !isNaN(dayKeyToDate(key).getTime());
 }
 
-/** e.g. "środa, 2 lipca 2026" */
-export function formatDayLong(key: string): string {
-  return new Intl.DateTimeFormat("pl-PL", {
+/** e.g. "Wednesday, 2 July 2026" */
+export function formatDayLong(key: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(INTL_LOCALE[locale], {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -32,17 +46,17 @@ export function formatDayLong(key: string): string {
   }).format(dayKeyToDate(key));
 }
 
-/** e.g. "2 lip" — compact label for lists and charts. */
-export function formatDayShort(key: string): string {
-  return new Intl.DateTimeFormat("pl-PL", {
+/** e.g. "2 Jul" — compact label for lists and charts. */
+export function formatDayShort(key: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(INTL_LOCALE[locale], {
     day: "numeric",
     month: "short",
   }).format(dayKeyToDate(key));
 }
 
-/** e.g. "3 lipca 2026" — achievement dates (accepts Date or epoch ms). */
-export function formatDate(date: Date | number): string {
-  return new Intl.DateTimeFormat("pl-PL", {
+/** e.g. "3 July 2026" — achievement dates (accepts Date or epoch ms). */
+export function formatDate(date: Date | number, locale: Locale): string {
+  return new Intl.DateTimeFormat(INTL_LOCALE[locale], {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -50,8 +64,8 @@ export function formatDate(date: Date | number): string {
 }
 
 /** e.g. "14:35" */
-export function formatTime(date: Date): string {
-  return new Intl.DateTimeFormat("pl-PL", {
+export function formatTime(date: Date, locale: Locale): string {
+  return new Intl.DateTimeFormat(INTL_LOCALE[locale], {
     hour: "2-digit",
     minute: "2-digit",
   }).format(date);
@@ -71,7 +85,14 @@ export function addDays(key: string, n: number): string {
   return toDayKey(d);
 }
 
-/** Monday of the week containing `key` (weeks start Monday, pl convention). */
+/**
+ * Monday of the week containing `key`.
+ *
+ * Weeks start on Monday for every locale, including en-US where Sunday is
+ * conventional. The habit tracker's weekly targets are counted against these
+ * boundaries and are already stored per week, so changing the first day per
+ * locale would silently re-bucket every existing streak.
+ */
 export function startOfWeek(key: string): string {
   const d = dayKeyToDate(key);
   const mondayOffset = (d.getDay() + 6) % 7; // 0=Mon … 6=Sun
@@ -79,16 +100,16 @@ export function startOfWeek(key: string): string {
   return toDayKey(d);
 }
 
-/** e.g. "pon" — short weekday label (locale-formatted, trailing dot stripped). */
-export function formatWeekdayShort(key: string): string {
-  return new Intl.DateTimeFormat("pl-PL", { weekday: "short" })
+/** e.g. "Mon" — short weekday label (locale-formatted, trailing dot stripped). */
+export function formatWeekdayShort(key: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(INTL_LOCALE[locale], { weekday: "short" })
     .format(dayKeyToDate(key))
     .replace(/\.$/, "");
 }
 
-/** e.g. "lipiec 2026" — month + year label for the calendar header. */
-export function formatMonthYear(key: string): string {
-  return new Intl.DateTimeFormat("pl-PL", { month: "long", year: "numeric" }).format(
+/** e.g. "July 2026" — month + year label for the calendar header. */
+export function formatMonthYear(key: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(INTL_LOCALE[locale], { month: "long", year: "numeric" }).format(
     dayKeyToDate(key)
   );
 }

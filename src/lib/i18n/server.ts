@@ -1,6 +1,6 @@
 // Server-side i18n: resolve the active locale from the cookie and translate.
 import { cookies } from "next/headers";
-import { LOCALE_COOKIE, normalizeLocale, type Locale } from "./config";
+import { DEFAULT_LOCALE, LOCALE_COOKIE, normalizeLocale, type Locale } from "./config";
 import { MESSAGES, type MessageKey } from "./messages";
 
 export type TFunc = (key: MessageKey, params?: Record<string, string | number>) => string;
@@ -15,7 +15,7 @@ export function translate(
   key: MessageKey,
   params?: Record<string, string | number>
 ): string {
-  return interpolate(MESSAGES[locale][key] ?? MESSAGES.pl[key] ?? key, params);
+  return interpolate(MESSAGES[locale][key] ?? MESSAGES[DEFAULT_LOCALE][key] ?? key, params);
 }
 
 /** The active locale from the request cookie (defaults to pl). */

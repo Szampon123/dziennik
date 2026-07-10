@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 
 export default async function HistoryPage() {
   const userId = await requireUserId();
-  const [days, chartDays, { t }] = await Promise.all([
+  const [days, chartDays, { t, locale }] = await Promise.all([
     listDays(userId),
     lastThirtyDays(userId),
     getT(),
@@ -64,7 +64,7 @@ export default async function HistoryPage() {
                 >
                   <div className="min-w-0">
                     <p className="text-[15px] font-medium capitalize text-neutral-900 transition-colors group-hover:text-violet-700">
-                      {formatDayLong(day.date)}
+                      {formatDayLong(day.date, locale)}
                     </p>
                     <p className="mt-0.5 text-[13px] text-neutral-500">
                       {day._count.notes}{" "}

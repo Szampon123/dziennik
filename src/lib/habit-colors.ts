@@ -2,15 +2,19 @@
 // vars so they adapt to light/dark/colorful. The check mark is always white,
 // so every colour here is dark enough for contrast.
 
-export type HabitColor = { label: string; value: string };
+// `labelKey` rather than a literal label: the picker renders these in whatever
+// locale the user chose, and MessageKey makes a typo a compile error.
+import type { MessageKey } from "@/lib/i18n/messages";
+
+export type HabitColor = { labelKey: MessageKey; value: string };
 
 export const HABIT_COLORS = {
-  green: { label: "Zielony", value: "var(--success)" },
-  violet: { label: "Fioletowy", value: "var(--violet-600)" },
-  azure: { label: "Błękitny", value: "var(--azure-500)" },
-  amber: { label: "Bursztynowy", value: "var(--warning)" },
-  rose: { label: "Koralowy", value: "var(--danger)" },
-  graphite: { label: "Grafitowy", value: "var(--neutral-900)" },
+  green: { labelKey: "habitColor.green", value: "var(--success)" },
+  violet: { labelKey: "habitColor.violet", value: "var(--violet-600)" },
+  azure: { labelKey: "habitColor.azure", value: "var(--azure-500)" },
+  amber: { labelKey: "habitColor.amber", value: "var(--warning)" },
+  rose: { labelKey: "habitColor.rose", value: "var(--danger)" },
+  graphite: { labelKey: "habitColor.graphite", value: "var(--neutral-900)" },
 } as const satisfies Record<string, HabitColor>;
 
 export type HabitColorKey = keyof typeof HABIT_COLORS;

@@ -5,6 +5,7 @@ import { Check } from "lucide-react";
 import { CharacterAvatar } from "@/components/CharacterAvatar";
 import { DuduNameEditor } from "@/components/DuduNameEditor";
 import { setDuduAppearance } from "@/actions/dudu";
+import { useT } from "@/components/i18n/I18nProvider";
 import {
   DUDU_COLORS,
   DUDU_COLOR_KEYS,
@@ -27,6 +28,7 @@ export function DuduCustomizer({
   stage: number;
   stageName: string;
 }) {
+  const t = useT();
   const [color, setColor] = useState<DuduColor>(initialColor);
   const [config, setConfig] = useState<DuduConfig>(initialConfig);
   const [error, setError] = useState("");
@@ -88,8 +90,8 @@ export function DuduCustomizer({
                 type="button"
                 onClick={() => pickColor(key)}
                 aria-pressed={active}
-                aria-label={DUDU_COLORS[key].label}
-                title={DUDU_COLORS[key].label}
+                aria-label={t(DUDU_COLORS[key].labelKey)}
+                title={t(DUDU_COLORS[key].labelKey)}
                 className={`flex h-10 w-10 items-center justify-center rounded-full outline-none transition-transform focus-visible:ring-2 focus-visible:ring-violet-200 ${
                   active ? "ring-2 ring-offset-2 ring-neutral-900 ring-offset-neutral-0" : "hover:scale-105"
                 }`}
@@ -105,7 +107,7 @@ export function DuduCustomizer({
       {/* Accessory slots */}
       {DUDU_SLOT_KEYS.map((slot) => (
         <div key={slot} className="flex flex-col gap-2.5">
-          <p className="text-[13px] font-medium text-neutral-700">{DUDU_SLOTS[slot].label}</p>
+          <p className="text-[13px] font-medium text-neutral-700">{t(DUDU_SLOTS[slot].labelKey)}</p>
           <div className="flex flex-wrap gap-2">
             {DUDU_SLOTS[slot].options.map((opt) => {
               const active = config[slot] === opt.id;
@@ -121,7 +123,7 @@ export function DuduCustomizer({
                       : "border-neutral-300 bg-neutral-0 text-neutral-700 hover:border-violet-300 hover:text-violet-700"
                   }`}
                 >
-                  {opt.label}
+                  {t(opt.labelKey)}
                 </button>
               );
             })}
@@ -131,9 +133,7 @@ export function DuduCustomizer({
 
       {error && <p className="text-[13px] text-danger">{error}</p>}
       <p className="text-[12px] text-neutral-500">
-        {isPending
-          ? "Zapisywanie…"
-          : "Zmiany zapisują się automatycznie i widać je w przeglądzie dnia."}
+        {isPending ? t("common.saving") : t("dudu.autosaveHint")}
       </p>
     </div>
   );
