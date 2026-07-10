@@ -22,11 +22,11 @@ export function CredentialsLoginForm() {
       setError("");
       const res = await signIn("credentials", { email, password, redirect: false });
       if (res?.error) {
-        setError("Nieprawidłowy e-mail lub hasło.");
+        setError(t("auth.invalidCredentials"));
       } else if (res?.ok) {
         window.location.href = "/dzis";
       } else {
-        setError("Nie udało się zalogować. Spróbuj ponownie.");
+        setError(t("auth.loginFailed"));
       }
     });
   }
@@ -37,7 +37,7 @@ export function CredentialsLoginForm() {
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="E-mail"
+        placeholder={t("auth.emailPlaceholder")}
         autoComplete="email"
         required
         className={inputClass}
@@ -46,7 +46,7 @@ export function CredentialsLoginForm() {
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder="Hasło"
+        placeholder={t("auth.passwordPlaceholder")}
         autoComplete="current-password"
         required
         className={inputClass}
@@ -58,7 +58,7 @@ export function CredentialsLoginForm() {
         {t("auth.forgotPassword")}
       </Link>
       <button type="submit" disabled={isPending} className={buttonClass("primary", "w-full")}>
-        {isPending ? "Logowanie…" : "Zaloguj się"}
+        {isPending ? t("auth.signingIn") : t("auth.signIn")}
       </button>
       {error && <p className="text-[13px] text-danger">{error}</p>}
     </form>

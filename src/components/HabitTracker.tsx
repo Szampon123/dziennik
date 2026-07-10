@@ -868,7 +868,7 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
               }}
               maxLength={100}
               placeholder={t("habits.newPlaceholder")}
-              aria-label="Nazwa nowego nawyku"
+              aria-label={t("habits.newHabitNameAria")}
               className="min-w-[180px] flex-1"
             />
             <TargetSelect
@@ -900,7 +900,7 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
                   <input
                     defaultValue={h.name}
                     maxLength={100}
-                    aria-label={`Nazwa nawyku: ${h.name}`}
+                    aria-label={t("habits.habitNameAria", { name: h.name })}
                     onBlur={(e) => rename(h.id, e.target.value, h.name)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") e.currentTarget.blur();

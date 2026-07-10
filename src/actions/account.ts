@@ -5,6 +5,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { fail, issueKey } from "@/lib/action-errors";
 import { hashPassword, validatePasswordStrength } from "@/lib/passwords";
+import { PASSWORD_ERROR_KEY } from "@/lib/password-errors";
 import { rateLimit } from "@/lib/rate-limit";
 import { sendVerificationEmail } from "@/lib/verification";
 
@@ -42,7 +43,7 @@ export async function registerAccount(
 
   const pwCheck = validatePasswordStrength(password);
   if (!pwCheck.valid) {
-    return { ok: false, error: pwCheck.error };
+    return fail(PASSWORD_ERROR_KEY[pwCheck.error]);
   }
 
   const name = parsed.data.name?.trim() || email.split("@")[0];

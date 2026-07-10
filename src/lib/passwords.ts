@@ -1,12 +1,15 @@
 // Password hashing for email+password accounts. Server-only (bcryptjs).
 import bcrypt from "bcryptjs";
+import type { PasswordErrorCode } from "@/lib/password-errors";
 
 export const MIN_PASSWORD_LENGTH = 8;
 export const MAX_PASSWORD_LENGTH = 100;
 
 const SALT_ROUNDS = 10;
 
-export type PasswordValidation = { valid: true } | { valid: false; error: string };
+// A code, not a message: this runs on the server but the text is shown in the
+// reader's locale, resolved via PASSWORD_ERROR_KEY at the render site.
+export type PasswordValidation = { valid: true } | { valid: false; error: PasswordErrorCode };
 
 /**
  * Complexity rules for new passwords. Deliberately no special-character rule:
@@ -14,21 +17,11 @@ export type PasswordValidation = { valid: true } | { valid: false; error: string
  * plus the login rate limiter already cover offline and online guessing.
  */
 export function validatePasswordStrength(password: string): PasswordValidation {
-  if (password.length < MIN_PASSWORD_LENGTH) {
-    return { valid: false, error: `Hasło musi mieć co najmniej ${MIN_PASSWORD_LENGTH} znaków.` };
-  }
-  if (password.length > MAX_PASSWORD_LENGTH) {
-    return { valid: false, error: "Hasło jest za długie." };
-  }
-  if (!/[a-z]/.test(password)) {
-    return { valid: false, error: "Hasło musi zawierać co najmniej jedną małą literę." };
-  }
-  if (!/[A-Z]/.test(password)) {
-    return { valid: false, error: "Hasło musi zawierać co najmniej jedną wielką literę." };
-  }
-  if (!/\d/.test(password)) {
-    return { valid: false, error: "Hasło musi zawierać co najmniej jedną cyfrę." };
-  }
+  if (password.length < MIN_PASSWORD_LENGTH) return { valid: false, error: "tooShort" };
+  if (password.length > MAX_PASSWORD_LENGTH) return { valid: false, error: "tooLong" };
+  if (!/[a-z]/.test(password)) return { valid: false, error: "noLower" };
+  if (!/[A-Z]/.test(password)) return { valid: false, error: "noUpper" };
+  if (!/\d/.test(password)) return { valid: false, error: "noDigit" };
   return { valid: true };
 }
 

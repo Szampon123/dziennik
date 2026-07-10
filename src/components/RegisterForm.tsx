@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { signIn } from "next-auth/react";
 import { registerAccount } from "@/actions/account";
+import { useT } from "@/components/i18n/I18nProvider";
 import { buttonClass } from "@/components/ui/Button";
 import { inputClass } from "@/components/ui/Input";
 
@@ -10,6 +11,7 @@ const MIN_PASSWORD = 8; // authoritative check is server-side (src/lib/passwords
 
 /** Create an email+password account, then sign in and land on the Dziś screen. */
 export function RegisterForm() {
+  const t = useT();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,15 +23,15 @@ export function RegisterForm() {
     e.preventDefault();
     setError("");
     if (password.length < MIN_PASSWORD) {
-      setError(`Hasło musi mieć co najmniej ${MIN_PASSWORD} znaków.`);
+      setError(t("auth.passwordMinLength"));
       return;
     }
     if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/\d/.test(password)) {
-      setError("Hasło musi zawierać małą literę, wielką literę i cyfrę.");
+      setError(t("auth.passwordComplexity"));
       return;
     }
     if (password !== confirm) {
-      setError("Hasła nie są takie same.");
+      setError(t("auth.passwordsDoNotMatch"));
       return;
     }
     startTransition(async () => {
@@ -42,7 +44,7 @@ export function RegisterForm() {
       if (signRes?.ok) {
         window.location.href = "/dzis";
       } else {
-        setError("Konto utworzone, ale logowanie się nie powiodło — zaloguj się ręcznie.");
+        setError(t("auth.accountCreatedLoginFailed"));
       }
     });
   }
@@ -53,7 +55,7 @@ export function RegisterForm() {
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Imię (opcjonalnie)"
+        placeholder={t("auth.namePlaceholder")}
         autoComplete="name"
         className={inputClass}
       />
@@ -61,7 +63,7 @@ export function RegisterForm() {
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="E-mail"
+        placeholder={t("auth.emailPlaceholder")}
         autoComplete="email"
         required
         className={inputClass}
@@ -70,7 +72,7 @@ export function RegisterForm() {
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        placeholder={`Hasło (min. ${MIN_PASSWORD} zn., mała + wielka litera + cyfra)`}
+        placeholder={t("auth.newPasswordHint", { min: MIN_PASSWORD })}
         autoComplete="new-password"
         required
         className={inputClass}
@@ -79,13 +81,13 @@ export function RegisterForm() {
         type="password"
         value={confirm}
         onChange={(e) => setConfirm(e.target.value)}
-        placeholder="Powtórz hasło"
+        placeholder={t("auth.repeatPassword")}
         autoComplete="new-password"
         required
         className={inputClass}
       />
       <button type="submit" disabled={isPending} className={buttonClass("primary", "w-full")}>
-        {isPending ? "Tworzenie konta…" : "Utwórz konto"}
+        {isPending ? t("auth.creatingAccount") : t("auth.createAccount")}
       </button>
       {error && <p className="text-[13px] text-danger">{error}</p>}
     </form>
