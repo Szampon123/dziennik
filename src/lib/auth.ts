@@ -73,6 +73,21 @@ if (devLoginEnabled) {
   );
 }
 
+/**
+ * When the session behind `token` began, in epoch milliseconds.
+ *
+ * Prefers our own `authAt` claim. The standard `iat` is only a fallback for
+ * cookies issued before that claim existed: Auth.js calls `.setIssuedAt()` on
+ * every `jwt.encode()`, so `iat` is restamped whenever the cookie is rewritten
+ * and tracks the last write rather than the sign-in. It is also second-
+ * resolution, which `authAt` avoids.
+ */
+function sessionStartedAt(token: { authAt?: number; iat?: unknown }): number | null {
+  if (typeof token.authAt === "number") return token.authAt;
+  if (typeof token.iat === "number") return token.iat * 1000;
+  return null;
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers,
@@ -84,6 +99,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // First sign-in: resolve userId and bootstrap the role from env vars.
       if (user?.id) {
         token.userId = user.id;
+        // Stamped once, never refreshed — this is what the sessionsValidFrom
+        // cut-off below is compared against. A sign-in that happens *after* a
+        // reset must survive it, which is why this is set before returning.
+        token.authAt = Date.now();
         const dbUser = await prisma.user.findUnique({
           where: { id: user.id },
           select: { role: true, email: true },
@@ -104,7 +123,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (typeof token.userId === "string") {
         const dbUser = await prisma.user.findUnique({
           where: { id: token.userId },
-          select: { role: true },
+          select: { role: true, sessionsValidFrom: true },
         });
         if (!dbUser) {
           // The User row is gone (deleted account, DB reset) — strip the claims
@@ -113,6 +132,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           token.role = undefined;
           return token;
         }
+
+        // Sessions opened before the last password reset are dead. Returning
+        // null makes Auth.js clear the session cookie outright, rather than
+        // handing downstream code a token with no claims.
+        //
+        // This runs *before* Auth.js re-signs the cookie, so a stale token can
+        // never refresh its way past the cut-off. The Edge proxy only decodes
+        // the cookie and never calls this callback, so a stale session still
+        // passes the proxy — it then dies here, on the auth() call every page,
+        // action and route handler makes through src/lib/session.ts.
+        if (dbUser.sessionsValidFrom) {
+          const startedAt = sessionStartedAt(token);
+          if (startedAt === null || startedAt < dbUser.sessionsValidFrom.getTime()) {
+            return null;
+          }
+        }
+
         token.role = normalizeRole(dbUser.role);
       }
 

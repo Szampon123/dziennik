@@ -62,20 +62,44 @@ export async function resetPasswordWithToken(
   if (record.usedAt) return { ok: false, error: "used" };
   if (record.expiresAt < new Date()) return { ok: false, error: "expired" };
 
+  // Hashed before the transaction: bcrypt costs ~100ms, and holding a row lock
+  // across it would serialise unrelated resets.
   const passwordHash = await hashPassword(password);
 
-  await prisma.$transaction([
-    prisma.user.update({
-      where: { id: record.userId },
-      data: { passwordHash },
-    }),
-    // Guarded on usedAt: two clicks racing each other must not both succeed.
-    prisma.passwordResetToken.updateMany({
+  // Spend the token *first*, and only write the password if this request is the
+  // one that spent it. The checks above are a read, so two requests carrying
+  // the same token can both pass them; `usedAt: null` in the WHERE is what
+  // actually decides between them. Under READ COMMITTED the loser blocks on the
+  // row lock, re-evaluates the predicate after the winner commits, and matches
+  // zero rows — so it aborts here rather than overwriting the winner's password
+  // with its own.
+  const spent = await prisma.$transaction(async (tx) => {
+    const marked = await tx.passwordResetToken.updateMany({
       where: { id: record.id, usedAt: null },
       data: { usedAt: new Date() },
-    }),
-  ]);
+    });
+    if (marked.count === 0) return false;
 
+    await tx.user.update({
+      where: { id: record.userId },
+      data: {
+        passwordHash,
+        // Kills every session opened with the old password — see the cut-off
+        // check in the jwt callback (src/lib/auth.ts). Without this, whoever
+        // prompted the reset keeps their existing cookie.
+        //
+        // Always write this through Prisma. `sessionsValidFrom` is a
+        // `timestamp without time zone`, so a raw SQL `now()` stores local
+        // wall-clock in it and Prisma reads that straight back as UTC — a
+        // cut-off in the future, locking every user out (including on fresh
+        // sign-ins) for the length of the UTC offset.
+        sessionsValidFrom: new Date(),
+      },
+    });
+    return true;
+  });
+
+  if (!spent) return { ok: false, error: "used" };
   return { ok: true };
 }
 
