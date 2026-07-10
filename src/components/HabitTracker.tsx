@@ -396,7 +396,7 @@ export function HabitTracker({
 
                 {/* Day header */}
                 <div className="sticky left-0 z-10 flex items-end bg-neutral-0 pb-2 pr-2 text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
-                  Nawyk
+                  {t("habits.columnHeader")}
                 </div>
                 {weeks.map((week, wi) =>
                   week.map((d, di) => {
@@ -967,7 +967,7 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
           {archived.length > 0 && (
             <div className="mt-5 border-t border-neutral-100 pt-4">
               <p className="mb-2 text-[12px] font-semibold uppercase tracking-wide text-neutral-400">
-                Zarchiwizowane ({archived.length})
+                {t("habits.archivedCount", { count: archived.length })}
               </p>
               <ul className="flex flex-col gap-1.5">
                 {archived.map((h) => (

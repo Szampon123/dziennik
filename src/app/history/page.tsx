@@ -10,6 +10,7 @@ import { HistoryChart } from "@/components/HistoryChart";
 import { SyncStatusBadge } from "@/components/SyncStatusBadge";
 import { requireUserId } from "@/lib/session";
 import { getT } from "@/lib/i18n/server";
+import { plural } from "@/lib/i18n/plural";
 
 export const dynamic = "force-dynamic";
 
@@ -70,12 +71,7 @@ export default async function HistoryPage() {
                       {formatDayLong(day.date, locale)}
                     </p>
                     <p className="mt-0.5 text-[13px] text-neutral-500">
-                      {day._count.notes}{" "}
-                      {day._count.notes === 1
-                        ? "notatka"
-                        : day._count.notes < 5
-                          ? "notatki"
-                          : "notatek"}
+                      {plural(locale, "notes.count", day._count.notes)}
                     </p>
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
@@ -85,7 +81,7 @@ export default async function HistoryPage() {
                       <SyncStatusBadge status={day.syncStatus} />
                     )}
                     {day.tasksTotal !== null && day.tasksTotal > 0 && (
-                      <Badge variant="neutral" title="Wykonane zadania z kalendarza">
+                      <Badge variant="neutral" title={t("history.completedCalendarTasks")}>
                         <ListChecks aria-hidden className="h-3.5 w-3.5" />
                         {day.tasksDone ?? 0}/{day.tasksTotal}
                       </Badge>

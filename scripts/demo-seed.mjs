@@ -102,6 +102,8 @@ async function main() {
       name: NAME,
       // Verified, or every screenshot carries the "confirm your e-mail" banner.
       emailVerified: new Date(),
+      // Onboarding done, or every app page redirects to the setup wizard.
+      onboardingComplete: true,
       role: "user",
       duduName: "Kiko",
       duduColor: "violet",

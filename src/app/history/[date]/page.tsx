@@ -99,7 +99,7 @@ export default async function DayDetailPage({
             <Badge variant="neutral">{t("history.dayOpen")}</Badge>
           )}
           {headerTasksTotal !== null && headerTasksTotal > 0 && (
-            <Badge variant="neutral" title="Wykonane zadania z kalendarza">
+            <Badge variant="neutral" title={t("history.completedCalendarTasks")}>
               <ListChecks aria-hidden className="h-3.5 w-3.5" />
               {headerTasksDone ?? 0}/{headerTasksTotal}
             </Badge>

@@ -68,7 +68,7 @@ export function HistoryChart({ data }: { data: ChartPoint[] }) {
               fontSize: "0.75rem",
             }}
             formatter={(value, name) =>
-              name === "Zadania (%)" ? [`${value}%`, name] : [value, name]
+              name === t("chart.tasksPct") ? [`${value}%`, name] : [value, name]
             }
           />
           <Legend />
