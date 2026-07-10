@@ -2,10 +2,27 @@
 // sitemap, manifest). Kept in one place so the canonical origin and the brand
 // palette can't drift between the <meta> tags and the image they point at.
 
-/** Canonical production origin. Used as `metadataBase`, so all metadata URLs may be relative. */
+/**
+ * Canonical production origin. Used as `metadataBase`, so all metadata URLs may
+ * be relative.
+ *
+ * Must be the host Vercel serves as *primary*. If the other host is primary,
+ * every absolute URL below (canonical, og:url, og:image, the sitemap entries)
+ * points at a 308 — a canonical that redirects cancels itself out, and
+ * validators that refuse cross-domain redirect chains report the Open Graph
+ * tags as missing entirely.
+ */
 export const SITE_URL = "https://vincendio.com";
 
-export const SITE_NAME = "Dziennik";
+/**
+ * The public brand. Titles the metadata surface — og:site_name, og:title,
+ * twitter:title, the <title> suffix, the manifest and the OG card image.
+ *
+ * Not the same string as the in-app wordmark ("Dziennik", in AuthShell) or the
+ * transactional-email signature: those name the product to people already using
+ * it, while this names the site to people who have not arrived yet.
+ */
+export const SITE_NAME = "Vincendio";
 
 export const SITE_DESCRIPTION =
   "Osobisty dziennik dnia — intencje, notatki, refleksje. Prowadź nawyki, rozwijaj umiejętności i śledź postępy.";
