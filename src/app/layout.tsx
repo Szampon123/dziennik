@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, BRAND } from "@/lib/seo";
+import { PATHNAME_HEADER } from "@/lib/pathname-header";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, BRAND, OG_IMAGE } from "@/lib/seo";
 import { Nav } from "@/components/Nav";
 import { UserMenu } from "@/components/UserMenu";
 import { VerificationBanner } from "@/components/VerificationBanner";
@@ -60,7 +62,7 @@ export const metadata: Metadata = {
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
     url: "/",
-    images: [{ url: "/api/og", width: 1200, height: 630, alt: SITE_NAME }],
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
@@ -88,11 +90,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // The landing page is the one route that is not "the app": it brings its own
+  // nav and needs the full viewport width, so it renders on a bare canvas.
+  // A server component cannot see the pathname, hence the header the proxy sets.
+  const isLanding = (await headers()).get(PATHNAME_HEADER) === "/";
+
   const locale = await getLocale();
-  const showVerificationBanner = await needsEmailVerification();
+  // Skipped for the landing page: an anonymous visitor has no session to read
+  // and no banner to act on, so this would be an auth() round-trip for nothing.
+  const showVerificationBanner = isLanding ? false : await needsEmailVerification();
+
   return (
     <html
-      lang={locale}
+      lang={isLanding ? "en" : locale}
       suppressHydrationWarning
       className={`${inter.variable} ${robotoMono.variable} h-full antialiased`}
     >
@@ -101,9 +111,15 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <I18nProvider locale={locale}>
-          <Nav userMenu={<UserMenu />} />
-          {showVerificationBanner && <VerificationBanner />}
-          <main className="mx-auto w-full max-w-[760px] flex-1 px-6 py-12">{children}</main>
+          {isLanding ? (
+            children
+          ) : (
+            <>
+              <Nav userMenu={<UserMenu />} />
+              {showVerificationBanner && <VerificationBanner />}
+              <main className="mx-auto w-full max-w-[760px] flex-1 px-6 py-12">{children}</main>
+            </>
+          )}
         </I18nProvider>
       </body>
     </html>

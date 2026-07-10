@@ -24,7 +24,7 @@ export function CredentialsLoginForm() {
       if (res?.error) {
         setError("Nieprawidłowy e-mail lub hasło.");
       } else if (res?.ok) {
-        window.location.href = "/";
+        window.location.href = "/dzis";
       } else {
         setError("Nie udało się zalogować. Spróbuj ponownie.");
       }

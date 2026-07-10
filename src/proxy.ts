@@ -10,6 +10,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { PATHNAME_HEADER } from "@/lib/pathname-header";
 
 // Paths that must stay reachable without a session. Everything else is gated.
 // (Static assets and image files are already excluded by `config.matcher`
@@ -30,6 +31,13 @@ const PUBLIC_PATHS = [
   // gating these would make the reset flow unreachable.
   "/forgot-password",
   "/reset-password",
+  // The public landing page. The signed-in dashboard moved to /dzis, which
+  // stays gated; "/" itself redirects signed-in visitors there.
+  "/",
+  // Linked from the landing footer — gating them would bounce a visitor who
+  // clicked "Privacy" into the login screen.
+  "/privacy",
+  "/terms",
   "/api/auth",
   "/_next",
   "/favicon.ico",
@@ -46,11 +54,18 @@ function isPublicPath(pathname: string): boolean {
   );
 }
 
+/** `NextResponse.next()` with the path attached to the *request* headers. */
+function passThrough(req: NextRequest, pathname: string): NextResponse {
+  const headers = new Headers(req.headers);
+  headers.set(PATHNAME_HEADER, pathname);
+  return NextResponse.next({ request: { headers } });
+}
+
 export default async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (isPublicPath(pathname)) {
-    return NextResponse.next();
+    return passThrough(req, pathname);
   }
 
   // Verify the JWT session cookie without any DB round-trip. `secureCookie`
@@ -84,7 +99,7 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/suspended", req.nextUrl));
   }
 
-  return NextResponse.next();
+  return passThrough(req, pathname);
 }
 
 export const config = {

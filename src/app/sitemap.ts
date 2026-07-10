@@ -2,19 +2,17 @@ import type { MetadataRoute } from "next";
 import { SITE_URL, PUBLIC_ROUTES } from "@/lib/seo";
 
 /**
- * Only the signed-out surface is listed. "/" is deliberately absent: it calls
- * requireUserId() and answers a crawler with a redirect to /login, and a
- * sitemap entry that redirects earns a "Page with redirect" notice in Search
- * Console rather than an index entry. Add it here the day "/" renders
- * something public.
+ * Only the signed-out, indexable surface is listed. "/" now renders the landing
+ * page instead of redirecting to /login, so it leads — it is the URL we want in
+ * the index, and the one every share links to.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
 
   return PUBLIC_ROUTES.map((route) => ({
-    url: `${SITE_URL}${route}`,
+    url: `${SITE_URL}${route === "/" ? "" : route}`,
     lastModified,
     changeFrequency: "monthly" as const,
-    priority: route === "/login" ? 1 : 0.8,
+    priority: route === "/" ? 1 : 0.7,
   }));
 }

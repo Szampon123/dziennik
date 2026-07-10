@@ -22,7 +22,7 @@ export default async function LoginPage() {
   // Existence-verified check (not raw auth()): a stale JWT whose user row was
   // deleted must land here, not bounce back to "/" in a redirect loop.
   const userId = await getSessionUserId();
-  if (userId) redirect("/");
+  if (userId) redirect("/dzis");
 
   const googleReady = isGoogleLoginConfigured();
   const devLogin = isDevLoginEnabled();
@@ -37,7 +37,7 @@ export default async function LoginPage() {
             <form
               action={async () => {
                 "use server";
-                await signIn("google", { redirectTo: "/" });
+                await signIn("google", { redirectTo: "/dzis" });
               }}
             >
               <button type="submit" className={buttonClass("secondary", "w-full")}>
@@ -67,7 +67,7 @@ export default async function LoginPage() {
               "use server";
               await signIn("dev-login", {
                 email: formData.get("email"),
-                redirectTo: "/",
+                redirectTo: "/dzis",
               });
             }}
             className="flex flex-col gap-2 border-t border-neutral-200 pt-3"

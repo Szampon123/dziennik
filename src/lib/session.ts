@@ -48,7 +48,7 @@ async function requireRole(allow: (role: Role) => boolean): Promise<string> {
   if (!user) redirect("/login");
 
   const role = normalizeRole(user.role);
-  if (isSuspendedRole(role) || !allow(role)) redirect("/");
+  if (isSuspendedRole(role) || !allow(role)) redirect("/dzis");
 
   return user.id;
 }

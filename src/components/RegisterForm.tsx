@@ -40,7 +40,7 @@ export function RegisterForm() {
       }
       const signRes = await signIn("credentials", { email, password, redirect: false });
       if (signRes?.ok) {
-        window.location.href = "/";
+        window.location.href = "/dzis";
       } else {
         setError("Konto utworzone, ale logowanie się nie powiodło — zaloguj się ręcznie.");
       }

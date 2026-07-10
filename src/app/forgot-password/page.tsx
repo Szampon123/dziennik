@@ -18,7 +18,7 @@ export default async function ForgotPasswordPage() {
   // Already signed in? Then this page has nothing to offer — change the
   // password in Settings instead.
   const userId = await getSessionUserId();
-  if (userId) redirect("/");
+  if (userId) redirect("/dzis");
 
   const { t } = await getT();
 

@@ -131,6 +131,19 @@
   --color-black: #000000;
   --color-transparent: transparent;
 
+  /*
+   * Landing page only. Literal values, not var() — every other colour token
+   * below flips inside .dark, and the public marketing page must render the
+   * same for a visitor with a dark OS as for one without. It has no theme
+   * toggle and no signed-in user whose preference we could honour.
+   *
+   * brand-violet / brand-azure mirror the light-theme --violet-600 / --azure-500.
+   */
+  --color-brand-violet: #6e56cf;
+  --color-brand-violet-strong: #5b46b0;
+  --color-brand-azure: #0ea5e9;
+  --color-brand-ink: #0a0a0a;
+
   --color-neutral-0: var(--neutral-0);
   --color-neutral-50: var(--neutral-50);
   --color-neutral-100: var(--neutral-100);
@@ -192,6 +205,27 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .dudu-breathe {
+    animation: none;
+  }
+}
+
+/* Landing page: slow drift of the violet bloom behind the Dudu section. */
+@keyframes landing-drift {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.12);
+    opacity: 1;
+  }
+}
+.landing-drift {
+  animation: landing-drift 14s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing-drift {
     animation: none;
   }
 }

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default async function RegisterPage() {
   const userId = await getSessionUserId();
-  if (userId) redirect("/");
+  if (userId) redirect("/dzis");
 
   return (
     <AuthShell

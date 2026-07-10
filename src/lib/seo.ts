@@ -28,6 +28,30 @@ export const SITE_DESCRIPTION =
   "Osobisty dziennik dnia — intencje, notatki, refleksje. Prowadź nawyki, rozwijaj umiejętności i śledź postępy.";
 
 /**
+ * The Open Graph card, as a shared value.
+ *
+ * Next merges metadata *shallowly*: a route that sets `openGraph` at all
+ * replaces the parent's entire `openGraph` object, images included. Any page
+ * overriding og:title or og:description must therefore spread this back in, or
+ * the card silently loses its image. Same story for `twitter`.
+ */
+export const OG_IMAGE = {
+  url: "/api/og",
+  width: 1200,
+  height: 630,
+  alt: SITE_NAME,
+} as const;
+
+/** Landing-page copy. English, unlike the app, and the text every share shows. */
+export const LANDING = {
+  title: "Vincendio — Level Up Your Life Across 138 Real-World Skills",
+  ogTitle: "Level Up Your Real Life",
+  description:
+    "Daily journaling, habit tracking, and a 99-level progression system. Track running, " +
+    "piano, cooking, and 135 more activities. Free to start.",
+} as const;
+
+/**
  * Brand colours, copied from the light-theme `:root` block in globals.css.
  * Duplicated on purpose: `next/og` renders outside the DOM, so it cannot read
  * CSS custom properties — Satori needs literal values. Keep in sync with
@@ -41,9 +65,13 @@ export const BRAND = {
 } as const;
 
 /**
- * Pages a signed-out visitor (and therefore a crawler) can actually reach.
- * Everything else in this app sits behind the auth proxy and answers with a
- * redirect, so listing it in the sitemap would only earn Search Console
- * warnings. Mirrors PUBLIC_PATHS in src/proxy.ts.
+ * Pages a signed-out visitor (and therefore a crawler) can actually reach *and*
+ * that are worth indexing. Everything else in this app sits behind the auth
+ * proxy and answers with a redirect, so listing it in the sitemap would only
+ * earn Search Console warnings. Mirrors PUBLIC_PATHS in src/proxy.ts.
+ *
+ * "/" leads: it renders the landing page for anonymous visitors now, rather
+ * than redirecting to /login. /privacy and /terms are public too but are
+ * noindex stubs, so they stay out.
  */
-export const PUBLIC_ROUTES = ["/login", "/register"] as const;
+export const PUBLIC_ROUTES = ["/", "/login", "/register"] as const;
