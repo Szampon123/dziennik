@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
 import { sendVerificationEmail, verifyEmailToken } from "@/lib/verification";
 import { rateLimit } from "@/lib/rate-limit";
+import type { VerificationErrorCode } from "@/lib/verification-errors";
 
 /**
  * Consume the token from a verification link. Public on purpose — the user
@@ -15,30 +16,35 @@ import { rateLimit } from "@/lib/rate-limit";
 export async function confirmEmailVerification(input: {
   email: string;
   token: string;
-}): Promise<{ ok: true } | { ok: false; error: string }> {
+}): Promise<{ ok: true } | { ok: false; error: VerificationErrorCode | "rate" }> {
   // Trim only, no case folding: the token row is keyed on the exact address the
   // link carries, and checkTokenValid() on the page must resolve the same row.
   const email = typeof input?.email === "string" ? input.email.trim() : "";
   const token = typeof input?.token === "string" ? input.token.trim() : "";
   if (!email || !token) {
-    return { ok: false, error: "Nieprawidłowy lub wygasły link weryfikacyjny." };
+    return { ok: false, error: "invalid" };
   }
 
   const headersList = await headers();
   const ip = headersList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (!rateLimit(`verify:confirm:${ip}`, 10, 60 * 60).allowed) {
-    return { ok: false, error: "Zbyt wiele prób. Spróbuj ponownie za godzinę." };
+    return { ok: false, error: "rate" };
   }
 
   return verifyEmailToken(email, token);
 }
 
+/** Why a resend failed. Rendered via RESEND_ERROR_KEY in the banner. */
+export type ResendFailure = "rate" | "noEmail" | "sendFailed";
+
 /** Re-send the verification link to the signed-in user's own address. */
-export async function resendVerificationEmail(): Promise<{ ok: boolean; error?: string }> {
+export async function resendVerificationEmail(): Promise<
+  { ok: true } | { ok: false; error: ResendFailure }
+> {
   const userId = await requireUserId();
 
   if (!rateLimit(`verify:resend:${userId}`, 3, 60 * 60).allowed) {
-    return { ok: false, error: "Zbyt wiele prób. Spróbuj ponownie za godzinę." };
+    return { ok: false, error: "rate" };
   }
 
   const user = await prisma.user.findUnique({
@@ -46,11 +52,11 @@ export async function resendVerificationEmail(): Promise<{ ok: boolean; error?: 
     select: { email: true, emailVerified: true },
   });
 
-  if (!user?.email) return { ok: false, error: "Brak adresu e-mail." };
+  if (!user?.email) return { ok: false, error: "noEmail" };
   if (user.emailVerified) return { ok: true }; // already verified — nothing to do
 
   const sent = await sendVerificationEmail(user.email);
-  if (!sent) return { ok: false, error: "Nie udało się wysłać e-maila. Spróbuj ponownie." };
+  if (!sent) return { ok: false, error: "sendFailed" };
 
   return { ok: true };
 }

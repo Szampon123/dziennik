@@ -1,22 +1,31 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { resendVerificationEmail } from "@/actions/verification";
+import { resendVerificationEmail, type ResendFailure } from "@/actions/verification";
+import { useT } from "@/components/i18n/I18nProvider";
+import type { MessageKey } from "@/lib/i18n/messages";
+
+const RESEND_ERROR_KEY: Record<ResendFailure, MessageKey> = {
+  rate: "auth.verifyTooManyRequests",
+  noEmail: "auth.verifyNoEmail",
+  sendFailed: "auth.verifySendFailed",
+};
 
 /** Soft reminder for credentials accounts with an unconfirmed address. */
 export function VerificationBanner() {
+  const t = useT();
   const [sent, setSent] = useState(false);
-  const [error, setError] = useState("");
+  const [errorKey, setErrorKey] = useState<MessageKey | null>(null);
   const [isPending, startTransition] = useTransition();
 
   function resend() {
     startTransition(async () => {
-      setError("");
+      setErrorKey(null);
       const res = await resendVerificationEmail();
       if (res.ok) {
         setSent(true);
       } else {
-        setError(res.error ?? "Błąd");
+        setErrorKey(RESEND_ERROR_KEY[res.error]);
       }
     });
   }
@@ -24,22 +33,22 @@ export function VerificationBanner() {
   if (sent) {
     return (
       <div className="border-b border-emerald-200 bg-emerald-50 px-4 py-2 text-center text-sm text-emerald-800">
-        Wysłano link weryfikacyjny. Sprawdź swoją skrzynkę e-mail.
+        {t("auth.verifyBannerSent")}
       </div>
     );
   }
 
   return (
     <div className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-sm text-amber-800">
-      Twój adres e-mail nie jest zweryfikowany.{" "}
+      {t("auth.verifyBannerUnverified")}{" "}
       <button
         onClick={resend}
         disabled={isPending}
         className="font-medium underline hover:no-underline"
       >
-        {isPending ? "Wysyłanie…" : "Wyślij link weryfikacyjny"}
+        {isPending ? t("auth.verifyBannerSending") : t("auth.verifyBannerResend")}
       </button>
-      {error && <span className="text-danger ml-2">{error}</span>}
+      {errorKey && <span className="text-danger ml-2">{t(errorKey)}</span>}
     </div>
   );
 }

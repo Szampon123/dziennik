@@ -3,6 +3,9 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { confirmEmailVerification } from "@/actions/verification";
+import { VERIFICATION_ERROR_KEY } from "@/lib/verification-errors";
+import { useT } from "@/components/i18n/I18nProvider";
+import type { MessageKey } from "@/lib/i18n/messages";
 import { buttonClass } from "@/components/ui/Button";
 
 /**
@@ -10,18 +13,21 @@ import { buttonClass } from "@/components/ui/Button";
  * Mail scanners that prefetch the link only trigger the read-only check behind it.
  */
 export function VerifyEmailForm({ email, token }: { email: string; token: string }) {
+  const t = useT();
   const [done, setDone] = useState(false);
-  const [error, setError] = useState("");
+  const [errorKey, setErrorKey] = useState<MessageKey | null>(null);
   const [isPending, startTransition] = useTransition();
 
   function confirm() {
     startTransition(async () => {
-      setError("");
+      setErrorKey(null);
       const res = await confirmEmailVerification({ email, token });
       if (res.ok) {
         setDone(true);
       } else {
-        setError(res.error);
+        setErrorKey(
+          res.error === "rate" ? "auth.verifyTooManyRequests" : VERIFICATION_ERROR_KEY[res.error]
+        );
       }
     });
   }
@@ -29,9 +35,9 @@ export function VerifyEmailForm({ email, token }: { email: string; token: string
   if (done) {
     return (
       <>
-        <p className="text-success text-center font-medium">Adres e-mail został potwierdzony!</p>
+        <p className="text-success text-center font-medium">{t("auth.verifyConfirmed")}</p>
         <Link href="/login" className="block text-center text-sm text-violet-600 hover:underline">
-          Zaloguj się
+          {t("auth.verifySignIn")}
         </Link>
       </>
     );
@@ -40,7 +46,7 @@ export function VerifyEmailForm({ email, token }: { email: string; token: string
   return (
     <>
       <p className="text-center text-sm text-neutral-600">
-        Potwierdź, że ten adres e-mail należy do Ciebie:
+        {t("auth.verifyConfirmPrompt")}
         <span className="mt-1 block font-medium text-neutral-800">{email}</span>
       </p>
       <button
@@ -48,13 +54,13 @@ export function VerifyEmailForm({ email, token }: { email: string; token: string
         disabled={isPending}
         className={buttonClass("primary", "w-full")}
       >
-        {isPending ? "Potwierdzanie…" : "Potwierdź e-mail"}
+        {isPending ? t("auth.verifyConfirming") : t("auth.verifyEmailButton")}
       </button>
-      {error && (
+      {errorKey && (
         <>
-          <p className="text-danger text-center text-[13px]">{error}</p>
+          <p className="text-danger text-center text-[13px]">{t(errorKey)}</p>
           <Link href="/login" className="block text-center text-sm text-violet-600 hover:underline">
-            Przejdź do logowania
+            {t("auth.backToLogin")}
           </Link>
         </>
       )}

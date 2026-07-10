@@ -128,23 +128,3 @@ export async function checkResetTokenValid(
 export function resetUrl(baseUrl: string, rawToken: string): string {
   return `${baseUrl}/reset-password?token=${rawToken}`;
 }
-
-export function resetEmailHtml(params: {
-  url: string;
-  body: string;
-  button: string;
-  expiry: string;
-}): string {
-  return `
-    <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-      <h2>Dziennik</h2>
-      <p>${params.body}</p>
-      <p>
-        <a href="${params.url}" style="display: inline-block; padding: 12px 24px; background: #6e56cf; color: white; text-decoration: none; border-radius: 6px;">
-          ${params.button}
-        </a>
-      </p>
-      <p style="color: #666; font-size: 13px;">${params.expiry}</p>
-    </div>
-  `;
-}

@@ -3,8 +3,10 @@
 // already set, so they never pass through here.
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
-import { sendEmail } from "@/lib/email";
+import { sendEmail, actionEmailHtml } from "@/lib/email";
 import { resolveBaseUrl } from "@/lib/base-url";
+import { getT } from "@/lib/i18n/server";
+import type { VerificationErrorCode } from "@/lib/verification-errors";
 
 const VERIFICATION_EXPIRY_HOURS = 24;
 
@@ -21,28 +23,22 @@ export async function sendVerificationEmail(email: string): Promise<boolean> {
 
   const verifyUrl = `${resolveBaseUrl()}/verify-email?token=${token}&email=${encodeURIComponent(email)}`;
 
+  // The locale of the request that triggered the send — registration, an email
+  // change, or a "resend link" click. In every case the person reading the mail
+  // is the one who just used the site.
+  const { t } = await getT();
+
   return sendEmail({
     to: email,
-    subject: "Potwierdź swój adres e-mail — Dziennik",
-    html: `
-      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-        <h2>Witaj w Dzienniku!</h2>
-        <p>Kliknij poniższy link, aby potwierdzić swój adres e-mail:</p>
-        <p>
-          <a href="${verifyUrl}" style="display: inline-block; padding: 12px 24px; background: #7c3aed; color: white; text-decoration: none; border-radius: 6px;">
-            Potwierdź e-mail
-          </a>
-        </p>
-        <p style="color: #666; font-size: 13px;">
-          Link wygasa za ${VERIFICATION_EXPIRY_HOURS} godzin. Jeśli nie zakładałeś konta w Dzienniku, zignoruj tę wiadomość.
-        </p>
-      </div>
-    `,
+    subject: t("auth.verifyEmailSubject"),
+    html: actionEmailHtml({
+      url: verifyUrl,
+      body: t("auth.verifyEmailBody"),
+      button: t("auth.verifyEmailButton"),
+      expiry: t("auth.verifyEmailExpiry", { hours: VERIFICATION_EXPIRY_HOURS }),
+    }),
   });
 }
-
-const INVALID_TOKEN_ERROR = "Nieprawidłowy lub wygasły link weryfikacyjny.";
-const EXPIRED_TOKEN_ERROR = "Link weryfikacyjny wygasł. Zaloguj się i poproś o nowy link.";
 
 /**
  * Read-only check that a token exists and has not expired. Consumes nothing,
@@ -54,15 +50,15 @@ const EXPIRED_TOKEN_ERROR = "Link weryfikacyjny wygasł. Zaloguj się i poproś 
 export async function checkTokenValid(
   email: string,
   token: string
-): Promise<{ ok: true } | { ok: false; error: string }> {
+): Promise<{ ok: true } | { ok: false; error: VerificationErrorCode }> {
   const record = await prisma.verificationToken.findUnique({
     where: { identifier_token: { identifier: email, token } },
     select: { expires: true },
   });
 
-  if (!record) return { ok: false, error: INVALID_TOKEN_ERROR };
+  if (!record) return { ok: false, error: "invalid" };
   // Deliberately not deleted here — this function must never write.
-  if (record.expires < new Date()) return { ok: false, error: EXPIRED_TOKEN_ERROR };
+  if (record.expires < new Date()) return { ok: false, error: "expired" };
   return { ok: true };
 }
 
@@ -73,17 +69,17 @@ export async function checkTokenValid(
 export async function verifyEmailToken(
   email: string,
   token: string
-): Promise<{ ok: true } | { ok: false; error: string }> {
+): Promise<{ ok: true } | { ok: false; error: VerificationErrorCode }> {
   const where = { identifier_token: { identifier: email, token } };
   const record = await prisma.verificationToken.findUnique({ where });
 
   if (!record) {
-    return { ok: false, error: INVALID_TOKEN_ERROR };
+    return { ok: false, error: "invalid" };
   }
 
   if (record.expires < new Date()) {
     await prisma.verificationToken.delete({ where });
-    return { ok: false, error: EXPIRED_TOKEN_ERROR };
+    return { ok: false, error: "expired" };
   }
 
   // updateMany, not update: the account may have been deleted since the token
@@ -94,7 +90,7 @@ export async function verifyEmailToken(
   ]);
 
   if (updated.count === 0) {
-    return { ok: false, error: "Nie znaleziono konta dla tego adresu e-mail." };
+    return { ok: false, error: "noAccount" };
   }
 
   return { ok: true };

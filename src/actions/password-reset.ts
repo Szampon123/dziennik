@@ -7,7 +7,7 @@
 // (src/actions/verification.ts), so both are rate-limited instead.
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { sendEmail } from "@/lib/email";
+import { sendEmail, actionEmailHtml } from "@/lib/email";
 import { rateLimit } from "@/lib/rate-limit";
 import { resolveBaseUrl } from "@/lib/base-url";
 import { getT } from "@/lib/i18n/server";
@@ -15,7 +15,6 @@ import type { ResetFailure } from "@/lib/password-reset-errors";
 import {
   createPasswordResetToken,
   resetPasswordWithToken,
-  resetEmailHtml,
   resetUrl,
   RESET_EXPIRY_HOURS,
 } from "@/lib/password-reset";
@@ -68,7 +67,7 @@ export async function requestPasswordReset(email: string): Promise<RequestResetR
   await sendEmail({
     to: normalized,
     subject: t("auth.resetEmailSubject"),
-    html: resetEmailHtml({
+    html: actionEmailHtml({
       url,
       body: t("auth.resetEmailBody"),
       button: t("auth.resetEmailButton"),
