@@ -45,34 +45,41 @@ export default async function DuduPage() {
         <p className="mt-1 text-[13px] text-neutral-500">{t("page.hero.subtitle")}</p>
       </div>
 
-      <Card title="Wygląd" subtitle="Kolor, kapelusz, ubranie i więcej — 8 kategorii do wyboru">
+      <Card title={t("hero.appearance.title")} subtitle={t("hero.appearance.subtitle")}>
         <DuduCustomizer
           initialColor={color}
           initialConfig={config}
           initialName={user?.duduName ?? null}
           stage={c.stageIndex}
-          stageName={c.stageName}
+          stageName={t(c.stageNameKey)}
         />
       </Card>
 
-      <Card title="Postęp formy" subtitle="Ewolucja zależy od zaliczonych poziomów aktywności">
+      <Card title={t("hero.progress.title")} subtitle={t("hero.progress.subtitle")}>
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between text-[13px]">
             <span className="font-medium text-violet-700">
-              Forma {c.stageIndex + 1} / {CHARACTER_STAGES.length} · {c.stageName}
+              {t("hero.form", {
+                n: c.stageIndex + 1,
+                total: CHARACTER_STAGES.length,
+                name: t(c.stageNameKey),
+              })}
             </span>
             <span className="text-neutral-500">
-              Zaliczone poziomy: <span className="font-semibold text-neutral-800">{xp}</span>
+              {t("hero.completedLevels")}{" "}
+              <span className="font-semibold text-neutral-800">{xp}</span>
             </span>
           </div>
           <Progress value={c.isMax ? 1 : c.intoStage} max={c.isMax ? 1 : c.stageSpan} />
           <p className="text-[13px] text-neutral-500">
             {c.isMax ? (
-              "Maksymalna forma osiągnięta 🎉"
+              t("hero.maxReached")
             ) : (
               <>
-                Jeszcze <span className="font-semibold text-neutral-800">{c.toNext}</span> do formy:{" "}
-                <span className="font-medium text-neutral-700">{c.nextName}</span>
+                {t("hero.toNextForm", { n: c.toNext })}{" "}
+                <span className="font-medium text-neutral-700">
+                  {c.nextNameKey ? t(c.nextNameKey) : ""}
+                </span>
               </>
             )}
           </p>

@@ -75,7 +75,7 @@ export function DuduCustomizer({
           className="dudu-breathe"
         />
         <DuduNameEditor initialName={initialName} />
-        <p className="text-[12px] text-neutral-500">Forma: {stageName}</p>
+        <p className="text-[12px] text-neutral-500">{t("hero.currentForm", { name: stageName })}</p>
       </div>
 
       {/* Colour */}

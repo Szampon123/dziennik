@@ -93,7 +93,7 @@ export default async function TodayPage() {
         prioritiesTotal={priorities.length}
         prioritiesDone={prioritiesDone.filter(Boolean).length}
         characterStage={character.stageIndex}
-        characterStageName={character.stageName}
+        characterStageName={t(character.stageNameKey)}
         characterXp={characterXp}
         characterColor={user?.duduColor}
         characterConfig={user?.duduConfigJson}
