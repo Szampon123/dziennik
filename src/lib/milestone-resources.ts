@@ -3,6 +3,8 @@
 // instrument `videoJson` (YouTube-specific), a resource can point at any
 // verified page. Client-safe (pure types + a tolerant parser).
 
+import type { MessageKey } from "@/lib/i18n/messages";
+
 export const RESOURCE_KINDS = ["video", "article", "course", "reference", "tool"] as const;
 export type ResourceKind = (typeof RESOURCE_KINDS)[number];
 
@@ -43,11 +45,11 @@ export function parseResources(json: string | null): MilestoneResource[] {
   }
 }
 
-/** Polish label for a resource kind (used as a fallback / a11y hint). */
-export const RESOURCE_KIND_LABEL: Record<ResourceKind, string> = {
-  video: "Film",
-  article: "Artykuł",
-  course: "Kurs",
-  reference: "Materiały",
-  tool: "Narzędzie",
+/** Message key for a resource kind (used as a fallback / a11y hint). */
+export const RESOURCE_KIND_KEY: Record<ResourceKind, MessageKey> = {
+  video: "resource.kind.video",
+  article: "resource.kind.article",
+  course: "resource.kind.course",
+  reference: "resource.kind.reference",
+  tool: "resource.kind.tool",
 };

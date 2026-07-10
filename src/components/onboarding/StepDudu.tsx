@@ -46,6 +46,7 @@ export function StepDudu({
 
       <div className="mt-8 flex flex-col items-center rounded-2xl border border-neutral-200 bg-neutral-50 p-6">
         <CharacterAvatar
+            emptyLabel={t("hero.avatarEmpty")}
           stage={PREVIEW_STAGE}
           size={130}
           color={draft.color}

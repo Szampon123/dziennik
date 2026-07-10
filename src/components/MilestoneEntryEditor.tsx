@@ -11,6 +11,7 @@ import {
 } from "@/actions/milestone-entry";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
+import { useT } from "@/components/i18n/I18nProvider";
 
 // Note + proof-photo editor for a single milestone level, plus a per-user
 // customisation of the level's goal. The entry lives independently of the
@@ -37,6 +38,7 @@ export function MilestoneEntryEditor({
   originalDetail: string | null;
   customized: boolean;
 }) {
+  const t = useT();
   const [note, setNote] = useState(initialNote ?? "");
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
   const [error, setError] = useState("");
@@ -69,7 +71,7 @@ export function MilestoneEntryEditor({
   function saveLevel() {
     if (!title.trim()) {
       setLevelStatus("error");
-      setLevelError("Nazwa poziomu nie może być pusta.");
+      setLevelError(t("errors.levelTitleEmpty"));
       return;
     }
     startTransition(async () => {
@@ -122,7 +124,7 @@ export function MilestoneEntryEditor({
   }
 
   function removePhoto() {
-    if (!window.confirm("Usunąć zdjęcie z tego poziomu?")) return;
+    if (!window.confirm(t("mEditor.confirmRemovePhoto"))) return;
     startTransition(async () => {
       const result = await deleteMilestonePhoto({ milestoneId });
       if (!result.ok) {
@@ -136,9 +138,9 @@ export function MilestoneEntryEditor({
     <div className="flex flex-col gap-4">
       {/* Dostosuj poziom — per-user override of the goal; original kept intact. */}
       <div className="flex flex-col gap-3 rounded-lg border border-neutral-200 bg-neutral-0 p-3">
-        <span className="text-[13px] font-semibold text-neutral-900">Dostosuj poziom</span>
+        <span className="text-[13px] font-semibold text-neutral-900">{t("mEditor.customizeLevel")}</span>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-medium text-neutral-800">Nazwa poziomu (Twój cel)</span>
+          <span className="text-[13px] font-medium text-neutral-800">{t("mEditor.levelNameGoal")}</span>
           <Input
             value={title}
             onChange={(e) => {
@@ -146,11 +148,11 @@ export function MilestoneEntryEditor({
               setLevelStatus("idle");
             }}
             maxLength={200}
-            placeholder="np. Zagraj swój wybrany utwór…"
+            placeholder={t("mEditor.levelNamePlaceholder")}
           />
         </label>
         <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-medium text-neutral-800">Opis / wskazówka (opcjonalnie)</span>
+          <span className="text-[13px] font-medium text-neutral-800">{t("mEditor.detailLabel")}</span>
           <Textarea
             value={detail}
             onChange={(e) => {
@@ -159,32 +161,32 @@ export function MilestoneEntryEditor({
             }}
             rows={2}
             maxLength={500}
-            placeholder="Doprecyzuj cel na tym poziomie…"
+            placeholder={t("mEditor.detailPlaceholder")}
           />
         </label>
         <div className="flex flex-wrap items-center gap-2">
           <Button onClick={saveLevel} disabled={isPending || !levelDirty}>
-            {isPending ? "Zapisywanie…" : "Zapisz poziom"}
+            {isPending ? t("common.saving") : t("mEditor.saveLevel")}
           </Button>
           {customized && (
             <Button variant="secondary" onClick={restoreLevel} disabled={isPending}>
               <RotateCcw aria-hidden className="h-4 w-4" />
-              Przywróć oryginał
+              {t("mEditor.restoreOriginal")}
             </Button>
           )}
-          {levelStatus === "saved" && <span className="text-[13px] text-success">Zapisano ✓</span>}
+          {levelStatus === "saved" && <span className="text-[13px] text-success">{t("common.saved")}</span>}
           {levelStatus === "error" && <span className="text-[13px] text-danger">{levelError}</span>}
         </div>
         {customized && (
           <p className="text-xs text-neutral-500">
-            Oryginał (zachowany): <span className="text-neutral-700">{originalTitle}</span>
+            {t("mEditor.originalKept")} <span className="text-neutral-700">{originalTitle}</span>
             {originalDetail && <span className="text-neutral-500"> — {originalDetail}</span>}
           </p>
         )}
       </div>
 
       <label className="flex flex-col gap-1.5">
-        <span className="text-[13px] font-medium text-neutral-800">Notatka</span>
+        <span className="text-[13px] font-medium text-neutral-800">{t("mEditor.note")}</span>
         <Textarea
           value={note}
           onChange={(e) => {
@@ -193,7 +195,7 @@ export function MilestoneEntryEditor({
           }}
           rows={2}
           maxLength={500}
-          placeholder="Jak poszło? Warunki, samopoczucie, kontekst…"
+          placeholder={t("mEditor.notePlaceholder")}
         />
       </label>
 
@@ -203,7 +205,7 @@ export function MilestoneEntryEditor({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`/api/milestone-photo/${milestoneId}?v=${entryVersion ?? 0}`}
-            alt="Zdjęcie-dowód poziomu"
+            alt={t("mEditor.proofAlt")}
             className="max-h-64 w-auto max-w-full rounded-lg border border-neutral-200"
           />
         </div>
@@ -211,7 +213,7 @@ export function MilestoneEntryEditor({
 
       <div className="flex flex-wrap items-center gap-2">
         <Button onClick={saveNote} disabled={isPending || !noteDirty}>
-          {isPending ? "Zapisywanie…" : "Zapisz notatkę"}
+          {isPending ? t("common.saving") : t("mEditor.saveNote")}
         </Button>
         <input
           ref={fileRef}
@@ -226,21 +228,18 @@ export function MilestoneEntryEditor({
           disabled={isPending}
         >
           <ImagePlus aria-hidden className="h-4 w-4" />
-          {hasPhoto ? "Zmień zdjęcie" : "Dodaj zdjęcie"}
+          {hasPhoto ? t("mEditor.changePhoto") : t("mEditor.addPhoto")}
         </Button>
         {hasPhoto && (
           <Button variant="destructive" onClick={removePhoto} disabled={isPending}>
             <Trash2 aria-hidden className="h-4 w-4" />
-            Usuń zdjęcie
+            {t("mEditor.removePhoto")}
           </Button>
         )}
-        {status === "saved" && <span className="text-[13px] text-success">Zapisano ✓</span>}
+        {status === "saved" && <span className="text-[13px] text-success">{t("common.saved")}</span>}
         {status === "error" && <span className="text-[13px] text-danger">{error}</span>}
       </div>
-      <p className="text-xs text-neutral-500">
-        Zdjęcie (np. screen z aplikacji biegowej) — JPG/PNG/WEBP/GIF, maks. 6 MB. Notatka i
-        zdjęcie zostają nawet po odznaczeniu poziomu.
-      </p>
+      <p className="text-xs text-neutral-500">{t("mEditor.photoHint")}</p>
     </div>
   );
 }

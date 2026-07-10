@@ -68,6 +68,7 @@ export function DuduCustomizer({
     <div className="flex flex-col gap-6">
       <div className="flex flex-col items-center gap-3 rounded-card bg-neutral-100 py-8">
         <CharacterAvatar
+            emptyLabel={t("hero.avatarEmpty")}
           stage={previewStage}
           size={150}
           color={color}
@@ -80,7 +81,7 @@ export function DuduCustomizer({
 
       {/* Colour */}
       <div className="flex flex-col gap-2.5">
-        <p className="text-[13px] font-medium text-neutral-700">Kolor</p>
+        <p className="text-[13px] font-medium text-neutral-700">{t("dudu.colorLabel")}</p>
         <div className="flex flex-wrap gap-3">
           {DUDU_COLOR_KEYS.map((key) => {
             const active = key === color;

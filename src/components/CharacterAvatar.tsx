@@ -18,12 +18,14 @@ export function CharacterAvatar({
   className = "",
   color,
   config,
+  emptyLabel = "Spark — the character hasn't hatched yet",
 }: {
   stage: number;
   size?: number;
   className?: string;
   color?: DuduColor | string;
   config?: DuduConfig | string | null;
+  emptyLabel?: string;
 }) {
   const outline = "var(--neutral-900)";
   const palette = DUDU_COLORS[normalizeDuduColor(color)];
@@ -42,7 +44,7 @@ export function CharacterAvatar({
         height={(size * 140) / 120}
         className={className}
         role="img"
-        aria-label="Iskra — postać jeszcze się nie wykluła"
+        aria-label={emptyLabel}
         fill="none"
       >
         {background}

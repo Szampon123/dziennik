@@ -7,6 +7,7 @@ import { CharacterAvatar } from "@/components/CharacterAvatar";
 import { formatDayShort, dayKeyDaysAgo } from "@/lib/dates";
 import { useCalendar } from "./CalendarProvider";
 import { useT, useLocale } from "@/components/i18n/I18nProvider";
+import { plural } from "@/lib/i18n/plural";
 
 // "Przegląd dnia" — hero: a progress ring (share of the day's tasks done), the
 // mini Dudu companion, and metric tiles (rating, energy, streak), with the
@@ -135,6 +136,7 @@ export function DayOverview({
             className="flex shrink-0 flex-col items-center gap-1 rounded-xl px-2 py-1 outline-none transition-colors hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-violet-200"
           >
             <CharacterAvatar
+            emptyLabel={t("hero.avatarEmpty")}
               stage={characterStage}
               size={52}
               color={characterColor}
@@ -210,42 +212,40 @@ export function DayOverview({
           <div className="flex flex-col gap-2 border-t border-neutral-200 pt-4">
             <p className="text-[13px] text-neutral-500">{t("overview.trendTitle")}</p>
             <div className="flex items-end gap-2">
-              {trend.map((t) => (
-                <div key={t.dayKey} className="flex flex-1 flex-col items-center gap-1">
+              {trend.map((dp) => (
+                <div key={dp.dayKey} className="flex flex-1 flex-col items-center gap-1">
                   <span
                     className={`text-[11px] font-semibold tabular-nums ${
-                      t.pct === null
+                      dp.pct === null
                         ? "text-neutral-400"
-                        : t.dayKey === today
+                        : dp.dayKey === today
                           ? "text-azure-700"
                           : "text-neutral-600"
                     }`}
                   >
-                    {t.pct === null ? "—" : `${t.pct}%`}
+                    {dp.pct === null ? "—" : `${dp.pct}%`}
                   </span>
                   <div
                     className="relative h-14 w-full max-w-9 overflow-hidden rounded-md bg-neutral-100"
                     title={
-                      t.pct === null
-                        ? `${formatDayShort(t.dayKey, locale)}: brak wydarzeń`
-                        : `${formatDayShort(t.dayKey, locale)}: ${t.pct}% (${t.total} ${
-                            t.total === 1 ? "wydarzenie" : "wydarzeń"
-                          })`
+                      dp.pct === null
+                        ? t("calendar.dayNoEvents", { day: formatDayShort(dp.dayKey, locale) })
+                        : `${formatDayShort(dp.dayKey, locale)}: ${dp.pct}% (${plural(locale, "calendar.eventCount", dp.total)})`
                     }
                   >
-                    {t.pct !== null && (
+                    {dp.pct !== null && (
                       <div
                         className="absolute bottom-0 left-0 right-0 rounded-md bg-azure-500 transition-all"
-                        style={{ height: `${Math.max(t.pct, t.pct > 0 ? 8 : 0)}%` }}
+                        style={{ height: `${Math.max(dp.pct, dp.pct > 0 ? 8 : 0)}%` }}
                       />
                     )}
                   </div>
                   <span
                     className={`text-[10px] ${
-                      t.dayKey === today ? "font-semibold text-neutral-900" : "text-neutral-500"
+                      dp.dayKey === today ? "font-semibold text-neutral-900" : "text-neutral-500"
                     }`}
                   >
-                    {formatDayShort(t.dayKey, locale)}
+                    {formatDayShort(dp.dayKey, locale)}
                   </span>
                 </div>
               ))}

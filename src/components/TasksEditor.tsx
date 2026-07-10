@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { updateDayTasks } from "@/actions/day-entry";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useT } from "@/components/i18n/I18nProvider";
 
 // Direct correction of the day's completed-tasks count. Past days can't be
 // re-checked against the live calendar, so the number is editable by hand and
@@ -17,6 +18,7 @@ export function TasksEditor({
   tasksDone: number | null;
   tasksTotal: number | null;
 }) {
+  const t = useT();
   const [done, setDone] = useState(tasksDone?.toString() ?? "");
   const [total, setTotal] = useState(tasksTotal?.toString() ?? "");
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
@@ -72,7 +74,7 @@ export function TasksEditor({
               setDone(e.target.value);
               setStatus("idle");
             }}
-            aria-label="Liczba wykonanych zadań"
+            aria-label={t("tasks.doneCountAria")}
             className="w-24"
           />
         </label>
@@ -89,7 +91,7 @@ export function TasksEditor({
               setTotal(e.target.value);
               setStatus("idle");
             }}
-            aria-label="Łączna liczba zadań"
+            aria-label={t("tasks.totalCountAria")}
             className="w-24"
           />
         </label>
@@ -100,20 +102,20 @@ export function TasksEditor({
 
       <div className="flex flex-wrap items-center gap-3">
         <Button onClick={save} disabled={isPending}>
-          {isPending ? "Zapisywanie…" : "Zapisz liczbę zadań"}
+          {isPending ? t("common.saving") : t("tasks.saveCount")}
         </Button>
         {(done !== "" || total !== "") && (
           <Button variant="ghost" onClick={clear} disabled={isPending}>
-            Wyczyść
+            {t("tasks.clear")}
           </Button>
         )}
         {status === "saved" ? (
-          <span className="text-[13px] text-success">Zapisano ✓</span>
+          <span className="text-[13px] text-success">{t("common.saved")}</span>
         ) : status === "error" ? (
           <span className="text-[13px] text-danger">{error}</span>
         ) : (
           <span className="text-[13px] text-neutral-500">
-            Ile zadań z kalendarza udało się wykonać tego dnia
+            {t("tasks.hint")}
           </span>
         )}
       </div>

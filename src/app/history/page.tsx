@@ -41,21 +41,21 @@ export default async function HistoryPage() {
         {t("page.history.title")}
       </h1>
 
-      <Card title="Ostatnie 30 dni" subtitle="Ocena dnia i poziom energii">
+      <Card title={t("history.last30Days")} subtitle={t("history.ratingEnergy")}>
         {ratedDays >= 1 ? (
           <HistoryChart data={chartDays} />
         ) : (
           <p className="py-10 text-center text-[13px] text-neutral-500">
-            Zamknij dzień z oceną i energią, aby zobaczyć trend
+            {t("history.closeDayForTrend")}
           </p>
         )}
       </Card>
 
-      <Card title="Wszystkie dni" subtitle="Kliknij dzień, aby zobaczyć szczegóły">
+      <Card title={t("history.allDays")} subtitle={t("history.clickDay")}>
         {days.length === 0 ? (
           <EmptyState
-            title="Brak zapisanych dni"
-            hint="Twój pierwszy dzień pojawi się tu po dodaniu wpisu na stronie Dziś."
+            title={t("history.noDays")}
+            hint={t("history.firstDayHint")}
           />
         ) : (
           <ul className="flex flex-col gap-2">
@@ -80,7 +80,7 @@ export default async function HistoryPage() {
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
                     {day.status === "open" ? (
-                      <Badge variant="neutral">dzień otwarty</Badge>
+                      <Badge variant="neutral">{t("history.dayOpen")}</Badge>
                     ) : (
                       <SyncStatusBadge status={day.syncStatus} />
                     )}

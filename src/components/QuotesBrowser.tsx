@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { Chip } from "@/components/ui/Chip";
 import { Button } from "@/components/ui/Button";
 import { inputClass } from "@/components/ui/Input";
+import { useT } from "@/components/i18n/I18nProvider";
 
 // All categories/languages present in the library (for the filter dropdowns).
 const CATEGORIES = Array.from(new Set(QUOTES.map((q) => q.category))).sort((a, b) =>
@@ -29,6 +30,7 @@ export function QuotesBrowser({
   favoriteIds: string[];
   initialOnlyFavorites?: boolean;
 }) {
+  const t = useT();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [lang, setLang] = useState("all");
@@ -109,8 +111,8 @@ export function QuotesBrowser({
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Szukaj w treści, autorze lub tłumaczeniu…"
-            aria-label="Szukaj cytatów"
+            placeholder={t("quotes.searchPlaceholder")}
+            aria-label={t("quotes.searchAria")}
             className={`${inputClass} pl-9`}
           />
         </label>
@@ -119,10 +121,10 @@ export function QuotesBrowser({
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            aria-label="Dziedzina"
+            aria-label={t("quotes.categoryAria")}
             className={`${inputClass} w-auto capitalize`}
           >
-            <option value="all">Wszystkie dziedziny</option>
+            <option value="all">{t("quotes.allCategories")}</option>
             {CATEGORIES.map((c) => (
               <option key={c} value={c}>
                 {c}
@@ -133,10 +135,10 @@ export function QuotesBrowser({
           <select
             value={lang}
             onChange={(e) => setLang(e.target.value)}
-            aria-label="Język"
+            aria-label={t("quotes.langAria")}
             className={`${inputClass} w-auto`}
           >
-            <option value="all">Wszystkie języki</option>
+            <option value="all">{t("quotes.allLangs")}</option>
             {LANGS.map((l) => (
               <option key={l} value={l}>
                 {LANG_LABELS[l]}
@@ -147,23 +149,23 @@ export function QuotesBrowser({
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
-            aria-label="Sortowanie"
+            aria-label={t("quotes.sortAria")}
             className={`${inputClass} w-auto`}
           >
-            <option value="default">Sortuj: domyślnie</option>
-            <option value="category">Sortuj: dziedzina</option>
-            <option value="author">Sortuj: autor</option>
-            <option value="lang">Sortuj: język</option>
+            <option value="default">{t("quotes.sortDefault")}</option>
+            <option value="category">{t("quotes.sortCategory")}</option>
+            <option value="author">{t("quotes.sortAuthor")}</option>
+            <option value="lang">{t("quotes.sortLang")}</option>
           </select>
 
           <Chip active={onlyFav} onClick={() => setOnlyFav((v) => !v)}>
-            ★ Tylko ulubione ({favs.size})
+            {t("quotes.onlyFavorites", { count: favs.size })}
           </Chip>
         </div>
 
         <div className="flex items-center justify-between">
           <p className="text-[13px] text-neutral-500">
-            Pokazano {Math.min(shown.length, filtered.length)} z {filtered.length}
+            {t("quotes.shownOf", { shown: Math.min(shown.length, filtered.length), total: filtered.length })}
           </p>
           {hasFilters && (
             <button
@@ -171,7 +173,7 @@ export function QuotesBrowser({
               onClick={clearFilters}
               className="text-[13px] font-medium text-azure-700 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-violet-200"
             >
-              Wyczyść filtry
+              {t("quotes.clearFilters")}
             </button>
           )}
         </div>
@@ -180,11 +182,11 @@ export function QuotesBrowser({
       {/* Results */}
       {filtered.length === 0 ? (
         <EmptyState
-          title="Brak cytatów"
+          title={t("quotes.noQuotes")}
           hint={
             onlyFav
-              ? "Nie masz jeszcze ulubionych cytatów pasujących do filtrów."
-              : "Zmień filtry lub wyczyść je, aby zobaczyć więcej."
+              ? t("quotes.noFavMatch")
+              : t("quotes.changeFilters")
           }
         />
       ) : (
@@ -202,8 +204,8 @@ export function QuotesBrowser({
                     type="button"
                     onClick={() => toggleFav(item.id)}
                     aria-pressed={isFav}
-                    aria-label={isFav ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
-                    title={isFav ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+                    aria-label={isFav ? t("quotes.removeFav") : t("quotes.addFav")}
+                    title={isFav ? t("quotes.removeFav") : t("quotes.addFav")}
                     className="absolute right-3 top-3 rounded-lg p-1.5 text-neutral-400 outline-none transition-colors hover:text-violet-600 focus-visible:ring-2 focus-visible:ring-violet-200"
                   >
                     <Heart className={`h-5 w-5 ${isFav ? "fill-violet-600 text-violet-600" : ""}`} />
@@ -216,7 +218,7 @@ export function QuotesBrowser({
           {visible < filtered.length && (
             <div className="flex justify-center">
               <Button variant="secondary" onClick={() => setVisible((v) => v + PAGE)}>
-                Pokaż więcej ({filtered.length - visible})
+                {t("quotes.showMore", { count: filtered.length - visible })}
               </Button>
             </div>
           )}

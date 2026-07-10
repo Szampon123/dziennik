@@ -18,6 +18,7 @@ import { getCachedDayEvents } from "@/lib/calendar-cache";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
 import { getLocale } from "@/lib/i18n/server";
+import { getT } from "@/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,7 @@ export default async function DayDetailPage({
   params: Promise<{ date: string }>;
 }) {
   const userId = await requireUserId();
+  const { t } = await getT();
   const { date } = await params;
   if (!isValidDayKey(date)) notFound();
 
@@ -76,24 +78,25 @@ export default async function DayDetailPage({
             href="/history"
             className="group inline-flex items-center gap-1 text-[13px] text-neutral-500 transition-colors hover:text-neutral-900"
           >
-            <span className="transition-transform group-hover:-translate-x-0.5">←</span> Historia
+            <span className="transition-transform group-hover:-translate-x-0.5">←</span>{" "}
+          {t("nav.history")}
           </Link>
           <h1 className="mt-1 text-[28px] font-semibold capitalize tracking-[-0.5px] text-neutral-900">
             {formatDayLong(day.date, locale)}
           </h1>
           {closed ? (
             <p className="mt-1 text-[13px] text-neutral-500">
-              Dzień zamknięty — otwórz go ponownie, aby edytować poranek, notatki i refleksję.
+              {t("history.dayClosedNotice")}
             </p>
           ) : (
-            <p className="mt-1 text-[13px] text-neutral-500">Dzień otwarty — możesz swobodnie edytować.</p>
+            <p className="mt-1 text-[13px] text-neutral-500">{t("history.dayOpenEditable")}</p>
           )}
         </div>
         <div className="flex shrink-0 items-center gap-2 pt-6">
           {closed ? (
             <SyncStatusBadge status={day.syncStatus} />
           ) : (
-            <Badge variant="neutral">dzień otwarty</Badge>
+            <Badge variant="neutral">{t("history.dayOpen")}</Badge>
           )}
           {headerTasksTotal !== null && headerTasksTotal > 0 && (
             <Badge variant="neutral" title="Wykonane zadania z kalendarza">
@@ -110,7 +113,7 @@ export default async function DayDetailPage({
         </div>
       </div>
 
-      <Card title="Poranek" subtitle="Intencja dnia i 1–3 priorytety">
+      <Card title={t("history.morning")} subtitle={t("history.morningSubtitle")}>
         <MorningEntry
           date={day.date}
           initialIntent={day.morningIntent ?? ""}
@@ -125,8 +128,8 @@ export default async function DayDetailPage({
         title="Zadania z kalendarza"
         subtitle={
           hasEvents
-            ? "Odhacz zadania z tego dnia, aby zweryfikować, co udało się wykonać"
-            : "Ile zadań udało się wykonać tego dnia"
+            ? t("history.tasksHintOpen")
+            : t("history.tasksHintClosed")
         }
       >
         {hasEvents ? (
@@ -135,7 +138,7 @@ export default async function DayDetailPage({
           <div className="flex flex-col gap-3">
             {googleStatus.state === "connected" && dayEvents !== null && (
               <p className="text-[13px] text-neutral-500">
-                Brak wydarzeń z kalendarza tego dnia — możesz wpisać liczbę ręcznie.
+                {t("history.noCalendarEvents")}
               </p>
             )}
             <TasksEditor date={day.date} tasksDone={day.tasksDone} tasksTotal={day.tasksTotal} />
@@ -147,7 +150,7 @@ export default async function DayDetailPage({
         <NoteStream date={day.date} notes={day.notes} disabled={closed} />
       </Card>
 
-      <Card title="Zamknięcie dnia" subtitle="Refleksja i oceny">
+      <Card title={t("history.closeDayTitle")} subtitle={t("history.closeDaySubtitle")}>
         <CloseDayPanel
           date={day.date}
           initialGood={day.reflectionGood ?? ""}
