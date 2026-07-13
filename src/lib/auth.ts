@@ -32,15 +32,21 @@ providers.push(
     id: "credentials",
     name: "Email and password",
     credentials: { email: {}, password: {} },
-    async authorize(creds) {
+    async authorize(creds, request) {
       const email = typeof creds?.email === "string" ? creds.email.trim().toLowerCase() : "";
       const password = typeof creds?.password === "string" ? creds.password : "";
       if (!email || !password) return null;
 
-      // Brute-force guard, keyed per email: authorize() never sees the request,
-      // so there is no IP to key on — but an attacker grinding one account keeps
-      // sending the same address. A rejection is indistinguishable from a wrong
+      // Brute-force guard. A rejection is indistinguishable from a wrong
       // password, which is what we want.
+      //
+      // Two budgets, because they stop different attacks. Per-email catches an
+      // attacker grinding one account. Per-IP catches credential stuffing — one
+      // source walking a breach list, where every attempt carries a *different*
+      // address and so never trips the per-email key. The IP budget is the looser
+      // of the two: a NAT or office egress legitimately shares one address.
+      const ip = request?.headers?.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+      if (!rateLimit(`login:ip:${ip}`, 20, 15 * 60).allowed) return null;
       if (!rateLimit(`login:${email}`, 5, 15 * 60).allowed) return null;
 
       const user = await prisma.user.findUnique({ where: { email } });
