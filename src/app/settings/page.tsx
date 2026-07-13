@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { requireUserId } from "@/lib/session";
 import { auth } from "@/lib/auth";
@@ -97,6 +98,14 @@ export default async function SettingsPage({
       <Card title={t("settings.language.title")} subtitle={t("settings.language.subtitle")}>
         <LocaleSwitcher />
       </Card>
+
+      {/* The policy is otherwise only linked from the landing footer, which a
+          signed-in user never sees. */}
+      <p className="text-center text-[13px] text-neutral-500">
+        <Link href="/privacy" className="hover:text-violet-600 hover:underline">
+          {t("settings.privacyPolicy")}
+        </Link>
+      </p>
     </div>
   );
 }

@@ -639,6 +639,7 @@ const pl = {
   "settings.appearance.title": "Wygląd",
   "settings.appearance.subtitle": "Motyw: jasny, ciemny, kolorowy lub własny",
   "settings.language.title": "Język",
+  "settings.privacyPolicy": "Polityka prywatności",
   "settings.language.subtitle": "Język interfejsu aplikacji",
 
   // Dziś — shell
@@ -1481,6 +1482,7 @@ const en: Dict = {
   "settings.appearance.title": "Appearance",
   "settings.appearance.subtitle": "Theme: light, dark, colourful or custom",
   "settings.language.title": "Language",
+  "settings.privacyPolicy": "Privacy policy",
   "settings.language.subtitle": "App interface language",
 
   "today.morningSaved": "Morning saved",
@@ -2309,6 +2311,7 @@ const de: Dict = {
   "settings.appearance.title": "Darstellung",
   "settings.appearance.subtitle": "Thema: hell, dunkel, bunt oder eigenes",
   "settings.language.title": "Sprache",
+  "settings.privacyPolicy": "Datenschutzerklärung",
   "settings.language.subtitle": "Sprache der App-Oberfläche",
 
   "today.morningSaved": "Morgen gespeichert",
@@ -3137,6 +3140,7 @@ const es: Dict = {
   "settings.appearance.title": "Apariencia",
   "settings.appearance.subtitle": "Tema: claro, oscuro, colorido o personalizado",
   "settings.language.title": "Idioma",
+  "settings.privacyPolicy": "Política de privacidad",
   "settings.language.subtitle": "Idioma de la interfaz de la app",
 
   "today.morningSaved": "Mañana guardada",
