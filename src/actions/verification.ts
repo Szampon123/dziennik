@@ -4,7 +4,8 @@ import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
 import { sendVerificationEmail, verifyEmailToken } from "@/lib/verification";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimitPersistent } from "@/lib/rate-limit-redis";
+import { clientIp } from "@/lib/client-ip";
 import type { VerificationErrorCode } from "@/lib/verification-errors";
 
 /**
@@ -25,9 +26,8 @@ export async function confirmEmailVerification(input: {
     return { ok: false, error: "invalid" };
   }
 
-  const headersList = await headers();
-  const ip = headersList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  if (!rateLimit(`verify:confirm:${ip}`, 10, 60 * 60).allowed) {
+  const ip = clientIp(await headers());
+  if (!(await rateLimitPersistent(`verify:confirm:${ip}`, 10, 60 * 60)).allowed) {
     return { ok: false, error: "rate" };
   }
 
@@ -43,7 +43,7 @@ export async function resendVerificationEmail(): Promise<
 > {
   const userId = await requireUserId();
 
-  if (!rateLimit(`verify:resend:${userId}`, 3, 60 * 60).allowed) {
+  if (!(await rateLimitPersistent(`verify:resend:${userId}`, 3, 60 * 60)).allowed) {
     return { ok: false, error: "rate" };
   }
 

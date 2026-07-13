@@ -6,7 +6,8 @@ import { prisma } from "@/lib/prisma";
 import { fail, issueKey } from "@/lib/action-errors";
 import { hashPassword, validatePasswordStrength } from "@/lib/passwords";
 import { PASSWORD_ERROR_KEY } from "@/lib/password-errors";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimitPersistent } from "@/lib/rate-limit-redis";
+import { clientIp } from "@/lib/client-ip";
 import { sendVerificationEmail } from "@/lib/verification";
 
 export type RegisterResult = { ok: true } | { ok: false; error: string };
@@ -29,9 +30,8 @@ export async function registerAccount(
   input: z.input<typeof schema>
 ): Promise<RegisterResult> {
   // Signup spam guard, keyed per caller IP (3 per hour).
-  const headersList = await headers();
-  const ip = headersList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  if (!rateLimit(`register:${ip}`, 3, 60 * 60).allowed) {
+  const ip = clientIp(await headers());
+  if (!(await rateLimitPersistent(`register:${ip}`, 3, 60 * 60)).allowed) {
     return fail("errors.tooManyRegistrations");
   }
 

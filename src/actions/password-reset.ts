@@ -8,7 +8,8 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { sendEmail, actionEmailHtml } from "@/lib/email";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimitPersistent } from "@/lib/rate-limit-redis";
+import { clientIp } from "@/lib/client-ip";
 import { resolveBaseUrl } from "@/lib/base-url";
 import { getT } from "@/lib/i18n/server";
 import type { ResetFailure } from "@/lib/password-reset-errors";
@@ -18,11 +19,6 @@ import {
   resetUrl,
   RESET_EXPIRY_HOURS,
 } from "@/lib/password-reset";
-
-async function clientIp(): Promise<string> {
-  const headersList = await headers();
-  return headersList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-}
 
 export type RequestResetResult = { ok: true } | { ok: false; error: "rate" };
 export type ResetResult = { ok: true } | { ok: false; error: ResetFailure };
@@ -42,10 +38,10 @@ export async function requestPasswordReset(email: string): Promise<RequestResetR
   const normalized = typeof email === "string" ? email.trim().toLowerCase() : "";
   if (!normalized) return { ok: true };
 
-  if (!rateLimit(`reset:request:email:${normalized}`, 3, 60 * 60).allowed) {
+  if (!(await rateLimitPersistent(`reset:request:email:${normalized}`, 3, 60 * 60)).allowed) {
     return { ok: false, error: "rate" };
   }
-  if (!rateLimit(`reset:request:ip:${await clientIp()}`, 10, 60 * 60).allowed) {
+  if (!(await rateLimitPersistent(`reset:request:ip:${clientIp(await headers())}`, 10, 60 * 60)).allowed) {
     return { ok: false, error: "rate" };
   }
 
@@ -87,7 +83,7 @@ export async function resetPassword(token: string, password: string): Promise<Re
   const newPassword = typeof password === "string" ? password : "";
   if (!rawToken) return { ok: false, error: "invalid" };
 
-  if (!rateLimit(`reset:confirm:ip:${await clientIp()}`, 10, 60 * 60).allowed) {
+  if (!(await rateLimitPersistent(`reset:confirm:ip:${clientIp(await headers())}`, 10, 60 * 60)).allowed) {
     return { ok: false, error: "rate" };
   }
 
