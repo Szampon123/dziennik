@@ -9,15 +9,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // Reachable without a session (see PUBLIC_PATHS in src/proxy.ts) — the proxy
 // sends every suspended user here, and this is the only page they can open.
-export default function SuspendedPage() {
+export default async function SuspendedPage() {
+  const { t } = await getT();
+
   return (
     <div className="flex items-center justify-center px-4 py-12">
       <div className="max-w-md text-center">
-        <h1 className="mb-4 text-2xl font-bold">Konto zawieszone</h1>
-        <p className="text-muted mb-6">
-          Twoje konto zostało zawieszone przez administratora. Jeśli uważasz, że to pomyłka,
-          skontaktuj się z administracją.
-        </p>
+        <h1 className="mb-4 text-2xl font-bold">{t("page.suspended.title")}</h1>
+        <p className="text-muted mb-6">{t("auth.suspendedBody")}</p>
         <form
           action={async () => {
             "use server";
@@ -25,7 +24,7 @@ export default function SuspendedPage() {
           }}
         >
           <button type="submit" className="text-primary underline">
-            Wyloguj się
+            {t("user.logout")}
           </button>
         </form>
       </div>

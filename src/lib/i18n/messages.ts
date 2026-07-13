@@ -370,6 +370,11 @@ const pl = {
   "sync.synced": "Notion ✓",
   "auth.loginSubtitle": "Osobisty dziennik dnia — intencje, notatki, refleksje.",
   "auth.haveAccount": "Masz już konto?",
+  "auth.noAccountYet": "Nie masz konta?",
+  "auth.orWithEmail": "lub e-mailem",
+  "auth.suspendedBody":
+    "Twoje konto zostało zawieszone przez administratora. Jeśli uważasz, że to pomyłka, " +
+    "skontaktuj się z administracją.",
   "auth.googleSignIn": "Zaloguj się przez Google",
   "auth.register": "Zarejestruj się",
   "auth.devLogin": "Dev login (tylko środowisko deweloperskie)",
@@ -1211,6 +1216,11 @@ const en: Dict = {
   "sync.synced": "Notion ✓",
   "auth.loginSubtitle": "Your personal daily journal — intentions, notes, reflections.",
   "auth.haveAccount": "Already have an account?",
+  "auth.noAccountYet": "No account yet?",
+  "auth.orWithEmail": "or with email",
+  "auth.suspendedBody":
+    "Your account has been suspended by an administrator. If you think this is a mistake, " +
+    "please get in touch with the admins.",
   "auth.googleSignIn": "Sign in with Google",
   "auth.register": "Sign up",
   "auth.devLogin": "Dev login (development only)",
@@ -2034,6 +2044,11 @@ const de: Dict = {
   "sync.synced": "Notion ✓",
   "auth.loginSubtitle": "Dein persönliches Tagesjournal — Absichten, Notizen, Reflexionen.",
   "auth.haveAccount": "Hast du schon ein Konto?",
+  "auth.noAccountYet": "Noch kein Konto?",
+  "auth.orWithEmail": "oder per E-Mail",
+  "auth.suspendedBody":
+    "Dein Konto wurde von der Administration gesperrt. Wenn du glaubst, dass das ein Fehler " +
+    "ist, wende dich bitte an die Administration.",
   "auth.googleSignIn": "Mit Google anmelden",
   "auth.register": "Registrieren",
   "auth.devLogin": "Dev-Login (nur Entwicklungsumgebung)",
@@ -2857,6 +2872,11 @@ const es: Dict = {
   "sync.synced": "Notion ✓",
   "auth.loginSubtitle": "Tu diario personal — intenciones, notas, reflexiones.",
   "auth.haveAccount": "¿Ya tienes una cuenta?",
+  "auth.noAccountYet": "¿Aún no tienes cuenta?",
+  "auth.orWithEmail": "o con correo",
+  "auth.suspendedBody":
+    "Un administrador ha suspendido tu cuenta. Si crees que es un error, ponte en contacto " +
+    "con la administración.",
   "auth.googleSignIn": "Iniciar sesión con Google",
   "auth.register": "Registrarse",
   "auth.devLogin": "Inicio dev (solo entorno de desarrollo)",

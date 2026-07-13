@@ -51,7 +51,7 @@ export default async function LoginPage() {
             </form>
             <div className="flex items-center gap-3">
               <span className="h-px flex-1 bg-neutral-200" />
-              <span className="text-[13px] text-neutral-400">lub e-mailem</span>
+              <span className="text-[13px] text-neutral-400">{t("auth.orWithEmail")}</span>
               <span className="h-px flex-1 bg-neutral-200" />
             </div>
           </>
@@ -60,7 +60,7 @@ export default async function LoginPage() {
         <CredentialsLoginForm />
 
         <p className="text-center text-[13px] text-neutral-600">
-          Nie masz konta?{" "}
+          {t("auth.noAccountYet")}{" "}
           <Link href="/register" className="font-medium text-violet-600 hover:underline">
             {t("auth.register")}
           </Link>
