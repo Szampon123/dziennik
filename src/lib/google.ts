@@ -131,6 +131,54 @@ export async function disconnectGoogle(userId: string): Promise<void> {
 }
 
 /**
+ * Tell Google to invalidate the grant, then drop the row.
+ *
+ * Dropping the row alone (disconnectGoogle) only makes *us* forget the token —
+ * the grant stays listed under "Third-party apps with account access" in the
+ * user's Google account, and the refresh token keeps working. That is untidy
+ * when they disconnect and unacceptable when they delete their account: we would
+ * be leaving a live grant behind for an app that no longer holds an account for
+ * them, and they would have to go and clean it up by hand.
+ *
+ * Best-effort by design. Revocation talks to a third party over the network and
+ * the account deletion that calls this must not be held hostage by Google being
+ * slow or the token already being dead. A failure here is logged and swallowed:
+ * the local token row is deleted either way, so we never keep a credential we
+ * failed to revoke.
+ *
+ * Revoking either token of a pair invalidates both, so the refresh token is
+ * preferred — it is the long-lived one and the one still worth killing if the
+ * access token has already expired.
+ */
+export async function revokeGoogleAccess(userId: string): Promise<void> {
+  const stored = await prisma.oAuthToken.findUnique({
+    where: { userId_provider: { userId, provider: PROVIDER } },
+  });
+
+  if (stored) {
+    const encrypted = stored.refreshToken ?? stored.accessToken;
+    if (encrypted) {
+      try {
+        const token = decrypt(encrypted);
+        const res = await fetch("https://oauth2.googleapis.com/revoke", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({ token }),
+        });
+        // 400 is the ordinary "already revoked / expired" answer, not a problem.
+        if (!res.ok && res.status !== 400) {
+          console.error("[GOOGLE] revoke failed:", res.status, await res.text());
+        }
+      } catch (error) {
+        console.error("[GOOGLE] revoke threw:", error);
+      }
+    }
+  }
+
+  await prisma.oAuthToken.deleteMany({ where: { userId, provider: PROVIDER } });
+}
+
+/**
  * Fetch the user's events from their primary calendar: `pastDays` days back
  * through `days` days ahead (both relative to today). Live fetch, never
  * persisted (caching lives in calendar-cache.ts).

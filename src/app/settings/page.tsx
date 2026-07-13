@@ -9,6 +9,9 @@ import { GoogleSettings } from "@/components/GoogleSettings";
 import { NotionSettings } from "@/components/NotionSettings";
 import { ThemeSegmented } from "@/components/ThemeSegmented";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
+import { DeleteAccount } from "@/components/DeleteAccount";
+import { prisma } from "@/lib/prisma";
+import { normalizeRole } from "@/lib/roles";
 import { getT } from "@/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
@@ -38,14 +41,28 @@ export default async function SettingsPage({
   searchParams: Promise<{ google?: string }>;
 }) {
   const userId = await requireUserId();
-  const [{ google: googleParam }, session, googleStatus, notionStatus, { t }] = await Promise.all([
-    searchParams,
-    auth(),
-    getGoogleStatus(userId),
-    getNotionStatus(userId),
-    getT(),
-  ]);
+  const [{ google: googleParam }, session, googleStatus, notionStatus, { t }, account] =
+    await Promise.all([
+      searchParams,
+      auth(),
+      getGoogleStatus(userId),
+      getNotionStatus(userId),
+      getT(),
+      // Which proof the delete form asks for depends on whether this account has a
+      // password at all — a Google-only user has none and confirms with their
+      // address instead. The server re-derives both and re-checks the answer.
+      prisma.user.findUnique({
+        where: { id: userId },
+        select: { email: true, passwordHash: true, role: true },
+      }),
+    ]);
   const banner = googleParam ? GOOGLE_BANNERS[googleParam] : undefined;
+
+  // The owner is not offered the card at all: bootstrapRole() re-grants the role
+  // from OWNER_EMAIL on the next sign-in, so deleting would destroy the owner's
+  // journal and hand back an empty account. The action refuses it server-side
+  // regardless — this only spares them a button that cannot work.
+  const isOwner = normalizeRole(account?.role) === "owner";
 
   return (
     <div className="flex flex-col gap-6">
@@ -98,6 +115,15 @@ export default async function SettingsPage({
       <Card title={t("settings.language.title")} subtitle={t("settings.language.subtitle")}>
         <LocaleSwitcher />
       </Card>
+
+      {!isOwner && (
+        <Card title={t("settings.danger.title")} subtitle={t("settings.danger.subtitle")}>
+          <DeleteAccount
+            hasPassword={Boolean(account?.passwordHash)}
+            email={account?.email ?? ""}
+          />
+        </Card>
+      )}
 
       {/* The policy is otherwise only linked from the landing footer, which a
           signed-in user never sees. */}

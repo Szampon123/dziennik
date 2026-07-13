@@ -46,8 +46,19 @@
  *                        address and the link, never journal content.
  *  Retention ........... Nothing is auto-deleted except VerificationToken and
  *                        PasswordResetToken, which carry expiry columns.
- *  Account deletion .... DOES NOT EXIST. No prisma.user.delete anywhere in src/.
- *                        Hence the e-mail channel in section 7.
+ *  Account deletion .... Self-service, in Settings — actions/delete-account.ts.
+ *                        Revokes the Google grant, deletes the Blob photos, then
+ *                        deletes the User (the cascade covers every table that
+ *                        references it; VerificationToken is keyed on the e-mail
+ *                        string with no FK, so it is deleted explicitly).
+ *                        Immediate, no grace period. The owner is refused: the
+ *                        role is re-granted from OWNER_EMAIL on the next sign-in,
+ *                        so deleting would only destroy their journal.
+ *                        Other users' replies to a deleted user's forum posts
+ *                        SURVIVE — ForumPost.parent is onDelete: SetNull, so an
+ *                        orphaned reply is promoted to a top-level post rather
+ *                        than being cascaded away. Deleting somebody's account
+ *                        must not delete somebody else's words.
  *  Data export ......... DOES NOT EXIST. Hence the e-mail channel in section 7.
  * ────────────────────────────────────────────────────────────────────────────
  */
@@ -203,10 +214,16 @@ const pl: Policy = {
         "Twoje dane przechowujemy tak długo, jak istnieje Twoje konto. Nic nie kasuje się " +
           "samo — dziennik z zeszłego roku ma zostać dziennikiem z zeszłego roku. Wyjątkiem są " +
           "tokeny weryfikacji adresu i resetu hasła, które wygasają automatycznie.",
-        "Aplikacja nie ma jeszcze przycisku „usuń konto” ani eksportu danych. Mówimy o tym " +
-          "otwarcie, zamiast obiecywać funkcję, której nie ma. Do czasu, aż powstaną, " +
-          `zrealizujemy każde takie żądanie ręcznie — napisz na ${CONTROLLER_EMAIL}, a usuniemy ` +
-          "konto wraz ze wszystkimi treściami albo przekażemy Ci kopię Twoich danych.",
+        "Konto możesz usunąć sam, w Ustawieniach. Usunięcie jest natychmiastowe i trwałe: " +
+          "znikają wszystkie Twoje dane — dziennik, nawyki, treningi, postępy, zdjęcia oraz " +
+          "posty i odpowiedzi na forum. Cofamy też dostęp, którego udzieliłeś nam w Google. " +
+          "Nie ma okresu karencji i nie zostaje nam kopia, którą moglibyśmy Ci oddać.",
+        "Odpowiedzi innych użytkowników pod Twoimi postami na forum zostają — to ich treści, " +
+          "nie Twoje, i nie mamy prawa ich kasować.",
+        `Eksportu danych aplikacja jeszcze nie ma. Mówimy o tym otwarcie, zamiast obiecywać ` +
+          `funkcję, której nie ma: napisz na ${CONTROLLER_EMAIL}, a przekażemy Ci kopię Twoich ` +
+          `danych ręcznie. Na ten sam adres możesz też napisać w sprawie usunięcia konta, jeśli ` +
+          `z jakiegoś powodu nie możesz zrobić tego sam.`,
         "Po usunięciu danych z bazy mogą one jeszcze przez pewien czas znajdować się w kopiach " +
           "zapasowych naszych dostawców, które rotują się zgodnie z ich własnymi cyklami.",
       ],
@@ -371,10 +388,16 @@ const en: Policy = {
         "We keep your data for as long as your account exists. Nothing is deleted automatically " +
           "— last year's journal is meant to remain last year's journal. The exceptions are " +
           "email-verification and password-reset tokens, which expire on their own.",
-        "The app does not yet have a \"delete account\" button, nor a data export. We say so " +
-          "openly rather than promise a feature that does not exist. Until they are built, we " +
-          `will action any such request by hand — write to ${CONTROLLER_EMAIL} and we will delete ` +
-          "your account with all of its content, or send you a copy of your data.",
+        "You can delete your account yourself, in Settings. Deletion is immediate and " +
+          "permanent: all of your data goes — journal, habits, workouts, progress, photos, and " +
+          "your forum posts and replies. We also hand back the access you granted us in Google. " +
+          "There is no grace period, and we keep no copy to give back to you.",
+        "Replies other people wrote under your forum posts stay. They are their words, not " +
+          "yours, and we have no right to delete them.",
+        `The app does not have a data export yet. We say so openly rather than promise a feature ` +
+          `that does not exist: write to ${CONTROLLER_EMAIL} and we will send you a copy of your ` +
+          `data by hand. You can also write to that address about deleting your account, if for ` +
+          `some reason you cannot do it yourself.`,
         "After deletion from the database, data may persist for a while in our providers' " +
           "backups, which rotate on their own schedules.",
       ],

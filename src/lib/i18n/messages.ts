@@ -137,6 +137,22 @@ const pl = {
   "errors.todoTitleTooLong": "Zadanie może mieć maks. {maxTitle} znaków.",
   "errors.tooManyVotes": "Zbyt wiele głosów. Poczekaj chwilę.",
   "errors.tooManyRegistrations": "Zbyt wiele prób rejestracji. Spróbuj ponownie później.",
+  "errors.ownerCannotDelete":
+    "Konto właściciela nie może zostać usunięte z poziomu aplikacji.",
+  "errors.deleteWrongPassword": "Nieprawidłowe hasło. Konto nie zostało usunięte.",
+  "errors.deleteWrongEmail": "Adres e-mail się nie zgadza. Konto nie zostało usunięte.",
+  "settings.danger.title": "Strefa niebezpieczna",
+  "settings.danger.subtitle": "Operacje nieodwracalne.",
+  "settings.danger.deleteAccount": "Usuń konto",
+  "settings.danger.warning":
+    "Usunięcie konta jest trwałe i natychmiastowe. Znikną: dziennik, nawyki, treningi, " +
+    "postępy i poziomy, zdjęcia-dowody oraz Twoje posty i odpowiedzi na forum. Nie da się " +
+    "tego cofnąć i nie mamy kopii, którą moglibyśmy Ci oddać.",
+  "settings.danger.confirmPassword": "Wpisz hasło, żeby potwierdzić",
+  "settings.danger.confirmEmail": "Wpisz swój adres e-mail, żeby potwierdzić",
+  "settings.danger.confirmButton": "Usuń konto na zawsze",
+  "settings.danger.deleting": "Usuwanie…",
+  "settings.danger.cancel": "Anuluj",
   "errors.photoFormatInvalid": "Zdjęcie musi być JPG, PNG, WEBP lub GIF.",
   // Onboarding wizard
   "onboarding.step": "Krok {current} z {total}",
@@ -989,6 +1005,21 @@ const en: Dict = {
   "errors.todoTitleTooLong": "A task may be at most {maxTitle} characters.",
   "errors.tooManyVotes": "Too many votes. Wait a moment.",
   "errors.tooManyRegistrations": "Too many sign-up attempts. Try again later.",
+  "errors.ownerCannotDelete": "The owner account cannot be deleted from inside the app.",
+  "errors.deleteWrongPassword": "Wrong password. Your account has not been deleted.",
+  "errors.deleteWrongEmail": "That email does not match. Your account has not been deleted.",
+  "settings.danger.title": "Danger zone",
+  "settings.danger.subtitle": "Irreversible actions.",
+  "settings.danger.deleteAccount": "Delete account",
+  "settings.danger.warning":
+    "Deleting your account is permanent and immediate. Your journal, habits, workouts, " +
+    "progress and levels, proof photos, and your forum posts and replies will all be gone. " +
+    "This cannot be undone, and we keep no copy to give back to you.",
+  "settings.danger.confirmPassword": "Type your password to confirm",
+  "settings.danger.confirmEmail": "Type your email address to confirm",
+  "settings.danger.confirmButton": "Delete my account forever",
+  "settings.danger.deleting": "Deleting…",
+  "settings.danger.cancel": "Cancel",
   "errors.photoFormatInvalid": "The photo must be JPG, PNG, WEBP or GIF.",
   "onboarding.step": "Step {current} of {total}",
   "onboarding.skipAll": "Skip setup",
@@ -1818,6 +1849,24 @@ const de: Dict = {
   "errors.todoTitleTooLong": "Eine Aufgabe darf höchstens {maxTitle} Zeichen lang sein.",
   "errors.tooManyVotes": "Zu viele Stimmen. Warte einen Moment.",
   "errors.tooManyRegistrations": "Zu viele Registrierungsversuche. Versuche es später erneut.",
+  "errors.ownerCannotDelete":
+    "Das Konto der Inhaberin oder des Inhabers kann nicht aus der App gelöscht werden.",
+  "errors.deleteWrongPassword": "Falsches Passwort. Dein Konto wurde nicht gelöscht.",
+  "errors.deleteWrongEmail":
+    "Diese E-Mail-Adresse stimmt nicht. Dein Konto wurde nicht gelöscht.",
+  "settings.danger.title": "Gefahrenzone",
+  "settings.danger.subtitle": "Nicht umkehrbare Aktionen.",
+  "settings.danger.deleteAccount": "Konto löschen",
+  "settings.danger.warning":
+    "Das Löschen deines Kontos ist endgültig und sofort wirksam. Journal, Gewohnheiten, " +
+    "Trainings, Fortschritt und Level, Nachweisfotos sowie deine Forenbeiträge und Antworten " +
+    "sind dann weg. Das lässt sich nicht rückgängig machen, und wir haben keine Kopie, die " +
+    "wir dir zurückgeben könnten.",
+  "settings.danger.confirmPassword": "Gib dein Passwort ein, um zu bestätigen",
+  "settings.danger.confirmEmail": "Gib deine E-Mail-Adresse ein, um zu bestätigen",
+  "settings.danger.confirmButton": "Mein Konto endgültig löschen",
+  "settings.danger.deleting": "Wird gelöscht…",
+  "settings.danger.cancel": "Abbrechen",
   "errors.photoFormatInvalid": "Das Foto muss JPG, PNG, WEBP oder GIF sein.",
   "onboarding.step": "Schritt {current} von {total}",
   "onboarding.skipAll": "Einrichtung überspringen",
@@ -2647,6 +2696,22 @@ const es: Dict = {
   "errors.todoTitleTooLong": "Una tarea puede tener como máximo {maxTitle} caracteres.",
   "errors.tooManyVotes": "Demasiados votos. Espera un momento.",
   "errors.tooManyRegistrations": "Demasiados intentos de registro. Inténtalo más tarde.",
+  "errors.ownerCannotDelete":
+    "La cuenta del propietario no se puede eliminar desde la aplicación.",
+  "errors.deleteWrongPassword": "Contraseña incorrecta. Tu cuenta no se ha eliminado.",
+  "errors.deleteWrongEmail": "Ese correo no coincide. Tu cuenta no se ha eliminado.",
+  "settings.danger.title": "Zona peligrosa",
+  "settings.danger.subtitle": "Acciones irreversibles.",
+  "settings.danger.deleteAccount": "Eliminar cuenta",
+  "settings.danger.warning":
+    "Eliminar tu cuenta es permanente e inmediato. Desaparecerán tu diario, tus hábitos, tus " +
+    "entrenamientos, tu progreso y tus niveles, las fotos de prueba y tus mensajes y " +
+    "respuestas del foro. No se puede deshacer y no guardamos ninguna copia que devolverte.",
+  "settings.danger.confirmPassword": "Escribe tu contraseña para confirmar",
+  "settings.danger.confirmEmail": "Escribe tu correo electrónico para confirmar",
+  "settings.danger.confirmButton": "Eliminar mi cuenta para siempre",
+  "settings.danger.deleting": "Eliminando…",
+  "settings.danger.cancel": "Cancelar",
   "errors.photoFormatInvalid": "La foto debe ser JPG, PNG, WEBP o GIF.",
   "onboarding.step": "Paso {current} de {total}",
   "onboarding.skipAll": "Omitir configuración",

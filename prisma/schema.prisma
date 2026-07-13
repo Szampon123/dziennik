@@ -368,7 +368,11 @@ model ForumPost {
   linkUrl      String?
   createdAt    DateTime @default(now())
   user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  parent       ForumPost?  @relation("PostReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  // SetNull, not Cascade: a reply must outlive its parent. Cascading here would
+  // mean deleting your own post (or your account) also destroys other people's
+  // replies to it. A null parentId already means "top-level", so an orphaned
+  // reply is simply promoted to a root post in the same thread.
+  parent       ForumPost?  @relation("PostReplies", fields: [parentId], references: [id], onDelete: SetNull)
   replies      ForumPost[] @relation("PostReplies")
   votes        ForumVote[]
 
