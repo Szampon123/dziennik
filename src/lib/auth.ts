@@ -8,7 +8,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import { verifyPassword } from "@/lib/passwords";
 import { normalizeRole, bootstrapRole } from "@/lib/roles";
-import { rateLimit } from "@/lib/rate-limit";
+import { rateLimitPersistent } from "@/lib/rate-limit-redis";
+import { clientIp, UNKNOWN_IP } from "@/lib/client-ip";
 
 // Dev-only login (no Google keys needed): active only in development with
 // DEV_LOGIN=1. Lets you exercise the multi-user flow with fake accounts.
@@ -37,17 +38,25 @@ providers.push(
       const password = typeof creds?.password === "string" ? creds.password : "";
       if (!email || !password) return null;
 
-      // Brute-force guard. A rejection is indistinguishable from a wrong
-      // password, which is what we want.
+      // Brute-force guard. Both budgets are checked before the user lookup, so a
+      // throttled attempt costs no query. A rejection is indistinguishable from a
+      // wrong password, which is what we want.
       //
       // Two budgets, because they stop different attacks. Per-email catches an
       // attacker grinding one account. Per-IP catches credential stuffing — one
       // source walking a breach list, where every attempt carries a *different*
       // address and so never trips the per-email key. The IP budget is the looser
       // of the two: a NAT or office egress legitimately shares one address.
-      const ip = request?.headers?.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-      if (!rateLimit(`login:ip:${ip}`, 20, 15 * 60).allowed) return null;
-      if (!rateLimit(`login:${email}`, 5, 15 * 60).allowed) return null;
+      //
+      // An absent forwarded-for is not throttled by IP. It cannot occur behind
+      // Vercel, which always sets the header, so it means local dev — and every
+      // such caller would otherwise share the single UNKNOWN_IP bucket and
+      // throttle each other. The per-email budget still applies there.
+      const ip = request ? clientIp(request.headers) : UNKNOWN_IP;
+      if (ip !== UNKNOWN_IP) {
+        if (!(await rateLimitPersistent(`login:ip:${ip}`, 20, 15 * 60)).allowed) return null;
+      }
+      if (!(await rateLimitPersistent(`login:${email}`, 5, 15 * 60)).allowed) return null;
 
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user?.passwordHash) return null; // no account, or Google-only account
