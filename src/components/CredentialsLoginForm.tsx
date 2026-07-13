@@ -22,7 +22,15 @@ export function CredentialsLoginForm() {
       setError("");
       const res = await signIn("credentials", { email, password, redirect: false });
       if (res?.error) {
-        setError(t("auth.invalidCredentials"));
+        // `code` carries the `code` field of whatever CredentialsSignin subclass
+        // authorize() threw (RateLimitedError in src/lib/auth.ts). Anything else
+        // — a wrong password, no such account — stays the generic message, so the
+        // form is still not an account-existence oracle.
+        setError(
+          res.code === "rate_limited"
+            ? t("auth.tooManyAttempts")
+            : t("auth.invalidCredentials")
+        );
       } else if (res?.ok) {
         window.location.href = "/dzis";
       } else {

@@ -1,7 +1,7 @@
 // Auth.js (NextAuth v5) configuration. Login is identity-only (Google profile
 // or email+password) — Calendar access stays a separate incremental-consent
 // flow in src/lib/google.ts, and Notion settings live on the User row.
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
@@ -14,6 +14,17 @@ import { clientIp, UNKNOWN_IP } from "@/lib/client-ip";
 // Dev-only login (no Google keys needed): active only in development with
 // DEV_LOGIN=1. Lets you exercise the multi-user flow with fake accounts.
 const devLoginEnabled = process.env.NODE_ENV === "development" && process.env.DEV_LOGIN === "1";
+
+/**
+ * Thrown by authorize() when a login budget is exhausted.
+ *
+ * Auth.js surfaces `code` to the client as SignInResponse.code, which is how the
+ * login form tells "throttled" apart from "wrong password" — see
+ * CredentialsLoginForm.
+ */
+class RateLimitedError extends CredentialsSignin {
+  code = "rate_limited";
+}
 
 const providers = [];
 
@@ -39,8 +50,16 @@ providers.push(
       if (!email || !password) return null;
 
       // Brute-force guard. Both budgets are checked before the user lookup, so a
-      // throttled attempt costs no query. A rejection is indistinguishable from a
-      // wrong password, which is what we want.
+      // throttled attempt costs no query.
+      //
+      // Exhausting a budget throws RateLimitedError rather than returning null,
+      // so the form can say "too many attempts" instead of "wrong password".
+      // That is a deliberate trade: being throttled is now distinguishable from
+      // a bad password. It leaks nothing about whether the account *exists* —
+      // the budget is spent by the attacker's own attempts, whatever address
+      // they aimed at — and telling a locked-out user why they are stuck beats
+      // letting them retype a correct password and still be refused. A genuinely
+      // wrong password, or no such account, still returns null.
       //
       // Two budgets, because they stop different attacks. Per-email catches an
       // attacker grinding one account. Per-IP catches credential stuffing — one
@@ -54,9 +73,13 @@ providers.push(
       // throttle each other. The per-email budget still applies there.
       const ip = request ? clientIp(request.headers) : UNKNOWN_IP;
       if (ip !== UNKNOWN_IP) {
-        if (!(await rateLimitPersistent(`login:ip:${ip}`, 20, 15 * 60)).allowed) return null;
+        if (!(await rateLimitPersistent(`login:ip:${ip}`, 20, 15 * 60)).allowed) {
+          throw new RateLimitedError();
+        }
       }
-      if (!(await rateLimitPersistent(`login:${email}`, 5, 15 * 60)).allowed) return null;
+      if (!(await rateLimitPersistent(`login:${email}`, 5, 15 * 60)).allowed) {
+        throw new RateLimitedError();
+      }
 
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user?.passwordHash) return null; // no account, or Google-only account

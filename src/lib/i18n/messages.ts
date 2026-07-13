@@ -36,6 +36,7 @@ const pl = {
   "auth.passwordTooLong": "Hasło jest za długie.",
   "auth.loginFailed": "Nie udało się zalogować. Spróbuj ponownie.",
   "auth.invalidCredentials": "Nieprawidłowy e-mail lub hasło.",
+  "auth.tooManyAttempts": "Zbyt wiele prób logowania. Spróbuj ponownie za kilkanaście minut.",
   "auth.signingIn": "Logowanie…",
   "auth.signIn": "Zaloguj się",
   "auth.emailPlaceholder": "E-mail",
@@ -882,6 +883,7 @@ const en: Dict = {
   "auth.passwordTooLong": "That password is too long.",
   "auth.loginFailed": "Sign-in failed. Please try again.",
   "auth.invalidCredentials": "Incorrect email or password.",
+  "auth.tooManyAttempts": "Too many sign-in attempts. Try again in a few minutes.",
   "auth.signingIn": "Signing in…",
   "auth.signIn": "Sign in",
   "auth.emailPlaceholder": "Email",
@@ -1703,6 +1705,8 @@ const de: Dict = {
   "auth.passwordTooLong": "Dieses Passwort ist zu lang.",
   "auth.loginFailed": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
   "auth.invalidCredentials": "Falsche E-Mail-Adresse oder falsches Passwort.",
+  "auth.tooManyAttempts":
+    "Zu viele Anmeldeversuche. Versuche es in einigen Minuten erneut.",
   "auth.signingIn": "Anmeldung…",
   "auth.signIn": "Anmelden",
   "auth.emailPlaceholder": "E-Mail",
@@ -2524,6 +2528,8 @@ const es: Dict = {
   "auth.passwordTooLong": "Esa contraseña es demasiado larga.",
   "auth.loginFailed": "Error al iniciar sesión. Inténtalo de nuevo.",
   "auth.invalidCredentials": "Correo o contraseña incorrectos.",
+  "auth.tooManyAttempts":
+    "Demasiados intentos de inicio de sesión. Vuelve a intentarlo en unos minutos.",
   "auth.signingIn": "Iniciando sesión…",
   "auth.signIn": "Iniciar sesión",
   "auth.emailPlaceholder": "Correo",
