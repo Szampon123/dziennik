@@ -7,7 +7,7 @@ import { fail, issueKey } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isValidDayKey } from "@/lib/dates";
 import { NOTE_TYPES } from "@/lib/day";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 const addNoteSchema = z.object({
   date: z.string().refine(isValidDayKey, "errors.invalidDate"),

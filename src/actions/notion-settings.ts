@@ -7,7 +7,7 @@ import { fail, issueKey } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { encrypt } from "@/lib/crypto";
 import { testNotionConnection } from "@/lib/notion";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 const settingsSchema = z.object({
   token: z.string().trim().min(1, "Podaj token integracji Notion").max(300),

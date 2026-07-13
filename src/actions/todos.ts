@@ -15,7 +15,7 @@ import {
   serializeTodos,
   type Todo,
 } from "@/lib/todos";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 /** addTodo also returns the created row so the client can render it optimistically. */
 export type AddTodoResult = { ok: true; todo: Todo } | { ok: false; error: string };

@@ -12,7 +12,7 @@ import {
   type DuduColor,
   type DuduConfig,
 } from "@/lib/dudu";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 /** Save the user's chosen Dudu colour palette. */
 export async function setDuduColor(color: string): Promise<ActionResult> {

@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { fail } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { serializeDashboard } from "@/lib/dashboard";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 const schema = z.object({
   order: z.array(z.string().max(40)).max(20),

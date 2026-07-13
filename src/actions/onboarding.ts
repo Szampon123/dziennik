@@ -16,7 +16,7 @@ import {
   normalizeDuduName,
   serializeDuduConfig,
 } from "@/lib/dudu";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 /**
  * Step 2. Replaces the user's picks with `slugs`, so going back a step and

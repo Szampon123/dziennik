@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { fail } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { parseCriteria, implies } from "@/lib/milestone-criteria";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 const setSchema = z.object({
   milestoneId: z.string().min(1),

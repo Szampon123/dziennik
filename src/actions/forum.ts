@@ -8,7 +8,7 @@ import { normalizeRole, isAdminRole } from "@/lib/roles";
 import { MAX_POST_BODY, MAX_LINK, MAX_LEVEL, isValidHttpUrl } from "@/lib/forum";
 import { PHOTO_TYPES, MAX_PHOTO_BYTES, savePhoto, deletePhoto } from "@/lib/uploads";
 import { rateLimit } from "@/lib/rate-limit";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 export type CreatePostResult = { ok: true; id: string } | { ok: false; error: string };
 

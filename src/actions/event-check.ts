@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { fail } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isValidDayKey } from "@/lib/dates";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 const schema = z.object({
   eventId: z.string().min(1).max(1024),

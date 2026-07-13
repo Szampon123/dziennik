@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { fail } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isKnownQuoteId } from "@/lib/quotes";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 const schema = z.object({
   quoteId: z.string().min(1).max(100),

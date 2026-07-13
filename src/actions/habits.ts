@@ -7,7 +7,7 @@ import { fail, issueKey } from "@/lib/action-errors";
 import { requireUserId } from "@/lib/session";
 import { isValidDayKey } from "@/lib/dates";
 import { normalizeHabitColor } from "@/lib/habit-colors";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 const nameSchema = z.string().trim().min(1, "errors.habitNameRequired").max(100);
 const targetSchema = z.number().int().min(1).max(7);

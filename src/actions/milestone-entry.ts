@@ -14,7 +14,7 @@ import {
   savePhoto,
   deletePhoto,
 } from "@/lib/uploads";
-import type { ActionResult } from "@/actions/day-entry";
+import type { ActionResult } from "@/lib/action-errors";
 
 const MAX_NOTE_LENGTH = 500;
 const MAX_TITLE_LENGTH = 200;

@@ -12,10 +12,13 @@ import { getCachedEvents } from "@/lib/calendar-cache";
 import { getGoogleStatus } from "@/lib/google";
 
 // Defined in lib/action-errors alongside fail(), which produces its failure
-// branch. Re-exported here because every action already imports it from this
-// module. Type-only, so the "use server" export rule doesn't apply.
+// branch. Deliberately NOT re-exported: the "use server" transform enumerates
+// this module's exports and emits registerServerReference() for each one, and
+// it does not skip type-only exports — a re-export here compiles to a
+// reference to an identifier that does not exist at runtime, and the whole
+// actions chunk dies with "ReferenceError: ActionResult is not defined" the
+// moment any action in it is invoked. Import the type from lib/action-errors.
 import type { ActionResult } from "@/lib/action-errors";
-export type { ActionResult };
 
 const morningSchema = z.object({
   date: z.string().refine(isValidDayKey, "errors.invalidDate"),
