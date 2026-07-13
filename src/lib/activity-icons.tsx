@@ -1,47 +1,54 @@
 import { createElement } from "react";
 import {
   Accessibility,
-  Activity,
   Anchor,
-  Award,
+  AudioLines,
+  AudioWaveform,
   Backpack,
   Banana,
   Beef,
+  Bell,
+  BellRing,
   Bike,
   Bird,
   Box,
   Brain,
+  BrickWall,
   Brush,
   Cake,
   Camera,
   Car,
   CarFront,
   Carrot,
-  Cherry,
   ChefHat,
+  Cherry,
   Circle,
   CircleDashed,
   CircleDot,
-  CircleDotDashed,
   Citrus,
   Clapperboard,
   CloudSnow,
   Coffee,
   Compass,
+  CookingPot,
   Croissant,
   Crosshair,
+  Cylinder,
   Diamond,
   Dice5,
   Dices,
   Disc,
   Disc2,
   Disc3,
+  DiscAlbum,
   Drama,
+  Drum,
   Drumstick,
   Dumbbell,
   EggFried,
   Feather,
   Fence,
+  FileMusic,
   Film,
   Fish,
   Flag,
@@ -50,12 +57,14 @@ import {
   Flower,
   Flower2,
   Footprints,
+  Frame,
   Gamepad2,
   Gem,
   Goal,
   Grape,
   Grid2x2,
   Grip,
+  GripHorizontal,
   Guitar,
   Ham,
   Hammer,
@@ -64,31 +73,42 @@ import {
   HandGrab,
   HandMetal,
   HandPlatter,
+  Headphones,
   HeartPulse,
+  HelpCircle,
   KeyboardMusic,
   LandPlot,
+  Leaf,
   LifeBuoy,
-  Medal,
+  ListMusic,
   Mic,
   Monitor,
+  MonitorSpeaker,
   Motorbike,
   Mountain,
   MountainSnow,
   Move,
   Music,
   Music2,
+  Music3,
+  Music4,
   Orbit,
   Origami,
   Palette,
   PawPrint,
-  Pencil,
   PenLine,
   PenTool,
+  Pencil,
   PersonStanding,
+  Piano,
+  Pipette,
   Pizza,
   Radar,
+  Radio,
+  RadioReceiver,
   Repeat,
   Rocket,
+  Route,
   Sailboat,
   Salad,
   Sandwich,
@@ -97,24 +117,23 @@ import {
   Shield,
   Ship,
   Shirt,
+  Shovel,
   Snowflake,
   Soup,
   Spade,
   Sparkles,
+  Spline,
   Sprout,
-  Square,
-  Star,
   Sword,
   Swords,
   Table,
   Target,
+  TestTube,
   Timer,
   Tornado,
   Torus,
   TreePine,
   Users,
-  Utensils,
-  UtensilsCrossed,
   Volleyball,
   Waves,
   WavesLadder,
@@ -124,25 +143,6 @@ import {
   Wind,
   Wine,
   Zap,
-  // Instrumenty (batch 6)
-  Piano,
-  Music3,
-  Music4,
-  Drum,
-  AudioWaveform,
-  AudioLines,
-  Volume,
-  Volume1,
-  Volume2,
-  BellRing,
-  Bell,
-  FileMusic,
-  RadioReceiver,
-  Radio,
-  DiscAlbum,
-  ListMusic,
-  Headphones,
-  MonitorSpeaker,
   type LucideIcon,
 } from "lucide-react";
 
@@ -169,7 +169,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   kuchnie: ChefHat,
 };
 
-// A distinct, recognizable icon per activity. Every one of the 120 activities
+// A distinct, recognizable icon per activity. Every one of the 138 activities
 // gets its own icon (no two share one), so sports and disciplines are easy to
 // tell apart in the list. Where lucide has no literal match (many ball/racket
 // sports), a distinct evocative stand-in is used (ball/court/gear/motion).
@@ -181,7 +181,7 @@ const SLUG_ICONS: Record<string, LucideIcon> = {
   plywanie: WavesLadder,
   "rolki-lyzwy": Disc3,
   wioslarstwo: Ship,
-  triathlon: Medal,
+  triathlon: Route, // swim-bike-run: a multi-stage course, not a podium
   sprint: Zap,
 
   // Górskie i outdoor
@@ -206,12 +206,12 @@ const SLUG_ICONS: Record<string, LucideIcon> = {
 
   // Zimowe
   snowboard: Snowflake,
-  "lyzwiarstwo-figurowe": Star,
+  "lyzwiarstwo-figurowe": Spline, // the traced curve of a figure
   biathlon: CloudSnow,
   "narciarstwo-biegowe": TreePine,
   "lyzwiarstwo-szybkie": Timer,
   "skoki-narciarskie": Rocket,
-  curling: Torus,
+  curling: Cylinder, // the stone
 
   // Siła i ciało
   "trening-silowy": Dumbbell,
@@ -225,7 +225,7 @@ const SLUG_ICONS: Record<string, LucideIcon> = {
 
   // Drużynowe
   "pilka-nozna": Goal,
-  koszykowka: Circle,
+  koszykowka: Torus, // the hoop
   siatkowka: Volleyball,
   "pilka-reczna": Hand,
   rugby: Swords,
@@ -234,14 +234,14 @@ const SLUG_ICONS: Record<string, LucideIcon> = {
   baseball: Diamond,
   "futbol-amerykanski": Shield,
   "hokej-na-trawie": Sprout,
-  lacrosse: Award,
+  lacrosse: Shovel, // the netted stick
   "ultimate-frisbee": Disc2,
 
   // Rakietowe
   tenis: CircleDot,
   "tenis-stolowy": Table,
   badminton: Feather,
-  squash: Square,
+  squash: BrickWall, // played off the wall
   padel: Fence,
   pickleball: Grid2x2,
 
@@ -250,7 +250,7 @@ const SLUG_ICONS: Record<string, LucideIcon> = {
   bilard: CircleDashed,
   kregle: Dices,
   dart: Radar,
-  snooker: CircleDotDashed,
+  snooker: Frame, // the table, not a fourth ring
   petanka: Orbit,
   "strzelectwo-sportowe": Crosshair,
 
@@ -313,11 +313,11 @@ const SLUG_ICONS: Record<string, LucideIcon> = {
   "gitara-basowa": AudioWaveform,
   ukulele: Music4,
   saksofon: AudioLines,
-  flet: Volume1,
+  flet: Pipette, // a slim bore
   trabka: BellRing,
-  klarnet: Volume2,
+  klarnet: TestTube, // a tube with a bell
   wiolonczela: FileMusic,
-  "harmonijka-ustna": Volume,
+  "harmonijka-ustna": GripHorizontal, // a row of holes
   akordeon: RadioReceiver,
   banjo: DiscAlbum,
   mandolina: ListMusic,
@@ -330,7 +330,7 @@ const SLUG_ICONS: Record<string, LucideIcon> = {
   "kuchnia-wloska": Pizza,
   "kuchnia-francuska": Croissant,
   "kuchnia-japonska": Soup,
-  "kuchnia-chinska": Utensils,
+  "kuchnia-chinska": CookingPot, // the wok
   "kuchnia-meksykanska": Sandwich,
   "kuchnia-indyjska": Salad,
   "kuchnia-tajska": Citrus,
@@ -338,7 +338,7 @@ const SLUG_ICONS: Record<string, LucideIcon> = {
   "kuchnia-grecka": Grape,
   "kuchnia-polska": Ham,
   "kuchnia-turecka": Coffee,
-  "kuchnia-wietnamska": UtensilsCrossed,
+  "kuchnia-wietnamska": Leaf, // fresh herbs
   "kuchnia-koreanska": EggFried,
   "kuchnia-amerykanska": Beef,
   "kuchnia-libanska": Wheat,
@@ -350,7 +350,7 @@ const SLUG_ICONS: Record<string, LucideIcon> = {
 };
 
 export function activityIcon(slug: string, category: string): LucideIcon {
-  return SLUG_ICONS[slug] ?? CATEGORY_ICONS[category] ?? Activity;
+  return SLUG_ICONS[slug] ?? CATEGORY_ICONS[category] ?? HelpCircle;
 }
 
 export function ActivityIcon({
