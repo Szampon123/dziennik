@@ -3,6 +3,7 @@ import { StatsBar } from "./StatsBar";
 import { FeatureSection, type FeatureAccent } from "./FeatureSection";
 import { DuduSection } from "./DuduSection";
 import { HowItWorks } from "./HowItWorks";
+import { FaqSection } from "./FaqSection";
 import { FinalCTA } from "./FinalCTA";
 import { LandingFooter } from "./LandingFooter";
 
@@ -86,6 +87,7 @@ export function LandingPage() {
 
       <DuduSection />
       <HowItWorks />
+      <FaqSection />
       <FinalCTA />
       <LandingFooter />
     </div>
