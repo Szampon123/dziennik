@@ -19,6 +19,10 @@ export function FinalCTA() {
         </LandingButton>
 
         <p className="mt-6 text-sm text-white/50">
+          Completely free — every activity, every feature.
+        </p>
+
+        <p className="mt-2 text-sm text-white/50">
           Already have an account?{" "}
           <Link href="/login" className="font-medium text-white/80 hover:underline">
             Log in

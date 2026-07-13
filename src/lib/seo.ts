@@ -48,9 +48,9 @@ export const LANDING = {
   ogTitle: "Level Up Your Real Life",
   description:
     "Daily journaling, habit tracking, and a 99-level progression system. Track running, " +
-    "piano, cooking, and 135 more activities. Free to start.",
+    "piano, cooking, and 135 more activities. Completely free.",
   /** Short enough to stay on one line in the 1200x630 card at 27px. */
-  cardSubtitle: "138 skills · 99 levels each · Free to start",
+  cardSubtitle: "138 skills · 99 levels each · Completely free",
 } as const;
 
 /**

@@ -1,11 +1,15 @@
 // Figures verified against prisma/seed-data: 138 activity modules, every one
 // carrying a contiguous 1–99 ladder, 13,662 milestones in total. If the seed
 // grows, these move — they are claims on a public page, not decoration.
+//
+// "2 min a day" is the one figure with no seed row behind it: it restates the
+// effort claim HowItWorks already makes ("Takes 2 minutes a day"). Keep the two
+// in step — if one changes, the other is now lying.
 const STATS = [
   { value: "138", label: "Activities" },
   { value: "13,600+", label: "Milestones" },
   { value: "99", label: "Levels Each" },
-  { value: "Free", label: "To Start" },
+  { value: "2 min", label: "A Day" },
 ] as const;
 
 export function StatsBar() {

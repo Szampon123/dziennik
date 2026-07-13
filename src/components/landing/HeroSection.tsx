@@ -57,7 +57,7 @@ export function HeroSection() {
         </LandingButton>
 
         <p className="mt-6 text-[13px] text-white/50">
-          No credit card required · Works on any device · Set up in 2 minutes
+          Completely free · No ads · Works on any device · Set up in 2 minutes
         </p>
       </div>
     </section>
