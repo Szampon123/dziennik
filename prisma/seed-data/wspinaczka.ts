@@ -146,3 +146,25 @@ export const criteriaByLevel: Record<number, Criterion> = {
   11: freq(1, 4), 22: freq(2, 8),
   // pozostałe: kursy, onsighty, zawody, multipitche — manualne.
 };
+
+// ---------------------------------------------------------------------------
+// Learning resources. Every URL fetched before it was written here.
+//
+// Climbing is the one sport in this app whose grading *is* the ladder — French/YDS for
+// roped, V-scale/Font for boulders — so the reference at L15 is not context, it is the
+// scale the levels are written in. Lattice's piece at L55 is there for a reason worth
+// knowing: climbers cluster at milestone grades (7a, 8a) rather than spreading evenly,
+// which is why those grades sit where they do here.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Pierwszy raz na ściance — co musisz wiedzieć", url: yt("S-4XZgARAuA") }],
+  5: [{ kind: "video", title: "Praca nóg — podstawa, którą wszyscy pomijają", url: yt("rhcDSzw-MOk") }],
+  10: [{ kind: "article", title: "Podstawy techniki: stopy, chwyty, ciało", url: "https://www.theclimbinghangar.com/blog/how-to-master-basic-climbing-techniques-from-footwork-to-hand-holds" }],
+  15: [{ kind: "reference", title: "Skale trudności — francuska, YDS, V, Fontainebleau", url: "https://en.wikipedia.org/wiki/Grade_(climbing)" }],
+  30: [{ kind: "video", title: "Praca nóg w bulderingu — masterclass V0–V5", url: yt("wl4cPC1u6zo") }],
+  45: [{ kind: "video", title: "Dziesięć technik wspinaczkowych w dziesięć minut", url: yt("s-ArwEzr-2M") }],
+  55: [{ kind: "article", title: "Dlaczego wspinacze zatrzymują się na 7a i 8a (Lattice)", url: "https://latticetraining.com/blog/milestone-grades/" }],
+};

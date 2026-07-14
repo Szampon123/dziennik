@@ -142,3 +142,31 @@ export const criteriaByLevel: Record<number, Criterion> = {
   78: prog("handstand", 60), 87: prog("handstand", 120), 96: prog("handstand", 300),
   // pozostałe poziomy: pojedyncze asany/wydarzenia — manualne, bez kaskady.
 };
+
+// ---------------------------------------------------------------------------
+// Learning resources. Every URL fetched before it was written here.
+//
+// A thing worth saying out loud, because the industry does not: yoga has NO recognised
+// student proficiency ladder. Yoga Alliance's RYT-200/500 credentials grade *teacher
+// training hours*, not a practitioner's skill, and the organisation says as much. There
+// is no belt, no grade, no test.
+//
+// The one real progression in the tradition is Ashtanga Vinyasa's six fixed series,
+// taught posture by posture, where the teacher grants the next asana only when the
+// current one is solid — lineage-gated rather than federated, but a genuine ordered
+// ladder, and the one this ladder's upper levels lean on. It is linked at L50 so a
+// reader can see where the structure comes from.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "article", title: "Joga dla zupełnie początkujących", url: "https://yogawithadriene.com/yoga-complete-beginners/" }],
+  5: [{ kind: "article", title: "Podstawy: oddech, pozycje, o co w tym chodzi", url: "https://yogawithadriene.com/yoga-for-beginners-the-basics/" }],
+  10: [{ kind: "video", title: "Poranna praktyka — 15 minut", url: yt("r7xsYgTeM2Q") }],
+  20: [
+    { kind: "video", title: "Powitanie słońca — praktyka 10 minut", url: yt("8AakYeM23sI") },
+    { kind: "reference", title: "Surya Namaskara A — sekwencja krok po kroku", url: "https://yogawithadriene.com/sun-salutation-a-surya-namaskara-a/" },
+  ],
+  50: [{ kind: "reference", title: "Ashtanga vinyasa — sześć serii, jedyna prawdziwa drabinka w jodze", url: "https://en.wikipedia.org/wiki/Ashtanga_vinyasa_yoga" }],
+};

@@ -143,3 +143,33 @@ export const criteriaByLevel: Record<number, Criterion> = {
   11: freq(2, 4), 21: freq(3, 8),
   // pozostałe: medale, kursy, tytuły — manualne.
 };
+
+// ---------------------------------------------------------------------------
+// Learning resources. Every URL fetched before it was written here.
+//
+// Breakfalls first, and at level one, because that is the order the sport itself uses:
+// ukemi is the first thing a judo beginner is taught, and the only technique whose
+// absence gets people hurt.
+//
+// On grading: judo and BJJ have real ladders, but they are time-in-grade and
+// teacher-gated rather than performance-measured — IBJJF publishes explicit minimums
+// (blue 2 years, purple 1.5, brown 1), which is the most transparent set in the sport
+// and is linked at L50. Boxing, by contrast, has NO skill ladder at all: amateur boxing
+// splits only Novice (≤10 bouts) from Open, and beyond that ranks only people who
+// compete. This ladder therefore counts training and sparring rather than pretending a
+// universal grade exists.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Padanie (ukemi) — pierwsza rzecz, której się uczysz", url: yt("q6FBYGpUsY8") }],
+  5: [
+    { kind: "video", title: "Ukemi w judo — jak padać bezpiecznie", url: yt("mONxdnLk53M") },
+    { kind: "article", title: "Podstawy judo — lekcje dla początkujących", url: "https://judoinfo.com/judo-basics-beginners/" },
+  ],
+  15: [{ kind: "article", title: "Pięć technik, od których zaczyna każdy judoka", url: "https://www.kokakids.co.uk/judo-techniques-for-beginners" }],
+  25: [{ kind: "video", title: "Padanie w cztery strony — komplet ukemi", url: yt("5n_Qjeia2n8") }],
+  50: [{ kind: "reference", title: "IBJJF — minimalne okresy między pasami (najjawniejszy system stopni)", url: "https://ibjjf.com/news/ibjjf-minimum-graduation-period-update" }],
+  70: [{ kind: "reference", title: "System kyu/dan w judo — jak naprawdę wygląda droga do czarnego pasa", url: "https://en.wikipedia.org/wiki/Rank_in_judo" }],
+};
