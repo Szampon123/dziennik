@@ -4,7 +4,9 @@
 // Without RESEND_API_KEY the message is logged instead of sent, so local dev
 // (and CI) works with no email provider configured.
 
-const EMAIL_FROM = process.env.EMAIL_FROM || "Dziennik <noreply@yourdomain.com>";
+import { SITE_NAME } from "@/lib/seo";
+
+const EMAIL_FROM = process.env.EMAIL_FROM || `${SITE_NAME} <noreply@vincendio.com>`;
 
 type SendEmailParams = {
   to: string;
@@ -17,8 +19,9 @@ type SendEmailParams = {
  * reset. Every string is passed in already translated: this file has no opinion
  * about language.
  *
- * The wordmark stays "Dziennik" on purpose. It names the product to someone who
- * already uses it, which is a different job from SITE_NAME in src/lib/seo.ts.
+ * The wordmark is SITE_NAME, not a literal: the mail is signed "Vincendio" by the
+ * From header, and a body that greeted the reader as some other product read like
+ * a phishing attempt. The brand now has exactly one definition.
  */
 export function actionEmailHtml(params: {
   url: string;
@@ -28,7 +31,7 @@ export function actionEmailHtml(params: {
 }): string {
   return `
     <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
-      <h2>Dziennik</h2>
+      <h2>${SITE_NAME}</h2>
       <p>${params.body}</p>
       <p>
         <a href="${params.url}" style="display: inline-block; padding: 12px 24px; background: #6e56cf; color: white; text-decoration: none; border-radius: 6px;">

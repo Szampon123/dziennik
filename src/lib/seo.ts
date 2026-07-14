@@ -16,11 +16,12 @@ export const SITE_URL = "https://vincendio.com";
 
 /**
  * The public brand. Titles the metadata surface — og:site_name, og:title,
- * twitter:title, the <title> suffix, the manifest and the OG card image.
+ * twitter:title, the <title> suffix, the manifest and the OG card image — and
+ * signs the transactional emails (src/lib/email.ts reads it).
  *
- * Not the same string as the in-app wordmark ("Dziennik", in AuthShell) or the
- * transactional-email signature: those name the product to people already using
- * it, while this names the site to people who have not arrived yet.
+ * The in-app wordmark ("Dziennik", in AuthShell and Nav) is still the odd one
+ * out: it names the product to someone already inside it. Every string a
+ * stranger or an inbox sees is this one.
  */
 export const SITE_NAME = "Vincendio";
 
