@@ -3,7 +3,7 @@
 // already set, so they never pass through here.
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
-import { sendEmail, actionEmailHtml } from "@/lib/email";
+import { sendEmail, actionEmailHtml, type SendResult } from "@/lib/email";
 import { resolveBaseUrl } from "@/lib/base-url";
 import { getT } from "@/lib/i18n/server";
 import type { VerificationErrorCode } from "@/lib/verification-errors";
@@ -14,7 +14,7 @@ const VERIFICATION_EXPIRY_HOURS = 24;
  * Issue a fresh verification token for `email` and mail the link. Any pending
  * token for that address is dropped first, so only the newest link works.
  */
-export async function sendVerificationEmail(email: string): Promise<boolean> {
+export async function sendVerificationEmail(email: string): Promise<SendResult> {
   const token = crypto.randomBytes(32).toString("hex");
   const expires = new Date(Date.now() + VERIFICATION_EXPIRY_HOURS * 60 * 60 * 1000);
 

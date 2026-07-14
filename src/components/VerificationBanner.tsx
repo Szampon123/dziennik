@@ -9,6 +9,7 @@ const RESEND_ERROR_KEY: Record<ResendFailure, MessageKey> = {
   rate: "auth.verifyTooManyRequests",
   noEmail: "auth.verifyNoEmail",
   sendFailed: "auth.verifySendFailed",
+  misconfigured: "auth.verifySendMisconfigured",
 };
 
 /** Soft reminder for credentials accounts with an unconfirmed address. */

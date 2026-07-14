@@ -40,14 +40,26 @@ export function actionEmailHtml(params: {
   `;
 }
 
-export async function sendEmail({ to, subject, html }: SendEmailParams): Promise<boolean> {
+/**
+ * Outcome of a send. `permanent` is the part callers actually need: it says the
+ * identical request will fail the identical way, so inviting a retry is a lie.
+ *
+ * The distinction is real and it bit us in production: with an unverified sender
+ * domain Resend answers 403 and will keep answering 403 forever, but the banner
+ * said "please try again" — so the user retried, spent their whole resend budget,
+ * and still had no mail. A 5xx or a dropped connection is the opposite: nothing is
+ * wrong with the request and the next one may well work.
+ */
+export type SendResult = { ok: true } | { ok: false; permanent: boolean };
+
+export async function sendEmail({ to, subject, html }: SendEmailParams): Promise<SendResult> {
   // Read at call time, not module load: the module may be evaluated during the
   // build, before runtime env vars exist.
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
     console.log(`[EMAIL] To: ${to}\nSubject: ${subject}\n${html}`);
-    return true;
+    return { ok: true };
   }
 
   try {
@@ -61,11 +73,16 @@ export async function sendEmail({ to, subject, html }: SendEmailParams): Promise
     });
     if (!res.ok) {
       console.error("[EMAIL] Resend error:", res.status, await res.text());
-      return false;
+      // 4xx is us: a rejected key, a sender domain that was never verified, an
+      // address Resend refuses. Retrying re-sends the same rejected request.
+      // 429 is the exception — Resend is throttling, not refusing, so it passes.
+      const permanent = res.status >= 400 && res.status < 500 && res.status !== 429;
+      return { ok: false, permanent };
     }
-    return true;
+    return { ok: true };
   } catch (e) {
+    // Network-level: nothing says the request itself is wrong. Treat as transient.
     console.error("[EMAIL] Send failed:", e);
-    return false;
+    return { ok: false, permanent: false };
   }
 }

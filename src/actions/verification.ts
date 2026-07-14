@@ -34,8 +34,14 @@ export async function confirmEmailVerification(input: {
   return verifyEmailToken(email, token);
 }
 
-/** Why a resend failed. Rendered via RESEND_ERROR_KEY in the banner. */
-export type ResendFailure = "rate" | "noEmail" | "sendFailed";
+/**
+ * Why a resend failed. Rendered via RESEND_ERROR_KEY in the banner.
+ *
+ * "sendFailed" and "misconfigured" are both a failure to send, and they are kept
+ * apart because they ask the reader for opposite things: one is worth retrying,
+ * the other cannot be retried into working and would only burn the hourly budget.
+ */
+export type ResendFailure = "rate" | "noEmail" | "sendFailed" | "misconfigured";
 
 /** Re-send the verification link to the signed-in user's own address. */
 export async function resendVerificationEmail(): Promise<
@@ -56,7 +62,9 @@ export async function resendVerificationEmail(): Promise<
   if (user.emailVerified) return { ok: true }; // already verified — nothing to do
 
   const sent = await sendVerificationEmail(user.email);
-  if (!sent) return { ok: false, error: "sendFailed" };
+  if (!sent.ok) {
+    return { ok: false, error: sent.permanent ? "misconfigured" : "sendFailed" };
+  }
 
   return { ok: true };
 }

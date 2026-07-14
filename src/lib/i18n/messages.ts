@@ -64,6 +64,8 @@ const pl = {
   "auth.verifyNoEmail": "Brak adresu e-mail.",
   "auth.verifyNoAccount": "Nie znaleziono konta dla tego adresu e-mail.",
   "auth.verifySendFailed": "Nie udało się wysłać e-maila. Spróbuj ponownie.",
+  "auth.verifySendMisconfigured":
+    "Wysyłka e-maili jest zepsuta po naszej stronie — ponawianie nic nie da. Problem został odnotowany.",
   "auth.verifyMissingParams": "Brak wymaganych parametrów w linku.",
   "auth.verifyTitle": "Weryfikacja e-mail",
   "auth.verifyConfirmed": "Adres e-mail został potwierdzony!",
@@ -933,6 +935,8 @@ const en: Dict = {
   "auth.verifyNoEmail": "No email address on file.",
   "auth.verifyNoAccount": "No account found for that email address.",
   "auth.verifySendFailed": "Could not send the email. Please try again.",
+  "auth.verifySendMisconfigured":
+    "Email delivery is broken on our side — trying again won't help. The problem has been logged.",
   "auth.verifyMissingParams": "The link is missing required parameters.",
   "auth.verifyTitle": "Email verification",
   "auth.verifyConfirmed": "Your email address has been confirmed!",
@@ -1777,6 +1781,8 @@ const de: Dict = {
   "auth.verifyNoEmail": "Keine E-Mail-Adresse hinterlegt.",
   "auth.verifyNoAccount": "Für diese E-Mail-Adresse wurde kein Konto gefunden.",
   "auth.verifySendFailed": "Die E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.",
+  "auth.verifySendMisconfigured":
+    "Der E-Mail-Versand ist auf unserer Seite gestört — ein erneuter Versuch hilft nicht. Das Problem wurde protokolliert.",
   "auth.verifyMissingParams": "Dem Link fehlen erforderliche Parameter.",
   "auth.verifyTitle": "E-Mail-Bestätigung",
   "auth.verifyConfirmed": "Deine E-Mail-Adresse wurde bestätigt!",
@@ -2624,6 +2630,8 @@ const es: Dict = {
   "auth.verifyNoEmail": "No hay ninguna dirección de correo registrada.",
   "auth.verifyNoAccount": "No se encontró ninguna cuenta para esa dirección de correo.",
   "auth.verifySendFailed": "No se pudo enviar el correo. Inténtalo de nuevo.",
+  "auth.verifySendMisconfigured":
+    "El envío de correos está averiado por nuestra parte — reintentar no servirá. El problema ha quedado registrado.",
   "auth.verifyMissingParams": "Al enlace le faltan parámetros obligatorios.",
   "auth.verifyTitle": "Verificación de correo",
   "auth.verifyConfirmed": "¡Tu dirección de correo ha sido confirmada!",
