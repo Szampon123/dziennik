@@ -355,22 +355,60 @@ async function seedActivity({
     create: { slug: activity.slug, ...activityData },
   });
 
+  // The Polish text is the source; the *En/*De/*Es columns are machine translations
+  // of whatever it said when scripts/translate-seed.mjs last ran. Rewrite a level and
+  // those columns describe the level it used to be — so a Polish reader would see the
+  // new ladder and an English one the old, silently, with nothing to reveal it.
+  //
+  // Clear them whenever the source text changes. Null means "not translated yet", and
+  // the display helpers fall back to Polish (src/lib/i18n/translate.ts) — visibly
+  // untranslated beats confidently wrong. The next translate-seed run refills them.
+  const existing = await prisma.milestone.findMany({
+    where: { activityId: row.id },
+    select: { level: true, title: true, detail: true },
+  });
+  const before = new Map(existing.map((m) => [m.level, m]));
+
+  let retranslate = 0;
+
   for (const m of milestones) {
     const criterion = criteriaByLevel?.[m.level];
     const video = videoByLevel?.[m.level];
     const resources = resourcesByLevel?.[m.level];
+    const detail = m.detail ?? null;
+
+    const prev = before.get(m.level);
+    const textChanged = prev !== undefined && (prev.title !== m.title || prev.detail !== detail);
+    if (textChanged) retranslate++;
+
     const data = {
       title: m.title,
-      detail: m.detail ?? null,
+      detail,
       criteriaJson: criterion ? JSON.stringify(criterion) : null,
       videoJson: video ? JSON.stringify(video) : null,
       resourcesJson: resources && resources.length > 0 ? JSON.stringify(resources) : null,
+      ...(textChanged
+        ? {
+            titleEn: null,
+            titleDe: null,
+            titleEs: null,
+            detailEn: null,
+            detailDe: null,
+            detailEs: null,
+          }
+        : {}),
     };
     await prisma.milestone.upsert({
       where: { activityId_level: { activityId: row.id, level: m.level } },
       update: data,
       create: { activityId: row.id, level: m.level, ...data },
     });
+  }
+
+  if (retranslate > 0) {
+    console.log(
+      `  ${activity.slug}: ${retranslate} level(s) rewritten — their translations were dropped and need scripts/translate-seed.mjs.`
+    );
   }
 
   const autoCount = Object.keys(criteriaByLevel ?? {}).length;
