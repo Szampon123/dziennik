@@ -75,7 +75,8 @@ export const BRAND = {
  * earn Search Console warnings. Mirrors PUBLIC_PATHS in src/proxy.ts.
  *
  * "/" leads: it renders the landing page for anonymous visitors now, rather
- * than redirecting to /login. /privacy is a real policy now, so it is indexable
- * and listed. /terms is still a noindex stub and stays out until it isn't.
+ * than redirecting to /login. /privacy and /terms are real documents rather than
+ * stubs, so both are indexable and both are listed — they are what a cautious
+ * person reads before signing up.
  */
-export const PUBLIC_ROUTES = ["/", "/login", "/register", "/privacy"] as const;
+export const PUBLIC_ROUTES = ["/", "/login", "/register", "/privacy", "/terms"] as const;

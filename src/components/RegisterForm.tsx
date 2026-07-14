@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { registerAccount } from "@/actions/account";
 import { useT } from "@/components/i18n/I18nProvider";
+import { MINIMUM_AGE } from "@/lib/legal/age";
 import { buttonClass } from "@/components/ui/Button";
 import { inputClass } from "@/components/ui/Input";
 
@@ -90,6 +92,45 @@ export function RegisterForm() {
         {isPending ? t("auth.creatingAccount") : t("auth.createAccount")}
       </button>
       {error && <p className="text-[13px] text-danger">{error}</p>}
+      <LegalConsent />
     </form>
+  );
+}
+
+/**
+ * "By creating an account you confirm you are at least 16, and accept the Terms
+ * and the Privacy Policy."
+ *
+ * The age is declared here rather than only in §3 of the terms, which turns a rule
+ * nobody read into a statement the user actually makes. It is still a declaration,
+ * not a check — nothing verifies a date of birth, and short of identity checks
+ * nothing could.
+ *
+ * The sentence is one message key with placeholders, not several keys glued
+ * together: word order and articles differ per language, and concatenating
+ * fragments produces sentences no native speaker would write. {age} is
+ * interpolated by t(); {terms} and {privacy} survive it (unknown params are left
+ * alone) and are split out here into real links, so a person can read what they
+ * are agreeing to *before* they agree to it.
+ */
+function LegalConsent() {
+  const t = useT();
+  const label = { terms: t("auth.legalTermsLink"), privacy: t("auth.legalPrivacyLink") };
+  const href = { terms: "/terms", privacy: "/privacy" } as const;
+
+  const parts = t("auth.legalConsent", { age: MINIMUM_AGE }).split(/(\{terms\}|\{privacy\})/);
+
+  return (
+    <p className="mt-1 text-center text-[13px] leading-relaxed text-neutral-500">
+      {parts.map((part, i) => {
+        const key = part === "{terms}" ? "terms" : part === "{privacy}" ? "privacy" : null;
+        if (!key) return <span key={i}>{part}</span>;
+        return (
+          <Link key={i} href={href[key]} className="text-violet-600 hover:underline">
+            {label[key]}
+          </Link>
+        );
+      })}
+    </p>
   );
 }

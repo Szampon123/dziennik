@@ -63,6 +63,8 @@
  * ────────────────────────────────────────────────────────────────────────────
  */
 
+import { documentFor, type LegalDocument, type LegalSection } from "@/lib/legal/document";
+
 export const PRIVACY_UPDATED = "2026-07-13";
 
 /**
@@ -90,18 +92,10 @@ export const CONTROLLER_NAME = {
 
 export const CONTROLLER_EMAIL = "contact@vincendio.com";
 
-export type PolicySection = {
-  heading: string;
-  paragraphs?: string[];
-  bullets?: string[];
-};
-
-export type Policy = {
-  title: string;
-  updatedLabel: string;
-  intro: string[];
-  sections: PolicySection[];
-};
+// The shape and the language rule are shared with the terms of service — see
+// lib/legal/document.ts. These aliases keep the names this file already used.
+export type PolicySection = LegalSection;
+export type Policy = LegalDocument;
 
 const pl: Policy = {
   title: "Polityka prywatności",
@@ -456,7 +450,6 @@ export const PRIVACY_POLICY = { pl, en } as const;
 export type PolicyLang = keyof typeof PRIVACY_POLICY;
 
 export function policyFor(locale: string): { policy: Policy; fellBack: boolean } {
-  if (locale === "pl") return { policy: PRIVACY_POLICY.pl, fellBack: false };
-  if (locale === "en") return { policy: PRIVACY_POLICY.en, fellBack: false };
-  return { policy: PRIVACY_POLICY.en, fellBack: true };
+  const { document, fellBack } = documentFor(PRIVACY_POLICY, locale);
+  return { policy: document, fellBack };
 }

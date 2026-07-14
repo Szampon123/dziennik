@@ -405,6 +405,10 @@ const pl = {
   "admin.usersHeading": "Użytkownicy ({count})",
   "auth.registerSubtitle": "Załóż konto, aby prowadzić swój dziennik.",
   "auth.everyUserOwn": "Każdy użytkownik ma własny dziennik oraz własne połączenia Google Calendar i Notion.",
+  "auth.legalConsent":
+    "Zakładając konto, oświadczasz, że masz co najmniej {age} lat, i akceptujesz {terms} i {privacy}.",
+  "auth.legalTermsLink": "Regulamin",
+  "auth.legalPrivacyLink": "Politykę prywatności",
   "route.signInAgain": "Zaloguj się ponownie.",
   "route.tooManySyncs": "Zbyt wiele żądań synchronizacji. Spróbuj ponownie za chwilę.",
   "theme.opt.light": "Jasny",
@@ -1276,6 +1280,10 @@ const en: Dict = {
   "admin.usersHeading": "Users ({count})",
   "auth.registerSubtitle": "Create an account to keep your journal.",
   "auth.everyUserOwn": "Every user has their own journal and their own Google Calendar and Notion connections.",
+  "auth.legalConsent":
+    "By creating an account you confirm that you are at least {age}, and accept the {terms} and the {privacy}.",
+  "auth.legalTermsLink": "Terms of Service",
+  "auth.legalPrivacyLink": "Privacy Policy",
   "route.signInAgain": "Sign in again.",
   "route.tooManySyncs": "Too many sync requests. Try again shortly.",
   "theme.opt.light": "Light",
@@ -2132,6 +2140,10 @@ const de: Dict = {
   "admin.usersHeading": "Benutzer ({count})",
   "auth.registerSubtitle": "Erstelle ein Konto, um dein Journal zu führen.",
   "auth.everyUserOwn": "Jeder Nutzer hat sein eigenes Journal und seine eigenen Google-Calendar- und Notion-Verbindungen.",
+  "auth.legalConsent":
+    "Mit der Erstellung eines Kontos bestätigst du, dass du mindestens {age} Jahre alt bist, und akzeptierst die {terms} und die {privacy}.",
+  "auth.legalTermsLink": "Nutzungsbedingungen",
+  "auth.legalPrivacyLink": "Datenschutzerklärung",
   "route.signInAgain": "Melde dich erneut an.",
   "route.tooManySyncs": "Zu viele Synchronisierungsanfragen. Versuche es gleich erneut.",
   "theme.opt.light": "Hell",
@@ -2986,6 +2998,10 @@ const es: Dict = {
   "admin.usersHeading": "Usuarios ({count})",
   "auth.registerSubtitle": "Crea una cuenta para llevar tu diario.",
   "auth.everyUserOwn": "Cada usuario tiene su propio diario y sus propias conexiones de Google Calendar y Notion.",
+  "auth.legalConsent":
+    "Al crear una cuenta, confirmas que tienes al menos {age} años y aceptas los {terms} y la {privacy}.",
+  "auth.legalTermsLink": "Términos del Servicio",
+  "auth.legalPrivacyLink": "Política de Privacidad",
   "route.signInAgain": "Inicia sesión de nuevo.",
   "route.tooManySyncs": "Demasiadas solicitudes de sincronización. Inténtalo en un momento.",
   "theme.opt.light": "Claro",
