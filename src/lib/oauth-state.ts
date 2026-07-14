@@ -3,7 +3,7 @@
 //
 // Without a state parameter, an attacker can feed a signed-in victim a crafted
 // /api/auth/google/callback?code=... URL and bind the attacker's Google account
-// to the victim's Dziennik account. We mint a random token, keep it in an
+// to the victim's Vincendio account. We mint a random token, keep it in an
 // HttpOnly cookie, echo it through Google, and require the two to match.
 import crypto from "node:crypto";
 import type { NextRequest } from "next/server";

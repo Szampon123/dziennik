@@ -4,7 +4,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Dziennik — Design System v1.0 tokens.
+ * Vincendio — Design System v1.0 tokens.
  * Palettes are CSS variables that flip in .dark, so components can use
  * bg-neutral-0 / text-violet-700 etc. without dark: variants everywhere.
  * Roles: neutrals = 90% of UI · violet = actions/active states only ·

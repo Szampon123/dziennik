@@ -44,7 +44,7 @@ export const CUSTOM_TOKENS: CustomToken[] = [
 
 const THEME_KEY = "theme";
 const CUSTOM_KEY = "customTheme";
-export const THEME_CHANGE_EVENT = "dziennik:themechange";
+export const THEME_CHANGE_EVENT = "vincendio:themechange";
 
 export function readTheme(): ThemeId {
   const t = localStorage.getItem(THEME_KEY);

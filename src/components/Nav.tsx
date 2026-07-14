@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useT } from "@/components/i18n/I18nProvider";
+import { SITE_NAME } from "@/lib/seo";
 import type { MessageKey } from "@/lib/i18n/messages";
 
 const links: { href: string; key: MessageKey }[] = [
@@ -35,7 +36,7 @@ export function Nav({ userMenu }: { userMenu?: React.ReactNode }) {
           <Link href="/dzis" className="flex items-center gap-2.5">
             <span aria-hidden className="h-2.5 w-2.5 rounded-full bg-violet-600" />
             <span className="text-[17px] font-bold tracking-[-0.3px] text-neutral-900">
-              Dziennik
+              {SITE_NAME}
             </span>
           </Link>
           <nav className="flex items-center gap-1">

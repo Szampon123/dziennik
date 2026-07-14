@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { SITE_NAME } from "@/lib/seo";
 
 // Shared premium frame for the auth screens (login / register): an ambient
 // violet→azure glow behind a gradient wordmark and an elevated card. Pure
@@ -27,7 +28,7 @@ export function AuthShell({
             className="h-2.5 w-2.5 rounded-full bg-gradient-to-br from-violet-600 to-azure-500"
           />
           <h1 className="bg-gradient-to-r from-violet-600 to-azure-500 bg-clip-text text-[28px] font-bold tracking-[-0.5px] text-transparent">
-            Dziennik
+            {SITE_NAME}
           </h1>
         </div>
         <p className="mt-2 text-sm text-neutral-600">{subtitle}</p>
