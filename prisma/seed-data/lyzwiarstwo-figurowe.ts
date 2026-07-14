@@ -1,134 +1,154 @@
-// Figure skating ladder 1-99. Manual — progression tracks: jump difficulty
-// (single → double → triple → quad), spins, and test/competition levels.
-import type { Criterion } from "../../src/lib/milestone-criteria";
-import { ladder, freq, prog } from "./helpers";
+// Figure skating ladder 1-99. Manual — the engine cannot see a jump.
+//
+// ─── WHY THIS LADDER WAS REBUILT (2026-07-14) ───────────────────────────────
+// The old ladder was a competitive career, not an amateur's path. It asked for a
+// triple salchow at level 47, a triple axel at 60 and a quad at 74 — and from 66 up
+// it was ISU points and international competition. The middle of the ladder, where a
+// user spends years, was out of reach of the person the app is for: an adult who
+// started skating as a hobby will, in the overwhelming majority of cases, never land
+// a triple. Half the ladder was decoration.
+//
+// It now follows the adult tracks that actually exist and are published:
+//
+//   1-25   Learn to Skate USA, adult curriculum (levels 1-6): stops, crossovers,
+//          three turns, mohawks, the first spin, the waltz jump.
+//          https://www.learntoskateusa.com/basic_skills
+//   26-45  U.S. Figure Skating Adult Pre-Bronze / Bronze: the single jumps, sit and
+//          camel spins, a first program, a first test, a first competition.
+//   46-65  Adult Silver: combinations, the axel — the jump that separates a good
+//          adult skater from an ordinary one — programs skated clean.
+//   66-89  Adult Gold and Masters: the first doubles. For an adult this is already
+//          exceptional; the Adult Bronze free-skate test asks for a waltz jump and a
+//          toe loop, which is where most adults live.
+//          https://www.usfigureskating.org/skate/skating-opportunities/adult-skating/adult-testing
+//   90-99  Kept competitive, deliberately: the double axel, the triples, national and
+//          international adult titles. A ladder should have a ceiling somebody can see
+//          and almost nobody touches — but it must not put that ceiling in the middle.
+//
+// Jump difficulty on the `skok` track is the sport's own order — toe loop < salchow <
+// loop < flip < lutz < axel — so the cascade is honest: landing a lutz does prove the
+// easier single jumps beneath it, and proves nothing about spins.
+import { ladderC, freq, prog } from "./helpers";
 
 export const activity = {
   slug: "lyzwiarstwo-figurowe",
   name: "Łyżwiarstwo figurowe",
   icon: "⛸️",
   description:
-    "Od pierwszego kroku na lodzie po skoki wielokrotne i programy zawodnicze. Progresja: skoki, piruety i poziomy testowe.",
+    "Od pierwszego kroku na lodzie po program z axlem i podwójnymi skokami. Drabinka pisana pod dorosłego amatora — szczyt zostaje zawodniczy, ale środek jest do przejścia.",
   sortOrder: 26,
   logKind: "manual" as const,
 };
 
-export const milestones = ladder([
-  // 1-10 · Pierwsze kroki
-  ["Ustój na łyżwach i przejdź kilka kroków po lodzie"],
-  ["Jedź do przodu odpychając się naprzemiennie"],
-  ["Zatrzymaj się kontrolowanie (pługiem)"],
-  ["Jedź na jednej nodze przez 3 sekundy"],
-  ["Wykonaj jazdę na łukach do przodu (wężyk)"],
-  ["Jedź do tyłu"],
-  ["Wykonaj przekładankę do przodu w jedną stronę"],
-  ["Wykonaj przekładankę do przodu w drugą stronę"],
-  ["Zatrzymaj się na krawędziach (hokejowo lub T-stop)"],
-  ["Wykonaj płynny obrót z jazdy przodem na tył (three turn)"],
-  // 11-25 · Regularny
-  ["Trenuj raz w tygodniu przez 4 kolejne tygodnie"],
-  ["Wykonaj przekładanki do tyłu w obie strony"],
-  ["Wykonaj jaskółkę (spirala) przez 3 sekundy"],
-  ["Wykonaj pierwszy skok — waltz jump (pół obrotu)"],
-  ["Wykonaj piruet stojący (upright spin) — 3 obroty"],
-  ["Wykonaj skok toe loop (pojedynczy)"],
-  ["Wykonaj skok salchow (pojedynczy)"],
-  ["Wykonaj piruet siedzący (sit spin)"],
-  ["Wykonaj skok rittberger/loop (pojedynczy)"],
-  ["Wykonaj piruet w jaskółce (camel spin)"],
-  ["Wykonaj skok flip (pojedynczy)"],
-  ["Wykonaj skok lutz (pojedynczy)"],
-  ["Połącz dwa skoki w kombinację (np. toe loop + toe loop)"],
-  ["Wykonaj skok axel (1,5 obrotu)", "Kultowy skok — pierwszy z „dodatkową połówką”."],
-  ["Zdaj pierwszy test łyżwiarski lub wystąp w zawodach klubowych"],
-  // 26-45 · Średniozaawansowany
-  ["Trenuj 2 razy w tygodniu przez 12 kolejnych tygodni"],
-  ["Wykonaj piruet z zmianą nogi"],
-  ["Wykonaj podwójny salchow"],
-  ["Wykonaj podwójny toe loop"],
-  ["Wykonaj piruet z pozycji Biellmann lub layback (dot. gibkości)"],
-  ["Wykonaj podwójny loop"],
-  ["Skomponuj i przejedź krótki program z muzyką"],
-  ["Wykonaj podwójny flip"],
-  ["Wykonaj kombinację dwóch podwójnych skoków"],
-  ["Wykonaj podwójny lutz"],
-  ["Wykonaj piruet ze zmianą pozycji (kombinowany)"],
-  ["Zajmij miejsce w pierwszej połowie zawodów regionalnych"],
-  ["Wykonaj podwójny axel", "Poważny próg — 2,5 obrotu."],
-  ["Wykonaj szybki piruet z centrowaniem (bez „wędrowania”)"],
-  ["Przejedź pełny program dowolny bez upadku"],
-  ["Wykonaj sekwencję kroków na poziomie zawodniczym"],
-  ["Zdaj wyższy test łyżwiarski (poziom średni)"],
-  ["Wykonaj kombinację z podwójnym axlem"],
-  ["Utrzymaj piruet 8+ obrotów w jednej pozycji"],
-  ["Zajmij miejsce na podium zawodów regionalnych"],
-  // 46-65 · Zaawansowany
-  ["Trenuj 3+ razy w tygodniu przez cały sezon"],
-  ["Wykonaj potrójny salchow", "Wejście w świat skoków potrójnych."],
-  ["Wykonaj potrójny toe loop"],
-  ["Wykonaj piruet z trudną pozycją i wysoką punktacją (poziom 4)"],
-  ["Wykonaj potrójny loop"],
-  ["Przejedź program z dwoma różnymi potrójnymi skokami"],
-  ["Wykonaj potrójny flip"],
-  ["Zajmij miejsce w czołówce mistrzostw kraju (kategoria wiekowa)"],
-  ["Wykonaj potrójny lutz"],
-  ["Wykonaj kombinację potrójny + podwójny"],
-  ["Przejedź program krótki i dowolny w jednych zawodach bez upadku"],
-  ["Wykonaj sekwencję piruetów na poziomie 4"],
-  ["Wykonaj kombinację dwóch potrójnych skoków"],
-  ["Zdaj najwyższy test łyżwiarski (poziom senior/złoty)"],
-  ["Wykonaj potrójny axel", "3,5 obrotu — skok elitarny, mało kto go ląduje."],
-  ["Zdobądź komplet potrójnych skoków (5-6 rodzajów)"],
-  ["Przejedź program z trzema potrójnymi skokami"],
-  ["Zajmij miejsce na podium mistrzostw kraju juniorów/seniorów"],
-  ["Wykonaj program z sekwencjami i piruetami wyłącznie na poziomie 4"],
-  ["Uzyskaj wynik kwalifikujący do zawodów międzynarodowych"],
-  // 66-85 · Wyczynowy
-  ["Wystąp w zawodach międzynarodowych juniorów"],
-  ["Wykonaj program z 4+ potrójnymi skokami"],
-  ["Wykonaj czysty potrójny axel w zawodach"],
-  ["Zdobądź medal mistrzostw kraju seniorów"],
-  ["Wykonaj kombinację potrójny + potrójny"],
-  ["Uzyskaj wynik na poziomie krajowej czołówki seniorów"],
-  ["Przejedź program dowolny bez błędów technicznych"],
-  ["Zakwalifikuj się do zawodów rangi ISU (Challenger)"],
-  ["Wykonaj pierwszy poczwórny skok na treningu (quad)", "Najtrudniejszy element sportu."],
-  ["Zdobądź punkty w zawodach międzynarodowych"],
-  ["Wykonaj czysty poczwórny toe loop lub salchow w zawodach"],
-  ["Uzyskaj notę techniczną na poziomie światowej czołówki"],
-  ["Przejedź program z poczwórnym skokiem i potrójnym axlem"],
-  ["Zajmij miejsce w pierwszej dziesiątce zawodów międzynarodowych"],
-  ["Wykonaj dwa różne poczwórne skoki w jednym programie"],
-  ["Uzyskaj rekord życiowy powyżej progu światowej elity"],
-  ["Weź udział w zawodach o zasięgu ogólnokrajowym"],
-  ["Zdobądź podium zawodów o zasięgu ogólnokrajowym"],
-  ["Wykonaj kombinację z poczwórnym skokiem"],
-  ["Zdobądź podium mistrzostw kraju amatorów seniorów"],
-  // 86-99 · Elita
-  ["Weź udział w mistrzostwach kraju amatorów"],
-  ["Wykonaj trzy poczwórne skoki w jednym programie"],
-  ["Zdobądź miejsce w pierwszej dziesiątce mistrzostw kraju amatorów"],
-  ["Uzyskaj wynik łączny powyżej 250 pkt (skala ISU)"],
-  ["Zajmij miejsce w czołówce silnego turnieju krajowego"],
-  ["Wykonaj cztery poczwórne skoki w jednym programie"],
-  ["Zdobądź medal mistrzostw kraju amatorów"],
-  ["Poprowadź kogoś przez zaawansowane elementy techniczne"],
-  ["Zdobądź uznanie w krajowym środowisku łyżwiarskim"],
-  ["Uzyskaj wynik łączny powyżej 280 pkt"],
-  ["Zdobądź uznanie poza lokalnym środowiskiem łyżwiarskim"],
-  ["Wygraj mistrzostwa kraju amatorów"],
-  ["Zdobądź uznanie w międzynarodowym środowisku amatorskim"],
-  ["Poziom mistrzowski (amatorski szczyt): wynik łączny 280+ pkt i wieloletni, dojrzały warsztat", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
-]);
+export const { milestones, criteriaByLevel } = ladderC([
+  // ---- 1-10 · Pierwsze kroki na lodzie (Learn to Skate Adult 1-2) ----
+  ["Ustój na łyżwach i przejdź kilka kroków po lodzie", "Wszyscy zaczynają tutaj, łącznie z mistrzami.", prog("technika", 1)],
+  ["Jedź do przodu, odpychając się naprzemiennie", undefined, prog("technika", 2)],
+  ["Zatrzymaj się pługiem", "Pierwsze hamowanie. Bez niego lód jest groźny.", prog("technika", 3)],
+  ["Przejedź na jednej nodze przez 3 sekundy", undefined, prog("technika", 4)],
+  ["Jedź po łukach do przodu (wężyk)", undefined, prog("technika", 5)],
+  ["Jedź do tyłu", "Moment, w którym łyżwiarstwo przestaje przypominać chodzenie.", prog("technika", 6)],
+  ["Wykonaj przekładankę do przodu w jedną stronę", undefined, prog("technika", 7)],
+  ["Wykonaj przekładankę do przodu w drugą stronę", "Słabsza strona zawsze przychodzi później — i zawsze musi przyjść.", prog("technika", 8)],
+  ["Zatrzymaj się na krawędziach (T-stop lub hokejowo)", undefined, prog("technika", 9)],
+  ["Wykonaj obrót z jazdy przodem na tył (three turn)", "Koniec kursu podstawowego. Umiesz jeździć.", prog("technika", 10)],
 
-export const criteriaByLevel: Record<number, Criterion> = {
-  1: prog("technika", 1), 2: prog("technika", 2), 3: prog("technika", 3), 4: prog("technika", 4),
-  5: prog("technika", 5), 6: prog("technika", 6), 7: prog("technika", 7), 8: prog("technika", 8),
-  9: prog("technika", 9), 10: prog("technika", 10), 12: prog("technika", 11), 13: prog("technika", 12),
-  // skoki wg trudności (liczba połówek obrotu): waltz=1, single=2, axel=3, double=4,
-  // double axel=5, triple=6, triple axel=7, quad=8.
-  14: prog("skok", 1), 16: prog("skok", 2), 24: prog("skok", 3), 28: prog("skok", 4),
-  37: prog("skok", 5), 47: prog("skok", 6), 60: prog("skok", 7), 74: prog("skok", 8),
-  11: freq(1, 4), 26: freq(2, 12),
-  // pozostałe: piruety, programy, testy, zawody — manualne (wymagają oceny/wydarzenia).
-};
+  // ---- 11-25 · Podstawy figurowe (Learn to Skate Adult 3-6) ----
+  ["Trenuj raz w tygodniu przez 4 kolejne tygodnie", "Lód wybacza mniej niż siłownia — regularność jest tu warunkiem, nie ozdobą.", freq(1, 4)],
+  ["Wykonaj przekładanki do tyłu w obie strony", undefined, prog("technika", 11)],
+  ["Wykonaj jaskółkę (spiralę) przez 3 sekundy", undefined, prog("technika", 12)],
+  ["Wykonaj mohawk — przejście z przodu na tył na krawędziach", undefined, prog("technika", 13)],
+  ["Wykonaj waltz jump — pierwszy skok, pół obrotu", "Pierwszy raz, kiedy obie łyżwy są w powietrzu.", prog("skok", 1)],
+  ["Wykonaj piruet stojący (upright) — 3 obroty", undefined, prog("piruet", 1)],
+  ["Trenuj 2 razy w tygodniu przez 8 kolejnych tygodni", undefined, freq(2, 8)],
+  ["Wykonaj skok toe loop (pojedynczy)", "Najprostszy z sześciu skoków. Pierwszy pełny obrót.", prog("skok", 2)],
+  ["Wykonaj piruet siedzący (sit spin) — 3 obroty", "Element wymagany na teście Adult Bronze.", prog("piruet", 2)],
+  ["Wykonaj skok salchow (pojedynczy)", undefined, prog("skok", 3)],
+  ["Przejedź ósemki na krawędziach — do przodu i do tyłu", "Nudne. Buduje wszystko, co przyjdzie później.", prog("technika", 14)],
+  ["Połącz waltz jump z toe loopem w kombinację", "Dokładnie ta kombinacja jest wymagana na teście Adult Bronze Free Skate.", prog("kombinacja", 1)],
+  ["Zdaj test Adult Pre-Bronze (jazda podstawowa)", "Pierwszy oficjalny stopień w systemie dla dorosłych.", prog("test", 1)],
+  ["Wystąp w pokazie klubowym lub zawodach dla dorosłych", "Lód pod publiką jest innym lodem.", prog("zawody", 1)],
+  ["Wykonaj piruet w jaskółce (camel spin)", undefined, prog("piruet", 3)],
+
+  // ---- 26-45 · Adult Bronze — komplet pojedynczych skoków ----
+  ["Trenuj 2 razy w tygodniu przez 12 kolejnych tygodni", undefined, freq(2, 12)],
+  ["Wykonaj skok rittberger/loop (pojedynczy)", "Pierwszy skok odbijany z krawędzi, bez pomocy zęba.", prog("skok", 4)],
+  ["Wykonaj piruet ze zmianą nogi", undefined, prog("piruet", 4)],
+  ["Wykonaj skok flip (pojedynczy)", undefined, prog("skok", 5)],
+  ["Zdaj test Adult Bronze (jazda)", undefined, prog("test", 2)],
+  ["Wykonaj skok lutz (pojedynczy)", "Najtrudniejszy z pojedynczych — odbicie z zewnętrznej krawędzi, wbrew obrotowi.", prog("skok", 6)],
+  ["Połącz dwa pojedyncze skoki w kombinację", undefined, prog("kombinacja", 2)],
+  ["Utrzymaj piruet siedzący przez 6+ obrotów", undefined, prog("piruet", 5)],
+  ["Skomponuj i przejedź krótki program z muzyką", "Elementy przestają być listą, a zaczynają być całością.", prog("program", 1)],
+  ["Przejedź sekwencję kroków w rytm muzyki", undefined, prog("program", 2)],
+  ["Zdaj test Adult Bronze Free Skate", "Wymaga kombinacji waltz + toe loop i piruetu siedzącego. Tu mieszka większość dorosłych łyżwiarzy.", prog("test", 3)],
+  ["Wystąp w zawodach dla dorosłych w kategorii Bronze", undefined, prog("zawody", 2)],
+  ["Wykonaj piruet wycentrowany — bez „wędrowania” po lodzie", undefined, prog("piruet", 6)],
+  ["Połącz trzy skoki w jedną kombinację", undefined, prog("kombinacja", 3)],
+  ["Przejedź cały program bez upadku", undefined, prog("program", 3)],
+  ["Trenuj 3 razy w tygodniu przez 12 kolejnych tygodni", undefined, freq(3, 12)],
+  ["Wykonaj piruet w pozycji layback lub Biellmann", "Zależy od gibkości — nie każdy dorosły ją odzyska, i to jest w porządku.", prog("piruet", 7)],
+  ["Podejdź do axla — pierwsze próby z asekuracją lub w uprzęży", "Axel jest jedynym skokiem odbijanym przodem. Stąd ta dodatkowa połówka obrotu.", prog("axel", 1)],
+  ["Zajmij miejsce w pierwszej połowie zawodów dla dorosłych", undefined, prog("zawody", 3)],
+  ["Zdaj test Adult Silver (jazda)", undefined, prog("test", 4)],
+
+  // ---- 46-65 · Adult Silver — axel i dojrzały program ----
+  ["Wykonaj axel (1,5 obrotu)", "Skok, który dzieli dorosłych łyżwiarzy na dwie grupy. Dla wielu to szczyt całej drogi — i szczyt zupełnie wystarczający.", prog("skok", 7)],
+  ["Utrzymaj piruet 8+ obrotów w jednej pozycji", undefined, prog("piruet", 8)],
+  ["Wykonaj piruet kombinowany (zmiana pozycji i nogi)", undefined, prog("piruet", 9)],
+  ["Wykonaj kombinację z axlem", undefined, prog("kombinacja", 4)],
+  ["Przejedź program dowolny z axlem bez upadku", undefined, prog("program", 4)],
+  ["Zdaj test Adult Silver Free Skate", undefined, prog("test", 5)],
+  ["Trenuj 3 razy w tygodniu przez cały sezon", undefined, freq(3, 24)],
+  ["Wykonaj sekwencję kroków z obrotami w obie strony", undefined, prog("program", 5)],
+  ["Wystąp w zawodach dla dorosłych w kategorii Silver", undefined, prog("zawody", 4)],
+  ["Zajmij miejsce na podium zawodów regionalnych dla dorosłych", undefined, prog("zawody", 5)],
+  ["Wykonaj piruet z trudnym wejściem (z kroku lub ze skoku)", undefined, prog("piruet", 10)],
+  ["Przejedź program krótki i dowolny w jednych zawodach", undefined, prog("program", 6)],
+  ["Wykonaj axel czysto, w zawodach", "Trening to jedno. Axel pod publiką to drugie.", prog("skok", 7)],
+  ["Utrzymaj poziom formy przez dwa kolejne sezony", undefined, freq(3, 48)],
+  ["Wykonaj piruet z trudną pozycją (poziom 3 wg skali ISU)", undefined, prog("piruet", 11)],
+  ["Zdaj test Adult Gold (jazda)", undefined, prog("test", 6)],
+  ["Wykonaj kombinację axel + toe loop", undefined, prog("kombinacja", 5)],
+  ["Przejedź program z pełną, dojrzałą interpretacją muzyki", "Sędziowie nazywają to komponentami. Widz nazywa to „ta osoba umie jeździć”.", prog("program", 7)],
+  ["Zajmij miejsce w czołówce zawodów krajowych dla dorosłych", undefined, prog("zawody", 6)],
+  ["Wykonaj podwójny salchow", "Pierwszy skok podwójny. Dla dorosłego, który zaczął po dwudziestce — osiągnięcie rzadkie.", prog("skok", 8)],
+
+  // ---- 66-89 · Adult Gold i Masters — podwójne skoki ----
+  ["Wykonaj podwójny toe loop", undefined, prog("skok", 9)],
+  ["Zdaj test Adult Gold Free Skate", "Najwyższy stopień w systemie testów dla dorosłych.", prog("test", 7)],
+  ["Wykonaj piruet na poziomie 4 wg skali ISU", undefined, prog("piruet", 12)],
+  ["Przejedź program z podwójnym skokiem bez upadku", undefined, prog("program", 8)],
+  ["Wykonaj podwójny loop", undefined, prog("skok", 10)],
+  ["Wystąp w mistrzostwach kraju dla dorosłych", undefined, prog("zawody", 7)],
+  ["Wykonaj kombinację dwóch podwójnych skoków", undefined, prog("kombinacja", 6)],
+  ["Wykonaj podwójny flip", undefined, prog("skok", 11)],
+  ["Utrzymaj piruet kombinowany 12+ obrotów", undefined, prog("piruet", 13)],
+  ["Zajmij miejsce w pierwszej dziesiątce mistrzostw kraju dla dorosłych", undefined, prog("zawody", 8)],
+  ["Wykonaj podwójny lutz", "Komplet podwójnych bez axla. U dorosłego amatora to poziom, do którego dochodzą pojedyncze osoby w kraju.", prog("skok", 12)],
+  ["Przejedź program z trzema różnymi podwójnymi skokami", undefined, prog("program", 9)],
+  ["Trenuj z trenerem indywidualnie przez pełny sezon", undefined, freq(4, 24)],
+  ["Wykonaj sekwencję kroków na poziomie 4", undefined, prog("program", 10)],
+  ["Zdobądź medal mistrzostw kraju dla dorosłych", undefined, prog("zawody", 9)],
+  ["Wykonaj kombinację podwójny + podwójny", undefined, prog("kombinacja", 7)],
+  ["Przejedź oba programy w mistrzostwach bez błędu technicznego", undefined, prog("program", 11)],
+  ["Wystąp w międzynarodowych zawodach dla dorosłych (ISU Adult)", undefined, prog("zawody", 10)],
+  ["Wykonaj wszystkie sześć podwójnych skoków", undefined, prog("skok", 13)],
+  ["Zdobądź podium w międzynarodowych zawodach dla dorosłych", undefined, prog("zawody", 11)],
+  ["Poprowadź początkującego przez pierwsze kroki na lodzie", "Nauczyć kogoś jeździć to inny egzamin niż zdać test.", prog("program", 12)],
+  ["Wykonaj program z podwójnym axlem w treningu", undefined, prog("skok", 14)],
+  ["Zdobądź tytuł mistrza kraju w kategorii dorosłych", undefined, prog("zawody", 12)],
+  ["Utrzymaj wysoką formę zawodniczą przez pięć sezonów", "Ciało dorosłego regeneruje się wolniej. Pięć sezonów na tym poziomie to osobne osiągnięcie.", freq(4, 100)],
+
+  // ---- 90-99 · Poziom zawodniczy (świadomie poza zasięgiem amatora) ----
+  ["Wykonaj podwójny axel czysto, w zawodach", "Od tego poziomu drabinka opisuje sport wyczynowy, nie hobby. Zostaje tu celowo — sufit ma być widoczny.", prog("skok", 15)],
+  ["Wykonaj potrójny salchow", "Pierwszy skok potrójny. Dorosły, który zaczął po dwudziestce, ląduje go niezwykle rzadko.", prog("skok", 16)],
+  ["Wykonaj potrójny toe loop", undefined, prog("skok", 17)],
+  ["Przejedź program z potrójnym skokiem", undefined, prog("program", 13)],
+  ["Wykonaj potrójny loop lub flip", undefined, prog("skok", 18)],
+  ["Zakwalifikuj się do zawodów rangi ISU", undefined, prog("zawody", 13)],
+  ["Wykonaj potrójny lutz", undefined, prog("skok", 19)],
+  ["Przejedź program z dwoma różnymi potrójnymi skokami", undefined, prog("program", 14)],
+  ["Wykonaj kombinację potrójny + podwójny", undefined, prog("kombinacja", 8)],
+  ["Poziom mistrzowski: potrójny axel lub komplet potrójnych w programie zawodniczym", "Szczyt sportu, nie hobby. Dalsze osiągnięcia potwierdzają rankingi ISU, nie ta drabinka.", prog("skok", 20)],
+]);
