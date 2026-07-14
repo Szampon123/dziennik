@@ -120,3 +120,26 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wystąp w zawodach kalisteniki (freestyle/streetlifting) rangi krajowej"],
   ["Poziom mistrzowski: pełen zestaw elementów flagowych + tytuł zawodów", "Planche, front lever, maltese, one-arm — szczyt kalisteniki."],
 ]);
+
+// ---------------------------------------------------------------------------
+// Learning resources. Every URL fetched before it was written here.
+//
+// Calisthenics has no federation and no official grading, which is worth knowing before
+// trusting anybody's "levels". What it does have are two de-facto ladders, both linked:
+// Hybrid Calisthenics (progressions from a wall push-up upward, free) and Overcoming
+// Gravity, whose 16 levels are built on the FIG gymnastics element values — the closest
+// thing to an objective difficulty scale the discipline has.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "article", title: "Hybrid Calisthenics — progresje od ściany do pełnej pompki", url: "https://www.hybridcalisthenics.com/routine" }],
+  6: [{ kind: "article", title: "Podciąganie poziome — pierwszy krok do drążka", url: "https://www.hybridcalisthenics.com/horizontal-pullups" }],
+  10: [
+    { kind: "video", title: "Od zera do dziesięciu podciągnięć", url: yt("Hyrk8sSHTkk") },
+    { kind: "article", title: "Progresje podciągania (Hybrid Calisthenics)", url: "https://www.hybridcalisthenics.com/pullups" },
+  ],
+  40: [{ kind: "reference", title: "Overcoming Gravity — 16 poziomów trudności elementów", url: "https://stevenlow.org/overcoming-gravity/" }],
+  60: [{ kind: "reference", title: "The Fitness Wiki — planowanie treningu i progresji", url: "https://thefitness.wiki/" }],
+};

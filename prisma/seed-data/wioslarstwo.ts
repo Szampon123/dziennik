@@ -145,3 +145,26 @@ export const criteriaByLevel: Record<number, Criterion> = {
   96: tfd(5, 15.75), 97: tfd(2, 6), 98: tfd(0.5, 1.4),
   99: tfd(2, 5.9167),
 };
+
+// ---------------------------------------------------------------------------
+// Learning resources. Every URL fetched before it was written here.
+//
+// Rowing is the one endurance sport in this app whose governing body publishes real
+// percentiles: Concept2's logbook rankings print them (median male 2k ≈ 7:46 in 2024).
+// They are self-selected — people rank a 2k when they are proud of it — so the link at
+// L85 is context for a time, not a claim about the population.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "reference", title: "Technika wiosłowania na ergu — oficjalny przewodnik Concept2", url: "https://www.concept2.com/training/rowing-technique" }],
+  5: [{ kind: "video", title: "Trzy najczęstsze błędy techniczne i jak je naprawić", url: yt("PAHRAR9tXSA") }],
+  10: [{ kind: "article", title: "Couch to Consistency — plan startowy Concept2", url: "https://www.concept2.com/training/plans/couch-to-consistency" }],
+  20: [{ kind: "video", title: "Najczęstsze błędy na ergometrze (Concept2)", url: yt("ura2mFCdvVs") }],
+  25: [{ kind: "article", title: "Beginner Pete Plan — 24 tygodnie do testu na 2 km", url: "https://thepeteplan.wordpress.com/beginner-training/" }],
+  35: [{ kind: "video", title: "Pełna technika ruchu — film instruktażowy Concept2", url: yt("QPvYrfyGHi8") }],
+  45: [{ kind: "article", title: "Jak poprawiać technikę — materiały Concept2", url: "https://www.concept2.com/training/improve-your-rowing-technique" }],
+  65: [{ kind: "reference", title: "Million Meter Club — dożywotni licznik metrów", url: "https://www.concept2.com/community/million-meter-club" }],
+  85: [{ kind: "reference", title: "Rankingi Concept2 — percentyle czasów na 2 km", url: "https://log.concept2.com/rankings" }],
+};

@@ -145,3 +145,25 @@ export const criteriaByLevel: Record<number, Criterion> = {
   96: d(600), 97: tfd(100, 145), 98: tfd(40, 54),
   99: anyOf(tfd(40, 52), tfd(100, 140)),
 };
+
+// ---------------------------------------------------------------------------
+// Learning resources. Every URL fetched before it was written here.
+//
+// The power references (L65, L85) are the sport's real currency and this ladder does
+// not use it: we measure distance and time, because that is what a workout log holds.
+// Watts per kilogram is where a cyclist actually places themselves, so the links are
+// here — with the caveat that Cycling Analytics' percentiles are drawn from people who
+// own a power meter, roughly half of whom race. Their median is not the median cyclist.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Wysokość siodła — najczęstszy błąd początkujących", url: yt("FVu5Zrktm40") }],
+  5: [{ kind: "video", title: "Ustaw rower sam: siodło i zasięg", url: yt("iZZlm8Kj3Vo") }],
+  25: [{ kind: "article", title: "10-tygodniowy plan do pierwszych 100 km (Cycling UK)", url: "https://www.cyclinguk.org/article/10-week-training-plan-100km-ride" }],
+  40: [{ kind: "video", title: "Wysokość siodła — sposób bikefittera", url: yt("N_y5eSUOqNk") }],
+  65: [{ kind: "reference", title: "Profil mocy Coggana — W/kg od amatora do elity", url: "https://www.highnorth.co.uk/articles/power-profiling-cycling" }],
+  85: [{ kind: "article", title: "Gdzie jesteś na tle innych — percentyle FTP (uwaga: próbka z power meterami)", url: "https://www.cyclinganalytics.com/blog/2018/06/how-does-your-cycling-power-output-compare" }],
+  96: [{ kind: "reference", title: "Audax — limity czasu na brevety 200–1000 km", url: "https://www.audax.uk/about-audax/classifications/" }],
+};

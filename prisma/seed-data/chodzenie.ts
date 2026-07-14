@@ -146,3 +146,31 @@ export const criteriaByLevel: Record<number, Criterion> = {
   96: monthly(500), 97: d(130), 98: tfd(10, 55),
   99: anyOf(d(150), tfd(10, 52)),
 };
+
+// ---------------------------------------------------------------------------
+// Learning resources. Every URL fetched before it was written here.
+//
+// A caution worth leaving in the file: two of the three PubMed ids I looked up via
+// NCBI's search API came back as the WRONG PAPER — live links, real titles, not the
+// studies I asked for. A URL that resolves is not the same as the right source, and
+// the only thing that catches that is reading the title it returns. Both are gone.
+// What is left is the meta-analysis (Paluch 2022, 15 cohorts, 47,471 adults) and the
+// NHANES step-count paper, each described as what it actually is.
+//
+// The step targets in this ladder are distance, not steps, so these are context rather
+// than criteria. Note also that "10,000 steps" is 1965 pedometer marketing, not a
+// finding — the mortality curve flattens between 6,000 and 8,000. Nothing here says
+// otherwise.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "article", title: "NHS: chodzenie dla zdrowia — od czego zacząć", url: "https://www.nhs.uk/live-well/exercise/walking-for-health/" }],
+  10: [{ kind: "video", title: "Nordic walking — technika od podstaw", url: yt("zAmsHhc2zCw") }],
+  20: [{ kind: "video", title: "Nordic walking w czterech krokach", url: yt("oHksVVU6A_s") }],
+  30: [{ kind: "video", title: "Nordic walking — wprowadzenie i technika", url: yt("ZKTufkzpo8E") }],
+  45: [{ kind: "reference", title: "Ile kroków dziennie ma sens — metaanaliza 15 kohort (47 471 osób)", url: "https://pubmed.ncbi.nlm.nih.gov/35247352/" }],
+  60: [{ kind: "reference", title: "Ile kroków robią naprawdę dorośli — dane NHANES", url: "https://pubmed.ncbi.nlm.nih.gov/42002910/" }],
+  80: [{ kind: "reference", title: "Marsz Czterodniowy w Nijmegen — dystanse i wymagania", url: "https://www.4daagse.nl/en/participate/civilian/distances" }],
+};
