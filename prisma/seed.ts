@@ -1,6 +1,6 @@
 // Seeds global activity definitions and their milestone ladders.
 // Idempotent: safe to re-run and to extend with new activities later.
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { criterionSchema, type Criterion } from "../src/lib/milestone-criteria";
 import type { MilestoneResource } from "../src/lib/milestone-resources";
 import { CATEGORY_BY_SLUG } from "../src/lib/activity-categories";
@@ -371,7 +371,19 @@ async function seedActivity({
 
   let retranslate = 0;
 
-  for (const m of milestones) {
+  // ONE statement for the levels that exist, one for the levels that do not.
+  //
+  // The obvious shape — await an upsert per level — costs 99 round trips per activity
+  // and 13,800 for the seed, and a round trip is the entire cost here: the queries are
+  // trivial, the network is not. Vercel builds do not run in fra1 beside the database
+  // (that is the *function* region) — they run from the US, so each hop was ~100 ms
+  // and the first production deploy spent 22.5 minutes seeding.
+  //
+  // Batching the upserts with $transaction() does NOT fix it and was tried: it groups
+  // the calls in JavaScript, but the query engine still issues one SQL statement per
+  // upsert against Postgres. The round trips that cost the money are engine→database,
+  // and only fewer *statements* removes them.
+  const rows = milestones.map((m) => {
     const criterion = criteriaByLevel?.[m.level];
     const video = videoByLevel?.[m.level];
     const resources = resourcesByLevel?.[m.level];
@@ -381,27 +393,67 @@ async function seedActivity({
     const textChanged = prev !== undefined && (prev.title !== m.title || prev.detail !== detail);
     if (textChanged) retranslate++;
 
-    const data = {
+    return {
+      level: m.level,
       title: m.title,
       detail,
       criteriaJson: criterion ? JSON.stringify(criterion) : null,
       videoJson: video ? JSON.stringify(video) : null,
       resourcesJson: resources && resources.length > 0 ? JSON.stringify(resources) : null,
-      ...(textChanged
-        ? {
-            titleEn: null,
-            titleDe: null,
-            titleEs: null,
-            detailEn: null,
-            detailDe: null,
-            detailEs: null,
-          }
-        : {}),
+      exists: prev !== undefined,
     };
-    await prisma.milestone.upsert({
-      where: { activityId_level: { activityId: row.id, level: m.level } },
-      update: data,
-      create: { activityId: row.id, level: m.level, ...data },
+  });
+
+  const updates = rows.filter((r) => r.exists);
+  const inserts = rows.filter((r) => !r.exists);
+
+  if (updates.length > 0) {
+    // Matched on (activityId, level), so `id` is never touched and every completion
+    // pointing at this milestone keeps pointing at it.
+    //
+    // The CASE arms are the translation rule from above, expressed in SQL: when the
+    // Polish source changes, its machine translations are dropped, because a stale
+    // translation describes the level this one used to be. IS DISTINCT FROM, not <>,
+    // so a NULL detail compares properly instead of swallowing the comparison.
+    const values = Prisma.join(
+      updates.map(
+        (r) =>
+          Prisma.sql`(${r.level}::int, ${r.title}::text, ${r.detail}::text, ${r.criteriaJson}::text, ${r.videoJson}::text, ${r.resourcesJson}::text)`
+      ),
+      ","
+    );
+
+    await prisma.$executeRaw`
+      UPDATE "Milestone" AS m SET
+        "title"         = v.title,
+        "detail"        = v.detail,
+        "criteriaJson"  = v.criteria,
+        "videoJson"     = v.video,
+        "resourcesJson" = v.resources,
+        "titleEn"  = CASE WHEN m.title IS DISTINCT FROM v.title OR m.detail IS DISTINCT FROM v.detail THEN NULL ELSE m."titleEn"  END,
+        "titleDe"  = CASE WHEN m.title IS DISTINCT FROM v.title OR m.detail IS DISTINCT FROM v.detail THEN NULL ELSE m."titleDe"  END,
+        "titleEs"  = CASE WHEN m.title IS DISTINCT FROM v.title OR m.detail IS DISTINCT FROM v.detail THEN NULL ELSE m."titleEs"  END,
+        "detailEn" = CASE WHEN m.title IS DISTINCT FROM v.title OR m.detail IS DISTINCT FROM v.detail THEN NULL ELSE m."detailEn" END,
+        "detailDe" = CASE WHEN m.title IS DISTINCT FROM v.title OR m.detail IS DISTINCT FROM v.detail THEN NULL ELSE m."detailDe" END,
+        "detailEs" = CASE WHEN m.title IS DISTINCT FROM v.title OR m.detail IS DISTINCT FROM v.detail THEN NULL ELSE m."detailEs" END
+      FROM (VALUES ${values}) AS v(level, title, detail, criteria, video, resources)
+      WHERE m."activityId" = ${row.id} AND m."level" = v.level
+    `;
+  }
+
+  if (inserts.length > 0) {
+    // createMany is a single multi-row INSERT, and Prisma still generates the cuid ids
+    // — which is why the new levels go through it rather than the raw statement above.
+    await prisma.milestone.createMany({
+      data: inserts.map((r) => ({
+        activityId: row.id,
+        level: r.level,
+        title: r.title,
+        detail: r.detail,
+        criteriaJson: r.criteriaJson,
+        videoJson: r.videoJson,
+        resourcesJson: r.resourcesJson,
+      })),
     });
   }
 
