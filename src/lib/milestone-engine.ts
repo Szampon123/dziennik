@@ -97,17 +97,21 @@ export function satisfies(criterion: Criterion, workouts: WorkoutFacts[]): boole
 /** What a recompute changed, both directions. Levels are ascending. */
 export type RecomputeResult = { added: number[]; removed: number[] };
 
+/** A recompute, decided but not yet written. */
+export type RecomputePlan = {
+  toCreate: { id: string; level: number }[];
+  toDelete: { id: string; level: number }[];
+};
+
 /**
- * Recompute engine-managed completions for a user+activity.
+ * Decide what a recompute would change, and write nothing.
  *
- * The contract, in one line: a row with `source: "auto"` exists if and only if the
- * user's workouts prove the criterion the engine can see *right now*. Manual rows
- * are the user's own claim and are never touched, in either direction.
+ * Split out from the apply step so a migration can be *shown* before it happens:
+ * scripts/recompute-milestones.ts runs this against every affected user to print a
+ * diff, and only writes when told to. A dry run that re-implemented these rules
+ * instead of calling them would be a dry run of a different engine.
  */
-export async function recomputeAutoMilestones(
-  userId: string,
-  activityId: string
-): Promise<RecomputeResult> {
+export async function planRecompute(userId: string, activityId: string): Promise<RecomputePlan> {
   const [milestones, workouts] = await Promise.all([
     prisma.milestone.findMany({
       where: { activityId },
@@ -150,6 +154,22 @@ export async function recomputeAutoMilestones(
       toDelete.push({ id: m.id, level: m.level });
     }
   }
+
+  return { toCreate, toDelete };
+}
+
+/**
+ * Recompute engine-managed completions for a user+activity, and write the result.
+ *
+ * The contract, in one line: a row with `source: "auto"` exists if and only if the
+ * user's workouts prove the criterion the engine can see *right now*. Manual rows
+ * are the user's own claim and are never touched, in either direction.
+ */
+export async function recomputeAutoMilestones(
+  userId: string,
+  activityId: string
+): Promise<RecomputeResult> {
+  const { toCreate, toDelete } = await planRecompute(userId, activityId);
 
   await prisma.$transaction([
     ...toCreate.map((m) =>
