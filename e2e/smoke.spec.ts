@@ -177,11 +177,23 @@ test("first day: register, verify, write the day, log out", async ({ page, conte
       .toBe(true);
   });
 
-  await test.step("verify the email address", async () => {
-    // Read the token the app just issued, exactly as the link in the inbox carries it.
-    const row = await prisma.verificationToken.findFirst({ where: { identifier: email } });
-    expect(row, "registration must issue a verification token").not.toBeNull();
+  // Read the token the app issued at registration, exactly as the link in the inbox
+  // carries it. Kept in scope: the same string is a live link now and a spent one
+  // two steps later, which is what the dead-link screen has to tell apart.
+  const row = await prisma.verificationToken.findFirst({ where: { identifier: email } });
+  expect(row, "registration must issue a verification token").not.toBeNull();
 
+  await test.step("a dead link offers a signed-in, unverified user a new one", async () => {
+    await page.goto(`/verify-email?token=not-a-real-token&email=${encodeURIComponent(email)}`);
+    // Scoped to <main>: the layout banner is on this page too and carries a button
+    // with the same label.
+    await expect(
+      page.getByRole("main").getByRole("button", { name: "Send verification link" })
+    ).toBeVisible();
+    await expect(page.getByRole("main").getByText("Back to sign in")).toHaveCount(0);
+  });
+
+  await test.step("verify the email address", async () => {
     await page.goto(`/verify-email?token=${row!.token}&email=${encodeURIComponent(email)}`);
 
     // Survives a client-side navigation, dies on a document reload. This is the
@@ -200,6 +212,15 @@ test("first day: register, verify, write the day, log out", async ({ page, conte
     await expect(page.getByText("Your email address is not verified.")).toHaveCount(0);
   });
 
+  await test.step("re-opening the spent link says so, calmly", async () => {
+    // The Gmail-thread case: they verified with the newest link, then clicked an
+    // older one in the same thread. Nothing is wrong, and the screen must not
+    // shout "invalid link" at them.
+    await page.goto(`/verify-email?token=${row!.token}&email=${encodeURIComponent(email)}`);
+    await expect(page.getByText("Your email address is already verified.")).toBeVisible();
+    await expect(page.getByText("Invalid or expired verification link.")).toHaveCount(0);
+  });
+
   await test.step("settings shows the address as verified", async () => {
     await page.goto("/settings");
     await expect(page.getByText("Email verified")).toBeVisible();
@@ -213,4 +234,15 @@ test("first day: register, verify, write the day, log out", async ({ page, conte
   });
 
   expect(failures, "no 5xx and no uncaught errors anywhere in the run").toEqual([]);
+});
+
+test("a dead link shown to a signed-out visitor points at sign-in", async ({ page }) => {
+  // Resending would mail whoever is signed in — nobody, here. Offering a button
+  // that cannot know where to send would be worse than the honest dead end. Its
+  // own test because Playwright gives each one a fresh context: no session.
+  await page.goto("/verify-email?token=not-a-real-token&email=nobody%40example.com");
+
+  await expect(page.getByText("Invalid or expired verification link.")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Back to sign in" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Send verification link" })).toHaveCount(0);
 });

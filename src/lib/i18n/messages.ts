@@ -73,6 +73,10 @@ const pl = {
   "auth.verifyConfirming": "Potwierdzanie…",
   "auth.verifySignIn": "Zaloguj się",
   "auth.verifyRedirecting": "Przenosimy Cię do aplikacji…",
+  "auth.verifyLinkDead":
+    "Ten link weryfikacyjny jest już nieaktualny — każdy nowy link unieważnia poprzedni. Wyślij sobie świeży.",
+  "auth.verifyAlreadyVerified": "Twój adres e-mail jest już zweryfikowany.",
+  "auth.verifyGoToApp": "Przejdź do aplikacji",
   "auth.verifyBannerSent": "Wysłano link weryfikacyjny. Sprawdź swoją skrzynkę e-mail.",
   "auth.verifyBannerUnverified": "Twój adres e-mail nie jest zweryfikowany.",
   "auth.verifyBannerSending": "Wysyłanie…",
@@ -947,6 +951,10 @@ const en: Dict = {
   "auth.verifyConfirming": "Confirming…",
   "auth.verifySignIn": "Sign in",
   "auth.verifyRedirecting": "Taking you to the app…",
+  "auth.verifyLinkDead":
+    "This verification link is out of date — each new link cancels the one before it. Send yourself a fresh one.",
+  "auth.verifyAlreadyVerified": "Your email address is already verified.",
+  "auth.verifyGoToApp": "Go to the app",
   "auth.verifyBannerSent": "Verification link sent. Check your inbox.",
   "auth.verifyBannerUnverified": "Your email address is not verified.",
   "auth.verifyBannerSending": "Sending…",
@@ -1796,6 +1804,10 @@ const de: Dict = {
   "auth.verifyConfirming": "Wird bestätigt…",
   "auth.verifySignIn": "Anmelden",
   "auth.verifyRedirecting": "Wir leiten dich zur App weiter…",
+  "auth.verifyLinkDead":
+    "Dieser Bestätigungslink ist nicht mehr aktuell — jeder neue Link macht den vorherigen ungültig. Fordere einen frischen an.",
+  "auth.verifyAlreadyVerified": "Deine E-Mail-Adresse ist bereits bestätigt.",
+  "auth.verifyGoToApp": "Zur App",
   "auth.verifyBannerSent": "Bestätigungslink gesendet. Sieh in deinem Postfach nach.",
   "auth.verifyBannerUnverified": "Deine E-Mail-Adresse ist nicht bestätigt.",
   "auth.verifyBannerSending": "Wird gesendet…",
@@ -2648,6 +2660,10 @@ const es: Dict = {
   "auth.verifyConfirming": "Confirmando…",
   "auth.verifySignIn": "Iniciar sesión",
   "auth.verifyRedirecting": "Te llevamos a la aplicación…",
+  "auth.verifyLinkDead":
+    "Este enlace de verificación ya no está vigente: cada enlace nuevo anula el anterior. Envíate uno nuevo.",
+  "auth.verifyAlreadyVerified": "Tu dirección de correo ya está verificada.",
+  "auth.verifyGoToApp": "Ir a la aplicación",
   "auth.verifyBannerSent": "Enlace de verificación enviado. Revisa tu bandeja de entrada.",
   "auth.verifyBannerUnverified": "Tu dirección de correo no está verificada.",
   "auth.verifyBannerSending": "Enviando…",
