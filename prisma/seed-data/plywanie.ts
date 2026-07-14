@@ -161,3 +161,30 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Przepłyń 100 m poniżej 0:58", "Okolice progu kwalifikacji USMS dla mężczyzn (53,0 na 100 jardów).", tfd(0.1, 0.9667)],
   ["Poziom mistrzowski (amatorski szczyt): 100 m poniżej 0:56 lub 1500 m poniżej 19:00", "Dojrzały, wieloletni warsztat zaangażowanego amatora — powyżej progów kwalifikacyjnych masters. Wyniki zawodowe potwierdzają osobne certyfikaty.", anyOf(tfd(0.1, 0.9333), tfd(1.5, 19))],
 ]);
+
+// ---------------------------------------------------------------------------
+// Learning resources. Every URL fetched before it was written here — YouTube via
+// oEmbed, the rest with a real GET.
+//
+// L1 and L96 carry the two documents this ladder is actually built on: Swim England's
+// Learn to Swim stages, which the bottom ten levels follow, and the USMS qualifying
+// times, which the top ones are set to. A reader who wants to know where a number came
+// from can click it.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "reference", title: "Swim England — etapy nauki pływania 1–7", url: "https://www.swimming.org/learntoswim/swim-england-learn-to-swim-awards-1-7/" }],
+  10: [{ kind: "article", title: "Pierwsze treningi na basenie — plany dla początkujących (USMS)", url: "https://www.usms.org/fitness-and-training/articles-and-videos/articles/best-swimming-workouts-for-beginners" }],
+  13: [{ kind: "video", title: "Oddychanie obustronne — jak się go nauczyć", url: yt("IeUUuAyVu9s") }],
+  18: [
+    { kind: "video", title: "Nawrót koziołkowy w pięciu krokach", url: yt("xlwY4TnU6rY") },
+    { kind: "article", title: "Nawrót koziołkowy — opis krok po kroku (MySwimPro)", url: "https://blog.myswimpro.com/2018/09/25/how-to-do-a-freestyle-flip-turn/" },
+  ],
+  25: [{ kind: "article", title: "8-tygodniowy plan na wytrzymałość (do 3 km)", url: "https://blog.myswimpro.com/2017/10/22/8-week-swim-training-plan-to-improve-endurance/" }],
+  30: [{ kind: "article", title: "Sześciotygodniowe plany treningowe USMS", url: "https://www.usms.org/fitness-and-training/six-week-swim-training-plans/six-week-swim-training-plan-information" }],
+  51: [{ kind: "article", title: "12-tygodniowy plan na 1500 m w wodach otwartych", url: "https://blog.myswimpro.com/2017/10/22/12-week-open-water-swim-training-plan/" }],
+  70: [{ kind: "reference", title: "Biblioteka treningów USMS", url: "https://www.usms.org/workout-library" }],
+  96: [{ kind: "reference", title: "Czasy kwalifikacyjne USMS — źródło progów z poziomów 96–99", url: "https://www.usms.org/events/national-championships/pool-national-championships/national-qualifying-times" }],
+};

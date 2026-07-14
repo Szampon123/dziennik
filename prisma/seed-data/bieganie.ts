@@ -174,3 +174,34 @@ export const criteriaByLevel: Record<number, Criterion> = {
   98: { type: "any_of", of: [tfd(5, 15.5), tfd(10, 32)] },
   99: { type: "any_of", of: [tfd(10, 31), tfd(HM, 70)] },
 };
+
+// ---------------------------------------------------------------------------
+// Learning resources. Every URL below was fetched before it was written here:
+// YouTube through the oEmbed endpoint (which returns the real title, and 404s on a
+// wrong id), everything else with a plain GET that had to answer 200 with a page
+// rather than a bot wall. Three candidates were rejected in the process — the NHS
+// Couch-to-5K URL a research pass handed me was a 404, JOSPT and a PMC article
+// answered 403/reCAPTCHA. Nothing here is a guess.
+//
+// On the injury levels (48, 62) the sources are the primary papers, deliberately:
+// the "10% rule" that every running site repeats has no founding study, and the RCT
+// linked at L62 found it made no difference to injuries (20.8% vs 20.3%, p=0.90).
+// The defensible line is the one at L48: don't jump weekly volume by more than 30%.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "article", title: "Couch to 5K — plan NHS, tydzień po tygodniu", url: "https://www.nhs.uk/better-health/get-active/get-running-with-couch-to-5k/couch-to-5k-running-plan/" },
+    { kind: "video", title: "Technika biegu — czego uczą zawodowcy", url: yt("pofBa80GAwg") },
+  ],
+  8: [{ kind: "video", title: "Kadencja biegowa, prosto wyjaśniona", url: yt("LcHEM0LUako") }],
+  18: [{ kind: "article", title: "parkrun Polska — darmowe 5 km w każdą sobotę", url: "https://www.parkrun.pl/" }],
+  22: [{ kind: "video", title: "Popraw kadencję: szybciej i bez kontuzji", url: yt("oCUCKPRaoI0") }],
+  35: [{ kind: "reference", title: "Gdzie jesteś na tle innych — kalkulator percentyli (35 mln wyników)", url: "https://runrepeat.com/how-do-you-masure-up-the-runners-percentile-calculator" }],
+  48: [{ kind: "reference", title: "Nielsen 2014: ryzyko rośnie dopiero powyżej +30% objętości tygodniowo", url: "https://pubmed.ncbi.nlm.nih.gov/25155475/" }],
+  62: [{ kind: "reference", title: "Buist 2008 (RCT): „zasada 10%” nie zmniejszyła liczby kontuzji", url: "https://pubmed.ncbi.nlm.nih.gov/17940147/" }],
+  75: [{ kind: "reference", title: "Age grading — przelicz swój czas na % standardu światowego", url: "https://www.howardgrubb.co.uk/athletics/wmalookup15.html" }],
+  96: [{ kind: "reference", title: "Minima kwalifikacyjne do maratonu bostońskiego", url: "https://www.baa.org/races/boston-marathon/qualify/" }],
+};

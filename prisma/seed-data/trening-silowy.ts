@@ -155,3 +155,33 @@ export const criteriaByLevel: Record<number, Criterion> = {
   65: prog("ohp", 85), 71: prog("ohp", 95), 78: prog("ohp", 100), 87: prog("ohp", 110), 95: prog("ohp", 120),
   // 70 (muscle-up), 79 (zawody), 88, 93, 98, 99 — manual, bez kryteriów.
 };
+
+// ---------------------------------------------------------------------------
+// Learning resources. Every URL fetched before it was written here — YouTube via
+// oEmbed, the rest with a real GET. ExRx's strength-standards page was a candidate
+// and is not here: it answers 403 to anything that is not a browser, and a link that
+// only works for some readers is not a resource.
+//
+// The standards at L30 and L75 are bodyweight-relative on purpose: that is how every
+// recognised system (Strength Level, ExRx, Barbell Medicine) expresses them, and how
+// this ladder's own thresholds are written.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "article", title: "r/Fitness Basic Beginner Routine — od czego zacząć", url: "https://thefitness.wiki/routines/r-fitness-basic-beginner-routine/" },
+    { kind: "reference", title: "The Fitness Wiki — baza wiedzy o treningu", url: "https://thefitness.wiki/" },
+  ],
+  12: [
+    { kind: "video", title: "Przysiad — każda odmiana, krok po kroku", url: yt("UFs6E3Ti1jg") },
+    { kind: "article", title: "Squat University: jak nauczyć się poprawnego przysiadu", url: "https://squatuniversity.com/2016/02/05/how-to-teach-a-perfect-squat/" },
+  ],
+  20: [{ kind: "video", title: "Przysiad wysoki i niski drążek — Untamed Strength", url: yt("bs_Ej32IYgo") }],
+  30: [{ kind: "reference", title: "Standardy siłowe wg masy ciała (początkujący → elita)", url: "https://strengthlevel.com/strength-standards" }],
+  45: [{ kind: "video", title: "Trzy poprawki, które naprawiają przysiad", url: yt("4b4_ZT0yB1I") }],
+  60: [{ kind: "article", title: "Trening siły i masy — jak układać progresję", url: "https://thefitness.wiki/routines/strength-training-muscle-building/" }],
+  75: [{ kind: "article", title: "Barbell Medicine: co naprawdę znaczą „standardy siłowe”", url: "https://www.barbellmedicine.com/blog/strength-standards/" }],
+  85: [{ kind: "reference", title: "Overcoming Gravity — 16-stopniowe drabinki progresji kalisteniki", url: "https://stevenlow.org/overcoming-gravity/" }],
+};
