@@ -68,16 +68,22 @@ test.beforeAll(async () => {
   }
 
   // A run killed mid-flight (Ctrl-C, a closed pipe) never reaches afterAll and
-  // leaves its account behind. Sweep anything this suite created earlier so the
-  // dev branch does not silently accumulate them.
+  // leaves its account behind. Sweep those, so the dev branch does not silently
+  // accumulate them.
+  //
+  // Only accounts older than an hour, and never by prefix alone: two runs can share
+  // this database (a CI job and a laptop, or two CI jobs), and a blanket delete of
+  // every e2e-smoke-* row would reach into a live run and delete the account it was
+  // half way through testing. An hour is far longer than the ~12s a run takes.
+  const cutoff = new Date(Date.now() - 60 * 60 * 1000);
   const stale = await prisma.user.findMany({
-    where: { email: { startsWith: "e2e-smoke-" } },
+    where: { email: { startsWith: "e2e-smoke-" }, createdAt: { lt: cutoff } },
     select: { email: true },
   });
   if (stale.length) {
-    await prisma.user.deleteMany({ where: { email: { startsWith: "e2e-smoke-" } } });
+    await prisma.user.deleteMany({ where: { email: { in: stale.map((u) => u.email!) } } });
     await prisma.verificationToken.deleteMany({
-      where: { identifier: { startsWith: "e2e-smoke-" } },
+      where: { identifier: { in: stale.map((u) => u.email!) } },
     });
     console.log(`[smoke] swept ${stale.length} account(s) left by an interrupted run`);
   }
