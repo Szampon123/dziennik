@@ -147,7 +147,11 @@ export default async function RootLayout({
     redirect("/onboarding");
   }
 
-  const showVerificationBanner = chromeUser?.needsVerification ?? false;
+  // Not on /verify-email: that page is the banner's own destination and offers the
+  // same "send verification link" button itself, so the banner would sit directly
+  // above a duplicate of its only control.
+  const showVerificationBanner =
+    (chromeUser?.needsVerification ?? false) && !pathname.startsWith("/verify-email");
 
   return (
     <html

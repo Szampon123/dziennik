@@ -185,12 +185,13 @@ test("first day: register, verify, write the day, log out", async ({ page, conte
 
   await test.step("a dead link offers a signed-in, unverified user a new one", async () => {
     await page.goto(`/verify-email?token=not-a-real-token&email=${encodeURIComponent(email)}`);
-    // Scoped to <main>: the layout banner is on this page too and carries a button
-    // with the same label.
-    await expect(
-      page.getByRole("main").getByRole("button", { name: "Send verification link" })
-    ).toBeVisible();
-    await expect(page.getByRole("main").getByText("Back to sign in")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Send verification link" })).toBeVisible();
+    await expect(page.getByText("Back to sign in")).toHaveCount(0);
+
+    // Exactly one such button: the layout banner is suppressed on this route, so it
+    // cannot sit above a duplicate of the page's only control.
+    await expect(page.getByRole("button", { name: "Send verification link" })).toHaveCount(1);
+    await expect(page.getByText("Your email address is not verified.")).toHaveCount(0);
   });
 
   await test.step("verify the email address", async () => {
