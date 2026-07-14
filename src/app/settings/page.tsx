@@ -11,6 +11,7 @@ import { ThemeSegmented } from "@/components/ThemeSegmented";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { DeleteAccount } from "@/components/DeleteAccount";
 import { EmailVerificationStatus } from "@/components/EmailVerificationStatus";
+import { DataExport } from "@/components/DataExport";
 import { prisma } from "@/lib/prisma";
 import { normalizeRole } from "@/lib/roles";
 import { getT } from "@/lib/i18n/server";
@@ -99,6 +100,7 @@ export default async function SettingsPage({
           </div>
         </div>
         <EmailVerificationStatus verified={account?.emailVerified != null} />
+        <DataExport />
         <p className="mt-3 text-[13px] text-neutral-500">{t("settings.account.privacy")}</p>
       </Card>
 

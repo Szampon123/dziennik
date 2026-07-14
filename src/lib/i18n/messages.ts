@@ -659,6 +659,12 @@ const pl = {
   "settings.account.loggedIn": "Zalogowano",
   "settings.account.emailVerified": "E-mail zweryfikowany",
   "settings.account.emailUnverified": "E-mail niezweryfikowany",
+  "settings.account.exportData": "Pobierz moje dane",
+  "settings.account.exportPreparing": "Przygotowywanie…",
+  "settings.account.exportHint":
+    "Wszystko, co Vincendio o Tobie przechowuje, w jednym pliku JSON. Zdjęcia są w nim podlinkowane — pobierzesz je, będąc zalogowanym.",
+  "settings.account.exportRateLimited": "Zbyt wiele eksportów. Spróbuj ponownie za godzinę.",
+  "settings.account.exportFailed": "Nie udało się przygotować eksportu. Spróbuj ponownie.",
   "settings.account.privacy":
     "Twój dziennik oraz połączenia Google i Notion są prywatne — inni użytkownicy ich nie widzą.",
   "settings.google.title": "Google Calendar",
@@ -1530,6 +1536,12 @@ const en: Dict = {
   "settings.account.loggedIn": "Signed in",
   "settings.account.emailVerified": "Email verified",
   "settings.account.emailUnverified": "Email not verified",
+  "settings.account.exportData": "Download my data",
+  "settings.account.exportPreparing": "Preparing…",
+  "settings.account.exportHint":
+    "Everything Vincendio holds about you, in one JSON file. Photos are linked from it — you can download them while signed in.",
+  "settings.account.exportRateLimited": "Too many exports. Try again in an hour.",
+  "settings.account.exportFailed": "Could not prepare the export. Please try again.",
   "settings.account.privacy":
     "Your journal and your Google and Notion connections are private — other users can't see them.",
   "settings.google.title": "Google Calendar",
@@ -2390,6 +2402,12 @@ const de: Dict = {
   "settings.account.loggedIn": "Angemeldet",
   "settings.account.emailVerified": "E-Mail bestätigt",
   "settings.account.emailUnverified": "E-Mail nicht bestätigt",
+  "settings.account.exportData": "Meine Daten herunterladen",
+  "settings.account.exportPreparing": "Wird vorbereitet…",
+  "settings.account.exportHint":
+    "Alles, was Vincendio über dich speichert, in einer JSON-Datei. Fotos sind darin verlinkt — du kannst sie angemeldet herunterladen.",
+  "settings.account.exportRateLimited": "Zu viele Exporte. Versuche es in einer Stunde erneut.",
+  "settings.account.exportFailed": "Der Export konnte nicht erstellt werden. Bitte versuche es erneut.",
   "settings.account.privacy":
     "Dein Tagebuch sowie deine Google- und Notion-Verbindungen sind privat — andere sehen sie nicht.",
   "settings.google.title": "Google Kalender",
@@ -3248,6 +3266,12 @@ const es: Dict = {
   "settings.account.loggedIn": "Sesión iniciada",
   "settings.account.emailVerified": "Correo verificado",
   "settings.account.emailUnverified": "Correo sin verificar",
+  "settings.account.exportData": "Descargar mis datos",
+  "settings.account.exportPreparing": "Preparando…",
+  "settings.account.exportHint":
+    "Todo lo que Vincendio guarda sobre ti, en un único archivo JSON. Las fotos van enlazadas — puedes descargarlas con la sesión iniciada.",
+  "settings.account.exportRateLimited": "Demasiadas exportaciones. Inténtalo de nuevo en una hora.",
+  "settings.account.exportFailed": "No se pudo preparar la exportación. Inténtalo de nuevo.",
   "settings.account.privacy":
     "Tu diario y tus conexiones con Google y Notion son privados: otros usuarios no los ven.",
   "settings.google.title": "Google Calendar",

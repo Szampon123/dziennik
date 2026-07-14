@@ -59,13 +59,21 @@
  *                        orphaned reply is promoted to a top-level post rather
  *                        than being cascaded away. Deleting somebody's account
  *                        must not delete somebody else's words.
- *  Data export ......... DOES NOT EXIST. Hence the e-mail channel in section 7.
+ *  Data export ......... Self-service, in Settings — app/api/export/route.ts and
+ *                        lib/export.ts. One JSON file, everything the user wrote,
+ *                        rate-limited to 3/h. Excludes passwordHash, the Auth.js
+ *                        Account/Session rows, OAuthToken, notionToken and the
+ *                        RoleChange log (the last names the admin who acted, which
+ *                        is another user's data). Photos are referenced by URL, not
+ *                        embedded — the file alone is therefore not a complete
+ *                        archive, and section 7 says so. The e-mail channel stays
+ *                        as the fallback it now is, rather than the only route.
  * ────────────────────────────────────────────────────────────────────────────
  */
 
 import { documentFor, type LegalDocument, type LegalSection } from "@/lib/legal/document";
 
-export const PRIVACY_UPDATED = "2026-07-13";
+export const PRIVACY_UPDATED = "2026-07-14";
 
 /**
  * The data controller.
@@ -214,10 +222,14 @@ const pl: Policy = {
           "Nie ma okresu karencji i nie zostaje nam kopia, którą moglibyśmy Ci oddać.",
         "Odpowiedzi innych użytkowników pod Twoimi postami na forum zostają — to ich treści, " +
           "nie Twoje, i nie mamy prawa ich kasować.",
-        `Eksportu danych aplikacja jeszcze nie ma. Mówimy o tym otwarcie, zamiast obiecywać ` +
-          `funkcję, której nie ma: napisz na ${CONTROLLER_EMAIL}, a przekażemy Ci kopię Twoich ` +
-          `danych ręcznie. Na ten sam adres możesz też napisać w sprawie usunięcia konta, jeśli ` +
-          `z jakiegoś powodu nie możesz zrobić tego sam.`,
+        `Swoje dane pobierzesz sam, w Ustawieniach — przycisk „Pobierz moje dane" oddaje ` +
+          `wszystko, co o Tobie przechowujemy, w jednym pliku JSON. Zdjęcia są w nim podlinkowane, ` +
+          `a nie wklejone: pobierzesz je, będąc zalogowanym. Nie ma w nim haseł ani tokenów do ` +
+          `Google i Notion — to nie są dane, które są Ci do czegokolwiek potrzebne, a plik z nimi ` +
+          `byłby niebezpieczny do przechowywania.`,
+        `Jeśli wolisz albo coś nie działa, napisz na ${CONTROLLER_EMAIL} — przekażemy kopię ` +
+          `ręcznie. Na ten sam adres możesz też napisać w sprawie usunięcia konta, jeśli z ` +
+          `jakiegoś powodu nie możesz zrobić tego sam.`,
         "Po usunięciu danych z bazy mogą one jeszcze przez pewien czas znajdować się w kopiach " +
           "zapasowych naszych dostawców, które rotują się zgodnie z ich własnymi cyklami.",
       ],
@@ -388,10 +400,14 @@ const en: Policy = {
           "There is no grace period, and we keep no copy to give back to you.",
         "Replies other people wrote under your forum posts stay. They are their words, not " +
           "yours, and we have no right to delete them.",
-        `The app does not have a data export yet. We say so openly rather than promise a feature ` +
-          `that does not exist: write to ${CONTROLLER_EMAIL} and we will send you a copy of your ` +
-          `data by hand. You can also write to that address about deleting your account, if for ` +
-          `some reason you cannot do it yourself.`,
+        `You can download your data yourself, in Settings — "Download my data" hands you ` +
+          `everything we hold about you as a single JSON file. Photos are linked from it rather ` +
+          `than embedded: you fetch them while signed in. It contains no passwords and no Google ` +
+          `or Notion tokens — those are of no use to you, and a file holding them would be ` +
+          `dangerous to keep.`,
+        `If you would rather not, or something is broken, write to ${CONTROLLER_EMAIL} and we ` +
+          `will send a copy by hand. You can also write to that address about deleting your ` +
+          `account, if for some reason you cannot do it yourself.`,
         "After deletion from the database, data may persist for a while in our providers' " +
           "backups, which rotate on their own schedules.",
       ],
