@@ -94,14 +94,20 @@ export function satisfies(criterion: Criterion, workouts: WorkoutFacts[]): boole
   }
 }
 
+/** What a recompute changed, both directions. Levels are ascending. */
+export type RecomputeResult = { added: number[]; removed: number[] };
+
 /**
  * Recompute engine-managed completions for a user+activity.
- * Returns the newly auto-completed levels (ascending).
+ *
+ * The contract, in one line: a row with `source: "auto"` exists if and only if the
+ * user's workouts prove the criterion the engine can see *right now*. Manual rows
+ * are the user's own claim and are never touched, in either direction.
  */
 export async function recomputeAutoMilestones(
   userId: string,
   activityId: string
-): Promise<number[]> {
+): Promise<RecomputeResult> {
   const [milestones, workouts] = await Promise.all([
     prisma.milestone.findMany({
       where: { activityId },
@@ -120,17 +126,28 @@ export async function recomputeAutoMilestones(
   ]);
 
   const toCreate: { id: string; level: number }[] = [];
-  const toDelete: string[] = [];
+  const toDelete: { id: string; level: number }[] = [];
 
   for (const m of milestones) {
     const criterion = parseCriteria(m.criteriaJson);
-    if (!criterion) continue; // manual-only milestone
-    const proven = satisfies(criterion, workouts);
     const existing = m.completions[0];
+
+    if (!criterion) {
+      // The level is manual-only *now*. If the engine granted it earlier, it did so
+      // on the strength of a criterion that has since been removed from the seed —
+      // and nothing else will ever revisit it. Skipping here (as this loop used to)
+      // left the row on the account for good: a completion the engine still owns
+      // but can no longer justify. Take it back; a level the user actually earned by
+      // hand is a manual row and is not reachable from here.
+      if (existing?.source === "auto") toDelete.push({ id: m.id, level: m.level });
+      continue;
+    }
+
+    const proven = satisfies(criterion, workouts);
     if (proven && !existing) {
       toCreate.push({ id: m.id, level: m.level });
     } else if (!proven && existing?.source === "auto") {
-      toDelete.push(m.id);
+      toDelete.push({ id: m.id, level: m.level });
     }
   }
 
@@ -141,9 +158,17 @@ export async function recomputeAutoMilestones(
       })
     ),
     ...(toDelete.length > 0
-      ? [prisma.userMilestone.deleteMany({ where: { userId, milestoneId: { in: toDelete } } })]
+      ? [
+          prisma.userMilestone.deleteMany({
+            where: { userId, milestoneId: { in: toDelete.map((m) => m.id) } },
+          }),
+        ]
       : []),
   ]);
 
-  return toCreate.map((m) => m.level).sort((a, b) => a - b);
+  const asc = (a: number, b: number) => a - b;
+  return {
+    added: toCreate.map((m) => m.level).sort(asc),
+    removed: toDelete.map((m) => m.level).sort(asc),
+  };
 }

@@ -61,11 +61,13 @@ export async function addWorkout(input: z.input<typeof addSchema>): Promise<Work
     data: { userId, activityId: activity.id, date, distanceKm, durationMin, isRace, note: note || null },
   });
 
-  const newLevels = await recomputeAutoMilestones(userId, activity.id);
+  // Only `added` is surfaced: the form says "you reached level 12". A workout can
+  // never take a level away, so `removed` is empty here by construction.
+  const { added } = await recomputeAutoMilestones(userId, activity.id);
 
   revalidatePath("/activities");
   revalidatePath(`/activities/${activitySlug}`);
-  return { ok: true, newLevels };
+  return { ok: true, newLevels: added };
 }
 
 export async function deleteWorkout(id: string): Promise<WorkoutResult> {
