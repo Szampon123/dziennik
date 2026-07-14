@@ -10,6 +10,7 @@ import { NotionSettings } from "@/components/NotionSettings";
 import { ThemeSegmented } from "@/components/ThemeSegmented";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { DeleteAccount } from "@/components/DeleteAccount";
+import { EmailVerificationStatus } from "@/components/EmailVerificationStatus";
 import { prisma } from "@/lib/prisma";
 import { normalizeRole } from "@/lib/roles";
 import { getT } from "@/lib/i18n/server";
@@ -53,7 +54,7 @@ export default async function SettingsPage({
       // address instead. The server re-derives both and re-checks the answer.
       prisma.user.findUnique({
         where: { id: userId },
-        select: { email: true, passwordHash: true, role: true },
+        select: { email: true, passwordHash: true, role: true, emailVerified: true },
       }),
     ]);
   const banner = googleParam ? GOOGLE_BANNERS[googleParam] : undefined;
@@ -97,6 +98,7 @@ export default async function SettingsPage({
             <p className="text-[13px] text-neutral-500">{t("settings.account.loggedIn")}</p>
           </div>
         </div>
+        <EmailVerificationStatus verified={account?.emailVerified != null} />
         <p className="mt-3 text-[13px] text-neutral-500">{t("settings.account.privacy")}</p>
       </Card>
 

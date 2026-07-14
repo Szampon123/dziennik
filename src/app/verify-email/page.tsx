@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { auth } from "@/lib/auth";
 import { checkTokenValid } from "@/lib/verification";
 import { VERIFICATION_ERROR_KEY } from "@/lib/verification-errors";
 import { getT } from "@/lib/i18n/server";
@@ -38,12 +39,20 @@ export default async function VerifyEmailPage({ searchParams }: Props) {
     );
   }
 
-  const check = await checkTokenValid(email, token);
+  const [check, session] = await Promise.all([checkTokenValid(email, token), auth()]);
+
+  // Only send them into the app if the signed-in account is the one being
+  // verified. Someone signed in as A who opens B's link still gets B's address
+  // confirmed — the token, not the session, is the credential — but dropping
+  // them on A's /dzis with a "verified!" flash would describe the wrong account.
+  const signedInAsThisAddress =
+    session?.user?.email != null &&
+    session.user.email.trim().toLowerCase() === email.trim().toLowerCase();
 
   return (
     <AuthShell subtitle={t("auth.verifyTitle")}>
       {check.ok ? (
-        <VerifyEmailForm email={email} token={token} />
+        <VerifyEmailForm email={email} token={token} returnToApp={signedInAsThisAddress} />
       ) : (
         <>
           <p className="text-danger text-center">{t(VERIFICATION_ERROR_KEY[check.error])}</p>

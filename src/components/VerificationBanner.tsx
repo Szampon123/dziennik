@@ -1,16 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { resendVerificationEmail, type ResendFailure } from "@/actions/verification";
+import { resendVerificationEmail } from "@/actions/verification";
 import { useT } from "@/components/i18n/I18nProvider";
+import { RESEND_ERROR_KEY } from "@/lib/resend-errors";
 import type { MessageKey } from "@/lib/i18n/messages";
-
-const RESEND_ERROR_KEY: Record<ResendFailure, MessageKey> = {
-  rate: "auth.verifyTooManyRequests",
-  noEmail: "auth.verifyNoEmail",
-  sendFailed: "auth.verifySendFailed",
-  misconfigured: "auth.verifySendMisconfigured",
-};
 
 /** Soft reminder for credentials accounts with an unconfirmed address. */
 export function VerificationBanner() {
@@ -33,14 +27,14 @@ export function VerificationBanner() {
 
   if (sent) {
     return (
-      <div className="border-b border-emerald-200 bg-emerald-50 px-4 py-2 text-center text-sm text-emerald-800">
+      <div className="border-success/40 bg-success-bg text-success border-b px-4 py-2 text-center text-sm">
         {t("auth.verifyBannerSent")}
       </div>
     );
   }
 
   return (
-    <div className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-sm text-amber-800">
+    <div className="border-warning/40 bg-warning-bg text-warning border-b px-4 py-2 text-center text-sm">
       {t("auth.verifyBannerUnverified")}{" "}
       <button
         onClick={resend}

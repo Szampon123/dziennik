@@ -4,9 +4,14 @@ import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { requireUserId } from "@/lib/session";
 import { sendVerificationEmail, verifyEmailToken } from "@/lib/verification";
+import { revalidatePath } from "next/cache";
 import { rateLimitPersistent } from "@/lib/rate-limit-redis";
 import { clientIp } from "@/lib/client-ip";
 import type { VerificationErrorCode } from "@/lib/verification-errors";
+// Imported, never re-exported: 179cefc showed that a type re-exported from a
+// "use server" module survives the transform as a runtime identifier and throws
+// ReferenceError. Consumers import it from lib/resend-errors directly.
+import type { ResendFailure } from "@/lib/resend-errors";
 
 /**
  * Consume the token from a verification link. Public on purpose — the user
@@ -31,17 +36,19 @@ export async function confirmEmailVerification(input: {
     return { ok: false, error: "rate" };
   }
 
-  return verifyEmailToken(email, token);
-}
+  const result = await verifyEmailToken(email, token);
 
-/**
- * Why a resend failed. Rendered via RESEND_ERROR_KEY in the banner.
- *
- * "sendFailed" and "misconfigured" are both a failure to send, and they are kept
- * apart because they ask the reader for opposite things: one is worth retrying,
- * the other cannot be retried into working and would only burn the hourly budget.
- */
-export type ResendFailure = "rate" | "noEmail" | "sendFailed" | "misconfigured";
+  // The banner is rendered by the root layout from a fresh emailVerified read, so
+  // the stale thing after a successful confirm is the cached layout, not the row.
+  // "layout" from "/" purges the client Router Cache as well: without it the next
+  // navigation would replay the cached RSC payload and the banner would survive
+  // until a manual reload.
+  if (result.ok) {
+    revalidatePath("/", "layout");
+  }
+
+  return result;
+}
 
 /** Re-send the verification link to the signed-in user's own address. */
 export async function resendVerificationEmail(): Promise<
