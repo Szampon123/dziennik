@@ -15,7 +15,7 @@ export const activity = {
 
 export const { milestones, criteriaByLevel } = ladderC([
   // 1-10 · Pierwsze kroki
-  ["Rzuć kulą prosto i zbij choć jeden kręgiel", undefined, prog("wynik", 20)],
+  ["Rzuć kulą prosto i zbij choć jeden kręgiel (bowling pin)", undefined, prog("wynik", 20)],
   ["Zbij wszystkie kręgle w dwóch rzutach (spare) choć raz", undefined, prog("technika", 1)],
   ["Uzyskaj wynik 60 w grze", undefined, prog("wynik", 60)],
   ["Rzuć pierwszego strike'a", undefined, prog("seria", 1)],

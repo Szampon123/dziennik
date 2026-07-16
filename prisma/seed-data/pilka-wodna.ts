@@ -77,7 +77,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zagraj 300 meczów", undefined, prog("mecze", 300)],
   ["Zdobądź bramkę w meczu najwyższej ligi"],
   ["Zdobądź 1100 bramek łącznie", undefined, prog("bramki", 1100)],
-  ["Zostań podstawowym zawodnikiem zespołu Ekstraligi"],
+  ["Zostań kluczowym zawodnikiem zespołu Ekstraligi"],
   ["Zagraj 400 meczów", undefined, prog("mecze", 400)],
   ["Zdobądź 1300 bramek łącznie", undefined, prog("bramki", 1300)],
   ["Zostań najlepszym strzelcem rundy w swojej lidze"],
@@ -85,7 +85,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   // 66-85 · Wyczynowy
   ["Zdobądź 1500 bramek łącznie", undefined, prog("bramki", 1500)],
   ["Zagraj 500 meczów", undefined, prog("mecze", 500)],
-  ["Zostań podstawowym zawodnikiem najwyższej ligi"],
+  ["Zostań kluczowym zawodnikiem najwyższej ligi"],
   ["Zdobądź 1750 bramek łącznie", undefined, prog("bramki", 1750)],
   ["Zdobądź medal mistrzostw kraju"],
   ["Zagraj 600 meczów", undefined, prog("mecze", 600)],

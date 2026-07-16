@@ -117,5 +117,5 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Poprowadź kogoś przez zaawansowaną technikę przelotów"],
   ["Zdobądź złoto mistrzostw kraju amatorów"],
   ["Ustanów swój rekord życiowy w przelocie", undefined, prog("technika", 23)],
-  ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat przelotowy", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, rekordy) potwierdzają osobne certyfikaty."],
+  ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały doświadczenie w przelotach XC", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, rekordy) potwierdzają osobne certyfikaty."],
 ]);

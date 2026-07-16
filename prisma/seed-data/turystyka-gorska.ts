@@ -61,7 +61,7 @@ export const milestones = ladder([
   ["Ukończ wycieczkę z przewyższeniem 1500 m+"],
   ["Przejdź 100 km łącznie w jednym miesiącu"],
   ["Przejdź 35 km w terenie"],
-  ["Przejdź szlak z ekspozycją z łańcuchami (np. Orla Perć — fragment)", "Wymaga pewności kroku i braku lęku wysokości."],
+  ["Przejdź szlak eksponowany, z łańcuchami (np. Orla Perć — fragment)", "Wymaga pewności kroku i braku lęku wysokości."],
   ["Zdobądź 15 szczytów Korony Gór Polski"],
   // 46-65 · Zaawansowany
   ["Spędź 10 godzin w drodze na szlaku"],

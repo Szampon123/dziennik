@@ -14,7 +14,7 @@ export const activity = {
 
 export const { milestones, criteriaByLevel } = ladderC([
   // 1-10 · Pierwsze kroki
-  ["Opanuj pady (ukemi) w każdą stronę", undefined, prog("technika", 1)],
+  ["Opanuj upadki (ukemi) w każdą stronę", undefined, prog("technika", 1)],
   ["Wykonaj poprawny chwyt (kumi-kata) i postawę", undefined, prog("technika", 2)],
   ["Wykonaj pierwszy rzut (o-goshi lub o-soto-gari)", undefined, prog("technika", 3)],
   ["Zdobądź pas biały-żółty (6 kyu)", undefined, prog("pas", 1)],
@@ -47,7 +47,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Opanuj tokui-waza (swoją technikę specjalną) na wysokim poziomie", undefined, prog("technika", 12)],
   ["Zajmij miejsce na podium turnieju regionalnego"],
   ["Odbądź 80 walk", undefined, prog("walki", 80)],
-  ["Wykonaj dźwignię/duszenie kończące walkę (ippon submission)", undefined, prog("technika", 13)],
+  ["Wykonaj dźwignię (armlock)/duszenie kończące walkę (ippon submission)", undefined, prog("technika", 13)],
   ["Zdobądź minimum na mistrzostwa okręgu", undefined, prog("liga", 2)],
   ["Odbądź 100 walk", undefined, prog("walki", 100)],
   ["Wygraj walkę z posiadaczem czarnego pasa"],

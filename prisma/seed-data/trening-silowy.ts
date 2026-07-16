@@ -18,7 +18,7 @@ export const activity = {
 
 export const milestones = ladder([
   // 1-10 · Pierwsze kroki
-  ["Zrób 1 pełną pompkę", "Klatka do ziemi, pełny wyprost — bez kolan."],
+  ["Zrób 1 pełną pompkę", "Klatka piersiowa do ziemi, pełny wyprost — bez kolan."],
   ["Utrzymaj deskę (plank) przez 30 sekund"],
   ["Zrób 5 przysiadów z pełnym zakresem", "Biodra poniżej kolan."],
   ["Zrób 5 pompek"],
@@ -89,7 +89,7 @@ export const milestones = ladder([
   // 66-85 · Wyczynowy
   ["Martwy ciąg 2,25 × masy ciała (1RM)"],
   ["Zrób 20 podciągnięć", "Wynik z testów sprawnościowych jednostek specjalnych."],
-  ["Wyciskanie leżąc 1,5 × masy ciała (1RM)", "Poziom zaawansowany — ~top 5-10% trenujących."],
+  ["Wyciskanie leżąc 1,5 × masy ciała (1RM)", "Poziom zaawansowany — ~top 5-10% ćwiczących."],
   ["Przysiad 2,25 × masy ciała (1RM)"],
   ["Zrób muscle-up na drążku", "Podciągnięcie przechodzące w dip — combo siły i techniki."],
   ["OHP 0,95 × masy ciała (1RM)"],
@@ -121,7 +121,7 @@ export const milestones = ladder([
   ["Wyciskanie leżąc 2,1 × masy ciała (1RM)"],
   ["Martwy ciąg 3,5 × masy ciała (1RM)"],
   ["Zdobądź II klasę sportową lub wyżej w trójboju siłowym"],
-  ["Poziom mistrzowski: klasa I/M w federacji trójboju lub total 6 × masy ciała", "Total (przysiad+wyciskanie+ciąg) sześciokrotności masy ciała to poziom mistrzostw kraju."],
+  ["Poziom mistrzowski: klasa I/M w federacji trójboju lub total 6 × masy ciała", "Total (przysiad+wyciskanie+martwy ciąg) sześciokrotności masy ciała to poziom mistrzostw kraju."],
 ]);
 
 export const criteriaByLevel: Record<number, Criterion> = {

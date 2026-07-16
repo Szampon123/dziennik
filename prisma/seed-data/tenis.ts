@@ -32,7 +32,7 @@ export const milestones = ladder([
   ["Wymień 10 uderzeń z linii końcowej"],
   ["Traf serwisem od góry 3/10 pierwszych podań"],
   ["Rozegraj pierwszego pełnego seta"],
-  ["Wymień 20 uderzeń z linii końcowej"],
+  ["Rozegraj wymianę 20 uderzeń z linii końcowej"],
   ["Zagraj wolej forhendowy i bekhendowy przy siatce"],
   ["Traf serwisem 5/10 pierwszych podań", "Połowa pierwszych podań w korcie — NTRP ~2.5."],
   ["Rozegraj 5 meczów"],
@@ -40,7 +40,7 @@ export const milestones = ladder([
   ["Wymień 30 uderzeń z linii końcowej"],
   ["Graj 2 razy w tygodniu przez 8 kolejnych tygodni"],
   ["Wygraj pierwszego seta w meczu"],
-  ["Zagraj smecz po koźle"],
+  ["Zagraj smecz po odbiciu piłki od kortu"],
   ["Rozegraj 10 meczów"],
   // 26-45 · Średniozaawansowany
   ["Traf serwisem 6/10 pierwszych podań"],

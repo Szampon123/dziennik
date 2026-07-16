@@ -14,14 +14,14 @@ export const activity = {
 
 export const { milestones, criteriaByLevel } = ladderC([
   // 1-10 · Pierwsze kroki
-  ["Dosiądź konia i utrzymaj prawidłowy dosiad w stępie", undefined, prog("technika", 1)],
+  ["Dosiądź konia i utrzymaj prawidłowy dosiad w stępie (walk)", undefined, prog("technika", 1)],
   ["Kieruj koniem w stępie (skręty, zatrzymanie)", undefined, prog("technika", 2)],
   ["Jedź kłusem anglezowanym", undefined, prog("technika", 3)],
   ["Jedź kłusem ćwiczebnym (siedzącym) przez kilka kroków", undefined, prog("technika", 4)],
   ["Zagalopuj i utrzymaj galop przez okrążenie", undefined, prog("technika", 5)],
   ["Wykonaj przejścia stęp-kłus-galop płynnie", undefined, prog("technika", 6)],
   ["Przejedź kawaletki (drążki na ziemi) w kłusie", undefined, prog("skoki", 30)],
-  ["Pokonaj pierwszą przeszkodę (krzyżak, ~40 cm)", undefined, prog("skoki", 40)],
+  ["Pokonaj pierwszą przeszkodę (krzyż z dwóch skrzyżowanych drągów, ~40 cm)", undefined, prog("skoki", 40)],
   ["Zdobądź odznakę jeździecką (brązową) lub ukończ kurs podstawowy", undefined, prog("technika", 7)],
   ["Pokonaj przeszkodę 50 cm", undefined, prog("skoki", 50)],
   // 11-25 · Regularny

@@ -16,7 +16,7 @@ export const activity = {
 
 export const milestones = ladder([
   // 1-10 · Pierwsze kroki
-  ["Oddychaj z automatu pod wodą na basenie"],
+  ["Oddychaj z automatu oddechowego (regulatora) pod wodą na basenie"],
   ["Wyrównaj ciśnienie w uszach podczas zejścia"],
   ["Wyczyść maskę z wody pod wodą"],
   ["Odzyskaj automat spod wody"],

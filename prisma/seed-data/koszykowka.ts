@@ -15,14 +15,14 @@ export const activity = {
 
 export const milestones = ladder([
   // 1-10 · Pierwsze kroki
-  ["Traf do kosza z dowolnego miejsca", "Pierwszy swish (albo szczęśliwa deska)."],
+  ["Traf do kosza z dowolnego miejsca", "Pierwszy swish (albo szczęśliwy rzut z tablicy)."],
   ["Kozłuj piłkę 30 sekund prawą ręką bez utraty kontroli"],
   ["Traf rzut osobisty (z linii)"],
   ["Kozłuj piłkę 30 sekund lewą ręką"],
   ["Traf 3/10 rzutów osobistych"],
   ["Wykonaj poprawny dwutakt z prawej strony"],
   ["Kozłuj naprzemiennie (crossover) 10 razy bez utraty piłki"],
-  ["Traf 5/10 rzutów osobistych", "Połowa — poziom rekreacyjnego początku."],
+  ["Traf 5/10 rzutów osobistych (free throws)", "Połowa — poziom rekreacyjnego początku."],
   ["Wykonaj dwutakt z lewej strony"],
   ["Zagraj pierwszy mecz (streetball 3v3 lub hala)"],
   // 11-25 · Regularny
@@ -98,7 +98,7 @@ export const milestones = ladder([
   ["Awansuj z drużyną do wyższej klasy rozgrywkowej"],
   ["Zdobądź 2000 punktów łącznie"],
   ["Złap piłkę z powietrza i wyłóż ją do kosza (alley-oop lub tip-in) w meczu"],
-  ["Zagraj 50 meczów związkowych"],
+  ["Zagraj 50 oficjalnych meczów ligowych"],
   ["Wygraj puchar regionu lub równorzędne trofeum"],
   ["Zdobądź 30+ punktów w meczu związkowym"],
   ["Zagraj 500 meczów"],
@@ -111,7 +111,7 @@ export const milestones = ladder([
   ["Zagraj na poziomie II ligi"],
   ["Traf 50 rzutów osobistych z rzędu"],
   ["Zostań MVP sezonu swojej ligi"],
-  ["Zagraj 100 meczów związkowych"],
+  ["Zagraj 100 oficjalnych meczów ligowych"],
   ["Zagraj na poziomie I ligi"],
   ["Zdobądź 5000 punktów łącznie"],
   ["Zostań kluczowym zawodnikiem swojej drużyny przez cały sezon"],

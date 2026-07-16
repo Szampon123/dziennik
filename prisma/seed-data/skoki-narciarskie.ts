@@ -15,7 +15,7 @@ export const activity = {
 
 export const { milestones, criteriaByLevel } = ladderC([
   // 1-10 · Pierwsze kroki
-  ["Zjedź z najazdu i wyląduj na płaskim (bez skoczni)", undefined, prog("technika", 1)],
+  ["Zjedź z najazdu i wyląduj na płaskim (bez dużej skoczni)", undefined, prog("technika", 1)],
   ["Opanuj pozycję dojazdową (aerodynamiczny przysiad)", undefined, prog("technika", 2)],
   ["Wykonaj pierwszy skok na małej skoczni (do 10 m)", undefined, prog("odleglosc", 8)],
   ["Wyląduj poprawnie na telemark", undefined, prog("technika", 3)],

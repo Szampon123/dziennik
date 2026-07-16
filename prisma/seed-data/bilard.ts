@@ -21,7 +21,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Kontroluj bilę białą — zatrzymaj ją po uderzeniu (stun)", undefined, prog("technika", 3)],
   ["Wbij 3 bile pod rząd", undefined, prog("wbicia", 3)],
   ["Zagraj z odbiciem od bandy do łuzy", undefined, prog("technika", 4)],
-  ["Wbij 4 bile pod rząd", undefined, prog("wbicia", 4)],
+  ["Wbij do łuz 4 bile pod rząd", undefined, prog("wbicia", 4)],
   ["Rozegraj pełną partię 8-ball do końca", undefined, prog("technika", 5)],
   ["Wbij 5 bil pod rząd", undefined, prog("wbicia", 5)],
   // 11-25 · Regularny
@@ -38,7 +38,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wbij 10 bil pod rząd", undefined, prog("wbicia", 10)],
   ["Weź udział w pierwszym turnieju"],
   ["Rozbij i wbij bilę z rozbicia (breakowa łuza)", undefined, prog("technika", 10)],
-  ["Wbij 12 bil pod rząd", undefined, prog("wbicia", 12)],
+  ["Wbij do łuz 12 bil pod rząd", undefined, prog("wbicia", 12)],
   ["Wygraj partię 8-ball „z krzesła” (rozbicie do końca)"],
   // 26-45 · Średniozaawansowany
   ["Graj 2 razy w tygodniu przez 12 kolejnych tygodni", undefined, freq(2, 12)],
@@ -47,7 +47,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wbij 15 bil pod rząd", undefined, prog("wbicia", 15)],
   ["Zajmij miejsce w pierwszej połowie turnieju amatorskiego"],
   ["Wbij 16 bil pod rząd (pełen zestaw 9-ball ×2)", undefined, prog("wbicia", 16)],
-  ["Wykonaj zagranie z bandy z dokładnym pozycjonowaniem", undefined, prog("technika", 12)],
+  ["Wykonaj zagranie od bandy (cushion) z dokładnym pozycjonowaniem", undefined, prog("technika", 12)],
   ["Wbij 18 bil pod rząd", undefined, prog("wbicia", 18)],
   ["Wykonaj break-and-run w 9-ball", undefined, prog("technika", 13)],
   ["Wbij 20 bil pod rząd", undefined, prog("wbicia", 20)],

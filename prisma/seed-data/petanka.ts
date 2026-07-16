@@ -14,7 +14,7 @@ export const activity = {
 
 export const { milestones, criteriaByLevel } = ladderC([
   // 1-10 · Pierwsze kroki
-  ["Rzuć kulę tak, by dojechała w okolice świnki (cochonnet)", undefined, prog("pointing", 1)],
+  ["Rzuć bulę (kulę do petanki) tak, by dojechała w okolice świnki (cochonnet)", undefined, prog("pointing", 1)],
   ["Opanuj poprawny chwyt i postawę w kole", undefined, prog("technika", 1)],
   ["Dostaw kulę bliżej świnki niż przeciwnik (pointing)", undefined, prog("pointing", 2)],
   ["Rzuć kulę półwysoko (demi-portée)", undefined, prog("technika", 2)],
@@ -30,7 +30,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wybij kulę przeciwnika strzałem (tir) — trafienie", undefined, prog("shooting", 2)],
   ["Zagraj 5 meczów", undefined, prog("mecze", 5)],
   ["Ustaw kulę w promieniu 30 cm od świnki", undefined, prog("pointing", 4)],
-  ["Wykonaj carreau (strzał wybijający z pozostawieniem swojej kuli)", undefined, prog("shooting", 3)],
+  ["Wykonaj carreau (strzał wybijający z pozostawieniem swojej buli)", undefined, prog("shooting", 3)],
   ["Wygraj pierwszy mecz z realnym przeciwnikiem"],
   ["Zagraj 10 meczów", undefined, prog("mecze", 10)],
   ["Trafij strzałem 4/6 kul w serii", undefined, prog("shooting", 4)],

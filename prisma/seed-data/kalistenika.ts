@@ -116,9 +116,9 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zrób 20 muscle-upów pod rząd", undefined, prog("podciaganie", 75)],
   ["Wykonaj one-arm handstand push-up (próba)", undefined, prog("handstand", 40)],
   ["Wykonaj maltese 5 s", undefined, prog("planche", 15)],
-  ["Wykonaj kombinację elementów flagowych (planche → lever → flag)"],
+  ["Wykonaj kombinację kluczowych elementów sygnaturowych (planche → lever → flag)"],
   ["Wystąp w zawodach kalisteniki (freestyle/streetlifting) rangi krajowej"],
-  ["Poziom mistrzowski: pełen zestaw elementów flagowych + tytuł zawodów", "Planche, front lever, maltese, one-arm — szczyt kalisteniki."],
+  ["Poziom mistrzowski: pełen zestaw kluczowych elementów sygnaturowych + tytuł zawodów", "Planche, front lever, maltese, one-arm — szczyt kalisteniki."],
 ]);
 
 // ---------------------------------------------------------------------------

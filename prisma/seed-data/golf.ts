@@ -17,7 +17,7 @@ export const activity = {
 
 export const milestones = ladder([
   // 1-10 · Pierwsze kroki
-  ["Traf piłkę czysto na driving range", "Kontakt z piłką w środku główki — początek wszystkiego."],
+  ["Traf piłkę czysto na driving range", "Kontakt z piłką w sweet spocie główki kija — początek wszystkiego."],
   ["Wybij 50 piłek na driving range w jednej sesji"],
   ["Wykonaj putt do dołka z 1 metra"],
   ["Traf 10 kolejnych piłek czysto żelazem"],
@@ -41,7 +41,7 @@ export const milestones = ladder([
   ["Zagraj 10 rund"],
   ["Traf puttem z 3 m 4/10"],
   ["Zrób pierwszego para na dołku", "Wynik zgodny z założeniem pola."],
-  ["Wybij driverem 175 m"],
+  ["Uderz piłkę driverem na 175 m"],
   ["Złam 105 na 18 dołkach"],
   // 26-45 · Średniozaawansowany
   ["Zagraj 20 rund"],

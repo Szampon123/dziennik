@@ -22,7 +22,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wykonaj zwrot przez rufę", undefined, prog("technika", 5)],
   ["Płyń pod wiatr (ostro na wiatr)", undefined, prog("technika", 6)],
   ["Kontroluj kurs w obie strony i wracaj do punktu startu", undefined, prog("technika", 7)],
-  ["Popłyń przy wietrze 3-4°B bez wywrotki", undefined, prog("technika", 8)],
+  ["Popłyń przy wietrze 3-4°B bez wywrócenia się", undefined, prog("technika", 8)],
   ["Opanuj pozycję z wypięciem bioder (rozpoczęcie trapezu)", undefined, prog("technika", 9)],
   ["Popływaj łącznie 10 godzin na wodzie", undefined, prog("godziny", 10)],
   // 11-25 · Regularny

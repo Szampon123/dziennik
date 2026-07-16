@@ -14,7 +14,7 @@ export const activity = {
 
 export const { milestones, criteriaByLevel } = ladderC([
   // 1-10 · Pierwsze kroki
-  ["Opanuj kontrolę sprzęgła, gazu i hamulców w terenie", undefined, prog("technika", 1)],
+  ["Opanuj kontrolę sprzęgła, gazu i hamulców w terenie (off-road)", undefined, prog("technika", 1)],
   ["Jedź pewnie w pozycji stojącej na podnóżkach", undefined, prog("technika", 2)],
   ["Pokonaj zakręt w koleinie (rut) z kontrolą", undefined, prog("technika", 3)],
   ["Pokonaj małą hopę z lądowaniem na obu kołach", undefined, prog("technika", 4)],

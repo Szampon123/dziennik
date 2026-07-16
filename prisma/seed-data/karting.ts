@@ -38,7 +38,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wystartuj w klubowych mistrzostwach", undefined, prog("liga", 2)],
   ["Ukończ 30 wyścigów", undefined, prog("wyscigi", 30)],
   ["Zajmij miejsce w pierwszej połowie wyścigu rangi klubowej"],
-  ["Opanuj obronę pozycji i czystą walkę koło w koło", undefined, prog("technika", 13)],
+  ["Opanuj obronę pozycji i czystą walkę koło przy kole", undefined, prog("technika", 13)],
   ["Ukończ 45 wyścigów", undefined, prog("wyscigi", 45)],
   // 26-45 · Średniozaawansowany
   ["Trenuj i ścigaj się systematycznie przez sezon", undefined, freq(2, 12)],

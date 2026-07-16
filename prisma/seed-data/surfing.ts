@@ -22,7 +22,7 @@ export const milestones = ladder([
   ["Utrzymaj się na desce przez 3 sekundy jadąc prosto"],
   ["Przejedź całą białą pianę do brzegu na stojąco"],
   ["Samodzielnie złap falę bez popchnięcia"],
-  ["Wypłyń za strefę załamania (line-up)"],
+  ["Wiosłuj za strefę załamania fal (line-up)"],
   ["Złap nierozbitą, zieloną falę"],
   ["Przejedź zieloną falę w linii prostej", "Pierwszy prawdziwy surf."],
   // 11-25 · Regularny

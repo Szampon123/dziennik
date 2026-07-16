@@ -23,7 +23,7 @@ export const milestones = ladder([
   ["Utrzymaj kurs względem wiatru przez 10 minut"],
   ["Postaw i zrzuć żagle samodzielnie"],
   ["Wykonaj manewr „człowiek za burtą” na spokojnej wodzie"],
-  ["Zacumuj i odbij od kei bez uderzenia"],
+  ["Zacumuj i odejdź od nabrzeża bez uderzenia"],
   ["Przepłyń samodzielnie krótką trasę na jeziorze"],
   ["Zdaj egzamin na patent żeglarza jachtowego", "Podstawowy stopień w Polsce."],
   // 11-25 · Regularny

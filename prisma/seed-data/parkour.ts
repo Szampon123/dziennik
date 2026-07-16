@@ -39,7 +39,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wykonaj precyzję na 3 m", undefined, prog("skok", 300)],
   ["Wykonaj kong vault przez dłuższą przeszkodę", undefined, prog("ruch", 13)],
   ["Wykonaj drop (zeskok) z 2 m z rollem", undefined, prog("ruch", 14)],
-  ["Weź udział w jamie / spotkaniu społeczności parkour"],
+  ["Weź udział w spotkaniu społeczności parkour (parkour jam)"],
   ["Wykonaj 60 sesji", undefined, prog("sesje", 60)],
   // 26-45 · Średniozaawansowany
   ["Trenuj 3 razy w tygodniu przez 12 kolejnych tygodni", undefined, freq(3, 12)],

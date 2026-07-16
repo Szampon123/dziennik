@@ -16,7 +16,7 @@ export const activity = {
 
 export const milestones = ladder([
   // 1-10 · Pierwsze kroki
-  ["Poprawnie napnij łuk i przyjmij postawę strzelecką"],
+  ["Poprawnie naciągnij łuk (draw) i przyjmij postawę strzelecką"],
   ["Wypuść pierwszą strzałę bezpiecznie w matę"],
   ["Trafij w tarczę z 5 metrów"],
   ["Opanuj pełną sekwencję strzału (postawa → ściąg → kotwica → luz)"],
@@ -49,7 +49,7 @@ export const milestones = ladder([
   ["Zdobądź 550/720 w rundzie WA 720"],
   ["Zajmij miejsce w pierwszej połowie zawodów regionalnych"],
   ["Zdobądź 560/720 w rundzie WA 720"],
-  ["Ustrzelaj czystą serię (wszystkie strzały w tarczy) na 70 m"],
+  ["Ustrzelaj czystą rundę (wszystkie strzały w tarczy) na 70 m"],
   ["Zdobądź 570/720 w rundzie WA 720"],
   ["Wykonaj pełen dystans zawodów bez strzału poza tarczę"],
   ["Zdobądź 580/720 w rundzie WA 720", "Poziom solidnego zawodnika klubowego."],
@@ -74,7 +74,7 @@ export const milestones = ladder([
   ["Zdobądź 640/720 w rundzie WA 720"],
   ["Utrzymaj wynik 630+ w dwóch różnych zawodach"],
   ["Zdobądź 645/720 w rundzie WA 720"],
-  ["Ustrzelaj serię 60/60 (dziesięć strzał w 10) na 18 m"],
+  ["Ustrzelaj rundę 60/60 (dziesięć strzał w 10) na 18 m"],
   ["Zdobądź 650/720 w rundzie WA 720", "Poziom krajowej czołówki."],
   ["Zdobądź medal mistrzostw kraju seniorów"],
   ["Zdobądź 655/720 w rundzie WA 720"],

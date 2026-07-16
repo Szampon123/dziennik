@@ -23,7 +23,7 @@ export const milestones = ladder([
   ["Trafializuj bramkę 5 razy z rzędu z 11 m (pusta bramka)"],
   ["Prowadź piłkę slalomem między 5 pachołkami"],
   ["Podbij piłkę 15 razy z rzędu"],
-  ["Zagraj pierwszy mecz (orlik, hala, boisko)", "Dowolny format — 5v5 się liczy."],
+  ["Zagraj pierwszy mecz (małe boisko lub hala)", "Dowolny format — 5v5 się liczy."],
   ["Podbij piłkę 20 razy z rzędu"],
   // 11-25 · Regularny
   ["Graj lub trenuj raz w tygodniu przez 4 kolejne tygodnie"],
@@ -31,7 +31,7 @@ export const milestones = ladder([
   ["Wykonaj 10 celnych podań słabszą nogą z 10 m"],
   ["Zagraj 5 meczów"],
   ["Przyjmij piłkę z powietrza w jednym kontakcie 5 razy z rzędu"],
-  ["Podbij piłkę 50 razy z rzędu", "Symboliczna „pięćdziesiątka” każdego podwórka."],
+  ["Żongluj piłką 50 razy z rzędu", "Symboliczna „pięćdziesiątka” każdego podwórka."],
   ["Trafializuj z 16 m w światło bramki 7/10 strzałów"],
   ["Zagraj 10 meczów"],
   ["Wykonaj zwód (np. przełożenie) skutecznie w meczu"],
@@ -60,7 +60,7 @@ export const milestones = ladder([
   ["Podbij piłkę 300 razy z rzędu"],
   ["Strzel 10 goli łącznie"],
   ["Zagraj mecz na pełnowymiarowym boisku (11v11)"],
-  ["Wygraj lokalny turniej amatorski (orlik/hala) ze swoją drużyną"],
+  ["Wygraj lokalny turniej amatorski (małe boisko lub hala) ze swoją drużyną"],
   ["Zagraj 75 meczów"],
   // 46-65 · Zaawansowany
   ["Żongluj w chodzie 50 m bez upuszczenia piłki"],
@@ -103,7 +103,7 @@ export const milestones = ladder([
   ["Rozegraj sezon na poziomie A-klasy lub wyższym jako podstawowy zawodnik"],
   ["Strzel 200 goli łącznie"],
   ["Zagraj na poziomie ligi okręgowej"],
-  ["Rozegraj 100 meczów związkowych"],
+  ["Rozegraj 100 oficjalnych meczów ligowych"],
   // 86-99 · Elita
   ["Zagraj na poziomie IV ligi"],
   ["Strzel gola na poziomie IV ligi lub wyższym"],

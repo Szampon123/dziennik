@@ -15,7 +15,7 @@ export const activity = {
 
 export const { milestones, criteriaByLevel } = ladderC([
   // 1-10 · Pierwsze kroki
-  ["Wykonaj przewrót w przód", undefined, prog("akro", 1)],
+  ["Wykonaj przewrót w przód (roll)", undefined, prog("akro", 1)],
   ["Wykonaj przewrót w tył", undefined, prog("akro", 2)],
   ["Utrzymaj świecę (stanie na łopatkach) przez 10 s", undefined, prog("sila", 1)],
   ["Wykonaj stanie na rękach przy ścianie (20 s)", undefined, prog("handstand", 1)],
@@ -39,7 +39,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wykonaj szpagat poprzeczny (pełny)", undefined, prog("gibkosc", 5)],
   ["Utrzymaj L-sit przez 20 s", undefined, prog("sila", 6)],
   ["Wykonaj przerzut w przód swobodny (front walkover)", undefined, prog("akro", 9)],
-  ["Zaprezentuj układ na zajęciach lub pokazie"],
+  ["Zaprezentuj układ gimnastyczny (rutynę) na zajęciach lub pokazie"],
   ["Wykonaj flik-flak wspomagany (back handspring z asekuracją)", undefined, prog("akro", 10)],
   // 26-45 · Średniozaawansowany
   ["Trenuj 3 razy w tygodniu przez 12 kolejnych tygodni", undefined, freq(3, 12)],
@@ -86,7 +86,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   // 66-85 · Wyczynowy
   ["Wykonaj pełen układ na dwóch przyrządach", undefined, prog("przyrzad", 2)],
   ["Wykonaj podwójne salto wyprostowane (double layout)", undefined, prog("akro", 33)],
-  ["Utrzymaj stanie na rękach na kółkach lub jednej ręce (próba)", undefined, prog("handstand", 18)],
+  ["Utrzymaj stanie na rękach na obręczach gimnastycznych (rings) lub jednej ręce (próba)", undefined, prog("handstand", 18)],
   ["Zdobądź medal mistrzostw kraju juniorów"],
   ["Wykonaj podwójne salto ze śrubą (full-in / double back full)", undefined, prog("akro", 34)],
   ["Wykonaj pełne układy na trzech przyrządach", undefined, prog("przyrzad", 3)],
@@ -111,7 +111,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź podium mistrzostw kraju amatorów"],
   ["Uzyskaj notę wieloboju na wysokim, krajowym poziomie"],
   ["Zajmij miejsce w czołówce mistrzostw kraju amatorów"],
-  ["Zajmij miejsce w finale przyrządowym mistrzostw kraju"],
+  ["Zajmij miejsce w finale na przyrządzie (apparatus) mistrzostw kraju"],
   ["Zdobądź medal mistrzostw kraju amatorów na przyrządzie"],
   ["Zdobądź medal wieloboju mistrzostw kraju amatorów"],
   ["Poprowadź kogoś przez zaawansowane elementy techniczne"],

@@ -14,7 +14,7 @@ export const activity = {
 
 export const { milestones, criteriaByLevel } = ladderC([
   // 1-10 · Pierwsze kroki
-  ["Utrzymaj równowagę w wyślizgu z kamieniem (podstawowa pozycja)", undefined, prog("technika", 1)],
+  ["Utrzymaj równowagę podczas ślizgu z kamieniem curlingowym (podstawowa pozycja)", undefined, prog("technika", 1)],
   ["Wypuść kamień tak, by dojechał do domu (house)", undefined, prog("technika", 2)],
   ["Opanuj poprawne szczotkowanie (sweeping)", undefined, prog("technika", 3)],
   ["Nadaj kamieniowi rotację (in-turn / out-turn)", undefined, prog("technika", 4)],

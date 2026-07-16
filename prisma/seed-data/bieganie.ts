@@ -60,7 +60,7 @@ export const milestones: MilestoneSeed[] = [
   { level: 29, title: "Przebiegnij 10 km poniżej 65 minut", detail: "Tempo 6:30/km utrzymane przez godzinę." },
   { level: 30, title: "Przebiegnij 25 km łącznie w jednym tygodniu", detail: "Kilometraż typowy dla przygotowań do dłuższych dystansów." },
   { level: 31, title: "Przebiegnij 5 km poniżej 27 minut", detail: "Tempo 5:24/km." },
-  { level: 32, title: "Przebiegnij 10 km poniżej 60 minut", detail: "Złamanie godziny na dyszce — klasyczny cel amatora. Blisko mediany biegaczy 10 km." },
+  { level: 32, title: "Przebiegnij 10 km poniżej 60 minut", detail: "Złamanie godziny na dziesiątce (10 km) — klasyczny cel amatora. Blisko mediany biegaczy 10 km." },
   { level: 33, title: "Przebiegnij 15 km bez zatrzymania", detail: "Trzy czwarte półmaratonu." },
   { level: 34, title: "Przebiegnij 100 km łącznie w jednym miesiącu", detail: "Setka w miesiąc — próg „poważnego amatora”." },
   { level: 35, title: "Przebiegnij 5 km poniżej 26 minut", detail: "Tempo 5:12/km." },

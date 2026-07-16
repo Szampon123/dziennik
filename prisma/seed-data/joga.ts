@@ -100,7 +100,7 @@ export const milestones = ladder([
   ["Ukończ 1000 sesji jogi", "Cztery cyfry na maciе."],
   ["Utrzymaj stanie na rękach przez 60 sekund"],
   ["Praktykuj 365 dni z rzędu", "Rok bez ani jednego dnia przerwy."],
-  ["Wykonaj przejście kruk → stanie na rękach"],
+  ["Wykonaj przejście z pozycji kruka (bakasana, crow pose) → stanie na rękach"],
   ["Wykonaj skorpiona (vrschikasana) w pinche"],
   ["Ukończ 1250 sesji jogi"],
   ["Wykonaj pełną kapotasanę (królewski gołąb w moście)"],

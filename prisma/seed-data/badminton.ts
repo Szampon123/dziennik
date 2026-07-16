@@ -15,7 +15,7 @@ export const activity = {
 
 export const milestones = ladder([
   // 1-10 · Pierwsze kroki
-  ["Odbij lotkę rakietą 10 razy w górę"],
+  ["Odbij lotkę rakietką 10 razy w górę"],
   ["Wymień z partnerem 5 uderzeń bez upadku lotki"],
   ["Wykonaj prawidłowy serwis krótki (bekhendowy)"],
   ["Wymień 10 uderzeń"],

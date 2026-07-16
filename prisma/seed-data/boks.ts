@@ -110,7 +110,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Stocz 40 walk klubowych/turniejowych", undefined, prog("walki", 800)],
   ["Wygraj walkę z uznanym, doświadczonym rywalem krajowym"],
   ["Zdobądź status najlepszego zawodnika swojej kategorii wagowej w kraju"],
-  ["Obroń tytuł wielokrotnie (3+ obrony)"],
+  ["Obroń tytuł wielokrotnie (3+ obrony tytułu)"],
   ["Zdobądź tytuł w drugiej kategorii wagowej"],
   ["Stocz 45 walk klubowych/turniejowych", undefined, prog("walki", 850)],
   ["Poprowadź własny klub / grupę treningową przez dłuższy czas"],

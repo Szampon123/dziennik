@@ -38,7 +38,7 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zbij break 70 punktów", undefined, prog("break", 70)],
   ["Wygraj mecz (best of 3 frejmy)"],
   ["Zbij break 80 punktów", undefined, prog("break", 80)],
-  ["Opanuj rozbicie kupki czerwonych z kontrolą białej", undefined, prog("technika", 9)],
+  ["Opanuj rozbicie piramidy czerwonych (break) z kontrolą białej", undefined, prog("technika", 9)],
   ["Zbij break 90 punktów", undefined, prog("break", 90)],
   // 26-45 · Średniozaawansowany
   ["Graj 2 razy w tygodniu przez 12 kolejnych tygodni", undefined, freq(2, 12)],
