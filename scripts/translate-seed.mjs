@@ -14,6 +14,16 @@
 //   --force     Re-translate rows that already have a translation. See the
 //               warning under BILLING before using this.
 //   --limit=N   Only process the first N source strings (smoke tests).
+//   --sport=slug[,slug]
+//               Restrict to one or more activities by slug (e.g.
+//               --sport=plywanie,lyzwiarstwo-figurowe). Without it, the whole
+//               untranslated backlog is processed. Unknown slugs abort.
+//   --targets=lang[,lang]
+//               Which languages to fill: en, de, es (default all three). Bills
+//               source × (number of targets), so --targets=en costs a third of
+//               the full run. Lets the seed be translated in monthly stages
+//               within the renewable F0 grant. A row is "done" per language, so
+//               a later --targets=de run still finds rows even if English is set.
 //
 // ── BILLING ────────────────────────────────────────────────────────────────
 // Azure bills source characters × number of target languages. The full seed is
@@ -34,25 +44,53 @@ const prisma = new PrismaClient();
 const ENDPOINT =
   process.env.MICROSOFT_TRANSLATOR_ENDPOINT ?? "https://api.cognitive.microsofttranslator.com/translate";
 const SOURCE = "pl";
-const TARGETS = ["en", "de", "es"];
+
+const args = process.argv.slice(2);
+const DRY_RUN = args.includes("--dry-run");
+const FORCE = args.includes("--force");
+const LIMIT = Number(args.find((a) => a.startsWith("--limit="))?.split("=")[1] ?? 0) || 0;
+const SPORTS = (args.find((a) => a.startsWith("--sport="))?.split("=")[1] ?? "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+// The languages this run fills. Defaults to all three, but the seed is
+// translated in monthly stages within the renewable F0 grant (e.g. --targets=en
+// this month, --targets=de the next), so the active set must be selectable. Each
+// field's translation column is `field + LANG_SUFFIX[lang]` (e.g. name + En).
+const LANG_SUFFIX = { en: "En", de: "De", es: "Es" };
+const TARGETS = (() => {
+  const raw = args.find((a) => a.startsWith("--targets="))?.split("=")[1];
+  if (!raw) return Object.keys(LANG_SUFFIX);
+  const list = raw
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+  const bad = list.filter((t) => !(t in LANG_SUFFIX));
+  if (bad.length) {
+    console.error(`Unknown --targets: ${bad.join(", ")}. Valid: ${Object.keys(LANG_SUFFIX).join(", ")}`);
+    process.exit(1);
+  }
+  return list;
+})();
 
 // Azure caps a request at 1,000 array elements and 50,000 characters. The
 // character cap is documented against the request body, but billing counts
 // source × targets — so we budget against the billed figure, which is the
 // conservative reading and safe under either interpretation.
 const MAX_ELEMENTS = 1000;
-const MAX_BILLED_CHARS_PER_REQUEST = 50_000;
+// 50,000 is Azure's absolute per-request body cap (all tiers), but the F0 free
+// tier separately rejects any single request that bills more than ~15,000
+// characters (source × targets) with 429001 — measured: 15k billed succeeds,
+// 30k fails hard even after backoff. Cap well under that so F0 accepts every
+// request; the throttle below then paces the requests across time.
+const MAX_BILLED_CHARS_PER_REQUEST = 12_000;
 const MAX_SOURCE_CHARS_PER_REQUEST = Math.floor(MAX_BILLED_CHARS_PER_REQUEST / TARGETS.length);
 
 // Even-consumption target for F0 (~2M billed chars/hour).
 const BILLED_CHARS_PER_MINUTE = 33_000;
 
 const MAX_ATTEMPTS = 6;
-
-const args = process.argv.slice(2);
-const DRY_RUN = args.includes("--dry-run");
-const FORCE = args.includes("--force");
-const LIMIT = Number(args.find((a) => a.startsWith("--limit="))?.split("=")[1] ?? 0) || 0;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -148,25 +186,56 @@ async function translateBatch(texts, key, region) {
 
 /** Collect every (row, field) still needing a translation. */
 async function collectWork() {
-  const activityWhere = FORCE ? {} : { nameEn: null };
-  const activities = await prisma.activity.findMany({
-    where: activityWhere,
-    select: { id: true, name: true },
-  });
+  // Optional --sport scope: resolve slugs to activity ids and constrain both
+  // queries. An unknown slug is almost always a typo that would silently
+  // translate nothing, so abort loudly instead.
+  let activityIds = null;
+  if (SPORTS.length) {
+    const scoped = await prisma.activity.findMany({
+      where: { slug: { in: SPORTS } },
+      select: { id: true, slug: true },
+    });
+    const found = new Set(scoped.map((a) => a.slug));
+    const missing = SPORTS.filter((s) => !found.has(s));
+    if (missing.length) {
+      console.error(`Unknown --sport slug(s): ${missing.join(", ")}`);
+      process.exit(1);
+    }
+    activityIds = scoped.map((a) => a.id);
+  }
 
+  // A (row, field) needs work when any active target's column is still null (or
+  // always, under --force). Staged runs fill one language at a time, so English
+  // can't be the sentinel — each active target is checked on its own column.
+  const needs = (row, field) => FORCE || TARGETS.some((lang) => row[field + LANG_SUFFIX[lang]] == null);
+
+  const activities = await prisma.activity.findMany({
+    where: activityIds ? { id: { in: activityIds } } : {},
+    select: { id: true, name: true, nameEn: true, nameDe: true, nameEs: true },
+  });
   const milestones = await prisma.milestone.findMany({
-    where: FORCE ? {} : { OR: [{ titleEn: null }, { AND: [{ detail: { not: null } }, { detailEn: null }] }] },
-    select: { id: true, title: true, titleEn: true, detail: true, detailEn: true },
+    where: activityIds ? { activityId: { in: activityIds } } : {},
+    select: {
+      id: true,
+      title: true,
+      titleEn: true,
+      titleDe: true,
+      titleEs: true,
+      detail: true,
+      detailEn: true,
+      detailDe: true,
+      detailEs: true,
+    },
   });
 
   /** @type {{table:'activity'|'milestone', id:string, field:'name'|'title'|'detail', text:string}[]} */
   const work = [];
-  for (const a of activities) work.push({ table: "activity", id: a.id, field: "name", text: a.name });
+  for (const a of activities) {
+    if (needs(a, "name")) work.push({ table: "activity", id: a.id, field: "name", text: a.name });
+  }
   for (const m of milestones) {
-    if (FORCE || m.titleEn === null) {
-      work.push({ table: "milestone", id: m.id, field: "title", text: m.title });
-    }
-    if (m.detail && (FORCE || m.detailEn === null)) {
+    if (needs(m, "title")) work.push({ table: "milestone", id: m.id, field: "title", text: m.title });
+    if (m.detail && needs(m, "detail")) {
       work.push({ table: "milestone", id: m.id, field: "detail", text: m.detail });
     }
   }
@@ -209,34 +278,23 @@ function makeBatches(texts) {
 
 /** Persist one text's translations to every row that shares that text. */
 async function writeBack(items, tr) {
+  // Only the active TARGETS are written; a staged run must not touch the columns
+  // for languages it didn't translate (tr has no entry for them).
+  const dataFor = (field) => Object.fromEntries(TARGETS.map((lang) => [field + LANG_SUFFIX[lang], tr[lang]]));
+
   const activityIds = items.filter((i) => i.table === "activity").map((i) => i.id);
   const titleIds = items.filter((i) => i.table === "milestone" && i.field === "title").map((i) => i.id);
   const detailIds = items.filter((i) => i.table === "milestone" && i.field === "detail").map((i) => i.id);
 
   const ops = [];
   if (activityIds.length) {
-    ops.push(
-      prisma.activity.updateMany({
-        where: { id: { in: activityIds } },
-        data: { nameEn: tr.en, nameDe: tr.de, nameEs: tr.es },
-      })
-    );
+    ops.push(prisma.activity.updateMany({ where: { id: { in: activityIds } }, data: dataFor("name") }));
   }
   if (titleIds.length) {
-    ops.push(
-      prisma.milestone.updateMany({
-        where: { id: { in: titleIds } },
-        data: { titleEn: tr.en, titleDe: tr.de, titleEs: tr.es },
-      })
-    );
+    ops.push(prisma.milestone.updateMany({ where: { id: { in: titleIds } }, data: dataFor("title") }));
   }
   if (detailIds.length) {
-    ops.push(
-      prisma.milestone.updateMany({
-        where: { id: { in: detailIds } },
-        data: { detailEn: tr.en, detailDe: tr.de, detailEs: tr.es },
-      })
-    );
+    ops.push(prisma.milestone.updateMany({ where: { id: { in: detailIds } }, data: dataFor("detail") }));
   }
   if (ops.length) await prisma.$transaction(ops);
 }
