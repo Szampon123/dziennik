@@ -15,14 +15,14 @@ export const activity = {
 
 export const milestones = ladder([
   // 1-10 · Pierwsze kroki
-  ["Odbij piłkę sposobem górnym (overhand) 5 razy z rzędu (nad sobą)"],
+  ["Wykonaj odbicie górne (overhand pass) 5 razy z rzędu (nad sobą)"],
   ["Odbij piłkę sposobem dolnym 5 razy z rzędu"],
-  ["Odbij sposobem górnym 10 razy z rzędu"],
+  ["Wykonaj odbicie górne (overhand pass) 10 razy z rzędu"],
   ["Przebij zagrywkę dolną przez siatkę"],
   ["Odbij sposobem dolnym 10 razy z rzędu"],
   ["Traf zagrywką dolną w boisko 5/10"],
   ["Odbij naprzemiennie góra-dół 10 razy"],
-  ["Odbij sposobem górnym 25 razy z rzędu"],
+  ["Wykonaj odbicie górne (overhand pass) 25 razy z rzędu"],
   ["Zagraj pierwszy mecz (plaża, hala, rekreacja)"],
   ["Przebij zagrywkę tenisową (górną) przez siatkę"],
   // 11-25 · Regularny
@@ -31,7 +31,7 @@ export const milestones = ladder([
   ["Traf zagrywką tenisową w boisko 5/10"],
   ["Wystaw piłkę partnerowi do ataku (celna wystawa 5 razy z rzędu)"],
   ["Zagraj 5 meczów"],
-  ["Odbij sposobem górnym 50 razy z rzędu"],
+  ["Wykonaj odbicie górne (overhand pass) 50 razy z rzędu"],
   ["Przyjmij zagrywkę na wystawę (dokładne dojście do rozgrywającego)"],
   ["Traf zagrywką w boisko 7/10"],
   ["Zagraj 10 meczów"],
@@ -43,7 +43,7 @@ export const milestones = ladder([
   ["Zagraj 20 meczów"],
   // 26-45 · Średniozaawansowany
   ["Traf zagrywką w wybraną połowę boiska 6/10", "Zagrywka kierunkowa — początek taktyki."],
-  ["Odbij sposobem górnym 100 razy z rzędu"],
+  ["Wykonaj odbicie górne (overhand pass) 100 razy z rzędu"],
   ["Zbij skutecznie w meczu 3 razy"],
   ["Wykonaj pojedynczy blok w meczu"],
   ["Zagraj 35 meczów"],

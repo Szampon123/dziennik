@@ -14,7 +14,7 @@ export const activity = {
 
 export const { milestones, criteriaByLevel } = ladderC([
   // 1-10 · Pierwsze kroki
-  ["Rzuć bulę (kulę do petanki) tak, by dojechała w okolice świnki (cochonnet)", undefined, prog("pointing", 1)],
+  ["Rzuć bulę (boule) tak, by dojechała w okolice świnki (cochonnet)", undefined, prog("pointing", 1)],
   ["Opanuj poprawny chwyt i postawę w kole", undefined, prog("technika", 1)],
   ["Dostaw kulę bliżej świnki niż przeciwnik (pointing)", undefined, prog("pointing", 2)],
   ["Rzuć kulę półwysoko (demi-portée)", undefined, prog("technika", 2)],
