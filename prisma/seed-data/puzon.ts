@@ -67,12 +67,12 @@ export const { activity, milestones, criteriaByLevel, videoByLevel } = buildInst
     {
       piece: "«Go Down Moses»",
       note: "Spiritual w niskim rejestrze — próba głębokiego, pełnego dźwięku.",
-      video: { yt: "cwEervM2VVQ", tut: "Go Down Moses trombone" },
+      video: { yt: "fHB6RjnaXrk", tut: "Go Down Moses trombone" },
     },
     {
       piece: "«Marsz triumfalny z „Aidy”» — temat (Verdi)",
       note: "Zwieńczenie etapu regularnego: uroczysta, fanfarowa melodia.",
-      video: { yt: "0zyjeUbXL_4", tut: "Aida Triumphal March trombone brass" },
+      video: { yt: "f53LAGWz7cs", tut: "Aida Triumphal March trombone brass" },
     },
     {
       piece: "«What a Wonderful World»",

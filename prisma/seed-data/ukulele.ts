@@ -120,7 +120,7 @@ export const { activity, milestones, criteriaByLevel, videoByLevel } = buildInst
     {
       piece: "«Spain» (Chick Corea) — aranż. Jake'a Shimabukuro",
       note: "Repertuarowy szczyt ukulelisty — szybkie pasaże i wymagająca rytmika.",
-      video: { yt: "UEO6NpyWpS0", tut: "Spain Chick Corea ukulele tutorial" },
+      video: { yt: "v4Y_wBxPZjQ", tut: "Spain Chick Corea ukulele tutorial" },
     },
   ]
 );

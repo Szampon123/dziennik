@@ -34,7 +34,7 @@ export const { activity, milestones, criteriaByLevel, videoByLevel } = buildInst
     "Opanuj gamy durowe do kilku znaków",
     {
       title: "Kontroluj barwę i dynamikę dźwięku",
-      video: { yt: "hRCWrD090qw", tut: "flute vibrato how to lesson" },
+      video: { yt: "LdRUMApvoNo", tut: "flute dynamics tone colour lesson" },
     },
     "Zagraj utwór z akompaniamentem",
     {

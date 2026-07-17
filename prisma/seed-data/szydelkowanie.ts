@@ -130,7 +130,10 @@ export const { milestones, criteriaByLevel } = ladderC([
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
   1: [{ kind: "video", title: "Łańcuszek (foundation chain)", url: yt("O8ZQNvY-9FY") }],
   2: [{ kind: "video", title: "Słupek niski (single crochet)", url: yt("-03Z0i4Hjek") }],
-  3: [{ kind: "video", title: "Półsłupek i słupek (hdc, dc)", url: yt("f9C1C21MNiM") }],
+  3: [
+    { kind: "video", title: "Półsłupek (hdc)", url: yt("f9C1C21MNiM") },
+    { kind: "video", title: "Słupek (double crochet)", url: yt("a1whu6Gub1M") },
+  ],
   12: [{ kind: "video", title: "Szydełkowanie w okręgu (magic ring)", url: yt("z_CS3TUADYg") }],
   13: [{ kind: "video", title: "Przybieranie i ubieranie oczek", url: yt("tJGkVz8ceIo") }],
   14: [{ kind: "video", title: "Pierwsze amigurumi (podstawy)", url: yt("p581TBewfU0") }],

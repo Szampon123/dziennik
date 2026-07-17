@@ -85,7 +85,7 @@ export const { activity, milestones, criteriaByLevel, videoByLevel } = buildInst
     {
       piece: "«Blackberry Blossom»",
       note: "Zwieńczenie etapu średniozaawansowanego: szybka melodia fiddle'owa — próba kostkowania.",
-      video: { yt: "DRFX6DLz6C0", tut: "Blackberry Blossom mandolin tutorial" },
+      video: { yt: "A5WTn-XEq7M", tut: "Blackberry Blossom mandolin tutorial" },
     },
     {
       piece: "«Salt Creek»",

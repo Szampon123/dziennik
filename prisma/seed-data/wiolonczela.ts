@@ -27,7 +27,7 @@ export const { activity, milestones, criteriaByLevel, videoByLevel } = buildInst
     "Opanuj gamę C-dur / G-dur w pierwszej pozycji",
     {
       title: "Graj czysto (intonacja) w wolnym tempie",
-      video: { yt: "5eNC0F-Fn3Q", tut: "cello first position intonation lesson" },
+      video: { yt: "mKtUougHW0E", tut: "cello first position intonation lesson" },
     },
     "Opanuj legato smyczkiem",
     "Zagraj z użyciem czwartego palca",
