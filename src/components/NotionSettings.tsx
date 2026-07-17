@@ -5,6 +5,7 @@ import { saveNotionSettings, disconnectNotion } from "@/actions/notion-settings"
 import type { NotionStatus } from "@/lib/notion";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { useT } from "@/components/i18n/I18nProvider";
 
 export function NotionSettings({ status }: { status: NotionStatus }) {
@@ -14,6 +15,7 @@ export function NotionSettings({ status }: { status: NotionStatus }) {
   const [showForm, setShowForm] = useState(status.state === "not_configured");
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const { confirm, dialog } = useConfirm();
 
   function save() {
     startTransition(async () => {
@@ -29,14 +31,8 @@ export function NotionSettings({ status }: { status: NotionStatus }) {
     });
   }
 
-  function disconnect() {
-    if (
-      !window.confirm(
-        t("notion.disconnectConfirm")
-      )
-    ) {
-      return;
-    }
+  async function disconnect() {
+    if (!(await confirm({ body: t("notion.disconnectConfirm"), variant: "danger" }))) return;
     startTransition(async () => {
       const result = await disconnectNotion();
       if (result.ok) {
@@ -100,6 +96,7 @@ export function NotionSettings({ status }: { status: NotionStatus }) {
           </div>
         </div>
       )}
+      {dialog}
     </div>
   );
 }

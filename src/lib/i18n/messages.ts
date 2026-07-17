@@ -325,6 +325,7 @@ const pl = {
   // Common actions
   "common.save": "Zapisz",
   "common.cancel": "Anuluj",
+  "common.confirm": "Potwierdź",
   "common.add": "Dodaj",
   "common.delete": "Usuń",
   "common.edit": "Edytuj",
@@ -923,7 +924,15 @@ const pl = {
   "ladder.levelAria": "Poziom {level}: {title}",
   "ladder.noteEditAria": "Notatka i zdjęcie — poziom {level}",
   "ladder.noteEditTitle": "Notatka i zdjęcie",
-  "ladder.cascade": "Ten wynik udowadnia też {n} niższych poziomów (poziomy: {levels}). Zaznaczyć je również? Pozostałych niższych nie ruszamy — nie wynikają z tego osiągnięcia.",
+  "ladder.cascade.one": "Ten wynik udowadnia też {count} niższy poziom (poziom: {levels}). Zaznaczyć go również? Pozostałych niższych nie ruszamy — nie wynikają z tego osiągnięcia.",
+  "ladder.cascade.few": "Ten wynik udowadnia też {count} niższe poziomy (poziomy: {levels}). Zaznaczyć je również? Pozostałych niższych nie ruszamy — nie wynikają z tego osiągnięcia.",
+  "ladder.cascade.many": "Ten wynik udowadnia też {count} niższych poziomów (poziomy: {levels}). Zaznaczyć je również? Pozostałych niższych nie ruszamy — nie wynikają z tego osiągnięcia.",
+  "ladder.cascade.other": "Ten wynik udowadnia też {count} niższych poziomów (poziomy: {levels}). Zaznaczyć je również? Pozostałych niższych nie ruszamy — nie wynikają z tego osiągnięcia.",
+  "ladder.cascadeYes.one": "Zaznacz też {count} poziom",
+  "ladder.cascadeYes.few": "Zaznacz też {count} poziomy",
+  "ladder.cascadeYes.many": "Zaznacz też {count} poziomów",
+  "ladder.cascadeYes.other": "Zaznacz też {count} poziomów",
+  "ladder.cascadeOnlyThis": "Tylko ten poziom",
 } as const;
 
 export type MessageKey = keyof typeof pl;
@@ -1239,6 +1248,7 @@ const en: Dict = {
 
   "common.save": "Save",
   "common.cancel": "Cancel",
+  "common.confirm": "Confirm",
   "common.add": "Add",
   "common.delete": "Delete",
   "common.edit": "Edit",
@@ -1821,7 +1831,15 @@ const en: Dict = {
   "ladder.levelAria": "Level {level}: {title}",
   "ladder.noteEditAria": "Note and photo — level {level}",
   "ladder.noteEditTitle": "Note and photo",
-  "ladder.cascade": "This result also proves {n} lower level(s) (levels: {levels}). Check them too? Other lower levels are left alone — they don't follow from this achievement.",
+  "ladder.cascade.one": "This result also proves {count} lower level (level: {levels}). Check it too? Other lower levels are left alone — they don't follow from this achievement.",
+  "ladder.cascade.few": "This result also proves {count} lower levels (levels: {levels}). Check them too? Other lower levels are left alone — they don't follow from this achievement.",
+  "ladder.cascade.many": "This result also proves {count} lower levels (levels: {levels}). Check them too? Other lower levels are left alone — they don't follow from this achievement.",
+  "ladder.cascade.other": "This result also proves {count} lower levels (levels: {levels}). Check them too? Other lower levels are left alone — they don't follow from this achievement.",
+  "ladder.cascadeYes.one": "Also check {count} level",
+  "ladder.cascadeYes.few": "Also check {count} levels",
+  "ladder.cascadeYes.many": "Also check {count} levels",
+  "ladder.cascadeYes.other": "Also check {count} levels",
+  "ladder.cascadeOnlyThis": "Only this level",
 };
 
 const de: Dict = {
@@ -2138,6 +2156,7 @@ const de: Dict = {
 
   "common.save": "Speichern",
   "common.cancel": "Abbrechen",
+  "common.confirm": "Bestätigen",
   "common.add": "Hinzufügen",
   "common.delete": "Löschen",
   "common.edit": "Bearbeiten",
@@ -2720,7 +2739,15 @@ const de: Dict = {
   "ladder.levelAria": "Stufe {level}: {title}",
   "ladder.noteEditAria": "Notiz und Foto — Stufe {level}",
   "ladder.noteEditTitle": "Notiz und Foto",
-  "ladder.cascade": "Dieses Ergebnis beweist auch {n} niedrigere Stufe(n) (Stufen: {levels}). Auch abhaken? Andere niedrigere Stufen bleiben unberührt — sie folgen nicht aus dieser Leistung.",
+  "ladder.cascade.one": "Dieses Ergebnis beweist auch {count} niedrigere Stufe (Stufe: {levels}). Auch abhaken? Andere niedrigere Stufen bleiben unberührt — sie folgen nicht aus dieser Leistung.",
+  "ladder.cascade.few": "Dieses Ergebnis beweist auch {count} niedrigere Stufen (Stufen: {levels}). Auch abhaken? Andere niedrigere Stufen bleiben unberührt — sie folgen nicht aus dieser Leistung.",
+  "ladder.cascade.many": "Dieses Ergebnis beweist auch {count} niedrigere Stufen (Stufen: {levels}). Auch abhaken? Andere niedrigere Stufen bleiben unberührt — sie folgen nicht aus dieser Leistung.",
+  "ladder.cascade.other": "Dieses Ergebnis beweist auch {count} niedrigere Stufen (Stufen: {levels}). Auch abhaken? Andere niedrigere Stufen bleiben unberührt — sie folgen nicht aus dieser Leistung.",
+  "ladder.cascadeYes.one": "Auch {count} Stufe markieren",
+  "ladder.cascadeYes.few": "Auch {count} Stufen markieren",
+  "ladder.cascadeYes.many": "Auch {count} Stufen markieren",
+  "ladder.cascadeYes.other": "Auch {count} Stufen markieren",
+  "ladder.cascadeOnlyThis": "Nur diese Stufe",
 };
 
 const es: Dict = {
@@ -3035,6 +3062,7 @@ const es: Dict = {
 
   "common.save": "Guardar",
   "common.cancel": "Cancelar",
+  "common.confirm": "Confirmar",
   "common.add": "Añadir",
   "common.delete": "Eliminar",
   "common.edit": "Editar",
@@ -3617,7 +3645,15 @@ const es: Dict = {
   "ladder.levelAria": "Nivel {level}: {title}",
   "ladder.noteEditAria": "Nota y foto — nivel {level}",
   "ladder.noteEditTitle": "Nota y foto",
-  "ladder.cascade": "Este resultado también demuestra {n} nivel(es) inferior(es) (niveles: {levels}). ¿Marcarlos también? Otros niveles inferiores no se tocan — no se derivan de este logro.",
+  "ladder.cascade.one": "Este resultado también demuestra {count} nivel inferior (nivel: {levels}). ¿Marcarlo también? Otros niveles inferiores no se tocan — no se derivan de este logro.",
+  "ladder.cascade.few": "Este resultado también demuestra {count} niveles inferiores (niveles: {levels}). ¿Marcarlos también? Otros niveles inferiores no se tocan — no se derivan de este logro.",
+  "ladder.cascade.many": "Este resultado también demuestra {count} niveles inferiores (niveles: {levels}). ¿Marcarlos también? Otros niveles inferiores no se tocan — no se derivan de este logro.",
+  "ladder.cascade.other": "Este resultado también demuestra {count} niveles inferiores (niveles: {levels}). ¿Marcarlos también? Otros niveles inferiores no se tocan — no se derivan de este logro.",
+  "ladder.cascadeYes.one": "Marcar también {count} nivel",
+  "ladder.cascadeYes.few": "Marcar también {count} niveles",
+  "ladder.cascadeYes.many": "Marcar también {count} niveles",
+  "ladder.cascadeYes.other": "Marcar también {count} niveles",
+  "ladder.cascadeOnlyThis": "Solo este nivel",
 };
 
 import type { Locale } from "./config";

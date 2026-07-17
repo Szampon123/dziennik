@@ -5,21 +5,17 @@ import { disconnectGoogleAction } from "@/actions/google";
 import type { GoogleStatus } from "@/lib/google";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { useT } from "@/components/i18n/I18nProvider";
 
 export function GoogleSettings({ status }: { status: GoogleStatus }) {
   const t = useT();
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const { confirm, dialog } = useConfirm();
 
-  function disconnect() {
-    if (
-      !window.confirm(
-        t("google.disconnectConfirm")
-      )
-    ) {
-      return;
-    }
+  async function disconnect() {
+    if (!(await confirm({ body: t("google.disconnectConfirm"), variant: "danger" }))) return;
     startTransition(async () => {
       const result = await disconnectGoogleAction();
       if (!result.ok) setError(result.error);
@@ -67,6 +63,7 @@ export function GoogleSettings({ status }: { status: GoogleStatus }) {
         </div>
       </div>
       {error && <p className="text-[13px] text-danger">{error}</p>}
+      {dialog}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { disconnectStravaAction, syncStravaAction } from "@/actions/strava";
 import type { StravaStatus } from "@/lib/strava";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { useT } from "@/components/i18n/I18nProvider";
 
 export function StravaSettings({ status }: { status: StravaStatus }) {
@@ -12,11 +13,10 @@ export function StravaSettings({ status }: { status: StravaStatus }) {
   const [error, setError] = useState("");
   const [syncMessage, setSyncMessage] = useState("");
   const [isPending, startTransition] = useTransition();
+  const { confirm, dialog } = useConfirm();
 
-  function disconnect() {
-    if (!window.confirm(t("strava.disconnectConfirm"))) {
-      return;
-    }
+  async function disconnect() {
+    if (!(await confirm({ body: t("strava.disconnectConfirm"), variant: "danger" }))) return;
     startTransition(async () => {
       const result = await disconnectStravaAction();
       if (!result.ok) setError(result.error);
@@ -79,6 +79,7 @@ export function StravaSettings({ status }: { status: StravaStatus }) {
       <p className="text-[13px] text-neutral-500">{t("strava.autoSyncHint")}</p>
       {syncMessage && <p className="text-[13px] text-success">{syncMessage}</p>}
       {error && <p className="text-[13px] text-danger">{error}</p>}
+      {dialog}
     </div>
   );
 }

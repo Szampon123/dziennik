@@ -11,6 +11,7 @@ import {
 } from "@/actions/milestone-entry";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { useT } from "@/components/i18n/I18nProvider";
 
 // Note + proof-photo editor for a single milestone level, plus a per-user
@@ -39,6 +40,7 @@ export function MilestoneEntryEditor({
   customized: boolean;
 }) {
   const t = useT();
+  const { confirm, dialog } = useConfirm();
   const [note, setNote] = useState(initialNote ?? "");
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
   const [error, setError] = useState("");
@@ -123,8 +125,8 @@ export function MilestoneEntryEditor({
     });
   }
 
-  function removePhoto() {
-    if (!window.confirm(t("mEditor.confirmRemovePhoto"))) return;
+  async function removePhoto() {
+    if (!(await confirm({ body: t("mEditor.confirmRemovePhoto"), variant: "danger" }))) return;
     startTransition(async () => {
       const result = await deleteMilestonePhoto({ milestoneId });
       if (!result.ok) {
@@ -136,6 +138,7 @@ export function MilestoneEntryEditor({
 
   return (
     <div className="flex flex-col gap-4">
+      {dialog}
       {/* Dostosuj poziom — per-user override of the goal; original kept intact. */}
       <div className="flex flex-col gap-3 rounded-lg border border-neutral-200 bg-neutral-0 p-3">
         <span className="text-[13px] font-semibold text-neutral-900">{t("mEditor.customizeLevel")}</span>

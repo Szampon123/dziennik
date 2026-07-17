@@ -6,6 +6,7 @@ import { deleteWorkout } from "@/actions/workouts";
 import { formatDayShort } from "@/lib/dates";
 import { EmptyState } from "@/components/EmptyState";
 import { Badge } from "@/components/ui/Badge";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { useT, useLocale } from "@/components/i18n/I18nProvider";
 
 export type WorkoutItem = {
@@ -30,11 +31,10 @@ export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
   const [isPending, startTransition] = useTransition();
   const t = useT();
   const locale = useLocale();
+  const { confirm, dialog } = useConfirm();
 
-  function remove(id: string) {
-    if (!window.confirm(t("workout.deleteConfirm"))) {
-      return;
-    }
+  async function remove(id: string) {
+    if (!(await confirm({ body: t("workout.deleteConfirm"), variant: "danger" }))) return;
     startTransition(async () => {
       const result = await deleteWorkout(id);
       setError(result.ok ? "" : result.error);
@@ -49,6 +49,7 @@ export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
 
   return (
     <div className="flex flex-col gap-2">
+      {dialog}
       {error && <p className="text-[13px] text-danger">{error}</p>}
       <ul className="flex flex-col divide-y divide-neutral-200">
         {workouts.map((w) => (

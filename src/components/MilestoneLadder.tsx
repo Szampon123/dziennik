@@ -22,7 +22,9 @@ import { Badge } from "@/components/ui/Badge";
 import { Progress } from "@/components/ui/Progress";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { MilestoneEntryEditor } from "@/components/MilestoneEntryEditor";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { useT, useLocale } from "@/components/i18n/I18nProvider";
+import { plural } from "@/lib/i18n/plural";
 import type { MessageKey } from "@/lib/i18n/messages";
 
 export type MilestoneItem = {
@@ -80,8 +82,9 @@ export function MilestoneLadder({
   const [, startTransition] = useTransition();
   const t = useT();
   const locale = useLocale();
+  const { choose, dialog } = useConfirm();
 
-  function toggle(m: MilestoneItem) {
+  async function toggle(m: MilestoneItem) {
     const next = !m.done;
     let cascade = false;
     if (next) {
@@ -94,12 +97,18 @@ export function MilestoneLadder({
           })
         : [];
       if (impliedUnchecked.length > 0) {
-        cascade = window.confirm(
-          t("ladder.cascade", {
-            n: impliedUnchecked.length,
-            levels: impliedUnchecked.map((x) => x.level).join(", "),
-          })
-        );
+        // Not a yes/no confirm: both buttons continue the check-off — they only
+        // decide whether the implied lower levels come along. Dismissing (Esc /
+        // backdrop) aborts the whole action.
+        const n = impliedUnchecked.length;
+        const levels = impliedUnchecked.map((x) => x.level).join(", ");
+        const choice = await choose({
+          body: plural(locale, "ladder.cascade", n, { levels }),
+          yesLabel: plural(locale, "ladder.cascadeYes", n),
+          noLabel: t("ladder.cascadeOnlyThis"),
+        });
+        if (choice === null) return;
+        cascade = choice === "yes";
       }
     }
     setPendingId(m.id);
@@ -275,6 +284,7 @@ export function MilestoneLadder({
 
   return (
     <div className="flex flex-col gap-3">
+      {dialog}
       {/* View controls */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex rounded-lg bg-neutral-100 p-1">

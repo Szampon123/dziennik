@@ -30,6 +30,7 @@ import { Input, selectChevron } from "@/components/ui/Input";
 import { Progress } from "@/components/ui/Progress";
 import { Card } from "@/components/Card";
 import { EmptyState } from "@/components/EmptyState";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 import {
   HABIT_COLORS,
   HABIT_COLOR_KEYS,
@@ -791,6 +792,7 @@ function TargetSelect({
 // revalidates /nawyki, so the grid above re-renders with the new list.
 function ManagePanel({ habits, archived }: { habits: Habit[]; archived: ArchivedHabit[] }) {
   const t = useT();
+  const { confirm, dialog } = useConfirm();
   const [open, setOpen] = useState(habits.length === 0);
   const [newName, setNewName] = useState("");
   const [newTarget, setNewTarget] = useState(7);
@@ -840,8 +842,8 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
       await setHabitArchived({ id, archived: value });
     });
   }
-  function remove(id: string, name: string) {
-    if (!confirm(t("habits.confirmDelete", { name }))) return;
+  async function remove(id: string, name: string) {
+    if (!(await confirm({ body: t("habits.confirmDelete", { name }), variant: "danger" }))) return;
     startTransition(async () => {
       await deleteHabit({ id });
     });
@@ -849,6 +851,7 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
 
   return (
     <div className="flex flex-col gap-2">
+      {dialog}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
