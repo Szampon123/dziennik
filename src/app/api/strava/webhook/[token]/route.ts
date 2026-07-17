@@ -12,38 +12,45 @@ import { rateLimit } from "@/lib/rate-limit";
 
 // Strava webhook endpoint — one subscription per app, created once via the
 // push subscriptions API with verify_token = STRAVA_WEBHOOK_VERIFY_TOKEN and
-// callback_url pointing here WITH the token in the query string:
+// callback_url carrying the same token as a PATH segment:
 //
-//   https://<domain>/api/strava/webhook?token=<STRAVA_WEBHOOK_VERIFY_TOKEN>
+//   https://<domain>/api/strava/webhook/<STRAVA_WEBHOOK_VERIFY_TOKEN>
+//
+// The token lives in the path, not the query string, because Strava's
+// subscription validation mangles callback URLs that already contain a query
+// string (the appended hub.* parameters produce a malformed URL and the
+// handshake GET never returns 200 — verified empirically, 2026-07).
 //
 // Strava then POSTs an event for every activity create/update/delete (and
 // athlete deauthorization) of every connected user.
 //
 // Threat model: Strava does not sign events, so this route is reachable by
 // anyone. Three layers keep forged requests harmless:
-//   1. The token in the query string — only Strava ever learns the full
-//      callback URL, so a POST without it is not Strava. (This is the
-//      standard capability-URL workaround for Strava's lack of signatures.)
+//   1. The token in the path — only Strava ever learns the full callback URL,
+//      so a request without it is not Strava. (The standard capability-URL
+//      workaround for Strava's lack of signatures.)
 //   2. Payloads are never trusted beyond ids — activity data is always
 //      re-fetched through the owner's stored token.
 //   3. Destructive events are verified against Strava before acting:
 //      deletes only when the activity is really gone, deauthorizations only
 //      when the grant is really dead (see src/lib/strava.ts).
 
-function tokenMatches(request: NextRequest): boolean {
+type RouteContext = { params: Promise<{ token: string }> };
+
+async function tokenMatches(context: RouteContext): Promise<boolean> {
   const expected = process.env.STRAVA_WEBHOOK_VERIFY_TOKEN;
   if (!expected) return false;
-  return statesMatch(request.nextUrl.searchParams.get("token"), expected);
+  const { token } = await context.params;
+  return statesMatch(token, expected);
 }
 
 /** Subscription validation: echo hub.challenge when the verify token matches. */
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, context: RouteContext) {
   const params = request.nextUrl.searchParams;
-  const verifyToken = process.env.STRAVA_WEBHOOK_VERIFY_TOKEN;
   if (
+    !(await tokenMatches(context)) ||
     params.get("hub.mode") !== "subscribe" ||
-    !verifyToken ||
-    !statesMatch(params.get("hub.verify_token"), verifyToken)
+    !statesMatch(params.get("hub.verify_token"), process.env.STRAVA_WEBHOOK_VERIFY_TOKEN ?? null)
   ) {
     return NextResponse.json({ error: "verification failed" }, { status: 403 });
   }
@@ -58,10 +65,10 @@ type StravaEvent = {
   updates?: Record<string, unknown>; // athlete: { authorized: "false" } on revoke
 };
 
-export async function POST(request: NextRequest) {
+export async function POST(request: NextRequest, context: RouteContext) {
   // Not Strava (or a misconfigured subscription): reject loudly. A 403 here is
   // visible during registration, when it's still cheap to fix.
-  if (!tokenMatches(request)) {
+  if (!(await tokenMatches(context))) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
 

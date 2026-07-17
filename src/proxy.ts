@@ -47,8 +47,9 @@ const PUBLIC_PATHS = [
   "/manifest.webmanifest",
   "/api/og",
   // Strava calls this machine-to-machine, with no session by definition. The
-  // route carries its own auth: a capability token in the query string checked
+  // route carries its own auth: a capability token in the URL path checked
   // against STRAVA_WEBHOOK_VERIFY_TOKEN (see the route's threat-model comment).
+  // Prefix match covers the actual endpoint, /api/strava/webhook/<token>.
   "/api/strava/webhook",
 ];
 
