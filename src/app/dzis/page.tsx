@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fragment, type ReactNode } from "react";
+import { Circle, CircleCheck } from "lucide-react";
 import {
   getOrCreateToday,
   closedDayStreak,
@@ -159,9 +160,15 @@ export default async function TodayPage() {
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">
           {morningFilled ? (
-            <Badge variant="success">● {t("today.morningSaved")}</Badge>
+            <Badge variant="success">
+              <CircleCheck aria-hidden className="h-3.5 w-3.5" />
+              {t("today.morningSaved")}
+            </Badge>
           ) : (
-            <Badge variant="warning">○ {t("today.morningEmpty")}</Badge>
+            <Badge variant="warning">
+              <Circle aria-hidden className="h-3.5 w-3.5" />
+              {t("today.morningEmpty")}
+            </Badge>
           )}
           <DashboardCustomizer order={order} hidden={[...hidden]} />
         </div>

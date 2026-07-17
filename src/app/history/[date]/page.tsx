@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ListChecks } from "lucide-react";
+import { ArrowLeft, ListChecks, Star, Zap } from "lucide-react";
 import { getDayWithNotes } from "@/lib/queries";
 import { formatDayLong, isValidDayKey } from "@/lib/dates";
 import { parsePriorities, parsePrioritiesDone } from "@/lib/day";
@@ -78,8 +78,8 @@ export default async function DayDetailPage({
             href="/history"
             className="group inline-flex items-center gap-1 text-[13px] text-neutral-500 transition-colors hover:text-neutral-900"
           >
-            <span className="transition-transform group-hover:-translate-x-0.5">←</span>{" "}
-          {t("nav.history")}
+            <ArrowLeft aria-hidden className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
+            {t("nav.history")}
           </Link>
           <h1 className="mt-1 text-[28px] font-semibold capitalize tracking-[-0.5px] text-neutral-900">
             {formatDayLong(day.date, locale)}
@@ -105,10 +105,15 @@ export default async function DayDetailPage({
             </Badge>
           )}
           <Badge variant={day.dayRating !== null ? "violet" : "neutral"} title={t("close.rating")}>
-            ★ {day.dayRating ?? "—"}/5
+            <Star
+              aria-hidden
+              className={`h-3.5 w-3.5 ${day.dayRating !== null ? "fill-current" : ""}`}
+            />
+            {day.dayRating ?? "—"}/5
           </Badge>
           <Badge variant={day.energyLevel !== null ? "azure" : "neutral"} title={t("close.energy")}>
-            ⚡ {day.energyLevel ?? "—"}/5
+            <Zap aria-hidden className="h-3.5 w-3.5" />
+            {day.energyLevel ?? "—"}/5
           </Badge>
         </div>
       </div>

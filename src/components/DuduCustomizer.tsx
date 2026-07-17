@@ -81,7 +81,7 @@ export function DuduCustomizer({
 
       {/* Colour */}
       <div className="flex flex-col gap-2.5">
-        <p className="text-[13px] font-medium text-neutral-700">{t("dudu.colorLabel")}</p>
+        <p className="text-[13px] font-medium text-neutral-800">{t("dudu.colorLabel")}</p>
         <div className="flex flex-wrap gap-3">
           {DUDU_COLOR_KEYS.map((key) => {
             const active = key === color;
@@ -108,7 +108,7 @@ export function DuduCustomizer({
       {/* Accessory slots */}
       {DUDU_SLOT_KEYS.map((slot) => (
         <div key={slot} className="flex flex-col gap-2.5">
-          <p className="text-[13px] font-medium text-neutral-700">{t(DUDU_SLOTS[slot].labelKey)}</p>
+          <p className="text-[13px] font-medium text-neutral-800">{t(DUDU_SLOTS[slot].labelKey)}</p>
           <div className="flex flex-wrap gap-2">
             {DUDU_SLOTS[slot].options.map((opt) => {
               const active = config[slot] === opt.id;
@@ -121,7 +121,7 @@ export function DuduCustomizer({
                   className={`rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-all duration-150 outline-none focus-visible:ring-2 focus-visible:ring-violet-200 ${
                     active
                       ? "border-violet-600 bg-violet-600 text-white shadow-[0_1px_4px_-1px_rgba(110,86,207,0.5)]"
-                      : "border-neutral-300 bg-neutral-0 text-neutral-700 hover:border-violet-300 hover:text-violet-700"
+                      : "border-neutral-300 bg-neutral-0 text-neutral-800 hover:border-violet-400 hover:text-violet-700"
                   }`}
                 >
                   {t(opt.labelKey)}

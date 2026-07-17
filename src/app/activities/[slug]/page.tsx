@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { requireUserId } from "@/lib/session";
 import { getActivityWithMilestones } from "@/lib/activities";
 import { getT } from "@/lib/i18n/server";
@@ -34,7 +35,7 @@ export default async function ActivityDetailPage({
           href="/activities"
           className="group inline-flex items-center gap-1 text-[13px] text-neutral-500 transition-colors hover:text-neutral-900"
         >
-          <span className="transition-transform group-hover:-translate-x-0.5">←</span>{" "}
+          <ArrowLeft aria-hidden className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
           {t("nav.activities")}
         </Link>
         <div className="mt-2 flex items-center gap-4">

@@ -20,7 +20,7 @@ export async function AuthorChip({
       >
         {authorInitial(user, fallback)}
       </span>
-      <span className="font-medium text-neutral-700">{authorName(user, fallback)}</span>
+      <span className="font-medium text-neutral-800">{authorName(user, fallback)}</span>
       <span aria-hidden>·</span>
       <time dateTime={createdAt.toISOString()}>{formatDate(createdAt, locale)}</time>
     </div>

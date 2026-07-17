@@ -1,6 +1,6 @@
 "use client";
 
-import { type CSSProperties, useState, useTransition } from "react";
+import { type CSSProperties, type ReactNode, useState, useTransition } from "react";
 import Link from "next/link";
 import {
   ChevronLeft,
@@ -320,7 +320,7 @@ export function HabitTracker({
                             : t("habits.checkTodo", { name: h.name })
                         }
                         style={hcVar(h.color)}
-                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-300 ${
+                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border-2 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-200 ${
                           done
                             ? "border-[var(--hc)] bg-[var(--hc)] text-white"
                             : "border-neutral-300 bg-neutral-0 text-transparent hover:border-[var(--hc)]"
@@ -460,7 +460,15 @@ export function HabitTracker({
                   label={t("habits.bestStreak")}
                   value={t("habits.daysCount", { n: bestStreak })}
                 />
-                <Stat label={t("habits.total")} value={`${totalDone} ✓`} />
+                <Stat
+                  label={t("habits.total")}
+                  value={
+                    <span className="inline-flex items-center gap-1">
+                      {totalDone}
+                      <Check aria-hidden className="h-3 w-3" strokeWidth={3} />
+                    </span>
+                  }
+                />
                 <Stat label={t("habits.topHabit")} value={topHabit ? topHabit.name : "—"} />
               </div>
             </div>
@@ -474,11 +482,14 @@ export function HabitTracker({
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({ label, value }: { label: string; value: ReactNode }) {
   return (
     <span className="inline-flex items-baseline gap-1.5 rounded-full bg-neutral-100 px-2.5 py-1 text-[12px]">
       <span className="text-neutral-500">{label}:</span>
-      <span className="max-w-[140px] truncate font-semibold text-neutral-900" title={value}>
+      <span
+        className="max-w-[140px] truncate font-semibold text-neutral-900"
+        title={typeof value === "string" ? value : undefined}
+      >
         {value}
       </span>
     </span>
@@ -503,6 +514,7 @@ function HabitRow({
   onToggle: (habitId: string, date: string) => void;
 }) {
   const t = useT();
+  const locale = useLocale();
   const over = done > goal;
   return (
     <>
@@ -542,9 +554,9 @@ function HabitRow({
                 disabled={isFuture}
                 onClick={() => onToggle(habit.id, d)}
                 aria-pressed={isDone}
-                aria-label={`${habit.name} — ${d}${isDone ? " (odhaczone)" : ""}`}
+                aria-label={`${habit.name} — ${formatDayLong(d, locale)}${isDone ? ` ${t("habits.cellDone")}` : ""}`}
                 style={hcVar(habit.color)}
-                className={`flex aspect-square w-[80%] max-w-[22px] items-center justify-center rounded-[5px] border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-300 ${
+                className={`flex aspect-square w-[80%] max-w-[22px] items-center justify-center rounded-[5px] border transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-200 ${
                   isDone
                     ? "border-[var(--hc)] bg-[var(--hc)] text-white"
                     : isFuture
@@ -763,7 +775,7 @@ function TargetSelect({
       value={value}
       onChange={(e) => onChange(Number(e.target.value))}
       aria-label={ariaLabel}
-      className="shrink-0 rounded-lg border border-neutral-300 bg-neutral-0 px-2 py-2 text-[13px] text-neutral-700 outline-none transition-colors hover:border-neutral-400 focus-visible:ring-2 focus-visible:ring-violet-200"
+      className="shrink-0 rounded-lg border border-neutral-300 bg-neutral-0 px-2 py-2 text-[13px] text-neutral-800 outline-none transition-colors hover:border-neutral-400 focus-visible:ring-2 focus-visible:ring-violet-200"
     >
       {[1, 2, 3, 4, 5, 6, 7].map((n) => (
         <option key={n} value={n}>
@@ -878,11 +890,11 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
             />
             <Button onClick={add} disabled={isPending || !newName.trim()}>
               <Plus aria-hidden className="h-4 w-4" />
-              Dodaj
+              {t("common.add")}
             </Button>
           </div>
           <div className="mt-2 flex items-center gap-2">
-            <span className="text-[12px] text-neutral-500">Kolor:</span>
+            <span className="text-[12px] text-neutral-500">{t("habits.colorLabel")}</span>
             <ColorPicker value={newColor} onChange={setNewColor} habitName={t("habits.newHabitLabel")} />
           </div>
           <p className="mt-2 text-[12px] text-neutral-400">

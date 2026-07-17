@@ -137,7 +137,7 @@ export function WeekCalendar() {
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
-            <span className="text-[13px] font-medium capitalize text-neutral-700">
+            <span className="text-[13px] font-medium capitalize text-neutral-800">
               {formatMonthYear(selectedDay, locale)}
             </span>
             <button
@@ -168,8 +168,8 @@ export function WeekCalendar() {
                     isSelected
                       ? "bg-violet-600 text-neutral-0"
                       : isToday
-                        ? "text-neutral-900 ring-1 ring-inset ring-violet-300 hover:bg-neutral-100"
-                        : "text-neutral-700 hover:bg-neutral-100"
+                        ? "text-neutral-900 ring-1 ring-inset ring-violet-400 hover:bg-neutral-100"
+                        : "text-neutral-800 hover:bg-neutral-100"
                   }`}
                 >
                   <span
@@ -196,7 +196,7 @@ export function WeekCalendar() {
 
         {/* Selected day's events */}
         <div className="flex flex-col gap-3 border-t border-neutral-200 pt-4">
-          <p className="text-[13px] font-medium capitalize text-neutral-700">
+          <p className="text-[13px] font-medium capitalize text-neutral-800">
             {formatDayLong(selectedDay, locale)}
             {interactive && (
               <span className="ml-1.5 font-normal text-neutral-400">· {t("cal.todaySuffix")}</span>

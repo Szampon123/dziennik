@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Check } from "lucide-react";
 import { saveMorning, setPriorityCheck } from "@/actions/day-entry";
 import { MAX_PRIORITIES } from "@/lib/day";
 import { Button } from "@/components/ui/Button";
@@ -107,7 +108,11 @@ export function MorningEntry({
                       : "bg-neutral-100 text-neutral-500"
                 }`}
               >
-                {done[i] && savedText ? "✓" : i + 1}
+                {done[i] && savedText ? (
+                  <Check aria-hidden className="h-3.5 w-3.5" strokeWidth={3} />
+                ) : (
+                  i + 1
+                )}
               </span>
               <Input
                 value={p}

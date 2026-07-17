@@ -60,7 +60,7 @@ export function StepDudu({
 
       <div className="mt-6 flex flex-col gap-6">
         <label className="flex flex-col gap-2">
-          <span className="text-[13px] font-medium text-neutral-700">
+          <span className="text-[13px] font-medium text-neutral-800">
             {t("onboarding.dudu.name")}
           </span>
           <input
@@ -74,7 +74,7 @@ export function StepDudu({
         </label>
 
         <div className="flex flex-col gap-2">
-          <span className="text-[13px] font-medium text-neutral-700">
+          <span className="text-[13px] font-medium text-neutral-800">
             {t("onboarding.dudu.color")}
           </span>
           <div className="flex items-center gap-2.5">
@@ -130,7 +130,7 @@ function SlotRow({
   const t = useT();
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-[13px] font-medium text-neutral-700">{label}</span>
+      <span className="text-[13px] font-medium text-neutral-800">{label}</span>
       <div className="flex flex-wrap gap-2">
         {DUDU_SLOTS[slot].options.map((option) => {
           const active = option.id === value;
@@ -143,7 +143,7 @@ function SlotRow({
               className={`rounded-full border px-3.5 py-1.5 text-[13px] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-200 ${
                 active
                   ? "border-violet-600 bg-violet-600 font-medium text-white"
-                  : "border-neutral-300 bg-neutral-0 text-neutral-700 hover:bg-neutral-50"
+                  : "border-neutral-300 bg-neutral-0 text-neutral-800 hover:bg-neutral-50"
               }`}
             >
               {t(option.labelKey)}

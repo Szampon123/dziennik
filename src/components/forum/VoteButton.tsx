@@ -51,7 +51,7 @@ export function VoteButton({
       className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13px] font-medium transition-all duration-150 outline-none focus-visible:ring-2 focus-visible:ring-violet-200 disabled:opacity-50 ${
         voted
           ? "border-violet-600 bg-violet-600 text-white shadow-[0_1px_4px_-1px_rgba(110,86,207,0.5)]"
-          : "border-neutral-300 bg-neutral-0 text-neutral-600 enabled:hover:border-violet-300 enabled:hover:text-violet-700"
+          : "border-neutral-300 bg-neutral-0 text-neutral-600 enabled:hover:border-violet-400 enabled:hover:text-violet-700"
       }`}
     >
       <ThumbsUp aria-hidden className={`h-4 w-4 ${voted ? "fill-current" : ""}`} />

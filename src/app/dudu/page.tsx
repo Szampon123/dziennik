@@ -77,7 +77,7 @@ export default async function DuduPage() {
             ) : (
               <>
                 {t("hero.toNextForm", { n: c.toNext })}{" "}
-                <span className="font-medium text-neutral-700">
+                <span className="font-medium text-neutral-800">
                   {c.nextNameKey ? t(c.nextNameKey) : ""}
                 </span>
               </>

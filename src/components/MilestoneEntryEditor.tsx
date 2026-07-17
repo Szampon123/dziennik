@@ -179,7 +179,7 @@ export function MilestoneEntryEditor({
         </div>
         {customized && (
           <p className="text-xs text-neutral-500">
-            {t("mEditor.originalKept")} <span className="text-neutral-700">{originalTitle}</span>
+            {t("mEditor.originalKept")} <span className="text-neutral-800">{originalTitle}</span>
             {originalDetail && <span className="text-neutral-500"> — {originalDetail}</span>}
           </p>
         )}

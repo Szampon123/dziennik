@@ -47,7 +47,7 @@ export default async function PrivacyPage() {
       )}
 
       {policy.intro.map((paragraph) => (
-        <p key={paragraph} className="mt-5 text-[15px] leading-relaxed text-neutral-700">
+        <p key={paragraph} className="mt-5 text-[15px] leading-relaxed text-neutral-800">
           {paragraph}
         </p>
       ))}
@@ -59,13 +59,13 @@ export default async function PrivacyPage() {
           </h2>
 
           {section.paragraphs?.map((paragraph) => (
-            <p key={paragraph} className="mt-3 text-[15px] leading-relaxed text-neutral-700">
+            <p key={paragraph} className="mt-3 text-[15px] leading-relaxed text-neutral-800">
               {paragraph}
             </p>
           ))}
 
           {section.bullets && (
-            <ul className="mt-3 flex list-disc flex-col gap-2 pl-5 text-[15px] leading-relaxed text-neutral-700">
+            <ul className="mt-3 flex list-disc flex-col gap-2 pl-5 text-[15px] leading-relaxed text-neutral-800">
               {section.bullets.map((bullet) => (
                 <li key={bullet}>{bullet}</li>
               ))}

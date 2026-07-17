@@ -45,7 +45,7 @@ export function StepHabit({
 
       <div className="mt-8 flex flex-col gap-6">
         <label className="flex flex-col gap-2">
-          <span className="text-[13px] font-medium text-neutral-700">
+          <span className="text-[13px] font-medium text-neutral-800">
             {t("onboarding.habit.name")}
           </span>
           <input
@@ -58,7 +58,7 @@ export function StepHabit({
         </label>
 
         <div className="flex flex-col gap-2">
-          <span className="text-[13px] font-medium text-neutral-700">
+          <span className="text-[13px] font-medium text-neutral-800">
             {t("onboarding.habit.target")}
           </span>
           <div className="flex items-center gap-3">
@@ -79,7 +79,7 @@ export function StepHabit({
         </div>
 
         <div className="flex flex-col gap-2">
-          <span className="text-[13px] font-medium text-neutral-700">
+          <span className="text-[13px] font-medium text-neutral-800">
             {t("onboarding.habit.color")}
           </span>
           <div className="flex items-center gap-2.5">

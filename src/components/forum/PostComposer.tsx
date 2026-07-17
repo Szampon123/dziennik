@@ -81,7 +81,7 @@ export function PostComposer({
       {showExtras && (
         <div className="flex flex-col gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
           <label className="flex flex-col gap-1">
-            <span className="text-[12px] font-medium text-neutral-700">{t("forum.linkLabel")}</span>
+            <span className="text-[12px] font-medium text-neutral-800">{t("forum.linkLabel")}</span>
             <Input
               type="url"
               value={linkUrl}
@@ -91,7 +91,7 @@ export function PostComposer({
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span className="text-[12px] font-medium text-neutral-700">{t("forum.photoMaxSize")}</span>
+            <span className="text-[12px] font-medium text-neutral-800">{t("forum.photoMaxSize")}</span>
             <input
               ref={fileRef}
               type="file"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Star, Zap } from "lucide-react";
 import { closeDay, reopenDay } from "@/actions/day-entry";
 import { RatingScale } from "@/components/RatingScale";
 import { SyncStatusBadge } from "@/components/SyncStatusBadge";
@@ -74,10 +75,12 @@ export function CloseDayPanel({
           {syncError && <p className="mt-1 text-[13px] text-danger">{syncError}</p>}
           <div className="mt-2 flex items-center gap-2">
             <Badge variant="violet" title={t("close.rating")}>
-              ★ {initialRating}/5
+              <Star aria-hidden className="h-3.5 w-3.5 fill-current" />
+              {initialRating}/5
             </Badge>
             <Badge variant="azure" title={t("close.energy")}>
-              ⚡ {initialEnergy}/5
+              <Zap aria-hidden className="h-3.5 w-3.5" />
+              {initialEnergy}/5
             </Badge>
           </div>
           {initialGood && (

@@ -60,7 +60,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
   if (done) {
     return (
       <>
-        <p className="text-center text-sm text-neutral-700">{t("auth.resetSuccess")}</p>
+        <p className="text-center text-sm text-neutral-600">{t("auth.resetSuccess")}</p>
         <Link
           href="/login"
           className="block text-center text-sm font-medium text-violet-600 hover:underline"

@@ -85,7 +85,7 @@ export async function ActivityStats({
           </p>
           <p className="mt-0.5 text-[13px] text-neutral-500">
             {t("stats.stage")}{" "}
-            <span className="text-neutral-700">{t(tierForLevel(level > 0 ? level : 1).nameKey)}</span>
+            <span className="text-neutral-800">{t(tierForLevel(level > 0 ? level : 1).nameKey)}</span>
             {levelAchievedAt !== null && (
               <> · {t("stats.lastly", { date: formatDate(levelAchievedAt, locale) })}</>
             )}
@@ -115,7 +115,7 @@ export async function ActivityStats({
             <div
               key={tier.nameKey}
               className={`rounded-lg border p-2 ${
-                isCurrent ? "border-violet-300 bg-violet-100/40" : "border-neutral-200"
+                isCurrent ? "border-violet-400 bg-violet-100/40" : "border-neutral-200"
               }`}
             >
               <p className="truncate text-[11px] font-medium text-neutral-600" title={t(tier.nameKey)}>

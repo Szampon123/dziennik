@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronRight, ListChecks } from "lucide-react";
+import { ChevronRight, ListChecks, Star, Zap } from "lucide-react";
 import { listDays, lastThirtyDays } from "@/lib/queries";
 import { formatDayLong } from "@/lib/dates";
 import { Card } from "@/components/Card";
@@ -90,13 +90,18 @@ export default async function HistoryPage() {
                       variant={day.dayRating !== null ? "violet" : "neutral"}
                       title={t("close.rating")}
                     >
-                      ★ {day.dayRating ?? "—"}/5
+                      <Star
+                        aria-hidden
+                        className={`h-3.5 w-3.5 ${day.dayRating !== null ? "fill-current" : ""}`}
+                      />
+                      {day.dayRating ?? "—"}/5
                     </Badge>
                     <Badge
                       variant={day.energyLevel !== null ? "azure" : "neutral"}
                       title={t("close.energy")}
                     >
-                      ⚡ {day.energyLevel ?? "—"}/5
+                      <Zap aria-hidden className="h-3.5 w-3.5" />
+                      {day.energyLevel ?? "—"}/5
                     </Badge>
                     <ChevronRight
                       aria-hidden

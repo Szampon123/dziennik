@@ -43,7 +43,7 @@ export function LocaleSwitcher() {
             className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-200 ${
               active
                 ? "border-violet-600 bg-violet-100 text-violet-700"
-                : "border-neutral-300 bg-neutral-0 text-neutral-700 hover:border-violet-300"
+                : "border-neutral-300 bg-neutral-0 text-neutral-800 hover:border-violet-400"
             }`}
           >
             <span aria-hidden className="text-base leading-none">

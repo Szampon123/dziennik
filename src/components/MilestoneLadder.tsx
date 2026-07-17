@@ -194,7 +194,7 @@ export function MilestoneLadder({
                       href={res.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-0 px-2.5 py-1 font-medium text-neutral-700 transition-colors hover:border-azure-500 hover:bg-azure-100 hover:text-azure-700"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-0 px-2.5 py-1 font-medium text-neutral-800 transition-colors hover:border-azure-500 hover:bg-azure-100 hover:text-azure-700"
                       title={res.url}
                     >
                       <Icon aria-hidden className="h-3.5 w-3.5" /> {res.title}

@@ -112,7 +112,7 @@ export function DashboardCustomizer({
                     className={`shrink-0 rounded-md p-1.5 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-violet-200 ${
                       visible
                         ? "bg-violet-100 text-violet-700 hover:bg-violet-200"
-                        : "text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700"
+                        : "text-neutral-400 hover:bg-neutral-100 hover:text-neutral-800"
                     }`}
                   >
                     {visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
@@ -168,7 +168,7 @@ export function DashboardCustomizer({
               <span className="text-[13px] text-success">{t("common.saved")}</span>
             ) : (
               <span className="text-[13px] text-neutral-400">
-                Widoczne sekcje: {visibleCount}/{ord.length}
+                {t("dashboard.visibleCount", { done: visibleCount, total: ord.length })}
               </span>
             )}
           </div>

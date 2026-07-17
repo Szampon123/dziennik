@@ -33,7 +33,7 @@ export function ForgotPasswordForm() {
   if (sent) {
     return (
       <>
-        <p className="text-center text-sm text-neutral-700">{t("auth.resetEmailSent")}</p>
+        <p className="text-center text-sm text-neutral-600">{t("auth.resetEmailSent")}</p>
         <Link
           href="/login"
           className="block text-center text-sm font-medium text-violet-600 hover:underline"

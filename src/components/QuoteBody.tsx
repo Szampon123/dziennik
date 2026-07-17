@@ -38,7 +38,7 @@ export function QuoteBody({ quote }: { quote: Quote }) {
             {showTranslation ? t("quote.hideTranslation") : t("quote.showTranslation")}
           </button>
           {showTranslation && (
-            <p className="mt-1.5 text-[15px] leading-snug text-neutral-700">
+            <p className="mt-1.5 text-[15px] leading-snug text-neutral-800">
               „{quote.translation}”
             </p>
           )}
