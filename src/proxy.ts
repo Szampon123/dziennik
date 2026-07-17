@@ -46,6 +46,10 @@ const PUBLIC_PATHS = [
   "/sitemap.xml",
   "/manifest.webmanifest",
   "/api/og",
+  // Strava calls this machine-to-machine, with no session by definition. The
+  // route carries its own auth: a capability token in the query string checked
+  // against STRAVA_WEBHOOK_VERIFY_TOKEN (see the route's threat-model comment).
+  "/api/strava/webhook",
 ];
 
 function isPublicPath(pathname: string): boolean {
