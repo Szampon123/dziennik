@@ -4,9 +4,11 @@ import { requireUserId } from "@/lib/session";
 import { auth } from "@/lib/auth";
 import { getGoogleStatus } from "@/lib/google";
 import { getNotionStatus } from "@/lib/notion";
+import { getStravaStatus } from "@/lib/strava";
 import { Card } from "@/components/Card";
 import { GoogleSettings } from "@/components/GoogleSettings";
 import { NotionSettings } from "@/components/NotionSettings";
+import { StravaSettings } from "@/components/StravaSettings";
 import { ThemeSegmented } from "@/components/ThemeSegmented";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { DeleteAccount } from "@/components/DeleteAccount";
@@ -37,18 +39,25 @@ const GOOGLE_BANNERS: Record<string, { key: MessageKey; tone: "ok" | "error" }> 
   not_configured: { key: "settings.googleNoKeys", tone: "error" },
 };
 
+const STRAVA_BANNERS: Record<string, { key: MessageKey; tone: "ok" | "error" }> = {
+  connected: { key: "settings.stravaConnected", tone: "ok" },
+  error: { key: "settings.stravaFailed", tone: "error" },
+  not_configured: { key: "settings.stravaNoKeys", tone: "error" },
+};
+
 export default async function SettingsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ google?: string }>;
+  searchParams: Promise<{ google?: string; strava?: string }>;
 }) {
   const userId = await requireUserId();
-  const [{ google: googleParam }, session, googleStatus, notionStatus, { t }, account] =
+  const [params, session, googleStatus, notionStatus, stravaStatus, { t }, account] =
     await Promise.all([
       searchParams,
       auth(),
       getGoogleStatus(userId),
       getNotionStatus(userId),
+      getStravaStatus(userId),
       getT(),
       // Which proof the delete form asks for depends on whether this account has a
       // password at all — a Google-only user has none and confirms with their
@@ -58,7 +67,9 @@ export default async function SettingsPage({
         select: { email: true, passwordHash: true, role: true, emailVerified: true },
       }),
     ]);
-  const banner = googleParam ? GOOGLE_BANNERS[googleParam] : undefined;
+  const banner =
+    (params.google ? GOOGLE_BANNERS[params.google] : undefined) ??
+    (params.strava ? STRAVA_BANNERS[params.strava] : undefined);
 
   // The owner is not offered the card at all: bootstrapRole() re-grants the role
   // from OWNER_EMAIL on the next sign-in, so deleting would destroy the owner's
@@ -106,6 +117,10 @@ export default async function SettingsPage({
 
       <Card title={t("settings.google.title")} subtitle={t("settings.google.subtitle")}>
         <GoogleSettings status={googleStatus} />
+      </Card>
+
+      <Card title={t("settings.strava.title")} subtitle={t("settings.strava.subtitle")}>
+        <StravaSettings status={stravaStatus} />
       </Card>
 
       <Card title={t("settings.notion.title")} subtitle={t("settings.notion.subtitle")}>

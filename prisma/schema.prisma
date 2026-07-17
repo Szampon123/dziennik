@@ -287,10 +287,13 @@ model Workout {
   durationMin Float
   isRace     Boolean  @default(false)
   note       String?
+  source     String   @default("manual") // "manual" | "strava"
+  externalId String? // Strava activity id — dedup key for imports
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, externalId])
   @@index([userId, activityId, date])
 }
 
@@ -420,13 +423,17 @@ model RoleChange {
 // consent, connected/disconnected independently of login.)
 model OAuthToken {
   userId       String
-  provider     String // "google"
+  provider     String // "google" | "strava"
   accessToken  String
   refreshToken String?
   expiryDate   BigInt?
   scope        String?
-  accountEmail String? // shown in Settings as "connected as ..."
+  accountEmail String? // shown in Settings as "connected as ..." (Strava: athlete name)
+  // Provider-side account id (Strava athlete id) — routes webhook events
+  // (owner_id) back to the local user. Null for providers that don't need it.
+  providerAccountId String?
   user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, provider])
+  @@index([provider, providerAccountId])
 }

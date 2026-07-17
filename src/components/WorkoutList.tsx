@@ -15,6 +15,7 @@ export type WorkoutItem = {
   durationMin: number;
   isRace: boolean;
   note: string | null;
+  source: string;
 };
 
 function formatPace(distanceKm: number, durationMin: number): string {
@@ -63,6 +64,12 @@ export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
               {w.isRace && (
                 <Badge variant="azure" className="ml-2">
                   {t("workout.raceBadge")}
+                </Badge>
+              )}
+              {/* Brand name, identical in every locale — no message key. */}
+              {w.source === "strava" && (
+                <Badge variant="neutral" className="ml-2">
+                  Strava
                 </Badge>
               )}
             </span>

@@ -7,6 +7,7 @@ import { requireUserId } from "@/lib/session";
 import { verifyPassword } from "@/lib/passwords";
 import { normalizeRole } from "@/lib/roles";
 import { revokeGoogleAccess } from "@/lib/google";
+import { disconnectStrava } from "@/lib/strava";
 import { deletePhoto } from "@/lib/uploads";
 import { signOut } from "@/lib/auth";
 
@@ -79,11 +80,16 @@ export async function deleteAccount(
     }
   }
 
-  // 1. Hand the Google grant back before we lose the token that lets us do it.
+  // 1. Hand the OAuth grants back before we lose the tokens that let us do it.
   try {
     await revokeGoogleAccess(userId);
   } catch (error) {
     console.error("[DELETE] google revoke failed for", userId, error);
+  }
+  try {
+    await disconnectStrava(userId);
+  } catch (error) {
+    console.error("[DELETE] strava revoke failed for", userId, error);
   }
 
   // 2. Photos, while the rows still say where they are.

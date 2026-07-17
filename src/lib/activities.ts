@@ -208,6 +208,7 @@ export async function getActivityWithMilestones(userId: string, slug: string) {
       durationMin: w.durationMin,
       isRace: w.isRace,
       note: w.note,
+      source: w.source,
     })),
   };
 }

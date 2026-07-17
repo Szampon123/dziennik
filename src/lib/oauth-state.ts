@@ -9,6 +9,7 @@ import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
 
 export const OAUTH_STATE_COOKIE = "google_oauth_state";
+export const STRAVA_OAUTH_STATE_COOKIE = "strava_oauth_state";
 
 const STATE_MAX_AGE_SECONDS = 600; // consent rarely takes 10 minutes
 
@@ -19,26 +20,27 @@ export function generateOAuthState(): string {
 
 /**
  * Cookie attributes for the state token. SameSite=Lax (not Strict) so the
- * cookie survives Google's cross-site redirect back to the callback. Path is
- * scoped to the OAuth routes, which also covers /api/auth/google/callback.
+ * cookie survives the provider's cross-site redirect back to the callback.
+ * Path is scoped to that provider's OAuth routes (which also covers its
+ * /callback), so the Google and Strava state cookies never shadow each other.
  */
-export function stateCookieOptions(isSecure: boolean) {
+export function stateCookieOptions(isSecure: boolean, path = "/api/auth/google") {
   return {
     httpOnly: true,
     sameSite: "lax" as const,
     secure: isSecure,
     maxAge: STATE_MAX_AGE_SECONDS,
-    path: "/api/auth/google",
+    path,
   };
 }
 
 /** Same attributes, zero lifetime — expires the cookie. */
-export function clearedStateCookieOptions(isSecure: boolean) {
-  return { ...stateCookieOptions(isSecure), maxAge: 0 };
+export function clearedStateCookieOptions(isSecure: boolean, path = "/api/auth/google") {
+  return { ...stateCookieOptions(isSecure, path), maxAge: 0 };
 }
 
-export function getStateCookie(request: NextRequest): string | null {
-  return request.cookies.get(OAUTH_STATE_COOKIE)?.value ?? null;
+export function getStateCookie(request: NextRequest, cookieName = OAUTH_STATE_COOKIE): string | null {
+  return request.cookies.get(cookieName)?.value ?? null;
 }
 
 /**
