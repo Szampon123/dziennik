@@ -1,154 +1,205 @@
-import { createElement } from "react";
+import { createElement, type ComponentType } from "react";
 import {
-  Accessibility,
+  Activity,
   Anchor,
   AudioLines,
   AudioWaveform,
-  Backpack,
-  Banana,
-  Beef,
   Bell,
   BellRing,
-  Bike,
-  Bird,
-  Box,
   Brain,
-  BrickWall,
-  Brush,
-  Cake,
-  Camera,
   Car,
-  CarFront,
-  Carrot,
   ChefHat,
-  Cherry,
   Circle,
-  CircleDashed,
-  CircleDot,
-  Citrus,
-  Clapperboard,
-  CloudSnow,
-  Coffee,
-  Compass,
-  CookingPot,
-  Croissant,
-  Crosshair,
-  Cylinder,
-  Diamond,
-  Dice5,
-  Dices,
-  Disc,
-  Disc2,
-  Disc3,
+  CircleDotDashed,
   DiscAlbum,
-  Drama,
-  Drum,
-  Drumstick,
   Dumbbell,
-  EggFried,
-  Feather,
-  Fence,
   FileMusic,
-  Film,
-  Fish,
-  Flag,
-  FlagTriangleRight,
   Flame,
-  Flower,
-  Flower2,
   Footprints,
-  Frame,
-  Gamepad2,
-  Gem,
-  Goal,
-  Grape,
-  Grid2x2,
-  Grip,
-  GripHorizontal,
-  Guitar,
-  Ham,
-  Hammer,
-  Hand,
-  HandFist,
-  HandGrab,
-  HandMetal,
-  HandPlatter,
   Headphones,
-  HeartPulse,
-  HelpCircle,
-  KeyboardMusic,
-  LandPlot,
-  Leaf,
-  LifeBuoy,
   ListMusic,
-  Mic,
   Monitor,
   MonitorSpeaker,
-  Motorbike,
   Mountain,
-  MountainSnow,
-  Move,
   Music,
-  Music2,
   Music3,
   Music4,
-  Orbit,
-  Origami,
   Palette,
-  PawPrint,
   PenLine,
-  PenTool,
-  Pencil,
-  PersonStanding,
   Piano,
-  Pipette,
-  Pizza,
-  Radar,
   Radio,
   RadioReceiver,
-  Repeat,
-  Rocket,
-  Route,
-  Sailboat,
-  Salad,
-  Sandwich,
-  Scale,
   Scissors,
-  Shield,
-  Ship,
-  Shirt,
-  Shovel,
   Snowflake,
-  Soup,
-  Spade,
-  Sparkles,
-  Spline,
-  Sprout,
-  Sword,
   Swords,
-  Table,
   Target,
-  TestTube,
-  Timer,
-  Tornado,
-  Torus,
-  TreePine,
   Users,
-  Volleyball,
+  Volume,
+  Volume1,
+  Volume2,
   Waves,
-  WavesLadder,
-  Waypoints,
-  Weight,
-  Wheat,
-  Wind,
-  Wine,
-  Zap,
-  type LucideIcon,
 } from "lucide-react";
+import {
+  faArrowsSpin,
+  faBaseball,
+  faBaseballBatBall,
+  faBasketball,
+  faBeerMugEmpty,
+  faBezierCurve,
+  faBicycle,
+  faBolt,
+  faBowlFood,
+  faBowlRice,
+  faBowlingBall,
+  faBroom,
+  faBullseye,
+  faBurger,
+  faCameraRetro,
+  faCarSide,
+  faCarrot,
+  faChampagneGlasses,
+  faCheese,
+  faChessKnight,
+  faChildReaching,
+  faCircle,
+  faCircleDot,
+  faCircleHalfStroke,
+  faCircleNotch,
+  faClapperboard,
+  faCompactDisc,
+  faCompass,
+  faCrosshairs,
+  faCubes,
+  faDiamond,
+  faDrum,
+  faDrumstickBite,
+  faDumbbell,
+  faFeather,
+  faFilm,
+  faFire,
+  faFireBurner,
+  faFish,
+  faFishFins,
+  faFlagCheckered,
+  faFootball,
+  faFutbol,
+  faGamepad,
+  faGem,
+  faGolfBallTee,
+  faGuitar,
+  faGun,
+  faHammer,
+  faHandBackFist,
+  faHandFist,
+  faHandsHoldingCircle,
+  faHeartPulse,
+  faHockeyPuck,
+  faHorse,
+  faInfinity,
+  faJar,
+  faLeaf,
+  faLemon,
+  faLifeRing,
+  faMartiniGlassCitrus,
+  faMedal,
+  faMicrophoneLines,
+  faMitten,
+  faMortarPestle,
+  faMotorcycle,
+  faMountain,
+  faMugSaucer,
+  faPaintbrush,
+  faPalette,
+  faPaperPlane,
+  faParachuteBox,
+  faPenFancy,
+  faPenNib,
+  faPencil,
+  faPeopleArrows,
+  faPepperHot,
+  faPersonArrowUpFromLine,
+  faPersonBiking,
+  faPersonFalling,
+  faPersonHiking,
+  faPersonRunning,
+  faPersonSkating,
+  faPersonSkiing,
+  faPersonSkiingNordic,
+  faPersonSnowboarding,
+  faPersonSwimming,
+  faPersonWalking,
+  faPizzaSlice,
+  faPlateWheat,
+  faRibbon,
+  faRocket,
+  faSailboat,
+  faScissors,
+  faSeedling,
+  faShieldHalved,
+  faShip,
+  faShirt,
+  faShoePrints,
+  faShrimp,
+  faSliders,
+  faSnowflake,
+  faSpa,
+  faSquareFull,
+  faStar,
+  faStopwatch,
+  faTableCellsLarge,
+  faTableTennisPaddleBall,
+  faTornado,
+  faTrophy,
+  faUserNinja,
+  faVolleyball,
+  faWater,
+  faWaterLadder,
+  faWeightHanging,
+  faWeightScale,
+  faWheatAwn,
+  faWind,
+  faWineGlass,
+  type IconDefinition,
+} from "@fortawesome/free-solid-svg-icons";
 
-// Design System v1.0 — lucide icons replace emoji (consistent rendering).
+// Design System v1.1 — activity icons come from Font Awesome Free (solid) where
+// a literal icon exists (sports silhouettes, real balls, cuisine dishes), with
+// lucide kept for the gaps (instruments and a few others — FA has those only in
+// the paid Pro set). Category fallback icons and the rest of the app stay on
+// lucide. No runtime dependency on @fortawesome/react-fontawesome: FA ships raw
+// SVG path data, rendered by the tiny fa() wrapper below (fill=currentColor, so
+// Tailwind text-* color classes keep working exactly like with lucide).
+
+export type ActivityIconComponent = ComponentType<{
+  className?: string;
+  "aria-hidden"?: boolean;
+}>;
+
+// Module-level factory → stable component identity per icon (lint heuristic).
+function fa(def: IconDefinition): ActivityIconComponent {
+  const [width, height, , , pathData] = def.icon;
+  const paths = Array.isArray(pathData) ? pathData : [pathData];
+  function FaIcon({ className, "aria-hidden": ariaHidden = true }: { className?: string; "aria-hidden"?: boolean }) {
+    return (
+      <svg
+        viewBox={`0 0 ${width} ${height}`}
+        className={className}
+        aria-hidden={ariaHidden}
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {paths.map((d, i) => (
+          <path key={i} d={d} />
+        ))}
+      </svg>
+    );
+  }
+  FaIcon.displayName = `Fa${def.iconName}`;
+  return FaIcon;
+}
+
 // Category icons are only a fallback for activities without a slug override.
-const CATEGORY_ICONS: Record<string, LucideIcon> = {
+const CATEGORY_ICONS: Record<string, ActivityIconComponent> = {
   wytrzymalosciowe: Footprints,
   outdoor: Mountain,
   wodne: Waves,
@@ -169,188 +220,187 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   kuchnie: ChefHat,
 };
 
-// A distinct, recognizable icon per activity. Every one of the 138 activities
-// gets its own icon (no two share one), so sports and disciplines are easy to
-// tell apart in the list. Where lucide has no literal match (many ball/racket
-// sports), a distinct evocative stand-in is used (ball/court/gear/motion).
-const SLUG_ICONS: Record<string, LucideIcon> = {
+// A distinct, recognizable icon per activity — no two activities share one.
+// FA Free covers 119/138; the rest keeps lucide until we add custom SVGs
+// (or FA Pro). See: przeglad-ikon-dziennik.html.
+const SLUG_ICONS: Record<string, ActivityIconComponent> = {
   // Wytrzymałościowe
-  bieganie: Footprints,
-  chodzenie: PersonStanding,
-  "jazda-na-rowerze": Bike,
-  plywanie: WavesLadder,
-  "rolki-lyzwy": Disc3,
-  wioslarstwo: Ship,
-  triathlon: Route, // swim-bike-run: a multi-stage course, not a podium
-  sprint: Zap,
+  bieganie: fa(faPersonRunning),
+  chodzenie: fa(faPersonWalking),
+  "jazda-na-rowerze": fa(faPersonBiking),
+  plywanie: fa(faPersonSwimming),
+  "rolki-lyzwy": fa(faPersonSkating),
+  wioslarstwo: fa(faShip),
+  triathlon: fa(faMedal),
+  sprint: fa(faBolt),
 
   // Górskie i outdoor
-  wspinaczka: Mountain,
-  narciarstwo: MountainSnow,
-  golf: FlagTriangleRight,
-  "turystyka-gorska": Backpack,
-  jezdziectwo: PawPrint,
-  paralotniarstwo: Bird,
-  "bieg-na-orientacje": Compass,
-  parkour: Move,
+  wspinaczka: fa(faMountain),
+  narciarstwo: fa(faPersonSkiing),
+  golf: fa(faGolfBallTee),
+  "turystyka-gorska": fa(faPersonHiking),
+  jezdziectwo: fa(faHorse),
+  paralotniarstwo: fa(faParachuteBox),
+  "bieg-na-orientacje": fa(faCompass),
+  parkour: fa(faPersonFalling),
 
   // Wodne
-  kajakarstwo: Anchor,
-  zeglarstwo: Sailboat,
-  surfing: Waves,
-  nurkowanie: Fish,
-  windsurfing: Wind,
-  kitesurfing: Tornado,
-  sup: LifeBuoy,
-  "pilka-wodna": Dice5,
+  kajakarstwo: Anchor, // FA Free brak (Pro: kayak)
+  zeglarstwo: fa(faSailboat),
+  surfing: fa(faWater),
+  nurkowanie: fa(faFishFins),
+  windsurfing: fa(faWind),
+  kitesurfing: fa(faTornado),
+  sup: fa(faLifeRing),
+  "pilka-wodna": fa(faWaterLadder),
 
   // Zimowe
-  snowboard: Snowflake,
-  "lyzwiarstwo-figurowe": Spline, // the traced curve of a figure
-  biathlon: CloudSnow,
-  "narciarstwo-biegowe": TreePine,
-  "lyzwiarstwo-szybkie": Timer,
-  "skoki-narciarskie": Rocket,
-  curling: Cylinder, // the stone
+  snowboard: fa(faPersonSnowboarding),
+  "lyzwiarstwo-figurowe": fa(faStar),
+  biathlon: fa(faSnowflake),
+  "narciarstwo-biegowe": fa(faPersonSkiingNordic),
+  "lyzwiarstwo-szybkie": fa(faStopwatch),
+  "skoki-narciarskie": fa(faRocket),
+  curling: fa(faBroom),
 
   // Siła i ciało
-  "trening-silowy": Dumbbell,
-  joga: Flower,
-  kalistenika: Accessibility,
-  pilates: Flower2,
-  gimnastyka: Sparkles,
-  "podnoszenie-ciezarow": Weight,
-  "trojboj-silowy": Scale,
-  strongman: HandMetal,
+  "trening-silowy": fa(faDumbbell),
+  joga: fa(faSpa),
+  kalistenika: fa(faPersonArrowUpFromLine),
+  pilates: fa(faInfinity),
+  gimnastyka: fa(faChildReaching),
+  "podnoszenie-ciezarow": fa(faWeightHanging),
+  "trojboj-silowy": fa(faWeightScale),
+  strongman: fa(faHandBackFist),
 
   // Drużynowe
-  "pilka-nozna": Goal,
-  koszykowka: Torus, // the hoop
-  siatkowka: Volleyball,
-  "pilka-reczna": Hand,
-  rugby: Swords,
-  hokej: Disc,
-  krykiet: LandPlot,
-  baseball: Diamond,
-  "futbol-amerykanski": Shield,
-  "hokej-na-trawie": Sprout,
-  lacrosse: Shovel, // the netted stick
-  "ultimate-frisbee": Disc2,
+  "pilka-nozna": fa(faFutbol),
+  koszykowka: fa(faBasketball),
+  siatkowka: fa(faVolleyball),
+  "pilka-reczna": fa(faHandsHoldingCircle),
+  rugby: fa(faShieldHalved),
+  hokej: fa(faHockeyPuck),
+  krykiet: fa(faBaseballBatBall),
+  baseball: fa(faBaseball),
+  "futbol-amerykanski": fa(faFootball),
+  "hokej-na-trawie": fa(faSeedling),
+  lacrosse: fa(faTrophy),
+  "ultimate-frisbee": fa(faCompactDisc),
 
   // Rakietowe
-  tenis: CircleDot,
-  "tenis-stolowy": Table,
-  badminton: Feather,
-  squash: BrickWall, // played off the wall
-  padel: Fence,
-  pickleball: Grid2x2,
+  tenis: fa(faCircleDot),
+  "tenis-stolowy": fa(faTableTennisPaddleBall),
+  badminton: fa(faFeather),
+  squash: fa(faSquareFull),
+  padel: fa(faTableCellsLarge),
+  pickleball: fa(faCircleNotch),
 
   // Precyzyjne
-  lucznictwo: Target,
-  bilard: CircleDashed,
-  kregle: Dices,
-  dart: Radar,
-  snooker: Frame, // the table, not a fourth ring
-  petanka: Orbit,
-  "strzelectwo-sportowe": Crosshair,
+  lucznictwo: fa(faBullseye),
+  bilard: fa(faCircle),
+  kregle: fa(faBowlingBall),
+  dart: fa(faCrosshairs),
+  snooker: CircleDotDashed, // FA Free brak (Pro: pool-8-ball)
+  petanka: fa(faCircleHalfStroke),
+  "strzelectwo-sportowe": fa(faGun),
 
-  // Fitness
-  crossfit: Flame,
-  skakanka: Repeat,
-  spinning: HeartPulse,
-  aerobik: Music2,
+  // Fitness i cardio
+  crossfit: fa(faFire),
+  skakanka: fa(faArrowsSpin),
+  spinning: fa(faBicycle),
+  aerobik: fa(faHeartPulse),
 
   // Motorowe
-  karting: CarFront,
-  motocross: Motorbike,
-  zuzel: Flag,
+  karting: fa(faCarSide),
+  motocross: fa(faMotorcycle),
+  zuzel: fa(faFlagCheckered),
 
   // Umysłowe
-  szachy: Brain,
-  "e-sport": Gamepad2,
-  poker: Spade,
+  szachy: fa(faChessKnight),
+  "e-sport": fa(faGamepad),
+  poker: fa(faDiamond),
 
   // Taniec i sztuki walki
-  taniec: Drama,
-  "sztuki-walki": Sword,
-  boks: HandFist,
-  judo: Shirt,
-  zapasy: HandGrab,
-  "taniec-towarzyski": Music,
+  taniec: fa(faShoePrints),
+  "sztuki-walki": fa(faUserNinja),
+  boks: fa(faHandFist),
+  judo: fa(faShirt),
+  zapasy: fa(faPeopleArrows),
+  "taniec-towarzyski": fa(faChampagneGlasses),
 
   // Sztuki wizualne
-  rysowanie: Pencil,
-  malarstwo: Palette,
-  akwarela: Brush,
-  kaligrafia: PenTool,
+  rysowanie: fa(faPencil),
+  malarstwo: fa(faPalette),
+  akwarela: fa(faPaintbrush),
+  kaligrafia: fa(faPenNib),
 
   // Rękodzieło
-  garncarstwo: HandPlatter,
-  dzianie: Grip,
-  szydelkowanie: Waypoints,
-  szycie: Scissors,
-  stolarstwo: Hammer,
-  bizuteria: Gem,
-  origami: Origami,
+  garncarstwo: fa(faJar),
+  dzianie: fa(faMitten),
+  szydelkowanie: fa(faRibbon),
+  szycie: fa(faScissors),
+  stolarstwo: fa(faHammer),
+  bizuteria: fa(faGem),
+  origami: fa(faPaperPlane),
 
   // Sztuki cyfrowe
-  "grafika-cyfrowa": Monitor,
-  fotografia: Camera,
-  "montaz-wideo": Clapperboard,
-  animacja: Film,
-  "modelowanie-3d": Box,
+  "grafika-cyfrowa": fa(faBezierCurve),
+  fotografia: fa(faCameraRetro),
+  "montaz-wideo": fa(faClapperboard),
+  animacja: fa(faFilm),
+  "modelowanie-3d": fa(faCubes),
 
   // Artyzm
-  pisanie: PenLine,
-  "produkcja-muzyczna": KeyboardMusic,
+  pisanie: fa(faPenFancy),
+  "produkcja-muzyczna": fa(faSliders),
 
   // Instrumenty
-  "gra-na-gitarze": Guitar,
-  spiew: Mic,
-  pianino: Piano,
-  skrzypce: Music3,
-  perkusja: Drum,
-  "gitara-basowa": AudioWaveform,
-  ukulele: Music4,
-  saksofon: AudioLines,
-  flet: Pipette, // a slim bore
-  trabka: BellRing,
-  klarnet: TestTube, // a tube with a bell
-  wiolonczela: FileMusic,
-  "harmonijka-ustna": GripHorizontal, // a row of holes
-  akordeon: RadioReceiver,
-  banjo: DiscAlbum,
-  mandolina: ListMusic,
-  keyboard: Radio,
-  puzon: Bell,
-  harfa: Headphones,
-  organy: MonitorSpeaker,
+  "gra-na-gitarze": fa(faGuitar),
+  spiew: fa(faMicrophoneLines),
+  pianino: Piano, // FA Free brak (Pro: piano)
+  skrzypce: Music3, // FA Free brak (Pro: violin)
+  perkusja: fa(faDrum),
+  "gitara-basowa": AudioWaveform, // FA Free brak (Pro: guitar-electric)
+  ukulele: Music4, // FA Free brak (Pro: guitars)
+  saksofon: AudioLines, // FA Free brak (Pro: saxophone)
+  flet: Volume1, // FA Free brak (Pro: flute)
+  trabka: BellRing, // FA Free brak (Pro: trumpet)
+  klarnet: Volume2, // FA Free brak (Pro: clarinet)
+  wiolonczela: FileMusic, // FA Free brak (Pro: violin)
+  "harmonijka-ustna": Volume, // FA brak — własne SVG w przyszłości
+  akordeon: RadioReceiver, // FA Free brak (Pro: accordion)
+  banjo: DiscAlbum, // FA Free brak (Pro: banjo)
+  mandolina: ListMusic, // FA Free brak (Pro: mandolin)
+  keyboard: Radio, // FA Free brak (Pro: piano-keyboard)
+  puzon: Bell, // FA Free brak (Pro: trombone)
+  harfa: Headphones, // FA Free brak (Pro: harp)
+  organy: MonitorSpeaker, // FA brak — własne SVG w przyszłości
 
   // Kuchnie świata
-  "kuchnia-wloska": Pizza,
-  "kuchnia-francuska": Croissant,
-  "kuchnia-japonska": Soup,
-  "kuchnia-chinska": CookingPot, // the wok
-  "kuchnia-meksykanska": Sandwich,
-  "kuchnia-indyjska": Salad,
-  "kuchnia-tajska": Citrus,
-  "kuchnia-hiszpanska": Wine,
-  "kuchnia-grecka": Grape,
-  "kuchnia-polska": Ham,
-  "kuchnia-turecka": Coffee,
-  "kuchnia-wietnamska": Leaf, // fresh herbs
-  "kuchnia-koreanska": EggFried,
-  "kuchnia-amerykanska": Beef,
-  "kuchnia-libanska": Wheat,
-  "kuchnia-marokanska": Drumstick,
-  "kuchnia-brazylijska": Banana,
-  "kuchnia-niemiecka": Cake,
-  "kuchnia-wegierska": Carrot,
-  "kuchnia-peruwianska": Cherry,
+  "kuchnia-wloska": fa(faPizzaSlice),
+  "kuchnia-francuska": fa(faCheese),
+  "kuchnia-japonska": fa(faBowlRice),
+  "kuchnia-chinska": fa(faBowlFood),
+  "kuchnia-meksykanska": fa(faPepperHot),
+  "kuchnia-indyjska": fa(faMortarPestle),
+  "kuchnia-tajska": fa(faLemon),
+  "kuchnia-hiszpanska": fa(faWineGlass),
+  "kuchnia-grecka": fa(faLeaf),
+  "kuchnia-polska": fa(faPlateWheat),
+  "kuchnia-turecka": fa(faMugSaucer),
+  "kuchnia-wietnamska": fa(faShrimp),
+  "kuchnia-koreanska": fa(faFireBurner),
+  "kuchnia-amerykanska": fa(faBurger),
+  "kuchnia-libanska": fa(faWheatAwn),
+  "kuchnia-marokanska": fa(faDrumstickBite),
+  "kuchnia-brazylijska": fa(faMartiniGlassCitrus),
+  "kuchnia-niemiecka": fa(faBeerMugEmpty),
+  "kuchnia-wegierska": fa(faCarrot),
+  "kuchnia-peruwianska": fa(faFish),
 };
 
-export function activityIcon(slug: string, category: string): LucideIcon {
-  return SLUG_ICONS[slug] ?? CATEGORY_ICONS[category] ?? HelpCircle;
+export function activityIcon(slug: string, category: string): ActivityIconComponent {
+  return SLUG_ICONS[slug] ?? CATEGORY_ICONS[category] ?? Activity;
 }
 
 export function ActivityIcon({
