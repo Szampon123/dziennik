@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { CircleCheck } from "lucide-react";
 import { resendVerificationEmail } from "@/actions/verification";
 import { useT } from "@/components/i18n/I18nProvider";
 import { RESEND_ERROR_KEY } from "@/lib/resend-errors";
@@ -35,7 +36,7 @@ export function EmailVerificationStatus({ verified }: { verified: boolean }) {
   if (verified) {
     return (
       <p className="border-success/40 bg-success-bg text-success mt-3 flex items-center gap-1.5 rounded-lg border px-3 py-2 text-[13px] font-medium">
-        <span aria-hidden>✓</span>
+        <CircleCheck aria-hidden className="h-3.5 w-3.5" />
         {t("settings.account.emailVerified")}
       </p>
     );

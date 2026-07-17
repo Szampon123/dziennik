@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { getLocale } from "@/lib/i18n/server";
 import { termsFor, TERMS_UPDATED } from "@/lib/legal/terms";
 
@@ -80,8 +81,12 @@ export default async function TermsPage() {
         </Link>
       </p>
 
-      <Link href="/" className="mt-12 inline-block text-sm text-violet-600 hover:underline">
-        ← {locale === "pl" ? "Powrót na stronę główną" : "Back to home"}
+      <Link
+        href="/"
+        className="group mt-12 inline-flex items-center gap-1 text-sm text-violet-600 hover:underline"
+      >
+        <ArrowLeft aria-hidden className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
+        {locale === "pl" ? "Powrót na stronę główną" : "Back to home"}
       </Link>
     </div>
   );

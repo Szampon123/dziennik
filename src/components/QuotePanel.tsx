@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { Heart, Shuffle } from "lucide-react";
+import { Heart, Shuffle, Star } from "lucide-react";
 import { QUOTE_BY_ID, randomQuoteId } from "@/lib/quotes";
 import { setFavoriteQuote } from "@/actions/quotes";
 import { QuoteBody } from "@/components/QuoteBody";
@@ -56,8 +56,9 @@ export function QuotePanel({
       action={
         <Link
           href="/cytaty?fav=1"
-          className="shrink-0 text-[13px] font-medium text-azure-700 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-violet-200"
+          className="inline-flex shrink-0 items-center gap-1 text-[13px] font-medium text-azure-700 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-violet-200"
         >
+          <Star aria-hidden className="h-3.5 w-3.5" />
           {t("quote.favorites", { n: favs.size })}
         </Link>
       }

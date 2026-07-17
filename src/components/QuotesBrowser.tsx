@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, useTransition } from "react";
-import { Heart, Search } from "lucide-react";
+import { Heart, Search, Star } from "lucide-react";
 import { QUOTES, LANG_LABELS, type QuoteLang } from "@/lib/quotes";
 import { setFavoriteQuote } from "@/actions/quotes";
 import { QuoteBody } from "@/components/QuoteBody";
@@ -158,7 +158,12 @@ export function QuotesBrowser({
             <option value="lang">{t("quotes.sortLang")}</option>
           </select>
 
-          <Chip active={onlyFav} onClick={() => setOnlyFav((v) => !v)}>
+          <Chip
+            active={onlyFav}
+            onClick={() => setOnlyFav((v) => !v)}
+            className="inline-flex items-center gap-1.5"
+          >
+            <Star aria-hidden className="h-3.5 w-3.5" />
             {t("quotes.onlyFavorites", { count: favs.size })}
           </Chip>
         </div>

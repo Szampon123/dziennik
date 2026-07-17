@@ -151,14 +151,14 @@ export default async function TodayPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
           <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
             {t("page.today.title")}
           </h1>
           <p className="mt-1 text-[13px] capitalize text-neutral-500">{formatDayLong(day.date, locale)}</p>
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-2">
+        <div className="flex flex-col items-start gap-2 sm:items-end">
           {morningFilled ? (
             <Badge variant="success">
               <CircleCheck aria-hidden className="h-3.5 w-3.5" />

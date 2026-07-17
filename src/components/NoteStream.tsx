@@ -132,7 +132,7 @@ export function NoteStream({
                   onClick={() => remove(note.id)}
                   aria-label={t("notes.deleteNote")}
                   title={t("notes.deleteNote")}
-                  className="rounded p-1 text-neutral-500 opacity-0 transition-opacity hover:text-danger focus-visible:opacity-100 group-hover:opacity-100"
+                  className="rounded p-1 text-neutral-500 opacity-0 transition-opacity hover:text-danger focus-visible:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100"
                 >
                   <X className="h-3.5 w-3.5" />
                 </button>

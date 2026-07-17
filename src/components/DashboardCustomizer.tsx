@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import {
+  Check,
   SlidersHorizontal,
   ChevronUp,
   ChevronDown,
@@ -165,7 +166,10 @@ export function DashboardCustomizer({
               {t("dashboard.defaultLayout")}
             </Button>
             {status === "saved" ? (
-              <span className="text-[13px] text-success">{t("common.saved")}</span>
+              <span className="inline-flex items-center gap-1 text-[13px] text-success">
+                <Check aria-hidden className="h-3.5 w-3.5" />
+                {t("common.saved")}
+              </span>
             ) : (
               <span className="text-[13px] text-neutral-400">
                 {t("dashboard.visibleCount", { done: visibleCount, total: ord.length })}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { ImagePlus, RotateCcw, Trash2 } from "lucide-react";
+import { Check, ImagePlus, RotateCcw, Trash2 } from "lucide-react";
 import {
   saveMilestoneNote,
   uploadMilestonePhoto,
@@ -174,7 +174,12 @@ export function MilestoneEntryEditor({
               {t("mEditor.restoreOriginal")}
             </Button>
           )}
-          {levelStatus === "saved" && <span className="text-[13px] text-success">{t("common.saved")}</span>}
+          {levelStatus === "saved" && (
+            <span className="inline-flex items-center gap-1 text-[13px] text-success">
+              <Check aria-hidden className="h-3.5 w-3.5" />
+              {t("common.saved")}
+            </span>
+          )}
           {levelStatus === "error" && <span className="text-[13px] text-danger">{levelError}</span>}
         </div>
         {customized && (
@@ -236,7 +241,12 @@ export function MilestoneEntryEditor({
             {t("mEditor.removePhoto")}
           </Button>
         )}
-        {status === "saved" && <span className="text-[13px] text-success">{t("common.saved")}</span>}
+        {status === "saved" && (
+          <span className="inline-flex items-center gap-1 text-[13px] text-success">
+            <Check aria-hidden className="h-3.5 w-3.5" />
+            {t("common.saved")}
+          </span>
+        )}
         {status === "error" && <span className="text-[13px] text-danger">{error}</span>}
       </div>
       <p className="text-xs text-neutral-500">{t("mEditor.photoHint")}</p>

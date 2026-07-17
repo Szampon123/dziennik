@@ -3,6 +3,15 @@
 /* Class-based dark mode (toggled on <html>, default follows system). */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Hide the scrollbar while keeping the element scrollable (e.g. the mobile
+ * nav's horizontal overflow). */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /*
  * Vincendio — Design System v1.0 tokens.
  * Palettes are CSS variables that flip in .dark, so components can use

@@ -31,22 +31,22 @@ export function Nav({ userMenu }: { userMenu?: React.ReactNode }) {
 
   return (
     <header className="sticky top-0 z-20 h-16 border-b border-neutral-200 bg-neutral-0/80 backdrop-blur-md supports-[backdrop-filter]:bg-neutral-0/70">
-      <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between px-8">
-        <div className="flex items-center gap-8">
-          <Link href="/dzis" className="flex items-center gap-2.5">
+      <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between gap-3 px-4 sm:px-8">
+        <div className="flex min-w-0 items-center gap-4 sm:gap-8">
+          <Link href="/dzis" className="flex shrink-0 items-center gap-2.5">
             <span aria-hidden className="h-2.5 w-2.5 rounded-full bg-violet-600" />
             <span className="text-[17px] font-bold tracking-[-0.3px] text-neutral-900">
               {SITE_NAME}
             </span>
           </Link>
-          <nav className="flex items-center gap-1">
+          <nav className="flex min-w-0 items-center gap-1 overflow-x-auto scrollbar-none">
             {links.map(({ href, key }) => {
               const active = pathname.startsWith(href);
               return (
                 <Link
                   key={href}
                   href={href}
-                  className={`rounded-full px-3.5 py-1.5 text-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-200 ${
+                  className={`shrink-0 whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-violet-200 ${
                     active
                       ? "bg-violet-100 font-semibold text-violet-700"
                       : "font-medium text-neutral-600 hover:bg-neutral-100"

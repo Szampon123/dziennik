@@ -170,7 +170,7 @@ export default async function RootLayout({
             <>
               <Nav userMenu={<UserMenu />} />
               {showVerificationBanner && <VerificationBanner />}
-              <main className="mx-auto w-full max-w-[760px] flex-1 px-6 py-12">{children}</main>
+              <main className="mx-auto w-full max-w-[760px] flex-1 px-4 py-6 sm:px-6 sm:py-12">{children}</main>
             </>
           )}
         </I18nProvider>

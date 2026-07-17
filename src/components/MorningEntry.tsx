@@ -135,7 +135,10 @@ export function MorningEntry({
             {isPending ? t("common.saving") : t("morning.save")}
           </Button>
           {status === "saved" ? (
-            <span className="text-[13px] text-success">{t("common.saved")}</span>
+            <span className="inline-flex items-center gap-1 text-[13px] text-success">
+              <Check aria-hidden className="h-3.5 w-3.5" />
+              {t("common.saved")}
+            </span>
           ) : status === "error" ? (
             <span className="text-[13px] text-danger">{error}</span>
           ) : (

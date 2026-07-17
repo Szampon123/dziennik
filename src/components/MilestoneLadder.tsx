@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import {
+  Check,
   ChevronDown,
   GraduationCap,
   Image as ImageIcon,
@@ -206,7 +207,8 @@ export function MilestoneLadder({
             {(m.done || m.note || m.hasPhoto) && (
               <span className="mt-1 flex flex-wrap items-center gap-2 text-[13px]">
                 {m.done && m.completedAt !== null && (
-                  <span className="font-medium text-success">
+                  <span className="inline-flex items-center gap-1 font-medium text-success">
+                    <Check aria-hidden className="h-3.5 w-3.5" />
                     {t("ladder.completedOn", { date: formatDate(m.completedAt, locale) })}
                   </span>
                 )}

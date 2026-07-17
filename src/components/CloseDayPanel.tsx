@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Star, Zap } from "lucide-react";
+import { Check, Star, Zap } from "lucide-react";
 import { closeDay, reopenDay } from "@/actions/day-entry";
 import { RatingScale } from "@/components/RatingScale";
 import { SyncStatusBadge } from "@/components/SyncStatusBadge";
@@ -69,7 +69,10 @@ export function CloseDayPanel({
       <div className="flex flex-col gap-3">
         <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm">
           <div className="flex items-center justify-between gap-3">
-            <p className="font-medium text-neutral-900">{t("close.closed")}</p>
+            <p className="flex items-center gap-1.5 font-medium text-neutral-900">
+              <Check aria-hidden className="h-4 w-4 text-success" />
+              {t("close.closed")}
+            </p>
             <SyncStatusBadge status={syncStatus} />
           </div>
           {syncError && <p className="mt-1 text-[13px] text-danger">{syncError}</p>}

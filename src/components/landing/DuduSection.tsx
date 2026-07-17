@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import { CHARACTER_STAGES } from "@/lib/character";
 
 /**
@@ -42,9 +43,7 @@ export function DuduSection() {
           {CHARACTER_STAGES.map((stage, i) => (
             <li key={stage.name} className="flex items-center gap-3">
               {i > 0 && (
-                <span aria-hidden className="text-white/25">
-                  →
-                </span>
+                <ArrowRight aria-hidden className="h-4 w-4 text-white/25" />
               )}
               <span className="rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-1.5 text-[13px] font-medium text-white/80">
                 {stage.name}

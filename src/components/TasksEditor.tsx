@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Check } from "lucide-react";
 import { updateDayTasks } from "@/actions/day-entry";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -110,7 +111,10 @@ export function TasksEditor({
           </Button>
         )}
         {status === "saved" ? (
-          <span className="text-[13px] text-success">{t("common.saved")}</span>
+          <span className="inline-flex items-center gap-1 text-[13px] text-success">
+            <Check aria-hidden className="h-3.5 w-3.5" />
+            {t("common.saved")}
+          </span>
         ) : status === "error" ? (
           <span className="text-[13px] text-danger">{error}</span>
         ) : (

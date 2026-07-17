@@ -74,14 +74,18 @@ export default async function HistoryPage() {
                       {plural(locale, "notes.count", day._count.notes)}
                     </p>
                   </div>
-                  <div className="flex shrink-0 items-center gap-2">
+                  <div className="flex flex-wrap items-center justify-end gap-2">
                     {day.status === "open" ? (
                       <Badge variant="neutral">{t("history.dayOpen")}</Badge>
                     ) : (
                       <SyncStatusBadge status={day.syncStatus} />
                     )}
                     {day.tasksTotal !== null && day.tasksTotal > 0 && (
-                      <Badge variant="neutral" title={t("history.completedCalendarTasks")}>
+                      <Badge
+                        variant="neutral"
+                        className="hidden sm:inline-flex"
+                        title={t("history.completedCalendarTasks")}
+                      >
                         <ListChecks aria-hidden className="h-3.5 w-3.5" />
                         {day.tasksDone ?? 0}/{day.tasksTotal}
                       </Badge>

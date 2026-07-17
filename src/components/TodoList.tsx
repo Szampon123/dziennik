@@ -147,7 +147,7 @@ export function TodoList({
                     onClick={() => remove(todo)}
                     aria-label={t("todo.deleteAria", { title: todo.title })}
                     title={t("todo.deleteTitle")}
-                    className="rounded p-1 text-neutral-500 opacity-0 transition-opacity hover:text-danger focus-visible:opacity-100 group-hover:opacity-100"
+                    className="rounded p-1 text-neutral-500 opacity-0 transition-opacity hover:text-danger focus-visible:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100"
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>

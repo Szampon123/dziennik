@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Check, Star } from "lucide-react";
 import { setFavorite } from "@/actions/favorites";
 import { CATEGORIES, categoryLabelKey, type CategoryKey } from "@/lib/activity-categories";
 import { ActivityIcon } from "@/lib/activity-icons";
@@ -230,7 +230,8 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
                     <span className="mt-1.5 flex flex-wrap items-center gap-x-2 text-xs text-neutral-500">
                       <span>{t(categoryLabelKey(a.category))}</span>
                       {a.levelAchievedAt !== null && (
-                        <span className="font-medium text-success">
+                        <span className="inline-flex items-center gap-1 font-medium text-success">
+                          <Check aria-hidden className="h-3.5 w-3.5" />
                           {t("act.levelAchieved", { date: formatDate(a.levelAchievedAt, locale) })}
                         </span>
                       )}

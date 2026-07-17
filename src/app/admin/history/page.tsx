@@ -6,7 +6,7 @@ export default async function AdminHistoryPage() {
     <div>
       <h2 className="mb-4 text-xl font-semibold">Historia zmian ról</h2>
       {changes.length === 0 ? (
-        <p className="text-muted">Brak zmian ról.</p>
+        <p className="text-neutral-500">Brak zmian ról.</p>
       ) : (
         <table className="w-full text-sm">
           <thead>
@@ -29,7 +29,7 @@ export default async function AdminHistoryPage() {
                   <span className="text-success">{c.newRole}</span>
                 </td>
                 <td className="py-2">{c.changerName ?? c.changerEmail ?? "—"}</td>
-                <td className="py-2 text-muted">{c.reason ?? "—"}</td>
+                <td className="py-2 text-neutral-500">{c.reason ?? "—"}</td>
               </tr>
             ))}
           </tbody>
