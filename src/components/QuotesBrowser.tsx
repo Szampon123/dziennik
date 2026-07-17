@@ -8,7 +8,7 @@ import { QuoteBody } from "@/components/QuoteBody";
 import { EmptyState } from "@/components/EmptyState";
 import { Chip } from "@/components/ui/Chip";
 import { Button } from "@/components/ui/Button";
-import { inputClass } from "@/components/ui/Input";
+import { inputClass, selectClass } from "@/components/ui/Input";
 import { useT } from "@/components/i18n/I18nProvider";
 
 // All categories/languages present in the library (for the filter dropdowns).
@@ -122,7 +122,7 @@ export function QuotesBrowser({
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             aria-label={t("quotes.categoryAria")}
-            className={`${inputClass} w-auto capitalize`}
+            className={`${selectClass} w-auto capitalize`}
           >
             <option value="all">{t("quotes.allCategories")}</option>
             {CATEGORIES.map((c) => (
@@ -136,7 +136,7 @@ export function QuotesBrowser({
             value={lang}
             onChange={(e) => setLang(e.target.value)}
             aria-label={t("quotes.langAria")}
-            className={`${inputClass} w-auto`}
+            className={`${selectClass} w-auto`}
           >
             <option value="all">{t("quotes.allLangs")}</option>
             {LANGS.map((l) => (
@@ -150,7 +150,7 @@ export function QuotesBrowser({
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
             aria-label={t("quotes.sortAria")}
-            className={`${inputClass} w-auto`}
+            className={`${selectClass} w-auto`}
           >
             <option value="default">{t("quotes.sortDefault")}</option>
             <option value="category">{t("quotes.sortCategory")}</option>

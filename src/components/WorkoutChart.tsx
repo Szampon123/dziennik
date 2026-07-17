@@ -1,4 +1,4 @@
-import { startOfWeek, addDays, todayKey, dayKeyToDate } from "@/lib/dates";
+import { startOfWeek, addDays, todayKey, formatDayShort } from "@/lib/dates";
 import { getT } from "@/lib/i18n/server";
 
 type WorkoutLite = { date: string; distanceKm: number; durationMin: number };
@@ -17,7 +17,7 @@ const WEEKS = 12;
 // from the loaded workout history. Rendered only when there are workouts.
 export async function WorkoutChart({ workouts }: { workouts: WorkoutLite[] }) {
   if (workouts.length === 0) return null;
-  const { t } = await getT();
+  const { t, locale } = await getT();
 
   const totalKm = workouts.reduce((s, w) => s + w.distanceKm, 0);
   const longest = workouts.reduce((m, w) => Math.max(m, w.distanceKm), 0);
@@ -63,9 +63,9 @@ export async function WorkoutChart({ workouts }: { workouts: WorkoutLite[] }) {
               <div
                 key={d.wk}
                 className="flex flex-1 flex-col items-center justify-end gap-1"
-                title={`${dayKeyToDate(d.wk).getDate()}.${dayKeyToDate(d.wk).getMonth() + 1} — ${d.km} km`}
+                title={`${formatDayShort(d.wk, locale)} — ${d.km} km`}
               >
-                <span className="text-[9px] tabular-nums text-neutral-400">{d.km || ""}</span>
+                <span className="text-[10px] tabular-nums text-neutral-400">{d.km || ""}</span>
                 <div className="flex w-full max-w-6 flex-1 items-end">
                   <div
                     className={`w-full rounded-t ${isThisWeek ? "bg-azure-700" : "bg-azure-500"}`}
@@ -73,8 +73,8 @@ export async function WorkoutChart({ workouts }: { workouts: WorkoutLite[] }) {
                   />
                 </div>
                 {i % 2 === 0 && (
-                  <span className="text-[9px] tabular-nums text-neutral-400">
-                    {dayKeyToDate(d.wk).getDate()}.{dayKeyToDate(d.wk).getMonth() + 1}
+                  <span className="text-[10px] tabular-nums text-neutral-400">
+                    {formatDayShort(d.wk, locale)}
                   </span>
                 )}
               </div>

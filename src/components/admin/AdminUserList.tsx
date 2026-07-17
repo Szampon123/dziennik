@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { changeUserRole, type AdminUserRow } from "@/actions/admin";
 import { buttonClass } from "@/components/ui/Button";
+import { selectClass } from "@/components/ui/Input";
 import { useT } from "@/components/i18n/I18nProvider";
 
 // "owner" is deliberately absent: it is granted only by the OWNER_EMAIL env var.
@@ -65,7 +66,7 @@ function UserRow({ user }: { user: AdminUserRow }) {
           <select
             value={selectedRole}
             onChange={(e) => setSelectedRole(e.target.value)}
-            className="rounded border px-2 py-1 text-sm"
+            className={`${selectClass} w-auto py-2`}
             disabled={isPending}
           >
             {ASSIGNABLE_ROLES.map((r) => (

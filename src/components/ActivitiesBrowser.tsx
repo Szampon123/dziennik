@@ -11,7 +11,7 @@ import type { ActivityListItem } from "@/lib/activities";
 import { EmptyState } from "@/components/EmptyState";
 import { Badge } from "@/components/ui/Badge";
 import { Chip } from "@/components/ui/Chip";
-import { Input, inputClass } from "@/components/ui/Input";
+import { Input, selectClass } from "@/components/ui/Input";
 import { Progress } from "@/components/ui/Progress";
 import { useT, useLocale } from "@/components/i18n/I18nProvider";
 import type { MessageKey } from "@/lib/i18n/messages";
@@ -139,7 +139,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as SortKey)}
-            className={`${inputClass} w-auto py-2.5`}
+            className={`${selectClass} w-auto py-2.5`}
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.key} value={o.key}>
@@ -151,7 +151,7 @@ export function ActivitiesBrowser({ activities }: { activities: ActivityListItem
       </div>
 
       {/* Category chips — one horizontally scrollable row, names only */}
-      <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+      <div className="scrollbar-none -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [mask-image:linear-gradient(90deg,transparent,black_12px,black_calc(100%-12px),transparent)]">
         {CATEGORIES.map((c) => (
           <Chip key={c.key} active={cats.has(c.key)} onClick={() => toggleCat(c.key)}>
             {t(c.labelKey)}

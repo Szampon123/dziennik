@@ -26,8 +26,10 @@ import {
   setHabitColor,
 } from "@/actions/habits";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { Input, selectChevron } from "@/components/ui/Input";
 import { Progress } from "@/components/ui/Progress";
+import { Card } from "@/components/Card";
+import { EmptyState } from "@/components/EmptyState";
 import {
   HABIT_COLORS,
   HABIT_COLOR_KEYS,
@@ -245,7 +247,7 @@ export function HabitTracker({
   return (
     <div className="flex flex-col gap-5">
       {/* Header: month nav + adherence ring (azure = data) */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-card border border-neutral-200 bg-neutral-0 p-4 shadow-card">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-card border border-neutral-200 bg-neutral-0 p-5 shadow-card">
         <div className="flex items-center gap-2">
           <Link
             href={`/nawyki?m=${addMonths(monthKey, -1)}`}
@@ -287,20 +289,19 @@ export function HabitTracker({
       </div>
 
       {habits.length === 0 ? (
-        <EmptyState />
+        <EmptyState title={t("habits.emptyTitle")} hint={t("habits.emptyBody")} />
       ) : (
         <>
           {/* Today — fast daily check-in (only when viewing the current month) */}
           {isCurrentMonth && (
-            <div className="rounded-card border border-neutral-200 bg-neutral-0 p-4 shadow-card">
-              <div className="mb-3 flex items-baseline justify-between">
-                <h2 className="text-[15px] font-semibold text-neutral-900">
-                  {t("habits.today")}
-                </h2>
+            <Card
+              title={t("habits.today")}
+              action={
                 <span className="text-[12px] text-neutral-500">
                   {capitalize(formatDayLong(today, locale))}
                 </span>
-              </div>
+              }
+            >
               <ul className="flex flex-col gap-1">
                 {habits.map((h) => {
                   const done = has(h.id, today);
@@ -370,11 +371,11 @@ export function HabitTracker({
                   );
                 })}
               </ul>
-            </div>
+            </Card>
           )}
 
           {/* Month grid */}
-          <div className="rounded-card border border-neutral-200 bg-neutral-0 p-4 shadow-card">
+          <div className="rounded-card border border-neutral-200 bg-neutral-0 p-5 shadow-card">
             <div className="overflow-x-auto">
               <div
                 className="grid w-full items-stretch"
@@ -450,11 +451,9 @@ export function HabitTracker({
           </div>
 
           {/* Monthly activity chart + summary stats */}
-          <div className="rounded-card border border-neutral-200 bg-neutral-0 p-4 shadow-card">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-[15px] font-semibold text-neutral-900">
-                {t("habits.monthActivity")}
-              </h2>
+          <Card
+            title={t("habits.monthActivity")}
+            action={
               <div className="flex flex-wrap gap-1.5">
                 <Stat
                   label={t("habits.bestStreak")}
@@ -471,9 +470,10 @@ export function HabitTracker({
                 />
                 <Stat label={t("habits.topHabit")} value={topHabit ? topHabit.name : "—"} />
               </div>
-            </div>
+            }
+          >
             <MonthActivityChart counts={dailyCounts} lastIdx={lastIdx} max={habits.length} days={days} />
-          </div>
+          </Card>
         </>
       )}
 
@@ -775,7 +775,7 @@ function TargetSelect({
       value={value}
       onChange={(e) => onChange(Number(e.target.value))}
       aria-label={ariaLabel}
-      className="shrink-0 rounded-lg border border-neutral-300 bg-neutral-0 px-2 py-2 text-[13px] text-neutral-800 outline-none transition-colors hover:border-neutral-400 focus-visible:ring-2 focus-visible:ring-violet-200"
+      className={`shrink-0 rounded-lg border border-neutral-300 bg-neutral-0 pl-2 py-2 text-[13px] text-neutral-800 outline-none transition-colors hover:border-neutral-400 focus-visible:ring-2 focus-visible:ring-violet-200 ${selectChevron}`}
     >
       {[1, 2, 3, 4, 5, 6, 7].map((n) => (
         <option key={n} value={n}>
@@ -783,16 +783,6 @@ function TargetSelect({
         </option>
       ))}
     </select>
-  );
-}
-
-function EmptyState() {
-  const t = useT();
-  return (
-    <div className="rounded-card border border-dashed border-neutral-300 bg-neutral-0 p-8 text-center shadow-card">
-      <p className="text-[15px] font-semibold text-neutral-900">{t("habits.emptyTitle")}</p>
-      <p className="mt-1 text-[13px] text-neutral-500">{t("habits.emptyBody")}</p>
-    </div>
   );
 }
 
@@ -870,7 +860,7 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
       </button>
 
       {open && (
-        <div className="rounded-card border border-neutral-200 bg-neutral-0 p-4 shadow-card">
+        <div className="rounded-card border border-neutral-200 bg-neutral-0 p-5 shadow-card">
           <div className="flex flex-wrap gap-2">
             <Input
               value={newName}

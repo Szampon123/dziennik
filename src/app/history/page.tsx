@@ -38,17 +38,18 @@ export default async function HistoryPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
-        {t("page.history.title")}
-      </h1>
+      <div>
+        <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
+          {t("page.history.title")}
+        </h1>
+        <p className="mt-1 text-[13px] text-neutral-500">{t("history.subtitle")}</p>
+      </div>
 
       <Card title={t("history.last30Days")} subtitle={t("history.ratingEnergy")}>
         {ratedDays >= 1 ? (
           <HistoryChart data={chartDays} />
         ) : (
-          <p className="py-10 text-center text-[13px] text-neutral-500">
-            {t("history.closeDayForTrend")}
-          </p>
+          <EmptyState title={t("history.closeDayForTrend")} />
         )}
       </Card>
 

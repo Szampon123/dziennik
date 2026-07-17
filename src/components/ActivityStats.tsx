@@ -76,9 +76,7 @@ export async function ActivityStats({
         <Ring pct={pct} />
         <div className="min-w-0">
           <p className="text-2xl font-semibold">
-            <span className="bg-gradient-to-r from-violet-600 to-azure-500 bg-clip-text text-transparent">
-              {completedCount}
-            </span>
+            <span className="text-violet-700">{completedCount}</span>
             <span className="text-base font-normal text-neutral-500">
               /{maxLevel} {t("stats.levelsWord")}
             </span>

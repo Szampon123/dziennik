@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import {
   Check,
   ChevronDown,
+  Loader2,
   GraduationCap,
   Image as ImageIcon,
   Play,
@@ -231,7 +232,9 @@ export function MilestoneLadder({
               </span>
             )}
           </span>
-          {pendingId === m.id && <span className="text-[13px] text-neutral-500">…</span>}
+          {pendingId === m.id && (
+            <Loader2 aria-hidden className="h-4 w-4 animate-spin text-neutral-500" />
+          )}
           <button
             type="button"
             onClick={() => setOpenId(open ? null : m.id)}
@@ -324,9 +327,9 @@ export function MilestoneLadder({
             <details
               key={tier.nameKey}
               open={openByDefault}
-              className="rounded-card border border-neutral-200 bg-neutral-0 shadow-card"
+              className="group rounded-card border border-neutral-200 bg-neutral-0 shadow-card"
             >
-              <summary className="flex min-h-10 cursor-pointer items-center justify-between gap-3 px-4 py-3">
+              <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
                 <span className="text-sm font-semibold text-neutral-900">
                   {t(tier.nameKey)}
                   <span className="ml-2 font-normal text-neutral-500">
@@ -338,6 +341,10 @@ export function MilestoneLadder({
                   <Badge variant={doneCount === all.length ? "success" : "neutral"}>
                     {doneCount}/{all.length}
                   </Badge>
+                  <ChevronDown
+                    aria-hidden
+                    className="h-4 w-4 text-neutral-400 transition-transform group-open:rotate-180"
+                  />
                 </span>
               </summary>
               <ul className="flex flex-col border-t border-neutral-200">{items.map(itemLi)}</ul>

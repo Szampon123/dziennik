@@ -63,7 +63,8 @@ export function HistoryChart({ data }: { data: ChartPoint[] }) {
             contentStyle={{
               backgroundColor: "var(--neutral-0)",
               border: "1px solid var(--neutral-200)",
-              borderRadius: "8px",
+              borderRadius: "12px",
+              boxShadow: "var(--elevation-card)",
               color: "var(--neutral-900)",
               fontSize: "0.75rem",
             }}
@@ -71,7 +72,7 @@ export function HistoryChart({ data }: { data: ChartPoint[] }) {
               name === t("chart.tasksPct") ? [`${value}%`, name] : [value, name]
             }
           />
-          <Legend />
+          <Legend iconType="circle" iconSize={8} />
           <Line
             yAxisId="rating"
             type="monotone"
@@ -80,6 +81,7 @@ export function HistoryChart({ data }: { data: ChartPoint[] }) {
             stroke="var(--violet-600)"
             strokeWidth={2}
             dot={{ r: 2 }}
+            activeDot={{ r: 4 }}
             connectNulls
           />
           <Line
@@ -90,6 +92,7 @@ export function HistoryChart({ data }: { data: ChartPoint[] }) {
             stroke="var(--azure-500)"
             strokeWidth={2}
             dot={{ r: 2 }}
+            activeDot={{ r: 4 }}
             connectNulls
           />
           <Line
@@ -101,6 +104,7 @@ export function HistoryChart({ data }: { data: ChartPoint[] }) {
             strokeWidth={2}
             strokeDasharray="5 3"
             dot={{ r: 2 }}
+            activeDot={{ r: 4 }}
             connectNulls
           />
         </LineChart>

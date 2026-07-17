@@ -577,6 +577,7 @@ const pl = {
   // Page headers
   "page.today.title": "Dziś",
   "page.history.title": "Historia",
+  "history.subtitle": "Twoje zamknięte dni, oceny i trendy.",
   "page.activities.title": "Aktywności",
   "page.activities.subtitle":
     "Realne, mierzalne poziomy od 1 do 99 — odhaczaj kolejne kamienie milowe.",
@@ -674,6 +675,7 @@ const pl = {
   "page.quotes.subtitle":
     "Przeglądaj i filtruj po dziedzinie, języku lub treści; zapisuj ulubione sercem.",
   "page.settings.title": "Ustawienia",
+  "settings.subtitle": "Konto, integracje i wygląd aplikacji.",
   "page.login.title": "Zaloguj się",
   "page.register.title": "Rejestracja",
   "page.register.description": "Załóż konto i zacznij prowadzić swój dziennik dnia.",
@@ -1488,6 +1490,7 @@ const en: Dict = {
 
   "page.today.title": "Today",
   "page.history.title": "History",
+  "history.subtitle": "Your closed days, ratings and trends.",
   "page.activities.title": "Activities",
   "page.activities.subtitle":
     "Real, measurable levels from 1 to 99 — tick off milestone after milestone.",
@@ -1583,6 +1586,7 @@ const en: Dict = {
   "page.quotes.subtitle":
     "Browse and filter by domain, language or text; save favourites with the heart.",
   "page.settings.title": "Settings",
+  "settings.subtitle": "Account, integrations and app appearance.",
   "page.login.title": "Sign in",
   "page.register.title": "Sign up",
   "page.register.description": "Create an account and start keeping your daily journal.",
@@ -2385,6 +2389,7 @@ const de: Dict = {
 
   "page.today.title": "Heute",
   "page.history.title": "Verlauf",
+  "history.subtitle": "Deine abgeschlossenen Tage, Bewertungen und Trends.",
   "page.activities.title": "Aktivitäten",
   "page.activities.subtitle":
     "Echte, messbare Stufen von 1 bis 99 — hake Meilenstein für Meilenstein ab.",
@@ -2480,6 +2485,7 @@ const de: Dict = {
   "page.quotes.subtitle":
     "Durchsuchen und filtern nach Bereich, Sprache oder Text; Favoriten mit dem Herz speichern.",
   "page.settings.title": "Einstellungen",
+  "settings.subtitle": "Konto, Integrationen und App-Darstellung.",
   "page.login.title": "Anmelden",
   "page.register.title": "Registrierung",
   "page.register.description": "Erstelle ein Konto und beginne, dein Tagesjournal zu führen.",
@@ -3280,6 +3286,7 @@ const es: Dict = {
 
   "page.today.title": "Hoy",
   "page.history.title": "Historial",
+  "history.subtitle": "Tus días cerrados, valoraciones y tendencias.",
   "page.activities.title": "Actividades",
   "page.activities.subtitle":
     "Niveles reales y medibles del 1 al 99: ve marcando cada hito.",
@@ -3375,6 +3382,7 @@ const es: Dict = {
   "page.quotes.subtitle":
     "Explora y filtra por ámbito, idioma o texto; guarda favoritas con el corazón.",
   "page.settings.title": "Ajustes",
+  "settings.subtitle": "Cuenta, integraciones y apariencia de la app.",
   "page.login.title": "Iniciar sesión",
   "page.register.title": "Registro",
   "page.register.description": "Crea una cuenta y empieza a llevar tu diario diario.",

@@ -79,9 +79,12 @@ export default async function SettingsPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
-        {t("page.settings.title")}
-      </h1>
+      <div>
+        <h1 className="text-[28px] font-semibold tracking-[-0.5px] text-neutral-900">
+          {t("page.settings.title")}
+        </h1>
+        <p className="mt-1 text-[13px] text-neutral-500">{t("settings.subtitle")}</p>
+      </div>
 
       {banner && (
         <p
@@ -99,7 +102,7 @@ export default async function SettingsPage({
         <div className="flex items-center gap-3">
           <span
             aria-hidden
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-azure-500 text-base font-semibold text-white shadow-[0_2px_8px_-3px_rgba(110,86,207,0.5)]"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-violet-100 text-base font-semibold text-violet-700"
           >
             {(session?.user?.email ?? session?.user?.name ?? "?").charAt(0).toUpperCase()}
           </span>

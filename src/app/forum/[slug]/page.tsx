@@ -9,6 +9,7 @@ import { normalizeRole, isAdminRole } from "@/lib/roles";
 import { parseLevelParam, levelLabel } from "@/lib/forum";
 import { ActivityIcon } from "@/lib/activity-icons";
 import { Card } from "@/components/Card";
+import { EmptyState } from "@/components/EmptyState";
 import { Badge } from "@/components/ui/Badge";
 import { LevelPicker } from "@/components/forum/LevelPicker";
 import { PostComposer } from "@/components/forum/PostComposer";
@@ -113,14 +114,21 @@ export default async function SkillForumPage({
             ) : (
               <div className="flex flex-wrap gap-2">
                 {generalCount > 0 && (
-                  <Link href={`/forum/${slug}`}>
+                  <Link
+                    href={`/forum/${slug}`}
+                    className="rounded-full outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-violet-200"
+                  >
                     <Badge variant={level === null ? "violet" : "neutral"}>
                       {t("forum.generalWithCount", { count: generalCount })}
                     </Badge>
                   </Link>
                 )}
                 {activeLevels.map((lvl) => (
-                  <Link key={lvl} href={`/forum/${slug}?level=${lvl}`}>
+                  <Link
+                    key={lvl}
+                    href={`/forum/${slug}?level=${lvl}`}
+                    className="rounded-full outline-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-violet-200"
+                  >
                     <Badge variant={level === lvl ? "violet" : "neutral"}>
                       {t("forum.levelWithCount", { level: lvl, count: levelCounts[lvl] })}
                     </Badge>
@@ -142,9 +150,7 @@ export default async function SkillForumPage({
         }
       >
         {posts.length === 0 ? (
-          <p className="py-6 text-center text-[13px] text-neutral-500">
-            {t("forum.beFirst")}
-          </p>
+          <EmptyState title={t("forum.beFirst")} />
         ) : (
           <ul className="flex flex-col gap-3">
             {posts.map((p) => (

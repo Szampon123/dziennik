@@ -6,8 +6,9 @@ import { addNote, deleteNote } from "@/actions/notes";
 import { NOTE_TYPES, type NoteType } from "@/lib/day";
 import { formatTime } from "@/lib/dates";
 import { EmptyState } from "@/components/EmptyState";
+import { Badge, type BadgeVariant } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { Textarea, inputClass } from "@/components/ui/Input";
+import { Textarea, selectClass } from "@/components/ui/Input";
 import { useT, useLocale } from "@/components/i18n/I18nProvider";
 import type { MessageKey } from "@/lib/i18n/messages";
 
@@ -24,10 +25,10 @@ export type NoteItem = {
   createdAt: Date;
 };
 
-const TYPE_BADGE: Record<NoteType, string> = {
-  log: "bg-violet-100 text-violet-700",
-  distraction: "bg-warning-bg text-warning",
-  idea: "bg-azure-100 text-azure-700",
+const TYPE_VARIANT: Record<NoteType, BadgeVariant> = {
+  log: "violet",
+  distraction: "warning",
+  idea: "azure",
 };
 
 export function NoteStream({
@@ -87,7 +88,7 @@ export function NoteStream({
               value={type}
               onChange={(e) => setType(e.target.value as NoteType)}
               aria-label={t("note.typeLabel")}
-              className={`${inputClass} w-auto`}
+              className={`${selectClass} w-auto`}
             >
               {NOTE_TYPES.map((nt) => (
                 <option key={nt} value={nt}>
@@ -116,15 +117,16 @@ export function NoteStream({
               <span className="mt-0.5 shrink-0 font-mono text-[13px] text-neutral-500">
                 {formatTime(new Date(note.createdAt), locale)}
               </span>
-              <span
-                className={`mt-0.5 inline-flex shrink-0 items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                  TYPE_BADGE[(note.type as NoteType) in TYPE_BADGE ? (note.type as NoteType) : "log"]
-                }`}
+              <Badge
+                variant={
+                  TYPE_VARIANT[(note.type as NoteType) in TYPE_VARIANT ? (note.type as NoteType) : "log"]
+                }
+                className="mt-0.5 shrink-0"
               >
                 {(note.type as NoteType) in NOTE_TYPE_KEY
                   ? t(NOTE_TYPE_KEY[note.type as NoteType])
                   : note.type}
-              </span>
+              </Badge>
               <span className="flex-1 text-[15px] text-neutral-800">{note.content}</span>
               {!disabled && (
                 <button

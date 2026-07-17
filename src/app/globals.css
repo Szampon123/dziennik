@@ -12,6 +12,15 @@
   }
 }
 
+/* Down-chevron for native <select> (paired with appearance-none). Kept in raw
+ * CSS because the inline SVG data-URI does not survive a Tailwind bg-[url(...)]
+ * arbitrary value. Stroke is neutral-500 (%23-encoded #). */
+@utility select-chevron {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a8a97' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
 /*
  * Vincendio — Design System v1.0 tokens.
  * Palettes are CSS variables that flip in .dark, so components can use
@@ -197,6 +206,11 @@ body {
   background: var(--neutral-50);
   color: var(--neutral-900);
   font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--violet-200);
+  color: var(--neutral-900);
 }
 
 /* Idle "breathing" for the Dudu companion. */

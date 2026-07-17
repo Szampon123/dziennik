@@ -133,7 +133,7 @@ export function WeekCalendar() {
               onClick={() => setSelectedDay((d) => clampDay(addDays(d, -7)))}
               disabled={!canPrev}
               aria-label={t("cal.prevWeek")}
-              className="rounded-lg p-1.5 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 disabled:pointer-events-none disabled:opacity-30"
+              className="rounded-lg p-1.5 text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-30"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -145,7 +145,7 @@ export function WeekCalendar() {
               onClick={() => setSelectedDay((d) => clampDay(addDays(d, 7)))}
               disabled={!canNext}
               aria-label={t("cal.nextWeek")}
-              className="rounded-lg p-1.5 text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900 disabled:pointer-events-none disabled:opacity-30"
+              className="rounded-lg p-1.5 text-neutral-500 outline-none transition-colors hover:bg-neutral-100 hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-violet-200 disabled:pointer-events-none disabled:opacity-30"
             >
               <ChevronRight className="h-4 w-4" />
             </button>

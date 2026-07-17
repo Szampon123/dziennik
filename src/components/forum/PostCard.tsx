@@ -39,7 +39,7 @@ export async function PostCard({
   const isOwn = post.userId === currentUserId;
 
   return (
-    <div className="rounded-xl border border-neutral-200 bg-neutral-0 p-4 shadow-card">
+    <div className="rounded-card border border-neutral-200 bg-neutral-0 p-4 shadow-card">
       <div className="flex items-start justify-between gap-3">
         <AuthorChip user={post.user} createdAt={post.createdAt} />
         {canDelete && <DeletePostButton id={post.id} />}
