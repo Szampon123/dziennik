@@ -271,15 +271,56 @@ export async function importStravaActivity(
   return affected;
 }
 
-/** Webhook delete event: drop the imported workout and recompute. */
+/**
+ * Webhook delete event: drop the imported workout and recompute.
+ *
+ * Trust-but-verify: Strava does not sign webhook events, so a delete is a
+ * destructive claim from an unauthenticated caller. Before acting on it we ask
+ * Strava whether the activity is actually gone (404) — a forged event for an
+ * activity that still exists is ignored, and when Strava can't be reached we
+ * refuse to delete rather than guess. Worst case of refusing: a stale workout
+ * that the next real event or sync cleans up.
+ */
 export async function deleteStravaActivity(userId: string, stravaId: string): Promise<void> {
   const workout = await prisma.workout.findUnique({
     where: { userId_externalId: { userId, externalId: stravaId } },
     select: { id: true, activityId: true },
   });
   if (!workout) return;
+
+  const token = await getAccessToken(userId);
+  if (!token) return; // can't verify → don't delete
+  const res = await fetch(`${API_BASE}/activities/${stravaId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (res.status !== 404) return; // still exists (or unverifiable) → forged or flaky, ignore
+
   await prisma.workout.delete({ where: { id: workout.id } });
   await recomputeAutoMilestones(userId, workout.activityId);
+}
+
+/**
+ * Is the user's Strava grant actually dead? Called before honouring a webhook
+ * deauthorization event, which — like every webhook POST — is unauthenticated
+ * and could be forged to force-disconnect someone. A live /athlete call proves
+ * the grant still works, so the event was fake. Only a definite auth failure
+ * (401/403, or a refresh rejected by Strava's token endpoint) counts as
+ * deauthorized; network trouble keeps the token.
+ */
+export async function verifyStravaDeauthorized(userId: string): Promise<boolean> {
+  try {
+    const token = await getAccessToken(userId);
+    if (!token) return true; // no stored grant — nothing to protect
+    const res = await fetch(`${API_BASE}/athlete`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return res.status === 401 || res.status === 403;
+  } catch (error) {
+    // getAccessToken throws when the refresh request fails; a revoked grant is
+    // rejected by the token endpoint with 400/401. Anything else (timeouts,
+    // 5xx) is Strava having a bad day, not evidence of deauthorization.
+    return /failed: (400|401|403) /.test(error instanceof Error ? error.message : "");
+  }
 }
 
 /** Webhook create/update event: fetch the activity detail, import, recompute. */
