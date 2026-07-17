@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Unplug } from "lucide-react";
 import { disconnectGoogleAction } from "@/actions/google";
 import type { GoogleStatus } from "@/lib/google";
 import { Button } from "@/components/ui/Button";
@@ -15,7 +16,15 @@ export function GoogleSettings({ status }: { status: GoogleStatus }) {
   const { confirm, dialog } = useConfirm();
 
   async function disconnect() {
-    if (!(await confirm({ body: t("google.disconnectConfirm"), variant: "danger" }))) return;
+    if (
+      !(await confirm({
+        title: t("google.disconnectTitle"),
+        body: t("google.disconnectConfirm"),
+        variant: "danger",
+        icon: Unplug,
+      }))
+    )
+      return;
     startTransition(async () => {
       const result = await disconnectGoogleAction();
       if (!result.ok) setError(result.error);

@@ -5,6 +5,7 @@ import {
   Check,
   ChevronDown,
   Loader2,
+  ListChecks,
   GraduationCap,
   Image as ImageIcon,
   Play,
@@ -103,9 +104,11 @@ export function MilestoneLadder({
         const n = impliedUnchecked.length;
         const levels = impliedUnchecked.map((x) => x.level).join(", ");
         const choice = await choose({
+          title: t("ladder.cascadeTitle"),
           body: plural(locale, "ladder.cascade", n, { levels }),
           yesLabel: plural(locale, "ladder.cascadeYes", n),
           noLabel: t("ladder.cascadeOnlyThis"),
+          icon: ListChecks,
         });
         if (choice === null) return;
         cascade = choice === "yes";

@@ -843,7 +843,15 @@ function ManagePanel({ habits, archived }: { habits: Habit[]; archived: Archived
     });
   }
   async function remove(id: string, name: string) {
-    if (!(await confirm({ body: t("habits.confirmDelete", { name }), variant: "danger" }))) return;
+    if (
+      !(await confirm({
+        title: t("habits.confirmDeleteTitle"),
+        body: t("habits.confirmDelete", { name }),
+        variant: "danger",
+        icon: Trash2,
+      }))
+    )
+      return;
     startTransition(async () => {
       await deleteHabit({ id });
     });

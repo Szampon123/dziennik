@@ -17,7 +17,15 @@ export function DeletePostButton({ id }: { id: string }) {
   const { confirm, dialog } = useConfirm();
 
   async function remove() {
-    if (!(await confirm({ body: t("forum.confirmDeletePost"), variant: "danger" }))) return;
+    if (
+      !(await confirm({
+        title: t("forum.deletePostTitle"),
+        body: t("forum.confirmDeletePost"),
+        variant: "danger",
+        icon: Trash2,
+      }))
+    )
+      return;
     setError("");
     startTransition(async () => {
       const result = await deletePost({ id });

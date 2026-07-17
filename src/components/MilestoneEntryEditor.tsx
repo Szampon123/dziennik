@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { Check, ImagePlus, RotateCcw, Trash2 } from "lucide-react";
+import { Check, ImageOff, ImagePlus, RotateCcw, Trash2 } from "lucide-react";
 import {
   saveMilestoneNote,
   uploadMilestonePhoto,
@@ -126,7 +126,15 @@ export function MilestoneEntryEditor({
   }
 
   async function removePhoto() {
-    if (!(await confirm({ body: t("mEditor.confirmRemovePhoto"), variant: "danger" }))) return;
+    if (
+      !(await confirm({
+        title: t("mEditor.removePhotoTitle"),
+        body: t("mEditor.confirmRemovePhoto"),
+        variant: "danger",
+        icon: ImageOff,
+      }))
+    )
+      return;
     startTransition(async () => {
       const result = await deleteMilestonePhoto({ milestoneId });
       if (!result.ok) {

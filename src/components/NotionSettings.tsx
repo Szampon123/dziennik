@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Unplug } from "lucide-react";
 import { saveNotionSettings, disconnectNotion } from "@/actions/notion-settings";
 import type { NotionStatus } from "@/lib/notion";
 import { Button } from "@/components/ui/Button";
@@ -32,7 +33,15 @@ export function NotionSettings({ status }: { status: NotionStatus }) {
   }
 
   async function disconnect() {
-    if (!(await confirm({ body: t("notion.disconnectConfirm"), variant: "danger" }))) return;
+    if (
+      !(await confirm({
+        title: t("notion.disconnectTitle"),
+        body: t("notion.disconnectConfirm"),
+        variant: "danger",
+        icon: Unplug,
+      }))
+    )
+      return;
     startTransition(async () => {
       const result = await disconnectNotion();
       if (result.ok) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useId, useRef, useState, type ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useT } from "@/components/i18n/I18nProvider";
 
@@ -13,6 +14,7 @@ type DialogState = {
   confirmLabel: string;
   cancelLabel: string;
   variant: ConfirmVariant;
+  icon?: LucideIcon;
 };
 
 export type ConfirmOptions = {
@@ -21,6 +23,7 @@ export type ConfirmOptions = {
   confirmLabel?: string;
   cancelLabel?: string;
   variant?: ConfirmVariant;
+  icon?: LucideIcon;
 };
 
 export type ChooseOptions = {
@@ -29,6 +32,7 @@ export type ChooseOptions = {
   yesLabel: string;
   noLabel: string;
   variant?: ConfirmVariant;
+  icon?: LucideIcon;
 };
 
 // DS confirmation built on the native <dialog> element, driven by a promise so
@@ -81,6 +85,7 @@ export function useConfirm() {
         confirmLabel: o.confirmLabel ?? t("common.confirm"),
         cancelLabel: o.cancelLabel ?? t("common.cancel"),
         variant: o.variant ?? "primary",
+        icon: o.icon,
       }) as Promise<boolean>,
     [run, t]
   );
@@ -94,11 +99,13 @@ export function useConfirm() {
         confirmLabel: o.yesLabel,
         cancelLabel: o.noLabel,
         variant: o.variant ?? "primary",
+        icon: o.icon,
       }) as Promise<"yes" | "no" | null>,
     [run]
   );
 
   const dismiss = () => settle(state?.kind === "choose" ? null : false);
+  const Icon = state?.icon;
 
   const dialog: ReactNode = (
     <dialog
@@ -125,14 +132,32 @@ export function useConfirm() {
     >
       {state && (
         <>
-          {state.title && (
-            <h2 id={titleId} className="text-[15px] font-semibold text-neutral-900">
-              {state.title}
-            </h2>
-          )}
-          <p id={bodyId} className={`text-[13.5px] text-neutral-600 ${state.title ? "mt-2" : ""}`}>
-            {state.body}
-          </p>
+          <div className="flex gap-3">
+            {Icon && (
+              <span
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+                  state.variant === "danger"
+                    ? "bg-danger/10 text-danger"
+                    : "bg-violet-100 text-violet-700"
+                }`}
+              >
+                <Icon aria-hidden className="h-5 w-5" />
+              </span>
+            )}
+            <div className="min-w-0 flex-1">
+              {state.title && (
+                <h2 id={titleId} className="text-[15px] font-semibold text-neutral-900">
+                  {state.title}
+                </h2>
+              )}
+              <p
+                id={bodyId}
+                className={`text-[13.5px] text-neutral-600 ${state.title ? "mt-1" : ""}`}
+              >
+                {state.body}
+              </p>
+            </div>
+          </div>
           <div className="mt-5 flex justify-end gap-2">
             <Button
               variant="secondary"

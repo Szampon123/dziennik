@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Unplug } from "lucide-react";
 import { disconnectStravaAction, syncStravaAction } from "@/actions/strava";
 import type { StravaStatus } from "@/lib/strava";
 import { Button } from "@/components/ui/Button";
@@ -16,7 +17,15 @@ export function StravaSettings({ status }: { status: StravaStatus }) {
   const { confirm, dialog } = useConfirm();
 
   async function disconnect() {
-    if (!(await confirm({ body: t("strava.disconnectConfirm"), variant: "danger" }))) return;
+    if (
+      !(await confirm({
+        title: t("strava.disconnectTitle"),
+        body: t("strava.disconnectConfirm"),
+        variant: "danger",
+        icon: Unplug,
+      }))
+    )
+      return;
     startTransition(async () => {
       const result = await disconnectStravaAction();
       if (!result.ok) setError(result.error);

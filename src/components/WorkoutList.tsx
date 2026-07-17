@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { X } from "lucide-react";
+import { Trash2, X } from "lucide-react";
 import { deleteWorkout } from "@/actions/workouts";
 import { formatDayShort } from "@/lib/dates";
 import { EmptyState } from "@/components/EmptyState";
@@ -34,7 +34,15 @@ export function WorkoutList({ workouts }: { workouts: WorkoutItem[] }) {
   const { confirm, dialog } = useConfirm();
 
   async function remove(id: string) {
-    if (!(await confirm({ body: t("workout.deleteConfirm"), variant: "danger" }))) return;
+    if (
+      !(await confirm({
+        title: t("workout.deleteTitle"),
+        body: t("workout.deleteConfirm"),
+        variant: "danger",
+        icon: Trash2,
+      }))
+    )
+      return;
     startTransition(async () => {
       const result = await deleteWorkout(id);
       setError(result.ok ? "" : result.error);
