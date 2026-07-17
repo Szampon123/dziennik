@@ -2,7 +2,10 @@
 // match experience; skill and competition milestones manual. Anchored loosely
 // to the NTRP self-rating scale (1.5 beginner → 5.0+ tournament player).
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "tenis",
@@ -140,4 +143,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   89: prog("turnieje", 10), 97: prog("turnieje", 15),
   11: freq(1, 4), 22: freq(2, 8),
   // pozostałe: technika i osiągnięcia turniejowe — manualne.
+};
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Pierwsze kroki na korcie — odbijanie", url: yt("bKXfJC_nNjk") }],
+  3: [{ kind: "video", title: "Forhend — technika uderzenia", url: yt("Dga_yNDzBLs") }],
+  5: [{ kind: "video", title: "Bekhend jednoręczny i oburęczny", url: yt("xw7l87R5Rfo") }],
+  7: [{ kind: "video", title: "Serwis — od podstaw do pełnego ruchu", url: yt("9hG9V5eX5kE") }],
+  12: [{ kind: "video", title: "Serwis od góry — pełna technika", url: yt("R8tR1LB3XpE") }],
+  17: [{ kind: "video", title: "Wolej przy siatce — forhend i bekhend", url: yt("iXD7Sgi__MI") }],
+  27: [{ kind: "video", title: "Slajs — uderzenie z podcięciem", url: yt("cLlXnVMdnRY") }],
+  30: [{ kind: "video", title: "Kick serve — serwis z rotacją", url: yt("lLVyEKHpS3A") }],
+  32: [{ kind: "video", title: "Drop shot — skrót techniczny", url: yt("h2K-PZ-mUGU") }],
+  42: [{ kind: "video", title: "Passing shot — minięcie siatkarza", url: yt("jrq_6v6bOHQ") }],
+  46: [{ kind: "article", title: "Improve your first serve percentage", url: "https://www.wikihow.com/Serve-in-Tennis" }],
+  55: [{ kind: "video", title: "Taktyka gry singlowej — wzory", url: yt("FLJRPIPqBN0") }],
 };

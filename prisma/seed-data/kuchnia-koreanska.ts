@@ -1,6 +1,9 @@
 // Korean cuisine ladder 1-99 — concrete dishes as levels, easy → hard.
 // REALISTIC home-cook scale. Tracks: dania, techniki, + specific-dish milestones.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "kuchnia-koreanska",
@@ -119,3 +122,26 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde koreańskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne koreańskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+// Curated learning resources for Korean cuisine milestones.
+// Videos from Maangchi, Aaron and Claire, Future Neighbor; articles from seriouseats, bonappetit.
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  4: [{ kind: "video", title: "Bibimbap — Korean Mixed Rice Bowl", url: yt("6QQ67F8y2b8") }],
+  6: [{ kind: "video", title: "Japchae — Glass Noodle Stir-Fry", url: yt("i1djfV9uigc") }],
+  7: [{ kind: "video", title: "Pajeon — Crispy Korean Scallion Pancake", url: yt("IfaExW4CgXk") }],
+  10: [{ kind: "video", title: "Tteokbokki — Spicy Rice Cakes", url: yt("FLd0Vl5oMak") }],
+  13: [
+    { kind: "video", title: "Bulgogi — Korean Marinated Beef", url: yt("SOrfKo14bIA") },
+    { kind: "article", title: "Bulgogi recipe with tips", url: "https://www.seriouseats.com/korean-bulgogi-recipe" },
+  ],
+  14: [{ kind: "video", title: "Kimchi Jjigae — Kimchi Stew", url: yt("DmU3JgSba4M") }],
+  15: [{ kind: "video", title: "Kimbap — Korean Seaweed Rice Rolls", url: yt("iVFMWPJ13Kk") }],
+  22: [{ kind: "video", title: "Yangnyeom Chicken — Korean Fried Chicken", url: yt("Jb_Xq3KBMWE") }],
+  26: [
+    { kind: "video", title: "Baechu Kimchi — Traditional Napa Cabbage Kimchi", url: yt("eTyyJ36h0mE") },
+    { kind: "article", title: "Complete kimchi fermentation guide", url: "https://www.seriouseats.com/homemade-kimchi-recipe" },
+  ],
+  29: [{ kind: "video", title: "Galbijjim — Braised Short Ribs", url: yt("r7TJ_VToIbw") }],
+  35: [{ kind: "video", title: "Naengmyeon — Cold Korean Noodles", url: yt("CVd9saz1uXM") }],
+  38: [{ kind: "video", title: "Jjajangmyeon — Noodles in Black Bean Sauce", url: yt("BIRFViCP9mM") }],
+};

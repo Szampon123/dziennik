@@ -119,3 +119,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde chińskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne chińskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Smażony ryż z jajkiem — technika wok", url: yt("n10xBmqehiQ") }],
+  3: [{ kind: "video", title: "Bok choy z czosnkiem — szybki stir-fry", url: yt("4wZs4E9IYVE") }],
+  10: [{ kind: "video", title: "Chow mein — smażony makaron chiński", url: yt("UH7bsOGdOGQ") }],
+  13: [
+    { kind: "video", title: "Kung pao chicken — Chinese Cooking Demystified", url: yt("bS3s_bY7Mco") },
+    { kind: "article", title: "Kung pao chicken — autentyczny syczuański przepis", url: "https://www.seriouseats.com/real-deal-kung-pao-chicken-recipe" },
+  ],
+  14: [{ kind: "video", title: "Mapo tofu — syczuański klasyk", url: yt("ZfsZwwrTFD4") }],
+  21: [{ kind: "video", title: "Char siu — kantońska wieprzowina BBQ", url: yt("ITzcSbEwxBw") }],
+  26: [{ kind: "video", title: "Jiaozi — pierożki od ciasta po zawijanie", url: yt("GaEd0Bnfv3E") }],
+  27: [{ kind: "article", title: "Dan dan noodles — pikantne kluski syczuańskie", url: "https://www.seriouseats.com/dan-dan-noodles-recipe" }],
+  34: [{ kind: "video", title: "Baozi — bułki na parze z farszem", url: yt("Izv18uPXjso") }],
+  41: [{ kind: "video", title: "Hong shao rou — duszony boczek w sosie sojowym", url: yt("UKz9ANrfg7g") }],
+  46: [{ kind: "video", title: "Xiao long bao — pierożki z zupą w środku", url: yt("29IhGLBhZNc") }],
+  50: [{ kind: "video", title: "La mian — makaron ciągniony ręcznie", url: yt("mzJm0HvwAMg") }],
+};

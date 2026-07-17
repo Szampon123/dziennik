@@ -29,6 +29,7 @@
 // loop < flip < lutz < axel — so the cascade is honest: landing a lutz does prove the
 // easier single jumps beneath it, and proves nothing about spins.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "lyzwiarstwo-figurowe",
@@ -152,3 +153,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wykonaj kombinację potrójny + podwójny", undefined, prog("kombinacja", 8)],
   ["Poziom mistrzowski: potrójny Axel lub komplet potrójnych w programie zawodniczym", "Szczyt sportu, nie hobby. Dalsze osiągnięcia potwierdzają rankingi ISU, nie ta drabinka.", prog("skok", 20)],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "How to Ice Skate — First Steps for Beginners", url: yt("1qX71pSiiMw") },
+  ],
+  7: [
+    { kind: "video", title: "Forward Crossovers Tutorial — Figure Skating Basics", url: yt("GwU-lqYmJHQ") },
+  ],
+  10: [
+    { kind: "video", title: "Three Turn Tutorial — Essential Figure Skating Move", url: yt("YpY0MLGqF9s") },
+  ],
+  15: [
+    { kind: "video", title: "Waltz Jump Tutorial — Your First Skating Jump", url: yt("5HcbYFH2E0c") },
+  ],
+  18: [
+    { kind: "video", title: "Single Toe Loop Tutorial for Figure Skaters", url: yt("dUO4JjbJXTc") },
+  ],
+  23: [
+    { kind: "reference", title: "U.S. Figure Skating Adult Testing Guide", url: "https://www.usfigureskating.org/skate/skating-opportunities/adult-skating/adult-testing" },
+  ],
+  30: [
+    { kind: "article", title: "Learn to Skate USA — Adult Curriculum Overview", url: "https://www.learntoskateusa.com/basic_skills" },
+  ],
+  46: [
+    { kind: "video", title: "How to Land an Axel — Step by Step", url: yt("3S7X1YwH0Dw") },
+  ],
+  65: [
+    { kind: "video", title: "Double Salchow Tutorial — First Double Jump", url: yt("Q_6xdxO9V2g") },
+  ],
+  90: [
+    { kind: "reference", title: "ISU Judging System — How Figure Skating Scores Work", url: "https://www.isu.org/figure-skating/rules" },
+  ],
+};

@@ -2,6 +2,9 @@
 // endurance (holds), flexibility, and repertoire level (mat → reformer →
 // advanced/instructor). Mostly skill-based, few auto criteria.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "pilates",
@@ -120,3 +123,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wnieś wkład w rozwój metody (publikacja, szkoła, autorska metodyka)"],
   ["Poziom mistrzowski: master trainer z pełnym opanowaniem systemu", "Dziesięciolecia praktyki i nauczania — szczyt metody Pilates."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Pilates Breathing Technique — Move With Nicole", url: yt("VFb0bx4YkSg") },
+    { kind: "article", title: "What is Pilates? Complete beginner guide", url: "https://www.verywellfit.com/what-is-pilates-2704484" },
+  ],
+  5: [
+    { kind: "video", title: "The Hundred — Pilates Exercise Tutorial — Blogilates", url: yt("RJBVRqSJhBo") },
+  ],
+  7: [
+    { kind: "video", title: "Roll Up — Perfect Form — Move With Nicole", url: yt("PLtGh5gCXMs") },
+  ],
+  14: [
+    { kind: "video", title: "Double Leg Stretch — Pilates Ab Series", url: yt("8C7FvJ6r-gU") },
+  ],
+  24: [
+    { kind: "video", title: "Reformer Pilates for Beginners — Move With Nicole", url: yt("p6VWyMDB1Ig") },
+    { kind: "article", title: "Mat vs Reformer Pilates explained", url: "https://www.verywellfit.com/pilates-mat-vs-reformer-2704578" },
+  ],
+  29: [
+    { kind: "video", title: "Teaser — Pilates Classic Exercise — Blogilates", url: yt("nzXJP8Rk7yM") },
+  ],
+  40: [
+    { kind: "video", title: "Full Teaser III Tutorial — Move With Nicole", url: yt("iqd0VqJbPBg") },
+  ],
+  65: [
+    { kind: "article", title: "The 34 classic Pilates mat exercises", url: "https://www.verywellfit.com/classical-pilates-mat-exercises-2704674" },
+  ],
+  82: [
+    { kind: "article", title: "How to become a certified Pilates instructor", url: "https://www.verywellfit.com/become-a-pilates-instructor-2704579" },
+  ],
+  99: [
+    { kind: "reference", title: "Pilates Method Alliance — Standards & Certification", url: "https://www.pilatesmethodalliance.org/" },
+  ],
+};

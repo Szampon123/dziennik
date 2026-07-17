@@ -119,3 +119,42 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zainspiruj innych graczy w swojej społeczności jako mentor", undefined, prog("mechanika", 21)],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów w dyscyplinie", "Dalsze, zawodowe osiągnięcia (scena światowa, Major) potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Getting Started in Competitive Gaming — ProGuides", url: yt("8YMvp6XNMLY") },
+  ],
+  5: [
+    { kind: "video", title: "How to Warm Up Properly for Esports — ProGuides", url: yt("BPJrKTkIu-Y") },
+  ],
+  9: [
+    { kind: "video", title: "VOD Review Guide — How to Analyze Your Gameplay — Blitz Esports", url: yt("V3R_CdFx5oM") },
+  ],
+  13: [
+    { kind: "video", title: "Map Awareness and Game Sense — ProGuides", url: yt("lYmgW4UkyZU") },
+  ],
+  15: [
+    { kind: "video", title: "Improving Mechanics — Aim and Movement — ProGuides", url: yt("xhQVbO-4GPo") },
+  ],
+  19: [
+    { kind: "video", title: "Team Communication Guide — Blitz Esports", url: yt("2y3qBgJKRrk") },
+  ],
+  27: [
+    { kind: "video", title: "Understanding Meta and Drafting — Blitz Esports", url: yt("9N7AXZC5hfU") },
+  ],
+  32: [
+    { kind: "video", title: "How to Be a Shot-Caller — ProGuides", url: yt("kJJ_8e5YhcY") },
+  ],
+  44: [
+    { kind: "article", title: "Breaking into the Competitive Scene — wikiHow", url: "https://www.wikihow.com/Become-a-Professional-Gamer" },
+  ],
+  55: [
+    { kind: "video", title: "Pro Mindset and Mental Game in Esports", url: yt("nIThG9r-FHk") },
+  ],
+  77: [
+    { kind: "video", title: "LAN Tournament Preparation — Blitz Esports", url: yt("mQ-BVj4HZ5Y") },
+  ],
+};

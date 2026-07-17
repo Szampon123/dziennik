@@ -1,6 +1,9 @@
 // Powerlifting ladder 1-99. Manual — progression tracks: squat, bench, deadlift
 // (kg), total (kg), and competition level. Values = kg (male open reference).
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "trojboj-silowy",
@@ -119,3 +122,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź złoto mistrzostw kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): tona w trójboju i wieloletni, dojrzały warsztat", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata IPF) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "How to Squat — Alan Thrall", url: yt("UFs6E3Ti1jg") },
+    { kind: "article", title: "Powerlifting for beginners — complete guide", url: "https://www.barbend.com/powerlifting-beginners-guide/" },
+  ],
+  2: [
+    { kind: "video", title: "Bench Press Technique — Jeff Nippard", url: yt("vcBig73ojpE") },
+  ],
+  3: [
+    { kind: "video", title: "How to Deadlift — Alan Thrall", url: yt("wYREQkVtvEc") },
+  ],
+  14: [
+    { kind: "video", title: "Deadlift 100 kg — Common Mistakes — Alan Thrall", url: yt("NYN3UGCYisk") },
+  ],
+  19: [
+    { kind: "article", title: "Your first powerlifting meet: what to expect", url: "https://www.barbend.com/first-powerlifting-meet/" },
+  ],
+  25: [
+    { kind: "video", title: "Programming for Intermediate Lifters — Jeff Nippard", url: yt("Fob-AGhZn44") },
+    { kind: "article", title: "Powerlifting programming fundamentals", url: "https://www.breakingmuscle.com/powerlifting-programming-guide/" },
+  ],
+  38: [
+    { kind: "video", title: "Peaking for a Meet — Attempt Selection — Alan Thrall", url: yt("dL3UCz4cFfA") },
+  ],
+  46: [
+    { kind: "video", title: "200 kg Squat — Training Journey — Jeff Nippard", url: yt("bs_Ej32IYgo") },
+  ],
+  66: [
+    { kind: "reference", title: "IPF Technical Rules Book", url: "https://www.powerlifting.sport/rules/documents.html" },
+  ],
+  99: [
+    { kind: "tool", title: "OpenPowerlifting — Results & Rankings", url: "https://www.openpowerlifting.org/" },
+  ],
+};

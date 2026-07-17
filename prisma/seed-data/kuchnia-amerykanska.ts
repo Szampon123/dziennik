@@ -1,6 +1,9 @@
 // American cuisine ladder 1-99 — concrete dishes as levels, easy → hard.
 // REALISTIC home-cook scale. Tracks: dania, techniki, + specific-dish milestones.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "kuchnia-amerykanska",
@@ -119,3 +122,26 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde amerykańskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne amerykańskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+// Curated learning resources for American cuisine milestones.
+// Videos from Babish, Joshua Weissman, America's Test Kitchen; articles from seriouseats, bonappetit.
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "The Perfect Smash Burger", url: yt("A-RfHC91Ewc") },
+    { kind: "article", title: "The ultimate smash burger technique", url: "https://www.seriouseats.com/ultra-smashed-cheeseburger-recipe-food-lab" },
+  ],
+  2: [{ kind: "video", title: "Fluffy American Pancakes from Scratch", url: yt("IY5ykPd3coo") }],
+  4: [{ kind: "video", title: "Mac and Cheese — Stovetop Creamy", url: yt("FUeyrEN14Rk") }],
+  8: [{ kind: "video", title: "Classic Texas Chili con Carne", url: yt("bcft1Gk4Z7Y") }],
+  13: [{ kind: "video", title: "Crispy Buffalo Wings with Blue Cheese", url: yt("DcmCIVJOBxE") }],
+  14: [{ kind: "video", title: "Southern Fried Chicken — Buttermilk Brine", url: yt("a-SnxKbn8Jk") }],
+  21: [
+    { kind: "video", title: "BBQ Ribs — Low and Slow Smoked", url: yt("EBnOxPjB8xI") },
+    { kind: "article", title: "Guide to BBQ pork ribs", url: "https://www.seriouseats.com/best-barbecue-ribs-recipe" },
+  ],
+  22: [{ kind: "video", title: "New York Cheesecake from Scratch", url: yt("tspdJ6hxqnc") }],
+  29: [{ kind: "video", title: "Pulled Pork — Smoked Pork Shoulder", url: yt("Nnsg9yJ7-B4") }],
+  32: [{ kind: "video", title: "Apple Pie — Flaky Crust from Scratch", url: yt("GxJSxj5p1rA") }],
+  46: [{ kind: "video", title: "Smoked Brisket — Texas Style Low and Slow", url: yt("pGZ39yYxeBk") }],
+  48: [{ kind: "article", title: "How to host a BBQ party: ribs, brisket, pulled pork", url: "https://www.bonappetit.com/story/backyard-bbq-guide" }],
+};

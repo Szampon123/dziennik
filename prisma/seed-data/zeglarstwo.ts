@@ -2,6 +2,7 @@
 // (PL: żeglarz jachtowy → jachtowy sternik morski → kapitan), miles logged,
 // boat handling skills, regatta results.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
 
 export const activity = {
@@ -134,4 +135,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   82: prog("mile", 75000), 85: prog("mile", 100000), 91: prog("mile", 150000), 98: prog("mile", 250000),
   11: freq(1, 4), 26: freq(2, 12),
   // pozostałe: manewry, rejsy, regaty, wydarzenia — manualne.
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Sailing basics — how to get started", url: yt("3PBYLsbzHmU") }],
+  3: [{ kind: "video", title: "How to tack a sailboat — step by step", url: yt("_KYMheRjk3s") }],
+  7: [{ kind: "video", title: "Man overboard drill — sailing safety", url: yt("3_aR5bnLG1c") }],
+  10: [{ kind: "article", title: "Sailing certification — getting your license", url: "https://www.nauticed.org/sailing-courses" }],
+  13: [{ kind: "video", title: "How to reef your sails in heavy wind", url: yt("J5TfJBjuZYM") }],
+  30: [{ kind: "article", title: "Coastal navigation — NauticEd course", url: "https://www.nauticed.org/sailing-courses/coastal-navigation" }],
+  43: [{ kind: "video", title: "How to fly a spinnaker — sailing downwind", url: yt("5dC2pSdG4_s") }],
+  53: [{ kind: "article", title: "RYA Yachtmaster — advanced sailing certification", url: "https://www.rya.org.uk/training/certificates-of-competence/yachtmaster-offshore" }],
+  72: [{ kind: "video", title: "Storm sailing tactics — heavy weather at sea", url: yt("qTcLnNrN8e0") }],
+  85: [{ kind: "video", title: "Sailing around the world — what it takes", url: yt("Nk-PcJIGx48") }],
 };

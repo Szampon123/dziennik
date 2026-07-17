@@ -1,6 +1,7 @@
 // Field hockey ladder 1-99. Manual — progression tracks: matches played, goals
 // (total), and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "hokej-na-trawie",
@@ -119,3 +120,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj mistrzostwo swojej ligi klubowej"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, kluczowy zawodnik silnej drużyny klubowej", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Field Hockey Basics — Dribbling for Beginners", url: yt("p8EaFbG_Tgs") },
+  ],
+  2: [
+    { kind: "video", title: "HertzbergerTV — How to Push Pass in Field Hockey", url: yt("R7Zt-x-Jv6Q") },
+  ],
+  5: [
+    { kind: "video", title: "Indian Dribble Tutorial — Field Hockey Skills", url: yt("h0KAYVJXhKM") },
+  ],
+  12: [
+    { kind: "video", title: "How to Flick and Slap Shot in Field Hockey", url: yt("bFHqhQo4zyo") },
+  ],
+  19: [
+    { kind: "video", title: "3D Skills in Field Hockey — Lifting the Ball", url: yt("fCPUhbz4cA4") },
+  ],
+  28: [
+    { kind: "video", title: "Drag Flick Tutorial — Penalty Corner Technique", url: yt("2A4uxN4mviY") },
+  ],
+  40: [
+    { kind: "article", title: "FIH — Rules of Hockey Simplified", url: "https://www.fih.hockey/about-fih/official-documents/rules-of-hockey" },
+  ],
+  55: [
+    { kind: "reference", title: "FIH World Ranking — Field Hockey", url: "https://www.fih.hockey/outdoor/rankings" },
+  ],
+  70: [
+    { kind: "video", title: "HertzbergerTV — Advanced Attacking Skills", url: yt("VqjGoU5r08k") },
+  ],
+  80: [
+    { kind: "article", title: "Hockey Training — Strength and Conditioning Guide", url: "https://www.verywellfit.com/field-hockey-fitness-4157107" },
+  ],
+};

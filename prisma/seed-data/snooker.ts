@@ -1,5 +1,6 @@
 // Snooker ladder 1-99. Manual — progression tracks: highest break (0-147),
 // technique, and competition level. Distinct from pool (bilard).
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladderC, freq, prog } from "./helpers";
 
 export const activity = {
@@ -119,3 +120,19 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź wielokrotne mistrzostwo kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów w snookerze", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, Triple Crown) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Snooker stance and bridge — Snooker Freaks", url: yt("KXi0cRWimlw") }],
+  4: [{ kind: "video", title: "Stun shot explained — Snooker Freaks", url: yt("Bl11rFaRpJE") }],
+  8: [{ kind: "video", title: "Positional play basics", url: yt("cIk_Sfe2V9M") }],
+  12: [{ kind: "video", title: "Side spin and screw — Snooker Freaks", url: yt("pLyOkEHJDEQ") }],
+  14: [{ kind: "video", title: "Safety play guide", url: yt("7vOJ04hBFUE") }],
+  17: [{ kind: "video", title: "Long potting technique", url: yt("4BEe0OaCxF4") }],
+  24: [{ kind: "video", title: "Break building technique", url: yt("K4S4hOGvOdM") }],
+  27: [{ kind: "video", title: "How to make a century break", url: yt("WDhYw6GnSuI") }],
+  29: [{ kind: "video", title: "Black ball game strategy", url: yt("YQPFGftNRnY") }],
+  65: [{ kind: "article", title: "Maximum break 147 explained — wikiHow", url: "https://www.wikihow.com/Play-Snooker" }],
+  85: [{ kind: "article", title: "Professional snooker path", url: "https://www.topendsports.com/sport/list/snooker.htm" }],
+};

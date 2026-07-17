@@ -2,6 +2,7 @@
 // and time of hikes) with manual summit milestones (progression tracks by
 // altitude, Korona Gór Polski count, and skill milestones without criteria).
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, d, t, weekly, monthly, total, freq, prog } from "./helpers";
 
 export const activity = {
@@ -147,3 +148,18 @@ export const criteriaByLevel: Record<number, Criterion> = {
 };
 
 void weekly;
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "article", title: "Hiking for beginners — getting started", url: "https://www.rei.com/learn/expert-advice/hiking-for-beginners.html" }],
+  5: [{ kind: "video", title: "10 essential hiking tips for beginners", url: yt("wGzCNjSJJHE") }],
+  10: [{ kind: "article", title: "What to pack for a day hike — checklist", url: "https://www.rei.com/learn/expert-advice/day-hiking-checklist.html" }],
+  16: [{ kind: "article", title: "Korona Gór Polski — lista szczytów", url: "https://www.koronagorspolski.pl/" }],
+  28: [{ kind: "video", title: "High altitude hiking — acclimatization tips", url: yt("jYiOA4Rmh-I") }],
+  38: [{ kind: "article", title: "Overnight backpacking essentials — REI guide", url: "https://www.rei.com/learn/expert-advice/backpacking-beginners.html" }],
+  44: [{ kind: "video", title: "Via ferrata — what to know before you go", url: yt("5jXVOKUNV3k") }],
+  58: [{ kind: "article", title: "Trekking at altitude — 3000m+ preparation", url: "https://www.rei.com/learn/expert-advice/altitude-sickness.html" }],
+  73: [{ kind: "video", title: "Climbing a 4000m peak — what to expect", url: yt("CXVoS4iQ3Hg") }],
+  91: [{ kind: "article", title: "High altitude mountaineering — 5000m+ guide", url: "https://www.rei.com/learn/expert-advice/mountaineering-basics.html" }],
+};

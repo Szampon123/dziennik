@@ -2,6 +2,8 @@
 // value = meters) and competition level. Benchmarks: małe skocznie ~20-40 m,
 // HS100 ~90-105 m, HS140 large hill, mamut (ski flying) 200 m+, WR ~253 m.
 import { ladderC, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "skoki-narciarskie",
@@ -120,3 +122,36 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Ustanów swój rekord życiowy w długości lotu narciarskiego", undefined, prog("odleglosc", 254)],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat skoczka narciarskiego", "Dalsze, zawodowe osiągnięcia (Puchar Świata, mistrzostwa świata, igrzyska) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  2: [
+    { kind: "video", title: "Ski Jumping — Inrun Position and Technique", url: yt("qG2Jd0jGtlk") },
+  ],
+  4: [
+    { kind: "video", title: "How to Land Telemark in Ski Jumping", url: yt("A4qqm_5kU9o") },
+  ],
+  6: [
+    { kind: "video", title: "Ski Jumping Takeoff — Timing and Explosion", url: yt("H2u4F1mYBFY") },
+  ],
+  8: [
+    { kind: "video", title: "V-Style Flight Position in Ski Jumping Explained", url: yt("q3dPxPjBFKw") },
+  ],
+  16: [
+    { kind: "article", title: "FIS — Ski Jumping Rules and Scoring System", url: "https://www.fis-ski.com/en/ski-jumping/ski-jumping" },
+  ],
+  29: [
+    { kind: "video", title: "Ski Jumping Wind Conditions — How Wind Affects Jumps", url: yt("DPj0r7rGJHQ") },
+  ],
+  40: [
+    { kind: "video", title: "Large Hill Ski Jumping Technique — Advanced Tips", url: yt("IhXr0eEX6zs") },
+  ],
+  56: [
+    { kind: "reference", title: "FIS Ski Jumping World Cup Standings", url: "https://www.fis-ski.com/en/ski-jumping/cup-standings" },
+  ],
+  67: [
+    { kind: "video", title: "Ski Flying — Over 200 Meters Explained", url: yt("GrM3UMkVxaY") },
+  ],
+  86: [
+    { kind: "video", title: "Greatest Ski Jumps in History — Record Breakers", url: yt("DW-IGHCF7Vw") },
+  ],
+};

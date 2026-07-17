@@ -119,3 +119,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde hiszpańskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne hiszpańskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Tortilla española — Spain on a Fork", url: yt("cwnk8uYL8IA") }],
+  3: [{ kind: "video", title: "Gazpacho — andaluzyjski chłodnik", url: yt("a9YRFlMkIBM") }],
+  4: [{ kind: "article", title: "Patatas bravas z domowym sosem", url: "https://www.seriouseats.com/patatas-bravas-recipe" }],
+  7: [{ kind: "video", title: "Gambas al ajillo — krewetki w czosnku i chili", url: yt("gSceRfszQbY") }],
+  17: [{ kind: "video", title: "Paella — podstawy i technika socarrat", url: yt("hGkSYKL5bJA") }],
+  19: [
+    { kind: "video", title: "Croquetas de jamón — Spain on a Fork", url: yt("jU6o6gMTPQI") },
+    { kind: "article", title: "Croquetas — technika gęstego beszamelu", url: "https://www.seriouseats.com/croquetas-de-jamon-recipe" },
+  ],
+  26: [{ kind: "video", title: "Paella valenciana — klasyczny przepis", url: yt("VcB5bGjZBYM") }],
+  29: [{ kind: "article", title: "Fabada asturiana — fasola z chorizo i morcillą", url: "https://www.bonappetit.com/recipe/fabada-asturiana" }],
+  34: [{ kind: "video", title: "Fideuà — paella na makaronie", url: yt("6mlFVqoI-VM") }],
+  36: [{ kind: "video", title: "Bacalao al pil pil — dorsz w emulsji", url: yt("kbzcPq2V2j0") }],
+  38: [{ kind: "video", title: "Churros con chocolate — hiszpański deser", url: yt("_5FmNIr6O7g") }],
+  44: [{ kind: "article", title: "Tarta de Santiago — ciasto migdałowe", url: "https://www.food52.com/recipes/82475-tarta-de-santiago-recipe" }],
+};

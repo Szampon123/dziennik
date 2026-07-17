@@ -1,6 +1,9 @@
 // German cuisine ladder 1-99 — concrete dishes as levels, easy → hard.
 // REALISTIC home-cook scale. Tracks: dania, techniki, + specific-dish milestones.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "kuchnia-niemiecka",
@@ -119,3 +122,26 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde niemieckie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne niemieckie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+// Curated learning resources for German cuisine milestones.
+// Videos from German cooking channels; articles from seriouseats, bonappetit.
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Bratwurst — How to Cook Perfectly", url: yt("Gj_KIhn7g-4") }],
+  4: [{ kind: "video", title: "Sauerkraut from Scratch — Fermented Cabbage", url: yt("1c_1a1TtF9o") }],
+  6: [{ kind: "video", title: "Kartoffelpuffer — Crispy German Potato Pancakes", url: yt("bOB7eGdqFjI") }],
+  10: [{ kind: "video", title: "Currywurst — Berlin's Iconic Street Food", url: yt("eQMI-0bRSBc") }],
+  13: [
+    { kind: "video", title: "Wiener Schnitzel — Perfectly Pounded and Fried", url: yt("ZsS-EiB-jnc") },
+    { kind: "article", title: "Classic Wiener Schnitzel technique", url: "https://www.seriouseats.com/schnitzel-recipe" },
+  ],
+  14: [{ kind: "video", title: "Spätzle — Homemade German Egg Noodles", url: yt("Nn0LKRWBZ9c") }],
+  15: [{ kind: "video", title: "Rouladen — German Beef Rolls with Mustard Filling", url: yt("K_VAr2DzXOQ") }],
+  21: [
+    { kind: "video", title: "Apfelstrudel — Austrian Apple Strudel from Scratch", url: yt("E-7LRHKYEO4") },
+    { kind: "article", title: "Apfelstrudel with hand-pulled dough", url: "https://www.bonappetit.com/recipe/apple-strudel" },
+  ],
+  22: [{ kind: "video", title: "Maultaschen — Swabian Filled Pasta Pockets", url: yt("dIQE7yb_90k") }],
+  27: [{ kind: "video", title: "Schweinshaxe — Bavarian Roasted Pork Knuckle", url: yt("MwDMQ2gMqQw") }],
+  30: [{ kind: "video", title: "Brezel — Authentic German Pretzel with Lye", url: yt("QfGPRaTTkKs") }],
+  38: [{ kind: "video", title: "Schwarzwälder Kirschtorte — Black Forest Cake", url: yt("5wSzIFYU-g0") }],
+};

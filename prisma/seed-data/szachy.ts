@@ -122,3 +122,21 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Grasz na poziomie, o którym marzy większość amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): kandydat na mistrza z wieloletnim, dojrzałym warsztatem", "Dalsze, zawodowe tytuły (FM, IM, GM) i mistrzostwo świata potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "How to play chess — complete rules", url: yt("OCSbzArwB10") }],
+  2: [{ kind: "video", title: "How to checkmate", url: yt("4wRBjlJGMbg") }],
+  5: [{ kind: "video", title: "Chess openings basics", url: yt("3qfBIboJjN4") }],
+  7: [{ kind: "video", title: "Chess puzzles — mate in 1 and 2", url: yt("52mfuE-YtOs") }],
+  13: [{ kind: "video", title: "Chess tactics for beginners (forks, pins, skewers)", url: yt("nFAMHBBwERk") }],
+  15: [{ kind: "video", title: "King and pawn endgame", url: yt("wl3eHK4JfbY") }],
+  17: [{ kind: "video", title: "Building an opening repertoire", url: yt("F47pMu2Mf-0") }],
+  22: [{ kind: "video", title: "Tactical puzzles training", url: yt("e3rSaL6oN1k") }],
+  29: [{ kind: "video", title: "Rook endgame fundamentals", url: yt("GJhRZ_0Ykks") }],
+  38: [{ kind: "video", title: "Positional chess strategy", url: yt("8V2f39ukN6c") }],
+  44: [{ kind: "video", title: "How to reach 2000 Elo", url: yt("fOTLvJmJ1ds") }],
+  60: [{ kind: "article", title: "Expert level chess preparation", url: "https://www.chess.com/article/view/how-to-become-a-chess-master" }],
+};

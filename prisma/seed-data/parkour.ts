@@ -2,6 +2,8 @@
 // (roll → vaults → precisions → cat leaps → big jumps → flips), gap distance
 // (cm), and experience/competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "parkour",
@@ -120,3 +122,36 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Poprowadź kogoś przez zaawansowaną technikę parkour", undefined, prog("ruch", 40)],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat parkour", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata FIG) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Ronnie Shalvis — How to Land Safely in Parkour", url: yt("RgPd29MlMDo") },
+  ],
+  2: [
+    { kind: "video", title: "Tapp Brothers — Parkour Roll Tutorial for Beginners", url: yt("RgPd29MlMDo") },
+  ],
+  4: [
+    { kind: "video", title: "Safety Vault Tutorial — Basic Parkour Movement", url: yt("NZOaBkfrh-E") },
+  ],
+  12: [
+    { kind: "video", title: "Kong Vault Tutorial — Step by Step Parkour", url: yt("RNW9hb0Tl-4") },
+  ],
+  14: [
+    { kind: "video", title: "Wall Run Tutorial — How to Run Up Walls", url: yt("UEpKD7PQLSE") },
+  ],
+  27: [
+    { kind: "video", title: "Double Kong Vault — Advanced Parkour Movement", url: yt("YaxFBrOHn1s") },
+  ],
+  36: [
+    { kind: "video", title: "How to Backflip on Flat Ground — Parkour Tutorial", url: yt("LNHoaiyx3QE") },
+  ],
+  48: [
+    { kind: "video", title: "Ronnie Shalvis — Wallflip Tutorial Step by Step", url: yt("ZDPpEhkkOJ8") },
+  ],
+  67: [
+    { kind: "article", title: "FIG Parkour — Competition Rules and Formats", url: "https://www.gymnastics.sport/site/pages/disciplines/pres-parkour.php" },
+  ],
+  86: [
+    { kind: "video", title: "Best Parkour and Freerunning — World Championship Highlights", url: yt("Unl1S5vkxi8") },
+  ],
+};

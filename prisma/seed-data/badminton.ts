@@ -1,7 +1,10 @@
 // Badminton ladder 1-99. Tracks: rally length, serve accuracy, matches;
 // stroke technique and tournament milestones manual.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "badminton",
@@ -137,4 +140,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   96: prog("wygrane", 900),
   11: freq(1, 4), 23: freq(2, 8),
   // pozostałe: technika i osiągnięcia — manualne.
+};
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  2: [{ kind: "video", title: "Badminton basics — grip and ready position", url: yt("kbX3Jwv7bfQ") }],
+  3: [{ kind: "video", title: "Serwis krótki bekhendowy", url: yt("JL_MJiSxJ-M") }],
+  5: [{ kind: "video", title: "Serwis wysoki forhendowy", url: yt("2yYIlCBXIoU") }],
+  7: [{ kind: "video", title: "Clear — uderzenie głębokie", url: yt("OsLkSshyzAw") }],
+  12: [{ kind: "video", title: "Drop shot — krótka lotka za siatkę", url: yt("LGN4UxI7tac") }],
+  15: [{ kind: "video", title: "Smecz — jak uderzyć mocno", url: yt("Txhng-t1tWU") }],
+  17: [{ kind: "video", title: "Footwork — poruszanie się po korcie", url: yt("Sskfzp2fVQg") }],
+  24: [{ kind: "video", title: "Lob obronny — podniesienie lotki", url: yt("7uoVZ3tF_nk") }],
+  30: [{ kind: "video", title: "Bekhend clear z tyłu kortu", url: yt("dHjmGrgaqbM") }],
+  34: [{ kind: "video", title: "Deception — zwodzenie w badmintonie", url: yt("08fXV0sRnVE") }],
+  37: [{ kind: "video", title: "Jump smash — smecz z wyskoku", url: yt("E1FKFqf9iOU") }],
+  48: [{ kind: "article", title: "Taktyka gry singlowej w badmintonie", url: "https://www.wikihow.com/Play-Badminton" }],
 };

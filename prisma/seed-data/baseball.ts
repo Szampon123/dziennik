@@ -1,6 +1,9 @@
 // Baseball ladder 1-99. Manual — progression tracks: matches played, hits
 // (total), and competition level. Includes batting/pitching skill milestones.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladderC, freq, prog } from "./helpers";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "baseball",
@@ -119,3 +122,17 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj mistrzostwo swojej ligi klubowej"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, kluczowy zawodnik silnej drużyny klubowej", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Łapanie piłki do rękawicy", url: yt("3hEhBNjNFzU") }],
+  2: [{ kind: "video", title: "Rzut overhand — technika", url: yt("hfz7Mo92v3s") }],
+  3: [{ kind: "video", title: "Batting off a tee — podstawy", url: yt("G5Iyqdpay0s") }],
+  5: [{ kind: "video", title: "Bieganie po bazach — zasady", url: yt("MzFN-YnqE1A") }],
+  6: [{ kind: "video", title: "Fly ball — łapanie z powietrza", url: yt("Fa9uXVIV0_Q") }],
+  12: [{ kind: "video", title: "Hitting live pitching — pałkowanie", url: yt("_mUj65W4oXs") }],
+  19: [{ kind: "video", title: "Pitching basics — miotanie", url: yt("JB9fkGK2qLw") }],
+  23: [{ kind: "video", title: "How to hit a home run", url: yt("sCk1s4VFQUY") }],
+  28: [{ kind: "video", title: "Curveball — jak rzucić łuk", url: yt("A3AC0gqXLz8") }],
+  36: [{ kind: "article", title: "Batting average — jak liczyć AVG", url: "https://www.wikihow.com/Calculate-a-Batting-Average" }],
+  42: [{ kind: "video", title: "Double play — obrona zespołowa", url: yt("tPFiB_Dxp-o") }],
+};

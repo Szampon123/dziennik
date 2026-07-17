@@ -119,3 +119,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde greckie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne greckie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  2: [{ kind: "video", title: "Tzatziki — Akis Petretzikis", url: yt("d5wJa5JEeJg") }],
+  5: [{ kind: "video", title: "Souvlaki — marynata i grillowanie", url: yt("RWVBPsa7Kp0") }],
+  6: [{ kind: "video", title: "Saganaki — smażony ser po grecku", url: yt("SoAL7gIcna4") }],
+  10: [{ kind: "video", title: "Keftedes — greckie klopsiki", url: yt("vVRLkCnDezo") }],
+  13: [{ kind: "article", title: "Gyros — domowy przepis z marynowanym mięsem", url: "https://www.recipetineats.com/greek-chicken-gyros/" }],
+  14: [{ kind: "video", title: "Spanakopita — szpinak w cieście filo", url: yt("MNRbCGQFsSM") }],
+  17: [
+    { kind: "video", title: "Moussaka — Akis Petretzikis", url: yt("JO8GHhkuMGs") },
+    { kind: "article", title: "Moussaka — klasyczny grecki przepis", url: "https://www.seriouseats.com/moussaka-recipe" },
+  ],
+  21: [{ kind: "video", title: "Dolmades — gołąbki w liściach winogron", url: yt("0m0qaSH3oiI") }],
+  23: [{ kind: "video", title: "Baklava — warstwy filo, orzechy i syrop", url: yt("qJjwMCETQnE") }],
+  29: [{ kind: "video", title: "Kleftiko — jagnięcina wolno pieczona", url: yt("pJxZ0pv-6WI") }],
+  31: [{ kind: "article", title: "Stifado — grecki gulasz z małymi cebulkami", url: "https://www.recipetineats.com/greek-beef-stifado/" }],
+  35: [{ kind: "video", title: "Galaktoboureko — krem w cieście filo z syropem", url: yt("nBmR1PKOKX8") }],
+};

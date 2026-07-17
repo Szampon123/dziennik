@@ -121,3 +121,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde włoskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne włoskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Bruschetta al pomodoro — Gennaro Contaldo", url: yt("AkQCBVWXhLc") }],
+  4: [{ kind: "video", title: "Pasta Aglio e Olio — Binging with Babish", url: yt("bJUiWdM__Qw") }],
+  6: [{ kind: "article", title: "Pesto alla genovese — klasyczny przepis", url: "https://www.seriouseats.com/best-pesto-recipe" }],
+  12: [
+    { kind: "video", title: "Carbonara — Vincenzo's Plate", url: yt("3AAdKl1UYZs") },
+    { kind: "article", title: "Spaghetti carbonara — nauka techniki", url: "https://www.seriouseats.com/pasta-carbonara-sauce-recipe" },
+  ],
+  14: [{ kind: "video", title: "Cacio e pepe — Italia Squisita", url: yt("Ng7GWl2L4uw") }],
+  20: [{ kind: "video", title: "Risotto alla milanese — technika mantecatura", url: yt("d5MW2fAqp9M") }],
+  21: [{ kind: "video", title: "Tiramisu — klasyczny włoski przepis", url: yt("7vDtPKnulGQ") }],
+  26: [{ kind: "video", title: "Pizza margherita — ciasto neapolitańskie", url: yt("8Q_9h6VKm9c") }],
+  28: [{ kind: "article", title: "Ragù alla bolognese — przepis z długim duszeniem", url: "https://www.seriouseats.com/the-best-slow-cooked-bolognese-sauce-recipe" }],
+  36: [{ kind: "video", title: "Ravioli — makaron nadziewany od podstaw", url: yt("DgqkLVaViE0") }],
+  46: [{ kind: "article", title: "Osso buco alla milanese — klasyczny przepis", url: "https://www.bonappetit.com/recipe/osso-buco" }],
+  57: [{ kind: "video", title: "Domowe gelato bez maszyny", url: yt("RMI8bWjLmqo") }],
+};

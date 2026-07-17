@@ -3,6 +3,7 @@
 // Manual check-offs — skill assessment is inherently subjective.
 import type { Criterion } from "../../src/lib/milestone-criteria";
 import { ladder, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "narciarstwo",
@@ -138,3 +139,18 @@ export const criteriaByLevel: Record<number, Criterion> = {
 };
 
 void freq;
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Beginner pizza/wedge technique", url: yt("20VUbQ2qJbU") }],
+  5: [{ kind: "video", title: "Turning basics for beginners", url: yt("5s0-yz_k3wc") }],
+  10: [{ kind: "video", title: "How to parallel turn", url: yt("dNZRq-mVuaU") }],
+  15: [{ kind: "video", title: "Skiing with speed control", url: yt("FnXySb4-3zM") }],
+  26: [{ kind: "video", title: "Introduction to carving", url: yt("hQmEamxOobw") }],
+  33: [{ kind: "video", title: "Short turns technique", url: yt("1Wnr3Kh-EXs") }],
+  41: [{ kind: "article", title: "Intro to backcountry skiing", url: "https://www.rei.com/learn/expert-advice/intro-to-backcountry-skiing.html" }],
+  48: [{ kind: "article", title: "Avalanche education courses", url: "https://avalanche.org/avalanche-education/" }],
+  55: [{ kind: "video", title: "Advanced carving drills", url: yt("L6rYLwdZeIg") }],
+  80: [{ kind: "article", title: "Vallée Blanche descent guide", url: "https://www.chamonix.com/vallee-blanche,82,en.html" }],
+};

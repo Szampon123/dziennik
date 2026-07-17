@@ -119,3 +119,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde tajskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne tajskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Som tam — sałatka z zielonej papai", url: yt("kbHfRo0Foqc") }],
+  3: [{ kind: "video", title: "Pad krapow — bazylia święta i mięso mielone", url: yt("q_sBiJHpJiM") }],
+  6: [{ kind: "video", title: "Tom yum goong — pikantna zupa z krewetkami", url: yt("kQbz5P1lXx4") }],
+  13: [
+    { kind: "video", title: "Pad thai — Hot Thai Kitchen", url: yt("tCjCUQPV4PY") },
+    { kind: "article", title: "Pad thai — sekret sosu z tamaryndowcem", url: "https://www.seriouseats.com/pad-thai-recipe" },
+  ],
+  14: [{ kind: "video", title: "Zielone curry tajskie z mleczkiem kokosowym", url: yt("WDm6PtpQ8U8") }],
+  16: [{ kind: "video", title: "Tom kha gai — kokosowa z galangalem", url: yt("bNFg9VRVhqQ") }],
+  20: [{ kind: "video", title: "Larb — pikantna sałatka z mięsem mielonym", url: yt("vwRfZIB8I-k") }],
+  21: [{ kind: "article", title: "Massaman curry — łagodne curry z ziemniakami", url: "https://www.recipetineats.com/massaman-curry/" }],
+  23: [{ kind: "video", title: "Mango sticky rice — deser z kleistym ryżem", url: yt("mXgJwJqWl5s") }],
+  29: [{ kind: "video", title: "Khao soi — curry z makaronem z Chiang Mai", url: yt("oXN2C0YWKTY") }],
+  34: [{ kind: "video", title: "Tod man pla — tajskie kotleciki rybne", url: yt("M9cXLlA-M-g") }],
+  43: [{ kind: "video", title: "Khao man gai — kurczak z ryżem po tajsku", url: yt("kCRoJAzlFCY") }],
+};

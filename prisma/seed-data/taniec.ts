@@ -2,6 +2,7 @@
 // Tracks: classes/practice count, choreography length, social/performance
 // experience. Manual check-offs.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
 
 export const activity = {
@@ -136,4 +137,39 @@ export const criteriaByLevel: Record<number, Criterion> = {
   45: prog("imprezy", 50), 54: prog("imprezy", 100), 64: prog("imprezy", 200), 82: prog("imprezy", 500),
   11: freq(1, 4), 21: freq(2, 8),
   // klasy taneczne, występy i konkursy — manualne.
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "How to Dance for Beginners — Basic Rhythm & Bounce", url: yt("KhEhySda34c") },
+  ],
+  5: [
+    { kind: "video", title: "STEEZY: How to Hear & Count Music for Dancing", url: yt("TQ8MxaxpCgI") },
+  ],
+  12: [
+    { kind: "article", title: "WikiHow — How to Dance at a Party", url: "https://www.wikihow.com/Dance-at-a-Party" },
+  ],
+  16: [
+    { kind: "video", title: "How to Salsa Dance for Beginners — Basic Steps", url: yt("bMSPNLuEBbo") },
+  ],
+  25: [
+    { kind: "video", title: "Musicality in Dance — How to Interpret Music", url: yt("Jr3mxftKzcg") },
+  ],
+  35: [
+    { kind: "article", title: "How to Improve Your Freestyle Dancing", url: "https://www.steezy.co/posts/how-to-freestyle-dance" },
+  ],
+  41: [
+    { kind: "video", title: "MihranTV — How to Choreograph a Dance", url: yt("Ws6AAhTaWHI") },
+  ],
+  51: [
+    { kind: "video", title: "How to Win Your First Dance Competition", url: yt("VpIhXzV1yFg") },
+  ],
+  62: [
+    { kind: "article", title: "How to Become a Dance Instructor", url: "https://www.wikihow.com/Become-a-Dance-Instructor" },
+  ],
+  77: [
+    { kind: "video", title: "Get Dance — What Makes a Great Dancer", url: yt("MTOdAMb8gwo") },
+  ],
 };

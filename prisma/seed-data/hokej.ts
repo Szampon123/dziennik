@@ -1,6 +1,9 @@
 // Ice hockey ladder 1-99. Manual — progression tracks: matches played, points
 // (goals+assists total), competition level. Skating skill early on.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladderC, freq, prog } from "./helpers";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "hokej",
@@ -119,3 +122,18 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj mistrzostwo swojej ligi klubowej"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, kluczowy zawodnik silnej drużyny klubowej", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Jazda na łyżwach — pierwsze kroki", url: yt("kQzmHwFVb3U") }],
+  2: [{ kind: "video", title: "Hockey stop — hamowanie", url: yt("qhIB8Xv0ViU") }],
+  3: [{ kind: "video", title: "Stickhandling — prowadzenie krążka", url: yt("xJlE9rTi_4A") }],
+  4: [{ kind: "video", title: "Podanie i przyjęcie krążka", url: yt("rQv9Nj42Fq8") }],
+  5: [{ kind: "video", title: "Wrist shot — strzał nadgarstkowy", url: yt("x_ZZ6g2yDV4") }],
+  6: [{ kind: "video", title: "Jazda tyłem i przekładanka", url: yt("qfhbyZ8EgHU") }],
+  12: [{ kind: "video", title: "Slap shot — strzał klepnięty", url: yt("NEL5DwF7X_s") }],
+  15: [{ kind: "video", title: "Explosive skating — przyspieszenie", url: yt("7E_sYab5cvQ") }],
+  24: [{ kind: "video", title: "Deking — zwody 1v1 na lodzie", url: yt("dRh6_AGqjPQ") }],
+  28: [{ kind: "video", title: "One-timer — strzał jednym dotykiem", url: yt("B_2_bYCAibI") }],
+  32: [{ kind: "video", title: "Power play i penalty kill — taktyka", url: yt("vZQXpQ2Bdrg") }],
+  36: [{ kind: "article", title: "Ice hockey positions — roles explained", url: "https://www.topendsports.com/sport/ice-hockey/positions.htm" }],
+};

@@ -1,7 +1,10 @@
 // Football (soccer) ladder 1-99. Tracks: juggling (the universal skill meter),
 // passing/shooting accuracy drills, match experience. Manual check-offs.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "pilka-nozna",
@@ -134,4 +137,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   24: prog("gole", 1), 42: prog("gole", 10), 52: prog("gole", 25), 60: prog("gole", 50),
   67: prog("gole", 100), 77: prog("gole", 150), 83: prog("gole", 200), 91: prog("gole", 250),
   // pozostałe: umiejętności, wydarzenia i poziomy rozgrywkowe — manualne.
+};
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Żonglerka — pierwsze podbicia", url: yt("HFQXv5gka7k") }],
+  3: [{ kind: "video", title: "Jak nauczyć się żonglerki piłką", url: yt("r9jG1dnMEFY") }],
+  4: [{ kind: "video", title: "Podania w piłce nożnej — podstawy", url: yt("pm4Anpbk5eQ") }],
+  6: [{ kind: "video", title: "Technika strzału — trafienie w bramkę", url: yt("DjOAYaGfHNo") }],
+  7: [{ kind: "video", title: "Drybling slalom — ćwiczenia z pachołkami", url: yt("BNFwi1sGHYU") }],
+  16: [{ kind: "video", title: "50 podbić — triki i technika", url: yt("3dDMpf-s3WQ") }],
+  19: [{ kind: "video", title: "Zwody 1v1 — przełożenie i nożyce", url: yt("VjGPjJAmZEQ") }],
+  27: [{ kind: "video", title: "Długie podania — technika crossu", url: yt("bDz_sFz6bjE") }],
+  30: [{ kind: "article", title: "Rzuty wolne — jak zakręcić piłkę", url: "https://www.wikihow.com/Curve-a-Soccer-Ball" }],
+  38: [{ kind: "video", title: "Skuteczny drybling w meczu", url: yt("OHNxO57QFMU") }],
+  47: [{ kind: "video", title: "Gol z rzutu wolnego — technika Bale'a", url: yt("ZH9FLbwQqIk") }],
+  53: [{ kind: "video", title: "Rabona — jak wykonać", url: yt("qI1KH-OH2Nk") }],
 };

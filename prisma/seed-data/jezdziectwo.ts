@@ -1,6 +1,7 @@
 // Equestrian ladder 1-99. Manual — progression tracks: riding skill, jumping
 // height (cm), and competition level (dressage/show jumping/eventing).
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "jezdziectwo",
@@ -119,3 +120,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź wielokrotne medale mistrzostw kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat jeździecki", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, igrzyska) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Your Riding Success — How to Sit on a Horse Correctly", url: yt("LXP4pzqr_9A") },
+  ],
+  3: [
+    { kind: "video", title: "Your Riding Success — How to Trot (Rising Trot)", url: yt("WRr4kNEgbwI") },
+  ],
+  5: [
+    { kind: "video", title: "How to Canter — First Gallop on Horseback", url: yt("7gEP-Hkl_rs") },
+  ],
+  8: [
+    { kind: "video", title: "First Jumping Lesson — Cross Rail Technique", url: yt("EKbIVk2k5vI") },
+  ],
+  14: [
+    { kind: "article", title: "Basic Dressage Test Movements — What Judges Look For", url: "https://www.wikihow.com/Ride-a-Dressage-Test" },
+  ],
+  24: [
+    { kind: "video", title: "Your Riding Success — Jumping 1 Meter Course", url: yt("a58JRx4u72w") },
+  ],
+  36: [
+    { kind: "video", title: "Counter Canter and Flying Changes — Dressage Training", url: yt("3UJNxz3cQfs") },
+  ],
+  48: [
+    { kind: "reference", title: "FEI — World Equestrian Rankings", url: "https://www.fei.org/rankings" },
+  ],
+  64: [
+    { kind: "article", title: "Eventing Training — Cross Country Jumping Guide", url: "https://www.verywellfit.com/horseback-riding-fitness-4157107" },
+  ],
+  86: [
+    { kind: "video", title: "Grand Prix Dressage — What Perfection Looks Like", url: yt("knCj92zA0tM") },
+  ],
+};

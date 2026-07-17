@@ -1,6 +1,7 @@
 // Cricket ladder 1-99. Manual — progression tracks: matches played, runs
 // scored (total, batting), and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "krykiet",
@@ -119,3 +120,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj mistrzostwo swojej ligi klubowej"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, kluczowy zawodnik silnej drużyny klubowej", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Cricket Batting Stance and Grip — Beginners Guide", url: yt("C7u8qTy5Yqc") },
+  ],
+  3: [
+    { kind: "video", title: "How to Bowl in Cricket — Legal Bowling Action", url: yt("iPc1yP1EvL0") },
+  ],
+  6: [
+    { kind: "video", title: "Back Foot Shots in Cricket — Cut and Pull", url: yt("kFa-BRhbGSM") },
+  ],
+  12: [
+    { kind: "video", title: "Cricket Coach — Spin Bowling for Beginners", url: yt("HpjnMRt-3-g") },
+  ],
+  20: [
+    { kind: "article", title: "ICC — Laws of Cricket Simplified", url: "https://www.icc-cricket.com/about/cricket/rules-and-regulations/playing-conditions" },
+  ],
+  31: [
+    { kind: "video", title: "How to Score a Half Century — Batting Tips", url: yt("qFT4-VB1sHw") },
+  ],
+  40: [
+    { kind: "video", title: "Cricket Fielding — Catching and Ground Fielding Drills", url: yt("x8kxsJelSjc") },
+  ],
+  52: [
+    { kind: "article", title: "Cricket Training — Fitness and Conditioning Plan", url: "https://www.verywellfit.com/cricket-fitness-4157107" },
+  ],
+  67: [
+    { kind: "reference", title: "ICC World Rankings — Cricket", url: "https://www.icc-cricket.com/rankings" },
+  ],
+  86: [
+    { kind: "video", title: "Best Cricket Centuries — Batting Masterclass Compilation", url: yt("rR7Fh4s5XJE") },
+  ],
+};

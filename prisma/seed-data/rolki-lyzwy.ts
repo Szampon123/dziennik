@@ -2,6 +2,7 @@
 // fit skater 18-22 km/h; inline marathon (42 km) finishers average ~1:40-2:00;
 // elite marathon skaters < 1:10 (~36 km/h).
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, d, t, tfd, weekly, monthly, total, freq, anyOf, prog } from "./helpers";
 
 export const activity = {
@@ -145,4 +146,39 @@ export const criteriaByLevel: Record<number, Criterion> = {
   96: tfd(42.2, 82), 97: d(120), 98: tfd(10, 16),
   99: anyOf(tfd(42.2, 75), tfd(10, 15)),
   // 48 — udział w przejeździe/zawodach: manual (zawody rolkarskie loguj flagą przy treningu, gdy jeździsz dystans).
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Skatefresh — How to Inline Skate for Beginners", url: yt("dPvwaRBtSXk") },
+  ],
+  2: [
+    { kind: "video", title: "How to Stop on Inline Skates — 3 Easy Methods", url: yt("rFMhRhRRsNU") },
+  ],
+  10: [
+    { kind: "video", title: "Dirty Deb — Beginner Roller Skating Tips", url: yt("RlwEstnHFhQ") },
+  ],
+  18: [
+    { kind: "video", title: "How to Skate Backwards on Inline Skates", url: yt("OPvG0Ld_xJc") },
+  ],
+  27: [
+    { kind: "video", title: "How to T-Stop on Rollerblades", url: yt("EpfH6-vfNZI") },
+  ],
+  34: [
+    { kind: "video", title: "Crossover Tutorial — Inline Skating Technique", url: yt("mJFPZZGa1rk") },
+  ],
+  48: [
+    { kind: "article", title: "Inline Skating Training Plan for Marathon", url: "https://www.verywellfit.com/inline-skating-workout-tips-1230916" },
+  ],
+  54: [
+    { kind: "video", title: "Skatefresh — Advanced Skating Speed Technique", url: yt("Z2wqb89RTOA") },
+  ],
+  65: [
+    { kind: "article", title: "How to Prepare for an Inline Skating Marathon", url: "https://www.wikihow.com/Improve-Inline-Skating" },
+  ],
+  72: [
+    { kind: "reference", title: "World Skate Rankings — Inline Speed Skating", url: "https://www.worldskate.org/speed-skating/rankings.html" },
+  ],
 };

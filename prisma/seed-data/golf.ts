@@ -3,6 +3,7 @@
 // rounds played. Benchmarks: average golfer shoots ~100 and holds HCP ~18-20;
 // breaking 90 = top ~25%; breaking 80 = top ~5%; scratch (HCP 0) = ~1%.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
 
 export const activity = {
@@ -145,4 +146,20 @@ export const criteriaByLevel: Record<number, Criterion> = {
   96: prog("hcp", 55),
   11: freq(1, 4),
   // GIR, birdie, turnieje — manualne.
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "How to hit a golf ball for beginners — Rick Shiels", url: yt("LG1vJv7PAws") }],
+  3: [{ kind: "video", title: "Putting basics — Rick Shiels", url: yt("UaqfXPM0f2A") }],
+  6: [{ kind: "video", title: "How to chip — Me and My Golf", url: yt("kS-0F6hYz_o") }],
+  10: [{ kind: "article", title: "Golf etiquette and rules for beginners — R&A", url: "https://www.randa.org/en/rules-of-golf" }],
+  16: [{ kind: "video", title: "How to hit a bunker shot — Rick Shiels", url: yt("5tP-UVm_iFk") }],
+  27: [{ kind: "article", title: "How to break 100 — Golf Digest", url: "https://www.golfdigest.com/story/how-to-break-100" }],
+  31: [{ kind: "video", title: "How to get your first birdie — Rick Shiels", url: yt("LNJLWFN_3vQ") }],
+  43: [{ kind: "video", title: "Breaking 90 strategy — Golf Sidekick", url: yt("wL6cE6wRDHM") }],
+  56: [{ kind: "video", title: "Course management to break 80 — Rick Shiels", url: yt("8UBz8cYQgBg") }],
+  69: [{ kind: "video", title: "Single digit handicap guide — Me and My Golf", url: yt("JfbdO7lH0ME") }],
+  95: [{ kind: "article", title: "How to play scratch golf", url: "https://www.topendsports.com/sport/golf/how-to-become-scratch-golfer.htm" }],
 };

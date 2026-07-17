@@ -1,6 +1,7 @@
 // Triathlon ladder 1-99. Manual — progression tracks: race distance completed
 // (super-sprint → sprint → olympic → 70.3 → Ironman → ultra) and finish level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "triathlon",
@@ -119,3 +120,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź medal mistrzostw świata amatorów w swojej kategorii wiekowej"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat triatlonowy", "Dalsze, zawodowe osiągnięcia (elita PTO/World Triathlon, igrzyska) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  2: [
+    { kind: "video", title: "GTN — Open Water Swimming Tips for Triathletes", url: yt("I6_VCOswqkA") },
+  ],
+  3: [
+    { kind: "video", title: "GTN — How to Do a Brick Workout (Bike to Run)", url: yt("XhP6A9aT_bY") },
+  ],
+  7: [
+    { kind: "video", title: "GTN — Fast Triathlon Transitions T1 and T2", url: yt("3RNPQz9UrsM") },
+  ],
+  8: [
+    { kind: "video", title: "GTN — Your First Triathlon — Everything You Need to Know", url: yt("ykjSpAzqbwI") },
+  ],
+  14: [
+    { kind: "article", title: "Triathlon Training Plan — Sprint Distance for Beginners", url: "https://www.verywellfit.com/triathlon-training-for-beginners-3120518" },
+  ],
+  22: [
+    { kind: "video", title: "GTN — Olympic Distance Triathlon Pacing Strategy", url: yt("R1oM2-6Ni7I") },
+  ],
+  33: [
+    { kind: "video", title: "GTN — How to Train for a Half Ironman 70.3", url: yt("KTakaV7MUlM") },
+  ],
+  50: [
+    { kind: "video", title: "GTN — Ironman Race Day — What to Expect", url: yt("QfBqN76Ft_g") },
+  ],
+  66: [
+    { kind: "reference", title: "Ironman — Official Race Results and Qualification", url: "https://www.ironman.com/races" },
+  ],
+  86: [
+    { kind: "reference", title: "World Triathlon Rankings and Results", url: "https://triathlon.org/rankings" },
+  ],
+};

@@ -2,6 +2,7 @@
 // progression tracks: shooting accuracy (hits out of 5), rifle handling,
 // skiing endurance milestones, and competition levels.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
 
 export const activity = {
@@ -137,4 +138,39 @@ export const criteriaByLevel: Record<number, Criterion> = {
   42: prog("dystans", 30), 51: prog("dystans", 40), 58: prog("dystans", 50),
   11: freq(1, 4), 26: freq(2, 12),
   // pozostałe: bieg-czasy, zawody, poziomy PŚ, celność sezonowa — manualne (wymagają startu/pomiaru).
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Cross-Country Skiing Basics — Classic Technique", url: yt("vsUBrNwE9ps") },
+  ],
+  6: [
+    { kind: "video", title: "Skating Technique for Cross-Country Skiing", url: yt("6yzV0Pvalhk") },
+  ],
+  8: [
+    { kind: "video", title: "Biathlon Shooting — Prone Position Basics", url: yt("oV5WJpCHvL0") },
+  ],
+  14: [
+    { kind: "video", title: "Biathlon Rifle Handling — Carry and Setup", url: yt("rxCEGIQM9lA") },
+  ],
+  25: [
+    { kind: "article", title: "IBU — International Biathlon Union Rules", url: "https://www.biathlonworld.com/about-biathlon" },
+  ],
+  29: [
+    { kind: "video", title: "Biathlon Heart Rate Control — Shooting After Effort", url: yt("U0yVvCwbhbY") },
+  ],
+  35: [
+    { kind: "video", title: "Standing Shooting Technique in Biathlon", url: yt("fJ1Vhz7BKKY") },
+  ],
+  46: [
+    { kind: "article", title: "Biathlon Training — Building Aerobic Base", url: "https://www.verywellfit.com/cross-country-skiing-workouts-3120523" },
+  ],
+  66: [
+    { kind: "reference", title: "IBU — Biathlon World Cup Standings and Results", url: "https://www.biathlonworld.com/standings" },
+  ],
+  86: [
+    { kind: "video", title: "Best Biathlon Races — IBU World Championships Highlights", url: yt("0rCZhQh3sXs") },
+  ],
 };

@@ -1,6 +1,9 @@
 // Judo ladder 1-99. Manual — progression tracks: belt/grade (kyu → dan),
 // technique, contests, and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "judo",
@@ -119,3 +122,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź pas czarny wysokiego dan (5-6 dan) za dorobek", undefined, prog("pas", 11)],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów w judo", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, igrzyska) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Ukemi — How to Fall Safely — Shintaro Higashi", url: yt("KFrdOCp2cHE") },
+    { kind: "article", title: "Judo basics for beginners", url: "https://www.wikihow.com/Do-Judo" },
+  ],
+  3: [
+    { kind: "video", title: "O-Goshi (hip throw) Tutorial — Matt D'Aquino", url: yt("g_bh_hPqFrE") },
+  ],
+  7: [
+    { kind: "video", title: "Kuzushi — Breaking Balance — Shintaro Higashi", url: yt("69rFJSaZ4gM") },
+  ],
+  12: [
+    { kind: "video", title: "Renraku-Waza — Combination Throws", url: yt("Xvq1hUxfNBo") },
+  ],
+  15: [
+    { kind: "video", title: "Arm Lock & Choke Fundamentals — Matt D'Aquino", url: yt("VIU_h2JJWlo") },
+    { kind: "article", title: "Guide to judo ne-waza ground techniques", url: "https://www.verywellfit.com/judo-techniques-guide-3498361" },
+  ],
+  22: [
+    { kind: "video", title: "Ne-Waza Flow: Throw to Pin — Shintaro Higashi", url: yt("WjKFgpHi1S4") },
+  ],
+  27: [
+    { kind: "article", title: "Shodan: your first black belt in judo", url: "https://www.breakingmuscle.com/judo-black-belt-guide/" },
+  ],
+  41: [
+    { kind: "video", title: "Uchi-Mata & Harai-Goshi Masterclass", url: yt("jVxSBBP82kQ") },
+  ],
+  55: [
+    { kind: "reference", title: "IJF Sport & Organisation Rules", url: "https://www.ijf.org/sor" },
+  ],
+  92: [
+    { kind: "video", title: "Judo Coaching & Teaching Philosophy — Shintaro Higashi", url: yt("Q5R5DQmL4U8") },
+  ],
+};

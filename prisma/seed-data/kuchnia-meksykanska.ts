@@ -119,3 +119,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde meksykańskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne meksykańskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Guacamole — Rick Bayless", url: yt("bR89cVMjVJU") }],
+  4: [{ kind: "video", title: "Tacos — autentyczne meksykańskie nadzienia", url: yt("CmF3z-zGna0") }],
+  8: [{ kind: "article", title: "Huevos rancheros — klasyczne śniadanie", url: "https://www.seriouseats.com/huevos-rancheros-recipe" }],
+  13: [{ kind: "video", title: "Tacos al pastor — meksykański klasyk", url: yt("GyCGWSoLWKE") }],
+  17: [
+    { kind: "video", title: "Carnitas — wolno duszona wieprzowina", url: yt("VUjFEYGWyp0") },
+    { kind: "article", title: "Carnitas — soczysty przepis", url: "https://www.seriouseats.com/no-waste-tacos-de-carnitas-with-salsa-verde-recipe" },
+  ],
+  19: [{ kind: "video", title: "Tortille kukurydziane z masa harina", url: yt("1bJ1YFRYbxE") }],
+  29: [{ kind: "video", title: "Pozole rojo — tradycyjna zupa meksykańska", url: yt("v1KycpCEb7s") }],
+  31: [{ kind: "video", title: "Cochinita pibil — jukatańska wieprzowina", url: yt("BiWkOrYbpRo") }],
+  34: [{ kind: "video", title: "Birria — duszone mięso z chili", url: yt("p-9Zni0HTKI") }],
+  41: [{ kind: "article", title: "Mole poblano — kompletny przepis", url: "https://www.seriouseats.com/complex-chile-mole-poblano-recipe" }],
+  44: [{ kind: "video", title: "Churros con chocolate — deser meksykański", url: yt("_MUkqNyIzYI") }],
+  46: [{ kind: "video", title: "Mole poblano od podstaw — Rick Bayless", url: yt("fzgqY6-VpA4") }],
+};

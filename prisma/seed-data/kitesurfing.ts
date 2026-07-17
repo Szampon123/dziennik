@@ -2,6 +2,7 @@
 // control → bodydrag → waterstart → upwind → jumps → loops → kiteloops → big
 // air), airtime/height, and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "kitesurfing",
@@ -120,3 +121,18 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj prestiżowy turniej big air o szerokim zasięgu"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat kitesurfingowy", "Dalsze, zawodowe osiągnięcia (GKA World Tour, King of the Air) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Kite control basics — your first lesson", url: yt("0hBb9pXE6d4") }],
+  4: [{ kind: "video", title: "How to bodydrag — kitesurfing essentials", url: yt("P0UfEBW-Gcs") }],
+  6: [{ kind: "video", title: "How to waterstart — get up on the board", url: yt("5-aFg7IbGTI") }],
+  12: [{ kind: "video", title: "How to ride upwind — kitesurfing independence", url: yt("4vLiJgJn9o0") }],
+  17: [{ kind: "video", title: "How to jump — kitesurfing send and pop", url: yt("8_FHQK0LyR0") }],
+  29: [{ kind: "video", title: "How to backroll — first kite rotation", url: yt("Fh-5wfJaBBs") }],
+  42: [{ kind: "video", title: "How to kiteloop — advanced kitesurfing", url: yt("nPbN_VxBVAs") }],
+  51: [{ kind: "video", title: "How to megaloop — big air kitesurfing", url: yt("l_u2RFb4q3c") }],
+  59: [{ kind: "article", title: "GKA Kite World Tour — competition info", url: "https://gka-kiteworldtour.com/" }],
+  79: [{ kind: "article", title: "King of the Air — big air kitesurfing event", url: "https://www.redbull.com/int-en/events/red-bull-king-of-the-air" }],
+};

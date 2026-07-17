@@ -1,6 +1,9 @@
 // Vietnamese cuisine ladder 1-99 — concrete dishes as levels, easy → hard.
 // REALISTIC home-cook scale. Tracks: dania, techniki, + specific-dish milestones.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "kuchnia-wietnamska",
@@ -119,3 +122,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde wietnamskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne wietnamskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+// Curated learning resources for Vietnamese cuisine milestones.
+// Videos from Helen's Recipes, Pailin's Kitchen and others; articles from seriouseats, bonappetit.
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Gỏi Cuốn — Fresh Vietnamese Spring Rolls", url: yt("fE0MsafCHcI") }],
+  4: [{ kind: "video", title: "Cơm Tấm — Vietnamese Broken Rice with Pork Chop", url: yt("lMBJivGS6YA") }],
+  7: [{ kind: "video", title: "Chả Giò — Crispy Vietnamese Fried Spring Rolls", url: yt("tsOC2b0gSKc") }],
+  10: [
+    { kind: "video", title: "Bánh Mì — Vietnamese Sandwich from Scratch", url: yt("oY8CsOgEiNw") },
+    { kind: "article", title: "The ultimate bánh mì guide", url: "https://www.seriouseats.com/banh-mi-vietnamese-sandwich-recipe" },
+  ],
+  13: [
+    { kind: "video", title: "Phở Bò — Authentic Vietnamese Beef Pho", url: yt("JGmXEApcOBg") },
+    { kind: "article", title: "Phở from scratch — the complete guide", url: "https://www.recipetineats.com/vietnamese-pho" },
+  ],
+  14: [{ kind: "video", title: "Bún Chả — Hanoi Grilled Pork with Noodles", url: yt("YFM0RJKEYXU") }],
+  15: [{ kind: "video", title: "Cá Kho Tộ — Caramelized Fish in Clay Pot", url: yt("Gx94kcLjjsY") }],
+  22: [{ kind: "video", title: "Bánh Xèo — Crispy Vietnamese Crepes", url: yt("B7MzVTWortk") }],
+  29: [{ kind: "video", title: "Bún Bò Huế — Spicy Vietnamese Beef Noodle Soup", url: yt("VE1aWNR0eGY") }],
+  44: [{ kind: "video", title: "Bánh Flan — Vietnamese Crème Caramel", url: yt("KGr1zyms4Ek") }],
+  47: [{ kind: "article", title: "Vietnamese curry (Cà Ri Gà) recipe", url: "https://www.bonappetit.com/recipe/vietnamese-chicken-curry" }],
+};

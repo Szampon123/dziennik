@@ -119,3 +119,39 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj mistrzostwa kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, czołowy zawodnik amatorski kraju", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "How to Serve in Padel — Basics", url: yt("N9OXq4MmKQE") },
+  ],
+  5: [
+    { kind: "video", title: "Playing Off the Glass — Wall Rebounds", url: yt("nGhW_VG_5z8") },
+  ],
+  6: [
+    { kind: "video", title: "Doubles Positioning in Padel", url: yt("mJSQ_VTW2xM") },
+  ],
+  12: [
+    { kind: "video", title: "Bandeja Tutorial — The Padel School", url: yt("JzC89VE-pis") },
+  ],
+  22: [
+    { kind: "video", title: "Vibora Tutorial — Offensive Overhead", url: yt("kI7wO7_fib4") },
+  ],
+  29: [
+    { kind: "video", title: "Chiquita Tutorial — Low Ball to Feet", url: yt("tR54vDQ_yAA") },
+  ],
+  34: [
+    { kind: "video", title: "Smash Por Tres / Por Cuatro — Through the Glass", url: yt("0PNj80KMuWI") },
+  ],
+  40: [
+    { kind: "video", title: "Defensive Glass Play Under Pressure", url: yt("3Xm9OW_tDmE") },
+  ],
+  49: [
+    { kind: "video", title: "Full Smash Repertoire — Bandeja, Vibora, Por Tres", url: yt("kI7wO7_fib4") },
+  ],
+  65: [
+    { kind: "video", title: "High-Level Padel Match Analysis", url: yt("0PNj80KMuWI") },
+  ],
+};

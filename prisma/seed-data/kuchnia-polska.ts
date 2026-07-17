@@ -119,3 +119,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde polskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne polskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  4: [{ kind: "video", title: "Zupa pomidorowa — klasyczny polski przepis", url: yt("jTHQkL9Y3JA") }],
+  8: [{ kind: "video", title: "Kopytka — kluski ziemniaczane krok po kroku", url: yt("BZw4zH-1t0c") }],
+  12: [{ kind: "video", title: "Rosół — klarowny wywar z kury", url: yt("pLwFkbJyIVA") }],
+  13: [
+    { kind: "video", title: "Kotlet schabowy — chrupiąca panierka", url: yt("N2BjKY2rOBk") },
+    { kind: "article", title: "Kotlet schabowy — tradycyjny przepis", url: "https://www.kwestiasmaku.com/kotlet_schabowy.html" },
+  ],
+  15: [{ kind: "video", title: "Placki ziemniaczane — chrupiące i złociste", url: yt("S3y2NFWA5EY") }],
+  16: [{ kind: "video", title: "Gołąbki w sosie pomidorowym", url: yt("K3PaHyggJCk") }],
+  17: [{ kind: "article", title: "Bigos — tradycyjny przepis staropolski", url: "https://www.kwestiasmaku.com/bigos.html" }],
+  20: [{ kind: "video", title: "Pierogi ruskie — ciasto i farsz od podstaw", url: yt("JEqFnLY6xbY") }],
+  21: [{ kind: "video", title: "Żurek na naturalnym zakwasie", url: yt("VTc5gbYxBCM") }],
+  22: [{ kind: "video", title: "Barszcz czerwony — czysty wywar buraczany", url: yt("xS8mxaFunEE") }],
+  35: [{ kind: "article", title: "Barszcz z uszkami — wigilijny klasyk", url: "https://www.kwestiasmaku.com/barszcz_z_uszkami.html" }],
+  40: [{ kind: "video", title: "Sernik pieczony — kremowy na kruchym spodzie", url: yt("VY5rXBIkwnY") }],
+};

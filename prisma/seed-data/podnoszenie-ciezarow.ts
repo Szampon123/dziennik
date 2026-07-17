@@ -2,6 +2,9 @@
 // clean & jerk (kg), technique, and competition level. Values = kg (male
 // reference; women adjust with age/weight tables — noted at top levels).
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "podnoszenie-ciezarow",
@@ -120,3 +123,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź wielokrotne medale mistrzostw kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat w dwuboju olimpijskim (snatch + clean and jerk)", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, igrzyska) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Overhead Squat Technique — Catalyst Athletics", url: yt("pn2dGUr-JgE") },
+    { kind: "article", title: "Olympic weightlifting for beginners", url: "https://www.barbend.com/olympic-weightlifting-beginners-guide/" },
+  ],
+  2: [
+    { kind: "video", title: "Hang Snatch — Torokhtiy Weightlifting", url: yt("CNVoHkB_pYk") },
+  ],
+  3: [
+    { kind: "video", title: "Clean & Jerk — Full Tutorial — Catalyst Athletics", url: yt("EKnrR5LQLRY") },
+  ],
+  9: [
+    { kind: "video", title: "Squat Snatch Technique — Torokhtiy", url: yt("_oP-UrDYrMw") },
+    { kind: "article", title: "Snatch technique step by step", url: "https://www.catalystathletics.com/exercise/67/Snatch/" },
+  ],
+  14: [
+    { kind: "video", title: "Split Jerk Technique — Catalyst Athletics", url: yt("_RYMBzNrdkI") },
+  ],
+  30: [
+    { kind: "video", title: "Triple Extension — Second Pull — Torokhtiy", url: yt("txhAFaB-xRg") },
+  ],
+  41: [
+    { kind: "article", title: "Snatch 100 kg club — training milestones", url: "https://www.barbend.com/snatch-training-program/" },
+  ],
+  53: [
+    { kind: "reference", title: "IWF Technical Rules", url: "https://www.iwf.net/weightlifting_/rules/" },
+  ],
+  73: [
+    { kind: "video", title: "Maintaining Perfect Technique Under Max Load — Torokhtiy", url: yt("F8Y-k0oJWdM") },
+  ],
+  99: [
+    { kind: "reference", title: "Catalyst Athletics Exercise Library", url: "https://www.catalystathletics.com/exercises/" },
+  ],
+};

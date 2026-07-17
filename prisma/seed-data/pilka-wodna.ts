@@ -1,6 +1,7 @@
 // Water polo ladder 1-99. Manual — progression tracks: matches played, goals
 // scored (total), and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "pilka-wodna",
@@ -119,3 +120,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź uznanie w krajowym środowisku piłki wodnej"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, kluczowy zawodnik silnej drużyny klubowej", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, igrzyska) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Eggbeater Kick Tutorial — Water Polo Basics", url: yt("tdHSaSjJRzs") },
+  ],
+  3: [
+    { kind: "video", title: "How to Swim Water Polo Freestyle — Head Up Crawl", url: yt("fZq_s1GxGKM") },
+  ],
+  8: [
+    { kind: "video", title: "Water Polo Shooting Technique — Beginners Guide", url: yt("sLjGxLcyFoc") },
+  ],
+  12: [
+    { kind: "video", title: "Backhand Shot Tutorial — Water Polo Skills", url: yt("YMipWDqqIOU") },
+  ],
+  20: [
+    { kind: "article", title: "FINA Rules of Water Polo — Simplified", url: "https://www.worldaquatics.com/water-polo/rules" },
+  ],
+  28: [
+    { kind: "video", title: "Screw Shot Tutorial — Advanced Water Polo Shooting", url: yt("Bg_Ypy2mVEI") },
+  ],
+  37: [
+    { kind: "article", title: "Water Polo Training — Conditioning and Drills", url: "https://www.verywellfit.com/water-polo-fitness-4157199" },
+  ],
+  50: [
+    { kind: "video", title: "Water Polo Defense — Pressing and Blocking", url: yt("F7f-5h0HsUo") },
+  ],
+  66: [
+    { kind: "reference", title: "World Aquatics — Water Polo Rankings", url: "https://www.worldaquatics.com/water-polo/rankings" },
+  ],
+  86: [
+    { kind: "video", title: "Olympic Water Polo — Highlights and Skills Analysis", url: yt("CILEk8f49P8") },
+  ],
+};

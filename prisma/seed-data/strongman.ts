@@ -1,6 +1,9 @@
 // Strongman ladder 1-99. Manual — progression tracks: deadlift (kg), overhead
 // press (kg), event skills (atlas stones, yoke, farmers), and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "strongman",
@@ -119,3 +122,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź podium prestiżowego turnieju siłaczy"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat siłacza", "Dalsze, zawodowe osiągnięcia (World's Strongest Man) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Deadlift Setup & Technique — Alan Thrall", url: yt("wYREQkVtvEc") },
+    { kind: "article", title: "Strongman training for beginners", url: "https://www.barbend.com/strongman-beginners-guide/" },
+  ],
+  2: [
+    { kind: "video", title: "Overhead Press — Strict Press Tutorial", url: yt("2yjwXTZQDDI") },
+  ],
+  3: [
+    { kind: "video", title: "Farmer's Walk Technique & Benefits", url: yt("Fkzk_RqlYig") },
+    { kind: "article", title: "Farmer's walk guide for strength", url: "https://www.barbend.com/farmers-walk-guide/" },
+  ],
+  6: [
+    { kind: "video", title: "Atlas Stones — How to Load Your First Stone", url: yt("3P_DWNb55mE") },
+  ],
+  9: [
+    { kind: "video", title: "Yoke Walk — Technique & Training", url: yt("Z4e_MJFqcn8") },
+  ],
+  16: [
+    { kind: "article", title: "Deadlift 200 kg: programming tips", url: "https://www.barbend.com/deadlift-training-program/" },
+  ],
+  18: [
+    { kind: "article", title: "How to prepare for your first strongman competition", url: "https://www.breakingmuscle.com/first-strongman-competition/" },
+  ],
+  29: [
+    { kind: "video", title: "Log Press Technique — Strongman Training", url: yt("G8DmOJnNpWQ") },
+  ],
+  46: [
+    { kind: "video", title: "Strongman Event Training — Competition Prep", url: yt("H2k_KjOj0ZU") },
+  ],
+  86: [
+    { kind: "reference", title: "World's Strongest Man — Official", url: "https://theworldsstrongestman.com/" },
+  ],
+};

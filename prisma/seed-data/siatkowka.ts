@@ -1,7 +1,10 @@
 // Volleyball ladder 1-99. Tracks: overhead/forearm passing (consecutive
 // touches), serving accuracy (out of 10), match experience. Manual check-offs.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "siatkowka",
@@ -135,4 +138,18 @@ export const criteriaByLevel: Record<number, Criterion> = {
   21: prog("wymiany", 20), 42: prog("wymiany", 50),
   11: freq(1, 4), 23: freq(2, 8),
   // pozostałe: technika, wydarzenia i poziomy rozgrywkowe — manualne.
+};
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Odbicie górne — overhand pass", url: yt("9-Ry8bGI1UQ") }],
+  2: [{ kind: "video", title: "Odbicie dolne — forearm pass", url: yt("WXbr6H5YO8s") }],
+  4: [{ kind: "video", title: "Zagrywka dolna — krok po kroku", url: yt("IxXl3vwQqzQ") }],
+  10: [{ kind: "video", title: "Zagrywka tenisowa — overhand serve", url: yt("LEOPFzMhO8g") }],
+  14: [{ kind: "video", title: "Wystawianie piłki — setting basics", url: yt("9ZMuOI1Nyns") }],
+  20: [{ kind: "video", title: "Atak — spike technique", url: yt("Gz0BHjmD9K8") }],
+  29: [{ kind: "video", title: "Blok — technika i timing", url: yt("R97l-0bnqjI") }],
+  33: [{ kind: "video", title: "Zagrywka float — brak rotacji", url: yt("kWdxiIl5XcE") }],
+  41: [{ kind: "video", title: "Jump serve — zagrywka z wyskoku", url: yt("gWqS9pxRryw") }],
+  49: [{ kind: "video", title: "Obrona w polu — dig technique", url: yt("EKXIAKVFi0M") }],
+  54: [{ kind: "article", title: "Pozycje w siatkówce — przewodnik", url: "https://www.wikihow.com/Play-Volleyball" }],
 };

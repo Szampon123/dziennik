@@ -120,3 +120,19 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj mistrzostwa kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletnia średnia 220+ i kilka gier doskonałych", "Dalsze, zawodowe osiągnięcia (tour PBA, rekordy) potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Bowling basics for beginners", url: yt("Qlf5LmN0k0c") }],
+  4: [{ kind: "video", title: "How to throw a strike", url: yt("wuoXJoRMzaU") }],
+  6: [{ kind: "video", title: "Proper bowling approach", url: yt("Np-I_qgwte8") }],
+  13: [{ kind: "video", title: "How to hook a bowling ball", url: yt("sAPH_MHjcKU") }],
+  17: [{ kind: "video", title: "How to pick up corner spares", url: yt("lGI7_2Bkqbo") }],
+  27: [{ kind: "article", title: "Reading oil patterns", url: "https://www.bowl.com/Welcome/Welcome_Home/Oil_Patterns/" }],
+  36: [{ kind: "video", title: "Picking up the 7-10 split", url: yt("wM7pXnHAXEk") }],
+  47: [{ kind: "video", title: "Ball selection and drilling", url: yt("BqoFECpxEjs") }],
+  56: [{ kind: "video", title: "How to bowl a 200+ game", url: yt("LaSLVjOq2JM") }],
+  89: [{ kind: "article", title: "Path to a perfect 300 game", url: "https://www.wikihow.com/Bowl-a-Perfect-Game" }],
+};

@@ -120,3 +120,19 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj mistrzostwa kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): średnia meczowa 112+ i wieloletni, dojrzały warsztat", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "How to throw darts — grip and stance", url: yt("WUaYClVqEEk") }],
+  5: [{ kind: "video", title: "How to hit doubles", url: yt("yTXaGIKOcfg") }],
+  8: [{ kind: "article", title: "Understanding the dartboard scoring", url: "https://www.wikihow.com/Play-Darts" }],
+  13: [{ kind: "article", title: "Checkout charts explained", url: "https://www.dartsnutz.net/checkouts" }],
+  23: [{ kind: "video", title: "How to throw 180", url: yt("7aRiAMpq6mM") }],
+  30: [{ kind: "video", title: "Two 180s technique", url: yt("4UlAS_KRWWE") }],
+  35: [{ kind: "video", title: "Improving your average", url: yt("fKmxvJ9FRME") }],
+  42: [{ kind: "video", title: "9-dart finish explained", url: yt("Q39_D8SGRA4") }],
+  55: [{ kind: "video", title: "Mental game in darts", url: yt("dOsVoXvJpms") }],
+  75: [{ kind: "video", title: "170 checkout tutorial", url: yt("JUjMMVe2kMo") }],
+};

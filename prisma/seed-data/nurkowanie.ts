@@ -2,6 +2,7 @@
 // certification level (OWD → AOWD → Rescue → Divemaster → Instructor →
 // technical), and logged dive count.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
 
 export const activity = {
@@ -142,4 +143,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   98: prog("nurkowania", 6000),
   26: freq(2, 12),
   // pozostałe: techniki, wyprawy, szkolenia — manualne.
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Scuba diving for beginners — what to expect", url: yt("r5TXkXCpG3Y") }],
+  5: [{ kind: "video", title: "How to control buoyancy — scuba skills", url: yt("JR6fzDpBN3Q") }],
+  10: [{ kind: "article", title: "PADI Open Water Diver course — overview", url: "https://www.padi.com/courses/open-water-diver" }],
+  16: [{ kind: "video", title: "Night diving tips — Simply Scuba", url: yt("_IVlwLqBxhE") }],
+  20: [{ kind: "article", title: "PADI Advanced Open Water — course details", url: "https://www.padi.com/courses/advanced-open-water-diver" }],
+  32: [{ kind: "article", title: "PADI Rescue Diver — course overview", url: "https://www.padi.com/courses/rescue-diver" }],
+  38: [{ kind: "video", title: "Air consumption tips — dive longer", url: yt("rr3VSjL46SI") }],
+  42: [{ kind: "article", title: "PADI Divemaster — first professional level", url: "https://www.padi.com/courses/divemaster" }],
+  52: [{ kind: "article", title: "Technical diving introduction — TDI", url: "https://www.tdisdi.com/tdi/get-certified/intro-to-tech/" }],
+  68: [{ kind: "video", title: "Rebreather diving explained — how CCR works", url: yt("LM9YAR-kZjM") }],
 };

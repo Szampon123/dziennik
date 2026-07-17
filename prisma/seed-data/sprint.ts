@@ -4,6 +4,7 @@
 // Benchmarks: recreational 100 m ~14-15 s; fit ~12-13 s; club ~11 s;
 // national ~10.5 s; elite sub-10 (WR 9.58).
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "sprint",
@@ -122,3 +123,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Poprowadź kogoś przez zaawansowaną technikę sprintu"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat sprinterski", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, igrzyska, rekordy) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  2: [
+    { kind: "video", title: "Athlete.X — Sprint Start Technique from Blocks", url: yt("l2v3mQ8egFg") },
+  ],
+  5: [
+    { kind: "video", title: "Arm Mechanics and High Knee Drive for Sprinters", url: yt("hKKVBQ5VKBM") },
+  ],
+  10: [
+    { kind: "video", title: "Sprint Interval Training — 3x100m Workout", url: yt("cNp2wTgE3GY") },
+  ],
+  15: [
+    { kind: "video", title: "How to Run the 200m Curve — Sprinting Technique", url: yt("N5Bwm1UUbwI") },
+  ],
+  23: [
+    { kind: "video", title: "400m Race Strategy — Pacing and Energy Distribution", url: yt("JhCfJuG9H00") },
+  ],
+  31: [
+    { kind: "video", title: "ALTIS — Acceleration Phase in Sprinting Explained", url: yt("GuJeIaH8bXE") },
+  ],
+  39: [
+    { kind: "video", title: "Sprint Relaxation Technique — Run Faster by Staying Loose", url: yt("wP1Gxe8gEpA") },
+  ],
+  50: [
+    { kind: "article", title: "Sprint Training — Periodization for 100/200/400m", url: "https://www.verywellfit.com/interval-training-for-sprinters-3120497" },
+  ],
+  70: [
+    { kind: "reference", title: "World Athletics — Sprint Records and Rankings", url: "https://worldathletics.org/records/all-time-toplists/sprints" },
+  ],
+  86: [
+    { kind: "video", title: "Usain Bolt Race Analysis — What Made Him the Fastest", url: yt("3nbjhpcZ9_g") },
+  ],
+};

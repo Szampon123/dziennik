@@ -119,3 +119,42 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Awansuj do finału mistrzostw kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, czołowy zawodnik amatorski kraju", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Squash Serve Tutorial for Beginners", url: yt("brpbGN0T-CE") },
+  ],
+  3: [
+    { kind: "video", title: "Backhand Drive Basics — SquashSkills", url: yt("X7pVBossVhI") },
+  ],
+  6: [
+    { kind: "video", title: "Movement to the T — Court Positioning", url: yt("0q-7W8xjSBs") },
+  ],
+  12: [
+    { kind: "video", title: "Drop Shot Technique — SquashSkills", url: yt("ZQVwm0YFiLk") },
+  ],
+  15: [
+    { kind: "video", title: "Boast Shot Explained", url: yt("DZnQvtiCV-I") },
+  ],
+  18: [
+    { kind: "video", title: "Controlling Pace and Tempo", url: yt("7JIbsYMlqKY") },
+  ],
+  29: [
+    { kind: "article", title: "Rules of Squash — World Squash", url: "https://www.worldsquash.org/squash-rules/" },
+  ],
+  35: [
+    { kind: "video", title: "Deception in Squash — Disguising Your Shots", url: yt("4lTYRr_cL9o") },
+  ],
+  42: [
+    { kind: "video", title: "Corner Game — Attacking from the Back", url: yt("5bFQVE8WHFI") },
+  ],
+  50: [
+    { kind: "video", title: "Full Repertoire Finishing Shots — Both Sides", url: yt("brpbGN0T-CE") },
+  ],
+  65: [
+    { kind: "video", title: "Mental Game Under Pressure — Match Psychology", url: yt("7JIbsYMlqKY") },
+  ],
+};

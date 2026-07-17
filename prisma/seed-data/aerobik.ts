@@ -1,6 +1,9 @@
 // Aerobics / fitness ladder 1-99. Manual — progression tracks: sessions,
 // choreography/technique, sport aerobics elements, and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "aerobik",
@@ -119,3 +122,37 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zostań wielokrotnym mistrzem kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów w aerobiku sportowym", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata FIG) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Basic Aerobics Steps for Beginners", url: yt("UBMWMkVn0qs") },
+    { kind: "article", title: "Aerobics for beginners — complete guide", url: "https://www.verywellfit.com/aerobics-exercise-guide-3498310" },
+  ],
+  6: [
+    { kind: "video", title: "Easy Aerobics Choreography — Learn 4-Count Combos", url: yt("f2BKdP1FqSY") },
+  ],
+  10: [
+    { kind: "video", title: "32-Count Aerobics Routine to Music", url: yt("TJxT7Wbwt00") },
+  ],
+  16: [
+    { kind: "video", title: "Power Moves in Aerobics — Push-Ups & Squats in Tempo", url: yt("g_xL6deAYgA") },
+  ],
+  26: [
+    { kind: "article", title: "Sport aerobics difficulty elements explained", url: "https://www.breakingmuscle.com/aerobic-gymnastics-guide/" },
+  ],
+  35: [
+    { kind: "video", title: "Step Aerobics Advanced Combinations", url: yt("5ECmoB6znZg") },
+  ],
+  43: [
+    { kind: "video", title: "Sport Aerobics Routine Breakdown — FIG", url: yt("V5-F8cQKFBg") },
+  ],
+  55: [
+    { kind: "reference", title: "FIG Aerobic Gymnastics Rules & Code of Points", url: "https://www.gymnastics.sport/site/rules/#702" },
+  ],
+  72: [
+    { kind: "video", title: "High Difficulty Elements — Sport Aerobics", url: yt("v7M_1vMqffA") },
+  ],
+  86: [
+    { kind: "article", title: "Training for aerobic gymnastics championships", url: "https://www.verywellfit.com/aerobic-gymnastics-training-3498413" },
+  ],
+};

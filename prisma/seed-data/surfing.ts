@@ -1,6 +1,7 @@
 // Surfing ladder 1-99. Manual — progression tracks: wave height mastered,
 // board volume/size (bigger foamie → shorter shortboard), maneuvers, sessions.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
 
 export const activity = {
@@ -137,4 +138,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   88: prog("fala", 40), 93: prog("fala", 50), 97: prog("fala", 60),
   11: freq(1, 4),
   // pozostałe: manewry, zawody, wydarzenia — manualne.
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "How to surf — complete beginner guide", url: yt("QvinPaxS30E") }],
+  4: [{ kind: "video", title: "How to stand up on a surfboard — popup technique", url: yt("w5fg_gMx7YY") }],
+  9: [{ kind: "video", title: "How to catch unbroken green waves", url: yt("r0dcv6GKNNs") }],
+  12: [{ kind: "video", title: "How to bottom turn — surfing fundamentals", url: yt("4xgKYVJHBL4") }],
+  15: [{ kind: "video", title: "How to duck dive — get through waves", url: yt("SaxKLBricks") }],
+  23: [{ kind: "video", title: "How to do a cutback — surf maneuver", url: yt("zH-KkNdgfdI") }],
+  28: [{ kind: "article", title: "Choosing your first shortboard — guide", url: "https://www.surfer.com/features/choosing-your-first-shortboard" }],
+  37: [{ kind: "video", title: "How to do a floater — surf trick tutorial", url: yt("rN8aSOB4pR0") }],
+  47: [{ kind: "video", title: "How to get barreled — tube riding tips", url: yt("CKoiEmYD9aw") }],
+  63: [{ kind: "article", title: "Big wave surfing — safety and preparation", url: "https://www.surfer.com/features/big-wave-essentials" }],
 };

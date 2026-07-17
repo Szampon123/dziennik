@@ -1,6 +1,9 @@
 // Boxing ladder 1-99. Manual — progression tracks: technique, sparring/bouts,
 // and competition level (amateur → national → international → pro/Olympic).
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "boks",
@@ -119,3 +122,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź najwyższe krajowe uznanie w swojej kategorii wagowej"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat bokserski", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, igrzyska) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Boxing Stance & Guard — Tony Jeffries", url: yt("ZKjklCRcbv4") },
+    { kind: "article", title: "How to Box: beginner guide", url: "https://www.wikihow.com/Box" },
+  ],
+  2: [
+    { kind: "video", title: "How to Throw a Jab — FightTips", url: yt("gJnBqdSKjNg") },
+  ],
+  5: [
+    { kind: "video", title: "How to Slip Punches — Tony Jeffries", url: yt("qh6AOjNHNYc") },
+    { kind: "article", title: "Boxing defense fundamentals", url: "https://www.wikihow.com/Slip-Punches-in-Boxing" },
+  ],
+  8: [
+    { kind: "video", title: "First Sparring Tips — FightTips", url: yt("X3iLRuBEVyM") },
+  ],
+  12: [
+    { kind: "video", title: "Counter Punching Basics — Shane Fazen", url: yt("DPdqN2E2pEY") },
+  ],
+  15: [
+    { kind: "article", title: "Preparing for your first amateur fight", url: "https://www.verywellfit.com/boxing-training-tips-3498296" },
+  ],
+  28: [
+    { kind: "video", title: "Setting Traps & Feints — Tony Jeffries", url: yt("MtHTrFDJYU4") },
+  ],
+  47: [
+    { kind: "article", title: "Advanced boxing combinations", url: "https://www.barbend.com/boxing-combinations/" },
+  ],
+  59: [
+    { kind: "reference", title: "AIBA Technical & Competition Rules", url: "https://www.iba.sport/rules/" },
+  ],
+  86: [
+    { kind: "video", title: "Championship Boxing Masterclass — Tony Jeffries", url: yt("lAKxjKrn0JQ") },
+  ],
+};

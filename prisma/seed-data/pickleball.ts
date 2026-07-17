@@ -119,3 +119,39 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź tytuł mistrzostw kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): rating 8.0 i wieloletni, dojrzały warsztat", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty.", prog("rating", 80)],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Pickleball Serve Tutorial for Beginners", url: yt("C4JxBAHMbmo") },
+  ],
+  5: [
+    { kind: "video", title: "Kitchen / NVZ Rules Explained", url: yt("zJvh9bOl_qQ") },
+  ],
+  6: [
+    { kind: "video", title: "Dinking Fundamentals — Soft Game", url: yt("DgLBp5fN8Pk") },
+  ],
+  12: [
+    { kind: "video", title: "Third Shot Drop Tutorial", url: yt("d7FkxmBJv50") },
+  ],
+  23: [
+    { kind: "video", title: "ATP (Around the Post) Shot Tutorial", url: yt("Z0iAh8dwFEo") },
+  ],
+  28: [
+    { kind: "video", title: "Kitchen Dink Battles — Patience and Placement", url: yt("aPK2xnNwwrs") },
+  ],
+  32: [
+    { kind: "video", title: "Reset Shot Technique — Neutralize Attacks", url: yt("EJI5FUk6I1I") },
+  ],
+  35: [
+    { kind: "video", title: "Stacking Strategy in Doubles", url: yt("m9c06QHNbOI") },
+  ],
+  42: [
+    { kind: "video", title: "Speed-Up Game — When and How to Attack", url: yt("YPL8F8fG0us") },
+  ],
+  50: [
+    { kind: "video", title: "Full Repertoire — Drop, Drive, Roll, Reset", url: yt("d7FkxmBJv50") },
+  ],
+};

@@ -2,6 +2,7 @@
 // planing → harness → waterstart → jibe → loops), top speed (knots), and
 // competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "windsurfing",
@@ -120,3 +121,18 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Poprowadź kogoś przez zaawansowaną technikę windsurfingu"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat windsurfingowy", "Dalsze, zawodowe osiągnięcia (PWA World Tour, rekordy prędkości) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Windsurfing basics — getting started", url: yt("v_6CLaCJtYc") }],
+  3: [{ kind: "video", title: "How to sail in a straight line — windsurfing", url: yt("KA8VBn4cNgg") }],
+  12: [{ kind: "video", title: "How to use a harness — windsurfing technique", url: yt("IbJfLGa8sxY") }],
+  13: [{ kind: "video", title: "How to plane — windsurfing breakthrough", url: yt("k6WT5PLSLX4") }],
+  21: [{ kind: "video", title: "How to waterstart — essential windsurfing skill", url: yt("0WZfeAPHebM") }],
+  24: [{ kind: "video", title: "How to power jibe — windsurfing turn", url: yt("ZVEZg_fOQ2I") }],
+  35: [{ kind: "video", title: "How to jump — windsurfing high wind", url: yt("M6j5i8MdFDw") }],
+  42: [{ kind: "video", title: "Forward loop tutorial — windsurfing freestyle", url: yt("b7gVPE95yRk") }],
+  51: [{ kind: "video", title: "Wave riding — bottom turn and cutback", url: yt("GlGPbXGqnqs") }],
+  67: [{ kind: "article", title: "PWA World Tour — competitive windsurfing", url: "https://www.pwaworldtour.com/" }],
+};

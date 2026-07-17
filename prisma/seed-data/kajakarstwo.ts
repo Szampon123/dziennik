@@ -3,6 +3,7 @@
 // ~11-13 km/h; sprint elite far higher. Long-distance landmarks: marathon
 // 42 km, then multi-day expeditions.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, d, t, tfd, weekly, monthly, total, freq, anyOf, prog } from "./helpers";
 
 export const activity = {
@@ -146,4 +147,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   96: tfd(42.195, 180), 98: tfd(10, 40),
   99: anyOf(tfd(42.195, 170), prog("mistrzostwa", 1)),
   // 14, 18, 38, 52, 62, 70, 82, 89, 97 — technika/wyprawy/zawody: manualne.
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Kayaking basics — your first paddle", url: yt("dEFUcnibXto") }],
+  4: [{ kind: "video", title: "How to turn a kayak — basic strokes", url: yt("xFEN4i5D3JE") }],
+  10: [{ kind: "video", title: "Kayak paddle technique — forward stroke", url: yt("VYHCaPC-PNg") }],
+  14: [{ kind: "video", title: "How to re-enter a kayak after capsizing", url: yt("RDGj2jFGPGA") }],
+  26: [{ kind: "article", title: "Kayaking for beginners — complete guide", url: "https://www.rei.com/learn/expert-advice/kayaking-for-beginners.html" }],
+  32: [{ kind: "video", title: "How to do an eskimo roll — kayak self-rescue", url: yt("GHqmAVrCcMk") }],
+  52: [{ kind: "video", title: "Whitewater kayaking for beginners", url: yt("3wkBDOKtceI") }],
+  58: [{ kind: "video", title: "Kayak marathon training — endurance tips", url: yt("4hNx9O7aw_s") }],
+  69: [{ kind: "video", title: "Whitewater kayaking — reading rapids", url: yt("6xOB4_RLjzU") }],
+  82: [{ kind: "article", title: "Multi-day kayak expedition planning", url: "https://www.rei.com/learn/expert-advice/kayak-touring-checklist.html" }],
 };

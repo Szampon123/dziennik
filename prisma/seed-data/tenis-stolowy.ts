@@ -1,7 +1,10 @@
 // Table tennis ladder 1-99. Tracks: rally length, serve accuracy, matches.
 // Skill milestones (spins, footwork) manual.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "tenis-stolowy",
@@ -136,4 +139,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   78: prog("wygrane", 400), 83: prog("wygrane", 500), 88: prog("wygrane", 600), 94: prog("wygrane", 750),
   11: freq(1, 4), 23: freq(2, 8),
   // pozostałe: technika, liga, osiągnięcia — manualne.
+};
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  2: [{ kind: "video", title: "Podstawy odbijania — grip i pozycja", url: yt("OUPiov7snhk") }],
+  3: [{ kind: "video", title: "Serwis — zasady i technika", url: yt("x40Mlj-WNUI") }],
+  4: [{ kind: "video", title: "Forhend — prawidłowa technika", url: yt("qDm4B7AoknM") }],
+  5: [{ kind: "video", title: "Bekhend push i drive", url: yt("XLfyRjRcBso") }],
+  16: [{ kind: "video", title: "Topspin forhendowy — rotacja górna", url: yt("mSMWl5hhq4I") }],
+  19: [{ kind: "video", title: "Serwis z rotacją boczną", url: yt("AaJxskYJiP0") }],
+  24: [{ kind: "video", title: "Topspin bekhendowy", url: yt("LnDCx1a0j1w") }],
+  28: [{ kind: "video", title: "Smecz — jak zakończyć punkt", url: yt("4QeFzKfD34o") }],
+  30: [{ kind: "video", title: "Serwis z rotacją dolną i odbiór", url: yt("RGc6vRexfTg") }],
+  35: [{ kind: "video", title: "Flip (banana) po krótkim serwisie", url: yt("OTXiV-m37Ck") }],
+  46: [{ kind: "video", title: "Serve and attack — 3rd ball", url: yt("9bENEIOj8RI") }],
+  50: [{ kind: "article", title: "Chop defence technique", url: "https://www.wikihow.com/Play-Table-Tennis" }],
 };

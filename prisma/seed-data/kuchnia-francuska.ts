@@ -119,3 +119,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde francuskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne francuskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Omlet francuski — Jacques Pépin", url: yt("s10etP1p2bU") }],
+  4: [{ kind: "video", title: "Soupe à l'oignon — zupa cebulowa z grzanką", url: yt("zcWbOELqqW4") }],
+  7: [{ kind: "video", title: "Crêpes — cienkie naleśniki francuskie", url: yt("tinSjWPnNzg") }],
+  12: [{ kind: "article", title: "Quiche lorraine — klasyczny przepis", url: "https://www.seriouseats.com/perfect-quiche-lorraine-recipe" }],
+  17: [
+    { kind: "video", title: "Boeuf bourguignon — wołowina w burgundzie", url: yt("zA2aDKMSlWc") },
+    { kind: "article", title: "Boeuf bourguignon — przepis na duszenie", url: "https://www.seriouseats.com/beef-bourguignon-recipe" },
+  ],
+  21: [{ kind: "video", title: "Crème brûlée — technika karmelizacji", url: yt("a64_QLq3Liw") }],
+  26: [{ kind: "video", title: "Bagietka domowa od podstaw", url: yt("5cjFVTnhNSI") }],
+  35: [{ kind: "video", title: "Pâte à choux — eklery i ptysie", url: yt("pn7S1XPjblE") }],
+  41: [{ kind: "article", title: "Bouillabaisse — marsylska zupa rybna", url: "https://www.bonappetit.com/recipe/bouillabaisse" }],
+  47: [{ kind: "video", title: "Soufflé au fromage — jak uniknąć opadania", url: yt("5g4uzarLBUg") }],
+  56: [{ kind: "video", title: "Croissanty od podstaw — ciasto laminowane", url: yt("vpwY3nmLLaA") }],
+  57: [{ kind: "article", title: "Macarons — kompletny przewodnik", url: "https://www.seriouseats.com/french-macaron-recipe" }],
+};

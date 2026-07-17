@@ -119,3 +119,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde indyjskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne indyjskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Dal tadka — soczewica z zaprawą przyprawową", url: yt("eeKPGFLFyFQ") }],
+  4: [{ kind: "video", title: "Aloo gobi — ziemniaki z kalafiorem", url: yt("0gGwfkNePJU") }],
+  6: [{ kind: "video", title: "Chana masala — ciecierzyca w pomidorach", url: yt("T46SkjCpyGI") }],
+  13: [
+    { kind: "video", title: "Butter chicken — murgh makhani", url: yt("a03U45jFxOI") },
+    { kind: "article", title: "Butter chicken — przepis krok po kroku", url: "https://www.seriouseats.com/butter-chicken-murgh-makhani-recipe" },
+  ],
+  14: [{ kind: "video", title: "Palak paneer — szpinak z domowym serem", url: yt("gVNIetTz8JY") }],
+  17: [{ kind: "video", title: "Samosa — smażone pierożki z ziemniakami", url: yt("JXWiCBeAYLE") }],
+  26: [{ kind: "video", title: "Naan na patelni — domowy chleb indyjski", url: yt("zogvMiPpQrs") }],
+  29: [{ kind: "article", title: "Rogan josh — kaszmirska jagnięcina", url: "https://www.seriouseats.com/kashmiri-style-goat-rogan-josh-recipe" }],
+  32: [{ kind: "video", title: "Biryani dum — warstwy ryżu i mięsa na parze", url: yt("PLa7N1AHKV0") }],
+  40: [{ kind: "video", title: "Gulab jamun — indyjski deser w syropie", url: yt("Gy0LGz-rKbs") }],
+  41: [{ kind: "video", title: "Tandoori chicken — marynata jogurtowa", url: yt("bbMA0AUbgFo") }],
+  46: [{ kind: "video", title: "Hyderabadi dum biryani — pełny proces", url: yt("mFiEBjSTdK8") }],
+};

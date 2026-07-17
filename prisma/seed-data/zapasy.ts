@@ -1,6 +1,9 @@
 // Wrestling ladder 1-99. Manual — progression tracks: technique, matches, and
 // competition level (freestyle/greco-roman, amateur → Olympic).
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "zapasy",
@@ -119,3 +122,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Osiągnij status uznanego zawodnika swojej kategorii wagowej", undefined, prog("technika", 23)],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów w zapasach", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, igrzyska) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Wrestling Stance & Motion Fundamentals", url: yt("bDq_SnaMwxw") },
+    { kind: "article", title: "Wrestling basics for beginners", url: "https://www.wikihow.com/Wrestle" },
+  ],
+  3: [
+    { kind: "video", title: "Double Leg Takedown — Step by Step", url: yt("Nxd5bNQjqyE") },
+  ],
+  5: [
+    { kind: "video", title: "How to Sprawl — Takedown Defense", url: yt("uN_SHMD3VhI") },
+  ],
+  9: [
+    { kind: "video", title: "Hip Throw (Lateral Drop) Tutorial", url: yt("a_gFpJO8jS8") },
+  ],
+  14: [
+    { kind: "video", title: "Suplex Technique — Greco-Roman", url: yt("M0V6DXAT_Lc") },
+    { kind: "article", title: "Greco-Roman vs Freestyle wrestling explained", url: "https://www.verywellfit.com/wrestling-styles-guide-3498308" },
+  ],
+  20: [
+    { kind: "video", title: "Bottom Escape & Stand-Up Technique", url: yt("5oA1QUDPvqY") },
+  ],
+  27: [
+    { kind: "video", title: "Chain Wrestling — Linking Attacks", url: yt("Uk4E0qGOkSs") },
+  ],
+  37: [
+    { kind: "article", title: "Advanced wrestling tactics & chain wrestling", url: "https://www.breakingmuscle.com/wrestling-training-tips/" },
+  ],
+  56: [
+    { kind: "reference", title: "UWW Rules — United World Wrestling", url: "https://uww.org/governance/regulations" },
+  ],
+  86: [
+    { kind: "video", title: "Wrestling Training at Elite Level", url: yt("3R-IjFxzWPQ") },
+  ],
+};

@@ -1,6 +1,7 @@
 // Paragliding ladder 1-99. Manual — progression tracks: skill/licence, XC
 // distance flown (km), and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "paralotniarstwo",
@@ -119,3 +120,18 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Ustanów swój rekord życiowy w przelocie", undefined, prog("technika", 23)],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały doświadczenie w przelotach XC", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, rekordy) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Ground handling basics — Flybubble", url: yt("RvBxoK3sDzE") }],
+  5: [{ kind: "video", title: "How to turn and control speed in flight", url: yt("gzI4zrUAPmU") }],
+  8: [{ kind: "article", title: "Getting your paragliding license — what to expect", url: "https://flybubble.com/blog/getting-your-paragliding-licence" }],
+  12: [{ kind: "video", title: "How to thermal — paragliding core skill", url: yt("FQi4h7XjRUE") }],
+  16: [{ kind: "video", title: "Your first XC flight — cross-country tips", url: yt("NwJQcJYq2Zg") }],
+  28: [{ kind: "video", title: "Glide optimization — XC transitions", url: yt("PWLLpXVGcts") }],
+  39: [{ kind: "video", title: "FAI triangle — how to plan and fly one", url: yt("E8CJLMxWb-8") }],
+  55: [{ kind: "article", title: "XC paragliding — flying 100 km+", url: "https://xcmag.com/paragliding-technique/" }],
+  65: [{ kind: "video", title: "Competition paragliding — task strategy", url: yt("vgKJ-c-1fA4") }],
+  88: [{ kind: "article", title: "WPRS world ranking — paragliding competitions", url: "https://civlcomps.org/ranking/paragliding-xc/pilots" }],
+};

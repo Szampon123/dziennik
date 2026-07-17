@@ -1,6 +1,9 @@
 // Hungarian cuisine ladder 1-99 — concrete dishes as levels, easy → hard.
 // REALISTIC home-cook scale. Tracks: dania, techniki, + specific-dish milestones.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "kuchnia-wegierska",
@@ -119,3 +122,26 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde węgierskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne węgierskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+// Curated learning resources for Hungarian cuisine milestones.
+// Videos from Ákos Kitchen and others; articles from seriouseats, food52.
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Lecsó — Hungarian Pepper and Tomato Stew", url: yt("IzMmLf9Zvx0") }],
+  4: [{ kind: "video", title: "Paprikás Krumpli — Paprika Potatoes", url: yt("7vUQT-ERvGU") }],
+  6: [{ kind: "video", title: "Palacsinta — Hungarian Crêpes", url: yt("BWE0OE5EFHI") }],
+  13: [
+    { kind: "video", title: "Gulyás — Traditional Hungarian Goulash Soup", url: yt("nJSorh0f4Os") },
+    { kind: "article", title: "The real Hungarian goulash recipe", url: "https://www.seriouseats.com/hungarian-goulash-recipe" },
+  ],
+  14: [{ kind: "video", title: "Pörkölt — Hungarian Beef Stew with Paprika", url: yt("lK38HYf-CYE") }],
+  20: [{ kind: "video", title: "Halászlé — Hungarian Fisherman's Soup", url: yt("KqD8KH0fVrY") }],
+  21: [
+    { kind: "video", title: "Lángos — Deep-Fried Hungarian Flatbread", url: yt("5GaJGnBRkg0") },
+    { kind: "article", title: "Lángos — the iconic Hungarian street food", url: "https://www.food52.com/recipes/hungarian-langos" },
+  ],
+  28: [{ kind: "video", title: "Töltött Paprika — Hungarian Stuffed Peppers", url: yt("k2NQb3U3bv0") }],
+  32: [{ kind: "video", title: "Rétes — Hungarian Strudel with Pulled Dough", url: yt("mRZVHKt-U2Y") }],
+  38: [{ kind: "video", title: "Dobos Torta — Layered Cake with Caramel Top", url: yt("xRHM0mONb28") }],
+  40: [{ kind: "video", title: "Kürtőskalács — Chimney Cake at Home", url: yt("bqELRnfYyMg") }],
+  44: [{ kind: "video", title: "Gundel Palacsinta — Flambéed Crêpes with Walnut", url: yt("RhY_kDzQ_bM") }],
+};

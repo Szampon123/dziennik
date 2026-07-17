@@ -2,6 +2,7 @@
 // round score (WA 720, out of 720), and competition levels. Benchmarks:
 // beginner 10 m; indoor 18 m; Olympic recurve 70 m; elite 720-round 680+.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
 
 export const activity = {
@@ -141,4 +142,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   97: prog("wynik", 698),
   11: freq(1, 4), 26: freq(2, 12),
   // pozostałe: technika grupowania, zawody, medale — manualne.
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Archery basics for beginners — NUSensei", url: yt("wKnOhCNyYjM") }],
+  4: [{ kind: "video", title: "The shot sequence explained — NUSensei", url: yt("1RBPME4gcig") }],
+  10: [{ kind: "video", title: "Indoor archery at 18m — NUSensei", url: yt("Xz5AIeeLqzo") }],
+  12: [{ kind: "video", title: "Consistent anchor point — John Dudley", url: yt("gEnxGxjj0sY") }],
+  20: [{ kind: "video", title: "Sight adjustment tutorial — NUSensei", url: yt("0VGfJJsN1a4") }],
+  25: [{ kind: "video", title: "Shooting at 70m Olympic distance — NUSensei", url: yt("bGYv1bI_pP0") }],
+  37: [{ kind: "video", title: "Shooting in wind conditions", url: yt("Y_wL7_JqJqE") }],
+  46: [{ kind: "article", title: "Competition format guide — World Archery", url: "https://www.worldarchery.sport/rulebook" }],
+  57: [{ kind: "video", title: "Advanced scoring technique — John Dudley", url: yt("Oa6VsxFP_GQ") }],
+  80: [{ kind: "article", title: "Elite archery training", url: "https://www.topendsports.com/sport/archery/training.htm" }],
 };

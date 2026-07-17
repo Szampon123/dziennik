@@ -1,6 +1,9 @@
 // Rugby ladder 1-99. Manual — progression tracks: matches played, tries
 // scored (total), competition level.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladderC, freq, prog } from "./helpers";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "rugby",
@@ -119,3 +122,18 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj mistrzostwo swojej ligi klubowej"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, kluczowy zawodnik silnej drużyny klubowej", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Rugby pass — podanie do tyłu", url: yt("y7eFbj4h8fU") }],
+  3: [{ kind: "video", title: "Bezpieczne padanie z piłką", url: yt("WNfFoqE0SJ8") }],
+  5: [{ kind: "video", title: "Tackle — technika bezpiecznego obalenia", url: yt("fmHYqNxXC5E") }],
+  6: [{ kind: "video", title: "Ruck — zasady gry przy ziemi", url: yt("JiPe1Z7qffs") }],
+  7: [{ kind: "video", title: "Punt kick — kop z ręki", url: yt("T7WnqoI3-6M") }],
+  12: [{ kind: "video", title: "Offload — podanie w kontakcie", url: yt("jnfMdCXEg_4") }],
+  19: [{ kind: "video", title: "Scrum i lineout — podstawy formacji", url: yt("WX_2VZSroRo") }],
+  23: [{ kind: "video", title: "Kop na bramkę — conversion i penalty", url: yt("biFCPqXOgss") }],
+  28: [{ kind: "video", title: "Linia ataku — formacje", url: yt("P5V91DGQ-fg") }],
+  32: [{ kind: "video", title: "Turnover — odbiór piłki w kontakcie", url: yt("A1F0k35_BhQ") }],
+  36: [{ kind: "article", title: "Rugby positions explained", url: "https://www.topendsports.com/sport/rugby/positions.htm" }],
+  40: [{ kind: "video", title: "Drop goal — kop z gry", url: yt("i0nKrTb6FuM") }],
+};

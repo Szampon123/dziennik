@@ -2,6 +2,7 @@
 // (500 m, 1500 m, 5000 m) use an increasing counter; real times in text.
 // Benchmarks: recreational; club; elite 500 m ~34 s, 1500 m ~1:42, 5000 m ~6:00.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "lyzwiarstwo-szybkie",
@@ -120,3 +121,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź medal mistrzostw kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat łyżwiarski", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, igrzyska, rekordy) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Speed Skating Basics — First Steps on Long Track", url: yt("gYHKLGaFxU8") },
+  ],
+  4: [
+    { kind: "video", title: "How to Do Crossovers in Speed Skating", url: yt("5sD_BL-O2bk") },
+  ],
+  8: [
+    { kind: "video", title: "Speed Skating 500m Sprint Technique", url: yt("b6VjGh81fVE") },
+  ],
+  14: [
+    { kind: "article", title: "Speed Skating Technique — Mastering the Corners", url: "https://www.wikihow.com/Speed-Skate" },
+  ],
+  22: [
+    { kind: "video", title: "Speed Skating Start Technique Explained", url: yt("WYe8yRA9ANI") },
+  ],
+  38: [
+    { kind: "video", title: "Clap Skate Technology and Technique in Speed Skating", url: yt("OM_G5Oyq4Q8") },
+  ],
+  45: [
+    { kind: "article", title: "Speed Skating Training Plan — Periodization Guide", url: "https://www.verywellfit.com/ice-skating-workouts-4157147" },
+  ],
+  56: [
+    { kind: "reference", title: "ISU Speed Skating — World Records and Rankings", url: "https://www.isu.org/speed-skating/entries-results/records" },
+  ],
+  72: [
+    { kind: "video", title: "How Elite Speed Skaters Train — Season Documentary", url: yt("l62fFoL8jmY") },
+  ],
+  86: [
+    { kind: "reference", title: "ISU Speed Skating Rules and Regulations", url: "https://www.isu.org/speed-skating/rules" },
+  ],
+};

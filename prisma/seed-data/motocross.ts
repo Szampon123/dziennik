@@ -1,6 +1,8 @@
 // Motocross ladder 1-99. Manual — progression tracks: technique, races, and
 // competition level (amateur → national → MXGP world championship).
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "motocross",
@@ -119,3 +121,40 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Poprowadź kogoś przez zaawansowaną technikę jazdy motocrossowej", undefined, prog("technika", 24)],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów w motocrossie", "Dalsze, zawodowe osiągnięcia (MXGP, mistrzostwa świata) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Beginner Motocross Tips — Twisted Transitions", url: yt("3Tnxs-kT2Cg") },
+    { kind: "article", title: "How to Ride a Dirt Bike for Beginners", url: "https://www.wikihow.com/Ride-a-Dirt-Bike" },
+  ],
+  3: [
+    { kind: "video", title: "How to Corner on a Dirt Bike — MX Factory", url: yt("BkKG8K33tWo") },
+  ],
+  5: [
+    { kind: "video", title: "Body Position for MX Riding — Twisted Transitions", url: yt("4pITfn48gyE") },
+    { kind: "article", title: "Motocross body positioning fundamentals", url: "https://www.dirtrider.com/how-to/motocross-body-position-tips" },
+  ],
+  9: [
+    { kind: "video", title: "Holeshot Start Technique — MX Factory", url: yt("_4-cFyJEqOw") },
+  ],
+  12: [
+    { kind: "video", title: "How to Jump a Tabletop — Twisted Transitions", url: yt("QFrp2fZ-Yrc") },
+  ],
+  20: [
+    { kind: "video", title: "How to Double Jump in Motocross — MX Factory", url: yt("vxHUL3X9rps") },
+    { kind: "article", title: "How to Ride Whoops in Motocross", url: "https://www.wikihow.com/Ride-Whoops-on-a-Dirt-Bike" },
+  ],
+  30: [
+    { kind: "video", title: "Scrub Technique Tutorial — Twisted Transitions", url: yt("PL2v_l4CwmY") },
+  ],
+  45: [
+    { kind: "video", title: "Race Fitness for Motocross — MX Factory", url: yt("kfTjWTDhCN4") },
+    { kind: "article", title: "Motocross fitness & race preparation", url: "https://www.topendsports.com/sport/motorcycling/motocross.htm" },
+  ],
+  60: [
+    { kind: "video", title: "MXGP Pro Tips — How to Train Like a Pro", url: yt("IYKJXs-Z2AY") },
+  ],
+  75: [
+    { kind: "video", title: "Mud Riding Masterclass — Twisted Transitions", url: yt("G_R1gNbBnj0") },
+  ],
+};

@@ -3,6 +3,7 @@
 // days on snow.
 import type { Criterion } from "../../src/lib/milestone-criteria";
 import { ladder, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "snowboard",
@@ -138,4 +139,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   98: prog("dni", 1000),
   26: freq(7, 1),
   // pozostałe: triki, zawody, wydarzenia — manualne.
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "How to snowboard — first day beginner guide", url: yt("gXfLl3qYy0Y") }],
+  6: [{ kind: "video", title: "How to turn on a snowboard — linking turns", url: yt("EpY0jSeKKbw") }],
+  10: [{ kind: "video", title: "How to ride blue runs with confidence", url: yt("YOnanBOPWVw") }],
+  16: [{ kind: "video", title: "How to ollie on a snowboard", url: yt("gHsYGCBYBKk") }],
+  19: [{ kind: "video", title: "How to carve on a snowboard", url: yt("y_jAIv-2Gno") }],
+  22: [{ kind: "video", title: "How to 180 on a snowboard", url: yt("RGJzxPUKWVs") }],
+  33: [{ kind: "video", title: "How to 360 — snowboard tricks", url: yt("tMCCkq6wSXI") }],
+  47: [{ kind: "video", title: "How to backflip on a snowboard", url: yt("SFhFSjwKnyg") }],
+  56: [{ kind: "video", title: "How to ride in the park — jumps and rails", url: yt("Ep7FPdYiRvY") }],
+  71: [{ kind: "video", title: "How to cork — advanced rotations", url: yt("XcPfWOxLHbM") }],
 };

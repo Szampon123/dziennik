@@ -1,6 +1,9 @@
 // CrossFit ladder 1-99. Manual — progression tracks: benchmark lifts, gymnastic
 // skills (pull-ups → muscle-up → handstand walk), Fran time, and competition.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "crossfit",
@@ -119,3 +122,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Stań na podium mistrzostw kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat crossfitowy", "Dalsze, zawodowe osiągnięcia (CrossFit Games) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "The Air Squat — CrossFit", url: yt("C_VtOYc6j5c") },
+    { kind: "article", title: "CrossFit beginner guide", url: "https://www.verywellfit.com/crossfit-training-guide-3498289" },
+  ],
+  3: [
+    { kind: "video", title: "Your First WOD: How to Scale — WODprep", url: yt("VLlvx2RaDSo") },
+  ],
+  5: [
+    { kind: "video", title: "Kipping Pull-Up Progression — WODprep", url: yt("GwMnpxJxIG0") },
+  ],
+  10: [
+    { kind: "video", title: "Fran — Tips & Strategy — WODprep", url: yt("9Z9e1VfFkvA") },
+  ],
+  14: [
+    { kind: "video", title: "Learn Double-Unders — WODprep", url: yt("hCuXYrTORxo") },
+  ],
+  18: [
+    { kind: "video", title: "Your First Bar Muscle-Up — WODprep", url: yt("1eeE_auIPBg") },
+    { kind: "article", title: "Muscle-up progression guide", url: "https://www.barbend.com/muscle-up-progression/" },
+  ],
+  28: [
+    { kind: "video", title: "Handstand Walk Progressions — CrossFit", url: yt("oBSandHijDc") },
+  ],
+  35: [
+    { kind: "video", title: "Grace WOD Strategy — WODprep", url: yt("_vqHHnDjMmQ") },
+  ],
+  49: [
+    { kind: "article", title: "Sub-3 Fran: how to get there", url: "https://www.barbend.com/crossfit-fran-workout/" },
+  ],
+  79: [
+    { kind: "reference", title: "CrossFit Open Leaderboard", url: "https://games.crossfit.com/leaderboard" },
+  ],
+};

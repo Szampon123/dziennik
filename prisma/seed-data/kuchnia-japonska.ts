@@ -119,3 +119,25 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde japońskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne japońskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  2: [{ kind: "video", title: "Zupa miso — podstawy dashi i miso", url: yt("KVq0I1gSyKs") }],
+  3: [{ kind: "video", title: "Tamagoyaki — japoński omlet warstwowy", url: yt("8TqOl_Fw2Ew") }],
+  7: [{ kind: "video", title: "Teriyaki chicken — domowy sos teriyaki", url: yt("Lb_BsStDDd8") }],
+  13: [{ kind: "video", title: "Tonkatsu — panierowany kotlet wieprzowy", url: yt("PxJnFYhSmAc") }],
+  17: [{ kind: "video", title: "Gyoza — japońskie pierożki od podstaw", url: yt("EAdHaFtfznA") }],
+  19: [
+    { kind: "video", title: "Ramen shoyu — domowy bulion i tare", url: yt("9WXIrnWsaCo") },
+    { kind: "article", title: "Ramen w domu — kompletny przewodnik", url: "https://www.seriouseats.com/how-to-make-ramen-at-home" },
+  ],
+  26: [{ kind: "video", title: "Sushi maki — jak formować rolki", url: yt("joSJfMImDqk") }],
+  27: [{ kind: "video", title: "Tempura — lekkie ciasto i technika smażenia", url: yt("gLbFY_n5eBg") }],
+  29: [{ kind: "video", title: "Okonomiyaki — japoński placek z Osaki", url: yt("x0gyelSJZbE") }],
+  41: [{ kind: "article", title: "Miso ramen — przepis z domowym tare", url: "https://www.seriouseats.com/miso-tare-ramen-recipe" }],
+  46: [{ kind: "video", title: "Ramen tonkotsu — wielogodzinny bulion", url: yt("_yoJEnFjRhI") }],
+  55: [{ kind: "video", title: "Chashu — marynowany boczek do ramenu", url: yt("0Q3W1qOsKBY") }],
+};

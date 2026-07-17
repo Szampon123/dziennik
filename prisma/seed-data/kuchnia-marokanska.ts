@@ -1,6 +1,9 @@
 // Moroccan cuisine ladder 1-99 — concrete dishes as levels, easy → hard.
 // REALISTIC home-cook scale. Tracks: dania, techniki, + specific-dish milestones.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "kuchnia-marokanska",
@@ -119,3 +122,26 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde marokańskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne marokańskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+// Curated learning resources for Moroccan cuisine milestones.
+// Videos from CookingWithAlia, Zineb's Kitchen and others; articles from seriouseats, food52.
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  2: [{ kind: "video", title: "Zaalouk — Moroccan Eggplant and Tomato Salad", url: yt("kMJ0vY_V_NI") }],
+  4: [
+    { kind: "video", title: "Harira — Moroccan Lentil and Chickpea Soup", url: yt("gGKLB3zIEp8") },
+    { kind: "article", title: "Harira: the classic Ramadan soup", url: "https://www.seriouseats.com/harira-moroccan-lentil-soup-recipe" },
+  ],
+  6: [{ kind: "video", title: "Couscous — How to Steam Properly", url: yt("EbzEJHjPZuY") }],
+  7: [{ kind: "video", title: "Khobz — Moroccan Semolina Bread", url: yt("_LDhJeNTm6U") }],
+  13: [
+    { kind: "video", title: "Chicken Tagine with Preserved Lemons and Olives", url: yt("CsZVPOxlTdI") },
+    { kind: "article", title: "Moroccan chicken tagine guide", url: "https://www.bonappetit.com/recipe/chicken-tagine-with-olives-and-lemon" },
+  ],
+  14: [{ kind: "video", title: "Kefta Tagine — Meatballs with Eggs", url: yt("m4w3UPvf3AY") }],
+  21: [{ kind: "video", title: "Preserved Lemons — How to Make at Home", url: yt("W_IRurJgFDA") }],
+  22: [{ kind: "video", title: "Lamb Tagine with Prunes and Almonds", url: yt("nPpV_r3UzYg") }],
+  27: [{ kind: "video", title: "Pastilla (Bastilla) — Moroccan Chicken Pie", url: yt("pEm3BhQX1Yo") }],
+  33: [{ kind: "video", title: "Msemen — Flaky Moroccan Flatbread", url: yt("VBqYmS0B2VU") }],
+  36: [{ kind: "article", title: "Seffa medfouna — sweet couscous with chicken", url: "https://www.food52.com/recipes/moroccan-sweet-couscous-seffa" }],
+  23: [{ kind: "video", title: "Chebakia — Moroccan Sesame Cookies", url: yt("rAf_oJ83sPE") }],
+};

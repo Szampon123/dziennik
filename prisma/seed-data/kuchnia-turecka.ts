@@ -1,6 +1,9 @@
 // Turkish cuisine ladder 1-99 — concrete dishes as levels, easy → hard.
 // REALISTIC home-cook scale. Tracks: dania, techniki, + specific-dish milestones.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "kuchnia-turecka",
@@ -119,3 +122,26 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde tureckie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne tureckie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+// Curated learning resources for Turkish cuisine milestones.
+// Videos from Refika's Kitchen, Turkish Foods and others; articles from seriouseats, bonappetit.
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Classic Çoban Salatası (Shepherd's Salad)", url: yt("G8RDKR0yhl0") }],
+  3: [{ kind: "video", title: "Mercimek Çorbası — Turkish Red Lentil Soup", url: yt("kM2WBlfITDo") }],
+  4: [{ kind: "video", title: "Menemen — Turkish Scrambled Eggs with Tomato", url: yt("aKR3peeAAb4") }],
+  7: [{ kind: "video", title: "Crispy Sigara Böreği (Cheese Cigar Rolls)", url: yt("PAaBLzq3Dng") }],
+  13: [{ kind: "video", title: "Turkish Köfte — Grilled Meatballs", url: yt("B-W_Cq-jg4Y") }],
+  14: [
+    { kind: "video", title: "Lahmacun — Turkish Flatbread Pizza from Scratch", url: yt("FiNYWJOqZ5M") },
+    { kind: "article", title: "Lahmacun recipe guide", url: "https://www.seriouseats.com/lahmacun-turkish-pizza-recipe" },
+  ],
+  16: [{ kind: "video", title: "İmam Bayıldı — Stuffed Eggplant", url: yt("5oJkSN0xVaE") }],
+  17: [{ kind: "video", title: "Adana Kebab at Home — Charcoal Grilled", url: yt("DZye_GM-O_8") }],
+  23: [
+    { kind: "video", title: "Baklava from Scratch — Layers of Yufka", url: yt("wR0ZP1kHdDk") },
+    { kind: "article", title: "How to make Turkish baklava", url: "https://www.bonappetit.com/recipe/turkish-baklava" },
+  ],
+  26: [{ kind: "video", title: "Mantı — Turkish Dumplings with Yogurt Sauce", url: yt("5AcaGrhm2y0") }],
+  29: [{ kind: "video", title: "İskender Kebab with Tomato Butter Sauce", url: yt("rF1EMkQSr-s") }],
+  34: [{ kind: "video", title: "Künefe — Crispy Cheese Dessert with Kadaif", url: yt("PYYwPPaikzA") }],
+};

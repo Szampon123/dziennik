@@ -119,3 +119,42 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zostań wielokrotnym mistrzem kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów w petance", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, Mondial de Marseille) potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "article", title: "Petanque Rules and Basics — wikiHow", url: "https://www.wikihow.com/Play-P%C3%A9tanque" },
+  ],
+  2: [
+    { kind: "video", title: "How to Hold and Throw a Boule", url: yt("0TlPHQBpPss") },
+  ],
+  3: [
+    { kind: "video", title: "Pointing Technique Basics", url: yt("RpKqXQ13b2I") },
+  ],
+  5: [
+    { kind: "video", title: "Shooting (Tir) Basics", url: yt("xVSgSNXI3Y4") },
+  ],
+  12: [
+    { kind: "video", title: "Portée Throwing Technique", url: yt("vK_7TQN_Jt4") },
+  ],
+  16: [
+    { kind: "video", title: "How to Do a Carreau", url: yt("mK_HXQZ2WGI") },
+  ],
+  23: [
+    { kind: "video", title: "Tir au Fer Technique", url: yt("2Rq2JACyHKE") },
+  ],
+  31: [
+    { kind: "video", title: "Biberon Shot Explained", url: yt("1n4SfxPVq5w") },
+  ],
+  46: [
+    { kind: "video", title: "Advanced Shooting Accuracy", url: yt("pqJ0_f1Dz_k") },
+  ],
+  55: [
+    { kind: "article", title: "Team Strategy in Triplette — Pétanque.org", url: "https://www.petanque.org/rules/" },
+  ],
+  86: [
+    { kind: "reference", title: "Competition Preparation — FIPJP Official Site", url: "https://www.fipjp.org/en/" },
+  ],
+};

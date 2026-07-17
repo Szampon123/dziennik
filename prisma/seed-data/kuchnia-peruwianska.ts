@@ -1,6 +1,9 @@
 // Peruvian cuisine ladder 1-99 — concrete dishes as levels, easy → hard.
 // REALISTIC home-cook scale. Tracks: dania, techniki, + specific-dish milestones.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "kuchnia-peruwianska",
@@ -119,3 +122,26 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde peruwiańskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne peruwiańskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+// Curated learning resources for Peruvian cuisine milestones.
+// Videos from Peru Delights and others; articles from seriouseats, bonappetit.
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  2: [{ kind: "video", title: "Papa a la Huancaína — Potatoes in Ají Sauce", url: yt("Q3Rf3v13qJk") }],
+  3: [{ kind: "video", title: "Causa Limeña — Layered Potato Terrine", url: yt("HROWCe1Ynkk") }],
+  6: [
+    { kind: "video", title: "Ceviche — Classic Peruvian Fish in Lime", url: yt("lJAqnqfzBBU") },
+    { kind: "article", title: "How to make real Peruvian ceviche", url: "https://www.seriouseats.com/peruvian-ceviche-recipe" },
+  ],
+  10: [{ kind: "video", title: "Anticuchos — Peruvian Beef Heart Skewers", url: yt("b7N_zMv0b-U") }],
+  13: [
+    { kind: "video", title: "Lomo Saltado — Peruvian Beef Stir-Fry", url: yt("3VKoDBrM8Ro") },
+    { kind: "article", title: "Lomo saltado recipe and technique", url: "https://www.bonappetit.com/recipe/lomo-saltado" },
+  ],
+  14: [{ kind: "video", title: "Ají de Gallina — Creamy Chicken in Ají Amarillo", url: yt("xt10_LWRHMw") }],
+  20: [{ kind: "video", title: "Papa Rellena — Stuffed Potato Croquettes", url: yt("9P_qcQqRmRg") }],
+  22: [{ kind: "video", title: "Picarones — Peruvian Sweet Potato Donuts", url: yt("Bc5nGSCMBu4") }],
+  28: [{ kind: "video", title: "Seco de Cordero — Lamb Stew with Cilantro", url: yt("FfCQpDz7L-Y") }],
+  31: [{ kind: "video", title: "Rocoto Relleno — Stuffed Hot Peppers", url: yt("1Q2tR_pDYeo") }],
+  38: [{ kind: "video", title: "Suspiro a la Limeña — Peruvian Caramel Meringue", url: yt("fAJXH1UvPbI") }],
+  4: [{ kind: "video", title: "Arroz Chaufa — Peruvian-Chinese Fried Rice", url: yt("gCN0a-RSd6E") }],
+};

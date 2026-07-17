@@ -1,6 +1,8 @@
 // Curling ladder 1-99. Manual — progression tracks: technique/shot skill,
 // matches played, and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "curling",
@@ -119,3 +121,40 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź wielokrotne medale mistrzostw kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat curlingowy", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, igrzyska) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Learn to Curl — Curling Canada", url: yt("AH0yGUpz5aY") },
+    { kind: "article", title: "How to Curl: beginner guide", url: "https://www.wikihow.com/Curl-(Sport)" },
+  ],
+  3: [
+    { kind: "video", title: "How to Sweep in Curling — Curling Canada", url: yt("YRJWGXKYQOI") },
+  ],
+  5: [
+    { kind: "video", title: "Delivery Technique & Slide — Curling Canada", url: yt("Mj_o6Y9RF3A") },
+    { kind: "article", title: "Curling rules & scoring explained", url: "https://www.worldcurling.org/about/rules/" },
+  ],
+  8: [
+    { kind: "video", title: "Takeout Shot Tutorial — Curling Canada", url: yt("bPpiqJrn7WQ") },
+  ],
+  14: [
+    { kind: "video", title: "Guard Strategy in Curling — Curling Canada", url: yt("R5yE2I-Y-F0") },
+  ],
+  22: [
+    { kind: "video", title: "The Freeze Shot Explained — Curling Canada", url: yt("aPm0qGzQapw") },
+    { kind: "article", title: "Curling Strategy Guide for Intermediate Players", url: "https://www.topendsports.com/sport/curling/strategy.htm" },
+  ],
+  35: [
+    { kind: "video", title: "Skip Strategy & Communication — Curling Canada", url: yt("N2c5Vi8yQfk") },
+  ],
+  50: [
+    { kind: "video", title: "Advanced Shot Making — Hit & Roll", url: yt("T__3TFfkF0w") },
+    { kind: "article", title: "Curling shot accuracy & percentage tracking", url: "https://www.curling.ca/about-curling/getting-started-in-curling/" },
+  ],
+  70: [
+    { kind: "video", title: "World Curling Championship Highlights", url: yt("5z1FhGYRves") },
+  ],
+  85: [
+    { kind: "video", title: "Olympic Curling Gold Medal Moments", url: yt("UkB5bwUpbsE") },
+  ],
+};

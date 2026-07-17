@@ -1,6 +1,7 @@
 // American football ladder 1-99. Manual — progression tracks: matches played,
 // touchdowns/big plays (total), and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "futbol-amerykanski",
@@ -119,3 +120,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź uznanie w krajowym środowisku futbolu amerykańskiego"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, kluczowy zawodnik silnej drużyny klubowej", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "How to Catch a Football — Receiver Basics", url: yt("IEwap8mSx_A") },
+  ],
+  2: [
+    { kind: "video", title: "How to Throw a Perfect Spiral — Football Passing", url: yt("xWAFdFIc3bQ") },
+  ],
+  5: [
+    { kind: "video", title: "Football Advantage — Proper Tackling Technique", url: yt("GpDn3FRs-LQ") },
+  ],
+  7: [
+    { kind: "article", title: "NFL — Understanding Football Formations and Playbook", url: "https://www.wikihow.com/Understand-American-Football-Formations" },
+  ],
+  15: [
+    { kind: "video", title: "Wide Receiver Route Running — All 9 Routes Explained", url: yt("GS42x5CVQOU") },
+  ],
+  26: [
+    { kind: "video", title: "Football Advantage — Pre-Snap Reads for Defenders", url: yt("R_8h1Xw-bVY") },
+  ],
+  35: [
+    { kind: "article", title: "American Football Training — Strength and Speed", url: "https://www.verywellfit.com/football-fitness-4157107" },
+  ],
+  50: [
+    { kind: "video", title: "NFL Film Study — Understanding Defensive Schemes", url: yt("n3Cz5odh3X4") },
+  ],
+  67: [
+    { kind: "reference", title: "IFAF — International Federation of American Football", url: "https://www.ifaf.org/" },
+  ],
+  90: [
+    { kind: "reference", title: "ELF — European League of Football Teams and Stats", url: "https://europeanleague.football/" },
+  ],
+};

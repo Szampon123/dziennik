@@ -1,6 +1,7 @@
 // Orienteering ladder 1-99. Manual — progression tracks: navigation skill,
 // course difficulty, and competition level. Combines running and map-reading.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "bieg-na-orientacje",
@@ -119,3 +120,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź uznanie w krajowym środowisku biegu na orientację", undefined, prog("nawigacja", 24)],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, Puchar Świata) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Orienteering for Beginners — How to Read a Map", url: yt("hWLc5EG5nxo") },
+  ],
+  4: [
+    { kind: "video", title: "How to Use a Compass for Orienteering — Bearing and Azimuth", url: yt("0cF0ovA3FtY") },
+  ],
+  7: [
+    { kind: "video", title: "Pace Counting — Measure Distance While Running", url: yt("IDEKETc0DLo") },
+  ],
+  13: [
+    { kind: "video", title: "Route Choice in Orienteering — Planning the Best Path", url: yt("bxYDCJeLpPM") },
+  ],
+  19: [
+    { kind: "video", title: "Contour Reading — Understanding Terrain from Maps", url: yt("CoVcRxza8nI") },
+  ],
+  27: [
+    { kind: "article", title: "IOF — International Orienteering Federation Rules", url: "https://orienteering.sport/orienteering/" },
+  ],
+  32: [
+    { kind: "video", title: "Map Simplification — Reading Maps While Running Fast", url: yt("d3q8bQiZ_8A") },
+  ],
+  46: [
+    { kind: "article", title: "Orienteering Training Plan — Navigation and Fitness", url: "https://www.wikihow.com/Do-Orienteering" },
+  ],
+  66: [
+    { kind: "reference", title: "IOF World Rankings — Orienteering", url: "https://orienteering.sport/ranking/" },
+  ],
+  86: [
+    { kind: "video", title: "World Orienteering Championships — Race Analysis", url: yt("hG7GxKaRnTU") },
+  ],
+};

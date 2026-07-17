@@ -1,5 +1,6 @@
 // Billiards/pool ladder 1-99. Manual — progression tracks: "run" (consecutive
 // balls potted / break-and-run), technique, and competition levels.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladderC, freq, prog } from "./helpers";
 
 export const activity = {
@@ -119,3 +120,19 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj mistrzostwa kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat bilardowy", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Pool basics — bridge and stance — Dr. Dave", url: yt("VFjl5f_h5zs") }],
+  5: [{ kind: "video", title: "Stun shot and stop shot — Dr. Dave", url: yt("MzTWzmqUbOE") }],
+  7: [{ kind: "video", title: "Bank shots explained — Dr. Dave", url: yt("UoS_mn4x5Oc") }],
+  12: [{ kind: "video", title: "Side spin (english) — Sharivari", url: yt("G4kqOi5GKKE") }],
+  14: [{ kind: "video", title: "Positional play basics — Dr. Dave", url: yt("OjWCmCGk7ns") }],
+  23: [{ kind: "video", title: "Break shot technique — Dr. Dave", url: yt("0-dAeMiqxhg") }],
+  28: [{ kind: "video", title: "Break and run strategy — Sharivari", url: yt("7U4kAE_KPe0") }],
+  34: [{ kind: "video", title: "Combination shots — Dr. Dave", url: yt("bWd_0MUXMiM") }],
+  41: [{ kind: "video", title: "Masse shot tutorial — Sharivari", url: yt("O6R5-mR9jl4") }],
+  57: [{ kind: "article", title: "14.1 straight pool — wikiHow", url: "https://www.wikihow.com/Play-Straight-Pool" }],
+  77: [{ kind: "video", title: "Advanced 14.1 runs — Dr. Dave", url: yt("u_ELzOENdx4") }],
+};

@@ -2,6 +2,9 @@
 // attended, FTP (functional threshold power, W/kg ×10 as value), and class/race
 // level (indoor cycling racing e.g. Zwift). Distinct from outdoor road cycling.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "spinning",
@@ -120,3 +123,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź medal mistrzostw kraju amatorów w e-kolarstwie"],
   ["Poziom mistrzowski (amatorski szczyt): FTP 6,5 W/kg i wieloletni, dojrzały warsztat", "Dalsze, zawodowe osiągnięcia (UCI Esports World Championships) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Indoor Cycling for Beginners — GCN", url: yt("u_Z3JxmGWqE") },
+    { kind: "article", title: "Indoor cycling setup guide", url: "https://www.verywellfit.com/indoor-cycling-basics-1231277" },
+  ],
+  2: [
+    { kind: "video", title: "How to Set Up Your Indoor Bike — GCN", url: yt("1VYhyppWTDc") },
+  ],
+  8: [
+    { kind: "video", title: "FTP Test Explained — How to Test Your FTP", url: yt("0hUBxbtj3Rg") },
+    { kind: "article", title: "What is FTP and how to test it", url: "https://www.verywellfit.com/ftp-cycling-test-5188834" },
+  ],
+  19: [
+    { kind: "video", title: "Getting Started with Zwift — Beginner Guide", url: yt("01qJaIh5lbk") },
+  ],
+  25: [
+    { kind: "video", title: "How to Improve Your FTP — Structured Training", url: yt("qFmUoWbKm0o") },
+  ],
+  37: [
+    { kind: "article", title: "Sweet spot training for FTP gains", url: "https://www.barbend.com/sweet-spot-training-cycling/" },
+  ],
+  56: [
+    { kind: "video", title: "FTP 4.0 W/kg — Training Plan & Tips", url: yt("z_rNbKfRb0k") },
+  ],
+  69: [
+    { kind: "article", title: "Zwift racing categories explained", url: "https://www.verywellfit.com/zwift-racing-guide-5188836" },
+  ],
+  86: [
+    { kind: "reference", title: "UCI Esports Cycling Regulations", url: "https://www.uci.org/esports" },
+  ],
+  99: [
+    { kind: "tool", title: "Zwift — Virtual Cycling Platform", url: "https://www.zwift.com/" },
+  ],
+};

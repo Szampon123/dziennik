@@ -2,6 +2,7 @@
 // recreational touring; loppet marathons (Bieg Piastów 50 km, Vasaloppet 90 km);
 // racing pace 20+ km/h skate. Long marathons are the amateur pinnacle.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, d, tfd, weekly, monthly, total, freq, anyOf, prog } from "./helpers";
 
 export const activity = {
@@ -143,4 +144,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   96: tfd(10, 24),
   99: anyOf(tfd(10, 23), prog("mistrzostwa", 1)),
   // pozostałe (14, 19, 31, 38, 49, 55, 60, 69, 73, 78, 82, 85, 87, 90, 93, 94, 95, 97, 98) — technika/loppety/zawody: manualne.
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Cross-country skiing basics — diagonal stride", url: yt("BPK9JGWnlD0") }],
+  6: [{ kind: "video", title: "Skate skiing basics — first steps", url: yt("bDMi3yL8fFw") }],
+  10: [{ kind: "article", title: "Beginner cross-country ski technique guide", url: "https://www.rei.com/learn/expert-advice/cross-country-skiing-for-beginners.html" }],
+  15: [{ kind: "video", title: "How to go uphill on skate skis", url: yt("e0sTZJCfxIQ") }],
+  25: [{ kind: "video", title: "Double pole technique — efficiency tips", url: yt("sJVS0ZXYsCw") }],
+  31: [{ kind: "article", title: "Bieg Piastów — informacje o maratonie", url: "https://www.biegpiastow.pl/" }],
+  42: [{ kind: "video", title: "Cross-country ski marathon training plan", url: yt("HUE_Xg2NfWM") }],
+  55: [{ kind: "article", title: "Vasaloppet — the world's oldest cross-country ski race", url: "https://www.vasaloppet.se/en/" }],
+  65: [{ kind: "video", title: "XC ski racing — V2 skate technique", url: yt("M-e_MrN-k0k") }],
+  76: [{ kind: "article", title: "Ski Classics — long-distance ski race series", url: "https://www.skiclassics.com/" }],
 };

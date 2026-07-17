@@ -1,6 +1,9 @@
 // Brazilian cuisine ladder 1-99 — concrete dishes as levels, easy → hard.
 // REALISTIC home-cook scale. Tracks: dania, techniki, + specific-dish milestones.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "kuchnia-brazylijska",
@@ -119,3 +122,26 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde brazylijskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne brazylijskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+// Curated learning resources for Brazilian cuisine milestones.
+// Videos from popular Brazilian cooking channels; articles from seriouseats, bonappetit.
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Arroz e Feijão — Perfect Brazilian Rice and Beans", url: yt("PA5R-oXxuMU") }],
+  2: [
+    { kind: "video", title: "Pão de Queijo — Brazilian Cheese Bread", url: yt("W6Tu-xnl2AM") },
+    { kind: "article", title: "Pão de queijo recipe with tapioca flour", url: "https://www.seriouseats.com/easy-brazilian-cheese-bread-recipe" },
+  ],
+  6: [{ kind: "video", title: "Brigadeiro — Brazilian Chocolate Truffles", url: yt("5Mf1Z4rZG3s") }],
+  13: [
+    { kind: "video", title: "Feijoada — Traditional Brazilian Black Bean Stew", url: yt("RZ8oJlpXBXA") },
+    { kind: "article", title: "Feijoada completa — the national dish of Brazil", url: "https://www.bonappetit.com/recipe/feijoada" },
+  ],
+  14: [{ kind: "video", title: "Coxinha — Brazilian Chicken Croquettes", url: yt("j-5qfVlqLa8") }],
+  16: [{ kind: "video", title: "Picanha — How to Grill Brazilian Style", url: yt("_2vFl5oHrik") }],
+  17: [{ kind: "video", title: "Moqueca — Brazilian Fish Stew with Coconut Milk", url: yt("mYo0cgz_3Pw") }],
+  23: [{ kind: "video", title: "Pudim de Leite — Brazilian Flan", url: yt("rlw0cqsMTjM") }],
+  27: [{ kind: "video", title: "Moqueca Baiana with Dendê Oil", url: yt("Cxhbb0QFJJY") }],
+  30: [{ kind: "video", title: "Acarajé — Bahian Black-Eyed Pea Fritters", url: yt("s4Q1dLkXzFw") }],
+  33: [{ kind: "article", title: "Vatapá — creamy shrimp stew from Bahia", url: "https://www.food52.com/recipes/brazilian-vatapa-shrimp" }],
+  40: [{ kind: "video", title: "Brigadeiro Gourmet — Fancy Variations", url: yt("n5-Sxgz-k9o") }],
+};

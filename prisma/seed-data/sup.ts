@@ -2,6 +2,7 @@
 // Benchmarks: recreational ~5-6 km/h; fit ~7-8 km/h; racing 10+ km/h;
 // long-distance crossings and multi-day expeditions at the top.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, d, t, tfd, weekly, monthly, total, freq, anyOf, prog } from "./helpers";
 
 export const activity = {
@@ -145,4 +146,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
   96: tfd(42.195, 180), 98: tfd(10, 40),
   99: anyOf(tfd(42.195, 170), prog("mistrzostwa", 1)),
   // 14, 18, 32, 38, 52, 62, 70, 82, 89, 97 — technika/przeprawy/zawody: manualne.
+};
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "SUP basics — how to stand up paddle board", url: yt("0MdaBz0EMWM") }],
+  3: [{ kind: "video", title: "SUP paddle technique — proper forward stroke", url: yt("9kj4jVCt5Kk") }],
+  5: [{ kind: "video", title: "How to turn on a SUP — pivot and sweep", url: yt("YIGJwSBbgJ4") }],
+  10: [{ kind: "article", title: "Stand up paddleboarding for beginners — REI guide", url: "https://www.rei.com/learn/expert-advice/stand-up-paddleboarding.html" }],
+  14: [{ kind: "video", title: "SUP in wind and chop — tips for rough water", url: yt("7pVgR7hk-qc") }],
+  25: [{ kind: "video", title: "SUP long distance paddling tips", url: yt("uSKd3XqYfvo") }],
+  32: [{ kind: "video", title: "River SUP — paddling moving water", url: yt("OfXTqf3m3ek") }],
+  52: [{ kind: "video", title: "SUP racing technique — go faster", url: yt("2aPPqrN6z6c") }],
+  58: [{ kind: "article", title: "SUP marathon training — preparation guide", url: "https://www.supracer.com/category/training/" }],
+  70: [{ kind: "video", title: "SUP downwind — ocean paddling skills", url: yt("Bvf5TgR7YtM") }],
 };

@@ -1,7 +1,10 @@
 // Basketball ladder 1-99. Tracks: free throws (out of 10), three-pointers,
 // dribbling/handles, match experience. Manual check-offs.
 import type { Criterion } from "../../src/lib/milestone-criteria";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladder, freq, prog } from "./helpers";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "koszykowka",
@@ -138,4 +141,18 @@ export const criteriaByLevel: Record<number, Criterion> = {
   78: prog("punkty", 2000), 87: prog("punkty", 3000), 94: prog("punkty", 5000),
   11: freq(1, 4), 23: freq(2, 8),
   // pozostałe: technika, wydarzenia, poziomy rozgrywkowe — manualne.
+};
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  2: [{ kind: "video", title: "Kozioł — podstawy dryblingu", url: yt("VLiOF2jMaJc") }],
+  3: [{ kind: "video", title: "Technika rzutu osobistego", url: yt("TUHMJq3O3Rk") }],
+  6: [{ kind: "video", title: "Dwutakt — layup krok po kroku", url: yt("S-_PYQyknWI") }],
+  7: [{ kind: "video", title: "Crossover — kozioł między rękami", url: yt("d6MKEJKDhbc") }],
+  12: [{ kind: "video", title: "Jak trafić pierwszą trójkę", url: yt("t7ci4VRbSl4") }],
+  17: [{ kind: "video", title: "Jump shot — technika rzutu z wyskoku", url: yt("WE3_yF4jCiA") }],
+  27: [{ kind: "video", title: "Pump fake — zwód rzutowy", url: yt("d4cw0N_I-Aw") }],
+  34: [{ kind: "video", title: "Floater — rzut z bliska nad wyższymi", url: yt("4JB3-MUJKUY") }],
+  39: [{ kind: "video", title: "Step-back jumper — technika", url: yt("H4T-MiN4xKU") }],
+  54: [{ kind: "article", title: "How to block a shot in basketball", url: "https://www.wikihow.com/Block-a-Shot-in-Basketball" }],
+  65: [{ kind: "video", title: "How to dunk — vertical jump training", url: yt("BVFY7aLQn2o") }],
 };

@@ -1,6 +1,7 @@
 // Ballroom dance ladder 1-99. Manual — progression tracks: skill class
 // (WDSF: E → D → C → B → A → S → M), technique, and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "taniec-towarzyski",
@@ -119,3 +120,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Osiągnij dojrzały, w pełni rozpoznawalny styl tańca pary", undefined, prog("technika", 30)],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju w tańcu towarzyskim", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, WDSF GrandSlam) potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Waltz Basic Steps for Beginners", url: yt("wEPkJGatcJA") },
+  ],
+  5: [
+    { kind: "video", title: "Dance Insanity — Jive Basics for Beginners", url: yt("J6MvuZ1GSWM") },
+  ],
+  10: [
+    { kind: "video", title: "Your First Ballroom Dance Competition — What to Expect", url: yt("5_kF6VjLsqM") },
+  ],
+  15: [
+    { kind: "article", title: "WDSF Competition Classes Explained", url: "https://www.worlddancesport.org/Rule/Competition" },
+  ],
+  21: [
+    { kind: "video", title: "Cuban Motion Tutorial — Latin Hip Action", url: yt("p2AxVjDQTMw") },
+  ],
+  30: [
+    { kind: "video", title: "How to Improve Posture and Frame in Ballroom", url: yt("Z2eCGGCaJ7I") },
+  ],
+  37: [
+    { kind: "video", title: "Advanced Footwork Techniques in Standard Dances", url: yt("Y44GIhk4cMQ") },
+  ],
+  46: [
+    { kind: "article", title: "How to Prepare for a Ballroom Dance Competition", url: "https://www.wikihow.com/Prepare-for-a-Ballroom-Dancing-Competition" },
+  ],
+  55: [
+    { kind: "video", title: "Musicality and Expression in Latin Dance", url: yt("lxuLyF-GXWI") },
+  ],
+  66: [
+    { kind: "reference", title: "WDSF World Ranking — DanceSport", url: "https://www.worlddancesport.org/Ranking" },
+  ],
+};

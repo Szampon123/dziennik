@@ -1,6 +1,9 @@
 // Jump rope ladder 1-99. Manual — progression tracks: consecutive single jumps,
 // double-unders, trick skills, and competition/freestyle level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "skakanka",
@@ -119,3 +122,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zostań wielokrotnym mistrzem kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów w skakance", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "How to Jump Rope for Beginners — Jump Rope Dudes", url: yt("FJmRQ5iTXKE") },
+    { kind: "article", title: "Jump rope basics: beginner guide", url: "https://www.verywellfit.com/how-to-jump-rope-3120741" },
+  ],
+  6: [
+    { kind: "video", title: "Boxer Step Tutorial — Jump Rope Dudes", url: yt("u3Fk4SYjS2E") },
+  ],
+  10: [
+    { kind: "video", title: "Criss-Cross Tutorial — Jump Rope Dudes", url: yt("2BhSTYbMElg") },
+  ],
+  13: [
+    { kind: "video", title: "Your First Double-Under — Jump Rope Dudes", url: yt("VQAP-CVGf_U") },
+    { kind: "article", title: "Double-under progression tips", url: "https://www.barbend.com/double-under-tips/" },
+  ],
+  18: [
+    { kind: "video", title: "Side Swing & Freestyle Basics — Jump Rope Dudes", url: yt("9T4K2BOx6Ow") },
+  ],
+  27: [
+    { kind: "video", title: "Triple-Under Tutorial — Jump Rope Dudes", url: yt("BIwH6jNhRlY") },
+  ],
+  32: [
+    { kind: "video", title: "Speed Jump Rope Technique — Jump Rope Dudes", url: yt("tlFSoSn16yk") },
+  ],
+  46: [
+    { kind: "video", title: "Advanced Freestyle Tricks Compilation", url: yt("7gT0GtJpEHk") },
+  ],
+  66: [
+    { kind: "reference", title: "IJRU — International Jump Rope Union Rules", url: "https://www.ijru.sport/rules" },
+  ],
+  86: [
+    { kind: "video", title: "Competition Speed Jumping — World Level", url: yt("d1CPBxnQHBU") },
+  ],
+};

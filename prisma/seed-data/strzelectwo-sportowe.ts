@@ -119,3 +119,20 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź wielokrotne medale mistrzostw kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat strzelecki", "Dalsze, zawodowe osiągnięcia (mistrzostwa świata, igrzyska) potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "article", title: "Shooting fundamentals — stance and grip", url: "https://www.wikihow.com/Shoot-an-Air-Rifle" }],
+  3: [{ kind: "video", title: "Grip and aiming technique", url: yt("IZ_OSlByYjw") }],
+  5: [{ kind: "video", title: "Breath control for shooting", url: yt("0WJ3JAEmmhQ") }],
+  9: [{ kind: "video", title: "Sight alignment and picture", url: yt("5R4JLOW4II0") }],
+  13: [{ kind: "video", title: "Shooting rhythm and timing", url: yt("pRqh23aLxLE") }],
+  16: [{ kind: "article", title: "First competition preparation — ISSF rules", url: "https://www.issf-sports.org/theissf/rules.ashx" }],
+  27: [{ kind: "video", title: "Improving your 10m score", url: yt("lxFqH2C-rDU") }],
+  35: [{ kind: "video", title: "Mental training for shooters", url: yt("1T6w-qfp3NE") }],
+  44: [{ kind: "video", title: "Olympic final format explained", url: yt("gLR-MVqbJYQ") }],
+  53: [{ kind: "video", title: "600/600 perfection pursuit", url: yt("J_X9FRH9kRo") }],
+  80: [{ kind: "article", title: "Elite shooting training", url: "https://www.topendsports.com/sport/shooting/training.htm" }],
+};

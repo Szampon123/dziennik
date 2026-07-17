@@ -1,6 +1,9 @@
 // Lebanese cuisine ladder 1-99 — concrete dishes as levels, easy → hard.
 // REALISTIC home-cook scale. Tracks: dania, techniki, + specific-dish milestones.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "kuchnia-libanska",
@@ -119,3 +122,26 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Gotujesz swobodnie niemal każde libańskie danie, jakie zaplanujesz"],
   ["Poziom mistrzowski (kucharz domowy): pełne libańskie menu bez przepisu", "Dalsze, „restauracyjne” osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+// Curated learning resources for Lebanese cuisine milestones.
+// Videos from Sip and Feast, Middle Eats and others; articles from seriouseats, bonappetit.
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Perfect Hummus — Creamy and Smooth", url: yt("a-mTwSfHRkI") },
+    { kind: "article", title: "The food lab: how to make the best hummus", url: "https://www.seriouseats.com/israeli-style-extra-smooth-hummus-recipe" },
+  ],
+  2: [{ kind: "video", title: "Tabbouleh — Classic Lebanese Parsley Salad", url: yt("QFyPWMOx3JA") }],
+  3: [{ kind: "video", title: "Baba Ganoush — Smoky Eggplant Dip", url: yt("G0bRDm4Gn5Q") }],
+  7: [{ kind: "video", title: "Muhammara — Red Pepper and Walnut Dip", url: yt("fwVHByx7wAs") }],
+  13: [{ kind: "video", title: "Falafel from Scratch — Crispy Outside, Fluffy Inside", url: yt("R6YYabaqbKs") }],
+  14: [{ kind: "video", title: "Shish Taouk — Lebanese Chicken Skewers", url: yt("d55sJQ0JdJI") }],
+  16: [{ kind: "video", title: "Kofta Kebab — Spiced Lamb Meatballs on Grill", url: yt("R3fWxFG37-w") }],
+  21: [
+    { kind: "video", title: "Chicken Shawarma at Home", url: yt("pvCf5aBUMeg") },
+    { kind: "article", title: "Shawarma marinade and technique", url: "https://www.recipetineats.com/chicken-shawarma" },
+  ],
+  23: [{ kind: "video", title: "Baklava — Lebanese Style with Pistachios", url: yt("6c0hrrRUKbA") }],
+  29: [{ kind: "video", title: "Kibbeh — Fried and Baked Versions", url: yt("sYIVkFJEen8") }],
+  34: [{ kind: "video", title: "Knafeh — Cheese Dessert with Orange Blossom Syrup", url: yt("rJwu0sVxY-k") }],
+  15: [{ kind: "video", title: "Mujadara — Lentils, Rice and Caramelized Onions", url: yt("S79KqG0KU9o") }],
+};

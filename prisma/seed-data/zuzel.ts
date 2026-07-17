@@ -1,6 +1,8 @@
 // Speedway ladder 1-99. Manual — progression tracks: technique, matches, and
 // competition level (amateur → Ekstraliga → Speedway GP world championship).
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "zuzel",
@@ -119,3 +121,37 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Poprowadź kogoś przez zaawansowaną technikę jazdy żużlowej", undefined, prog("technika", 22)],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów na żużlu", "Dalsze, zawodowe osiągnięcia (Grand Prix, mistrzostwa świata) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "What is Speedway? — Speedway GP Official", url: yt("mDwx0n9ksGs") },
+    { kind: "article", title: "Introduction to Speedway Racing", url: "https://www.topendsports.com/sport/motorcycling/speedway.htm" },
+  ],
+  3: [
+    { kind: "video", title: "Speedway Riding Technique — broadside explained", url: yt("VBY_aB5oSVg") },
+  ],
+  5: [
+    { kind: "video", title: "Speedway Start Technique — from the gate", url: yt("P5wZ7V0wj40") },
+    { kind: "article", title: "How Speedway Works — rules & format", url: "https://www.wikihow.com/Understand-Motorcycle-Speedway" },
+  ],
+  9: [
+    { kind: "video", title: "How to Read a Speedway Track — Speedway GP", url: yt("xJ5OIIv7jVQ") },
+  ],
+  15: [
+    { kind: "video", title: "Speedway Passing Techniques — inside & outside lines", url: yt("wS0j1TNRfMo") },
+  ],
+  25: [
+    { kind: "video", title: "Speedway GP Season Highlights", url: yt("QKXZ7Gz8r0E") },
+    { kind: "article", title: "Speedway — FIM official rules and regulations", url: "https://www.fim-moto.com/en/disciplines/speedway" },
+  ],
+  40: [
+    { kind: "video", title: "Bike Setup for Speedway — engine & gearing", url: yt("hq-6oNMUpL8") },
+  ],
+  55: [
+    { kind: "video", title: "Speedway Team Tactics — tactical rides explained", url: yt("3bGP2yvGNnA") },
+  ],
+  70: [
+    { kind: "video", title: "Speedway GP Best Races Compilation", url: yt("t6xQKUG0aJI") },
+    { kind: "article", title: "Speedway Grand Prix format & scoring", url: "https://www.speedwaygp.com/about" },
+  ],
+};

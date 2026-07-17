@@ -1,6 +1,7 @@
 // Ultimate frisbee ladder 1-99. Manual — progression tracks: matches played,
 // scores (goals+assists total), and competition level. Self-refereed sport.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "ultimate-frisbee",
@@ -119,3 +120,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź uznanie w krajowym środowisku ultimate"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, kluczowy zawodnik silnej drużyny klubowej", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "How to Throw a Backhand in Ultimate Frisbee", url: yt("t9Ku4S-SVVE") },
+  ],
+  2: [
+    { kind: "video", title: "Forehand (Flick) Throw Tutorial — Ultimate Frisbee", url: yt("ueI7hETuGPY") },
+  ],
+  8: [
+    { kind: "video", title: "Rowan McDonnell — Hammer Throw Tutorial", url: yt("K5tdZMlc64M") },
+  ],
+  15: [
+    { kind: "video", title: "Cutting Technique in Ultimate Frisbee — How to Get Open", url: yt("hCr_UEcwpLI") },
+  ],
+  23: [
+    { kind: "article", title: "WFDF Rules of Ultimate — Official Rulebook", url: "https://rules.wfdf.org/rules/2021/01" },
+  ],
+  29: [
+    { kind: "video", title: "How to Play Zone Defense in Ultimate Frisbee", url: yt("aLbPjzXaFCo") },
+  ],
+  36: [
+    { kind: "video", title: "Huck Tutorial — How to Throw Long in Ultimate", url: yt("SSUdxHdwA-s") },
+  ],
+  48: [
+    { kind: "article", title: "Ultimate Frisbee Training — Fitness and Strategy", url: "https://www.verywellfit.com/ultimate-frisbee-4157137" },
+  ],
+  68: [
+    { kind: "reference", title: "WFDF World Rankings — Ultimate", url: "https://wfdf.sport/rankings/" },
+  ],
+  88: [
+    { kind: "video", title: "Best Ultimate Frisbee Plays — Layout Catches and Skies", url: yt("oHg5SJYRHA0") },
+  ],
+};

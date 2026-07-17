@@ -1,6 +1,9 @@
 // Handball ladder 1-99. Manual — progression tracks: matches played, goals
 // scored (total), league level. Pattern follows koszykowka.
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 import { ladderC, freq, prog } from "./helpers";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "pilka-reczna",
@@ -119,3 +122,16 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj mistrzostwo swojej ligi klubowej"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, kluczowy zawodnik silnej drużyny klubowej", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Podanie i złapanie piłki ręcznej", url: yt("b9gqwuY3GCU") }],
+  3: [{ kind: "video", title: "Rzut do bramki — technika podstawowa", url: yt("UrEqiwV4lhA") }],
+  5: [{ kind: "video", title: "Rzut w wyskoku — jump shot", url: yt("h7NlXkWGo18") }],
+  7: [{ kind: "video", title: "Rzut karny 7 m — technika", url: yt("0mcK4k7f3bQ") }],
+  12: [{ kind: "video", title: "Finta — zwód w piłce ręcznej", url: yt("jQvEXdYkZgM") }],
+  15: [{ kind: "video", title: "Rzut z przewrotem", url: yt("R3mJ6p3u1vM") }],
+  19: [{ kind: "video", title: "Blok w obronie — technika i timing", url: yt("52IjuNjy6X0") }],
+  28: [{ kind: "video", title: "Rzut z 9 metrów — first line shot", url: yt("DhWCcvQbPe8") }],
+  33: [{ kind: "video", title: "Kontratak — szybki środek", url: yt("sQ-9X1JVcHs") }],
+  40: [{ kind: "article", title: "Handball positions explained", url: "https://www.topendsports.com/sport/handball/positions.htm" }],
+};

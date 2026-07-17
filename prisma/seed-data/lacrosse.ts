@@ -1,6 +1,7 @@
 // Lacrosse ladder 1-99. Manual — progression tracks: matches played, goals
 // (total), and competition level.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
 
 export const activity = {
   slug: "lacrosse",
@@ -119,3 +120,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź uznanie w krajowym środowisku lacrosse"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, kluczowy zawodnik silnej drużyny klubowej", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "How to Catch a Lacrosse Ball — Beginner Tutorial", url: yt("v4FQm7fxkEg") },
+  ],
+  3: [
+    { kind: "video", title: "Paul Rabil — How to Cradle a Lacrosse Ball", url: yt("c3tSJHpWj_U") },
+  ],
+  5: [
+    { kind: "video", title: "Lacrosse Shooting Basics — Overhand Shot Tutorial", url: yt("lJiwf7iPNz0") },
+  ],
+  12: [
+    { kind: "video", title: "Long Range Shooting Technique in Lacrosse", url: yt("x9rSBSG6ZUE") },
+  ],
+  19: [
+    { kind: "video", title: "How to Win Face-Offs in Lacrosse", url: yt("PvJb6-DYg0c") },
+  ],
+  28: [
+    { kind: "video", title: "Playing Off-Hand in Lacrosse — Switch Hands Tutorial", url: yt("O7v6QL9wMPw") },
+  ],
+  33: [
+    { kind: "article", title: "World Lacrosse — Rules of the Game", url: "https://worldlacrosse.sport/about-world-lacrosse/rules/" },
+  ],
+  45: [
+    { kind: "article", title: "Lacrosse Training — Strength and Conditioning Guide", url: "https://www.verywellfit.com/lacrosse-fitness-tips-3120565" },
+  ],
+  62: [
+    { kind: "reference", title: "PLL — Premier Lacrosse League Stats and Standings", url: "https://premierlacrosseleague.com/stats" },
+  ],
+  80: [
+    { kind: "video", title: "Paul Rabil — Advanced Dodging Moves in Lacrosse", url: yt("Y-S9pqK0ja8") },
+  ],
+};

@@ -1,6 +1,8 @@
 // Karting ladder 1-99. Manual — progression tracks: technique, races, and
 // competition level (club → national → international → path to single-seaters).
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "karting",
@@ -119,3 +121,41 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj najbardziej prestiżowy krajowy turniej kartingowy"],
   ["Poziom mistrzowski (amatorski szczyt): wielokrotny mistrz kraju amatorów w kartingu", "Dalsze, zawodowe osiągnięcia (sport formułowy, F1) potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "How to Drive a Go Kart — Driver61", url: yt("vEfgD4M9bMI") },
+    { kind: "article", title: "Go Karting for Beginners", url: "https://www.wikihow.com/Drive-a-Go-Kart" },
+  ],
+  4: [
+    { kind: "video", title: "Racing Line Explained — Driver61", url: yt("VEJh4lLCzRc") },
+    { kind: "article", title: "The Racing Line — basics of apex and trajectory", url: "https://driver61.com/uni/the-racing-line/" },
+  ],
+  8: [
+    { kind: "video", title: "Your First Kart Race — Kart Class", url: yt("S5Z_3q5Jg9E") },
+  ],
+  12: [
+    { kind: "video", title: "Trail Braking Explained — Driver61", url: yt("bxBNnxJpH5k") },
+    { kind: "article", title: "Trail Braking technique in karting", url: "https://driver61.com/uni/trail-braking/" },
+  ],
+  18: [
+    { kind: "video", title: "Wet Weather Kart Driving Tips — Kart Class", url: yt("OoSFARb4TJo") },
+  ],
+  25: [
+    { kind: "video", title: "Overtaking Techniques — Driver61", url: yt("9D9d9RA7D5E") },
+  ],
+  30: [
+    { kind: "video", title: "Kart Setup Explained — Kart Class", url: yt("1vfLJD7y6ag") },
+    { kind: "article", title: "How to set up your go-kart for racing", url: "https://www.kartclass.com.au/karting-tips/kart-setup-guide/" },
+  ],
+  45: [
+    { kind: "video", title: "Data Analysis for Karting — Driver61", url: yt("WtKF_QCqusc") },
+  ],
+  55: [
+    { kind: "video", title: "Pack Racing & Slipstream Strategy — Kart Class", url: yt("Q6xH5MnH-dg") },
+    { kind: "article", title: "CIK-FIA International Karting Regulations", url: "https://www.fiakarting.com/page/regulations" },
+  ],
+  70: [
+    { kind: "video", title: "How F1 Drivers Started in Karting — Driver61", url: yt("3R-N3wXUggg") },
+  ],
+};

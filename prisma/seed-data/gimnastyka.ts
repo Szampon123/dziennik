@@ -2,6 +2,9 @@
 // (roll → handstand → walkover → back handspring → salto → twisting saltos),
 // strength holds, flexibility, and competition levels.
 import { ladderC, freq, prog } from "./helpers";
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const activity = {
   slug: "gimnastyka",
@@ -120,3 +123,38 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Wygraj wielobój mistrzostw kraju amatorów"],
   ["Poziom mistrzowski (amatorski szczyt): element G i wieloletni, dojrzały warsztat", "Dalsze, zawodowe osiągnięcia potwierdzają osobne certyfikaty."],
 ]);
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [
+    { kind: "video", title: "Forward Roll Tutorial — GMB Fitness", url: yt("eTHHGYsqpNY") },
+    { kind: "article", title: "Gymnastics for beginners", url: "https://www.wikihow.com/Do-Gymnastics" },
+  ],
+  4: [
+    { kind: "video", title: "Handstand Progression — Tom Merrick", url: yt("DTdHFAJwJYQ") },
+  ],
+  6: [
+    { kind: "video", title: "Cartwheel Tutorial — Step by Step", url: yt("VPB9mcqz7K8") },
+  ],
+  10: [
+    { kind: "video", title: "Roundoff Technique — GMB Fitness", url: yt("MWdRqAGTnl0") },
+  ],
+  20: [
+    { kind: "video", title: "Back Walkover Progression — Tom Merrick", url: yt("TGfzafGkGMQ") },
+  ],
+  27: [
+    { kind: "video", title: "Back Handspring — Step by Step Progression", url: yt("0dhp9sthRhU") },
+    { kind: "article", title: "How to do a back handspring safely", url: "https://www.wikihow.com/Do-a-Back-Handspring" },
+  ],
+  32: [
+    { kind: "video", title: "Front Tuck (Front Flip) Tutorial — GMB Fitness", url: yt("5G4qZfiRfl0") },
+  ],
+  50: [
+    { kind: "video", title: "Full Twist (Salto with 360) Progression", url: yt("TQfJhLmFKMM") },
+  ],
+  65: [
+    { kind: "article", title: "Artistic gymnastics Code of Points (FIG)", url: "https://www.gymnastics.sport/site/rules/" },
+  ],
+  79: [
+    { kind: "video", title: "Double Back Tutorial — Advanced Gymnastics", url: yt("fXr-FE4I9nA") },
+  ],
+};

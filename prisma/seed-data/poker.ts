@@ -119,3 +119,21 @@ export const { milestones, criteriaByLevel } = ladderC([
   ["Zdobądź uznanie w krajowym środowisku pokerowym"],
   ["Poziom mistrzowski (amatorski szczyt): wieloletni, dojrzały warsztat turniejowy", "Dalsze, zawodowe osiągnięcia (WSOP, Hall of Fame) potwierdzają osobne certyfikaty."],
 ]);
+
+import type { MilestoneResource } from "../../src/lib/milestone-resources";
+const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+
+export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  1: [{ kind: "video", title: "Poker hand rankings explained", url: yt("GAoR9ji8D6A") }],
+  2: [{ kind: "video", title: "Position in poker", url: yt("1AOjidDkWKo") }],
+  5: [{ kind: "video", title: "Pot odds and outs", url: yt("B43FVhkJMBQ") }],
+  9: [{ kind: "video", title: "Bankroll management guide", url: yt("KE_XEXIQL2E") }],
+  12: [{ kind: "video", title: "Continuation betting", url: yt("CpjGLTv7lDw") }],
+  16: [{ kind: "video", title: "Range reading basics", url: yt("hflIxMuQVro") }],
+  20: [{ kind: "video", title: "Turn and river strategy", url: yt("mZ-zBwP7G4k") }],
+  24: [{ kind: "article", title: "GTO vs exploit strategy", url: "https://www.pokernews.com/strategy/gto-poker-strategy-explained.htm" }],
+  27: [{ kind: "video", title: "Bet sizing strategy", url: yt("T92RpHCkdFE") }],
+  38: [{ kind: "video", title: "Tilt control and mental game", url: yt("MJ2_UdSmHDY") }],
+  46: [{ kind: "video", title: "Multi-tabling strategy", url: yt("RqX0xfL2n9o") }],
+  66: [{ kind: "article", title: "Major tournament preparation", url: "https://www.pokernews.com/strategy/preparing-for-the-wsop.htm" }],
+};
