@@ -159,11 +159,19 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
-  1: [{ kind: "video", title: "Wysokość siodła — najczęstszy błąd początkujących", url: yt("FVu5Zrktm40") }],
+  1: [
+    { kind: "video", title: "Wysokość siodła — najczęstszy błąd początkujących", url: yt("FVu5Zrktm40") },
+    { kind: "video", title: "Przerzutki — jak zmieniać biegi", url: yt("TJsQ1PbkDqc") },
+  ],
   5: [{ kind: "video", title: "Ustaw rower sam: siodło i zasięg", url: yt("iZZlm8Kj3Vo") }],
+  10: [{ kind: "video", title: "Kadencja — ile obrotów na minutę?", url: yt("BwkNsLBNH4E") }],
+  15: [{ kind: "article", title: "Odżywianie na rowerze — co jeść i pić", url: "https://www.cyclinguk.org/article/nutrition-cycling-eating-and-drinking-essentials" }],
   25: [{ kind: "article", title: "10-tygodniowy plan do pierwszych 100 km (Cycling UK)", url: "https://www.cyclinguk.org/article/10-week-training-plan-100km-ride" }],
+  35: [{ kind: "video", title: "Jazda w grupie — zasady i bezpieczeństwo", url: yt("4wF4lBjHRPg") }],
   40: [{ kind: "video", title: "Wysokość siodła — sposób bikefittera", url: yt("N_y5eSUOqNk") }],
+  50: [{ kind: "video", title: "Strefy tętna i mocy — jak trenować efektywnie", url: yt("ZEfPJr2Vuxo") }],
   65: [{ kind: "reference", title: "Profil mocy Coggana — W/kg od amatora do elity", url: "https://www.highnorth.co.uk/articles/power-profiling-cycling" }],
-  85: [{ kind: "article", title: "Gdzie jesteś na tle innych — percentyle FTP (uwaga: próbka z power meterami)", url: "https://www.cyclinganalytics.com/blog/2018/06/how-does-your-cycling-power-output-compare" }],
+  75: [{ kind: "video", title: "Trening interwałowy na rowerze — FTP booster", url: yt("KPg61Cc4gzM") }],
+  85: [{ kind: "article", title: "Gdzie jesteś na tle innych — percentyle FTP", url: "https://www.cyclinganalytics.com/blog/2018/06/how-does-your-cycling-power-output-compare" }],
   96: [{ kind: "reference", title: "Audax — limity czasu na brevety 200–1000 km", url: "https://www.audax.uk/about-audax/classifications/" }],
 };

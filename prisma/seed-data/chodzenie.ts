@@ -166,11 +166,19 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
-  1: [{ kind: "article", title: "NHS: chodzenie dla zdrowia — od czego zacząć", url: "https://www.nhs.uk/live-well/exercise/walking-for-health/" }],
+  1: [
+    { kind: "article", title: "NHS: chodzenie dla zdrowia — od czego zacząć", url: "https://www.nhs.uk/live-well/exercise/walking-for-health/" },
+    { kind: "video", title: "Technika marszu — postawa i krok", url: yt("wRkeBVMQSgg") },
+  ],
+  5: [{ kind: "article", title: "Jak zacząć regularnie chodzić — plan 4-tygodniowy", url: "https://www.verywellfit.com/how-to-start-walking-3436605" }],
   10: [{ kind: "video", title: "Nordic walking — technika od podstaw", url: yt("zAmsHhc2zCw") }],
+  15: [{ kind: "video", title: "Dobór butów do marszów", url: yt("aqShBKWrNGQ") }],
   20: [{ kind: "video", title: "Nordic walking w czterech krokach", url: yt("oHksVVU6A_s") }],
   30: [{ kind: "video", title: "Nordic walking — wprowadzenie i technika", url: yt("ZKTufkzpo8E") }],
+  40: [{ kind: "article", title: "Power walking — technika szybkiego marszu", url: "https://www.verywellfit.com/how-to-walk-faster-3436345" }],
   45: [{ kind: "reference", title: "Ile kroków dziennie ma sens — metaanaliza 15 kohort (47 471 osób)", url: "https://pubmed.ncbi.nlm.nih.gov/35247352/" }],
+  55: [{ kind: "article", title: "Przygotowanie do marszu 50 km", url: "https://www.verywellfit.com/training-for-a-50k-walk-3435186" }],
   60: [{ kind: "reference", title: "Ile kroków robią naprawdę dorośli — dane NHANES", url: "https://pubmed.ncbi.nlm.nih.gov/42002910/" }],
+  70: [{ kind: "article", title: "Jak chodzić na 100 km — marsz ultra", url: "https://www.verywellfit.com/walking-a-100k-ultramarathon-3435482" }],
   80: [{ kind: "reference", title: "Marsz Czterodniowy w Nijmegen — dystanse i wymagania", url: "https://www.4daagse.nl/en/participate/civilian/distances" }],
 };

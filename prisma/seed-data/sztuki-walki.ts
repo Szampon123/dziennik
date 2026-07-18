@@ -163,13 +163,22 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
-  1: [{ kind: "video", title: "Padanie (ukemi) — pierwsza rzecz, której się uczysz", url: yt("q6FBYGpUsY8") }],
+  1: [
+    { kind: "video", title: "Padanie (ukemi) — pierwsza rzecz, której się uczysz", url: yt("q6FBYGpUsY8") },
+    { kind: "video", title: "Jak wybrać sztukę walki — przegląd stylów", url: yt("Aaebn1eAdYs") },
+  ],
+  4: [{ kind: "video", title: "Podstawy boksu — jab, prosty, gardé", url: yt("rjJNo2MG0fY") }],
   5: [
     { kind: "video", title: "Ukemi w judo — jak padać bezpiecznie", url: yt("mONxdnLk53M") },
     { kind: "article", title: "Podstawy judo — lekcje dla początkujących", url: "https://judoinfo.com/judo-basics-beginners/" },
   ],
+  10: [{ kind: "video", title: "BJJ — guard i podstawowe pozycje", url: yt("bDVO4bqp27c") }],
   15: [{ kind: "article", title: "Pięć technik, od których zaczyna każdy judoka", url: "https://www.kokakids.co.uk/judo-techniques-for-beginners" }],
+  20: [{ kind: "video", title: "Muay Thai — kopnięcia i kolana podstawy", url: yt("QVov2TEYJ8k") }],
   25: [{ kind: "video", title: "Padanie w cztery strony — komplet ukemi", url: yt("5n_Qjeia2n8") }],
-  50: [{ kind: "reference", title: "IBJJF — minimalne okresy między pasami (najjawniejszy system stopni)", url: "https://ibjjf.com/news/ibjjf-minimum-graduation-period-update" }],
-  70: [{ kind: "reference", title: "System kyu/dan w judo — jak naprawdę wygląda droga do czarnego pasa", url: "https://en.wikipedia.org/wiki/Rank_in_judo" }],
+  35: [{ kind: "video", title: "Sparing — jak zacząć bezpiecznie", url: yt("9q-BTnG0gSU") }],
+  50: [{ kind: "reference", title: "IBJJF — minimalne okresy między pasami", url: "https://ibjjf.com/news/ibjjf-minimum-graduation-period-update" }],
+  60: [{ kind: "article", title: "Jak przygotować się do pierwszych zawodów", url: "https://www.wikihow.com/Prepare-for-a-Martial-Arts-Tournament" }],
+  70: [{ kind: "reference", title: "System kyu/dan w judo — droga do czarnego pasa", url: "https://en.wikipedia.org/wiki/Rank_in_judo" }],
+  85: [{ kind: "reference", title: "BJJ — system pasów i czas na każdy stopień", url: "https://en.wikipedia.org/wiki/Brazilian_jiu-jitsu_ranking_system" }],
 };

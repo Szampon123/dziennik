@@ -160,11 +160,19 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
-  1: [{ kind: "video", title: "Pierwszy raz na ściance — co musisz wiedzieć", url: yt("S-4XZgARAuA") }],
+  1: [
+    { kind: "video", title: "Pierwszy raz na ściance — co musisz wiedzieć", url: yt("S-4XZgARAuA") },
+    { kind: "article", title: "Wspinaczka dla początkujących — co zabrać i czego się spodziewać", url: "https://www.rei.com/learn/expert-advice/indoor-climbing-for-beginners.html" },
+  ],
   5: [{ kind: "video", title: "Praca nóg — podstawa, którą wszyscy pomijają", url: yt("rhcDSzw-MOk") }],
+  8: [{ kind: "video", title: "Rodzaje chwytów — jak trzymać crimpy, slopery, koluarki", url: yt("oJvVKgJNEnI") }],
   10: [{ kind: "article", title: "Podstawy techniki: stopy, chwyty, ciało", url: "https://www.theclimbinghangar.com/blog/how-to-master-basic-climbing-techniques-from-footwork-to-hand-holds" }],
   15: [{ kind: "reference", title: "Skale trudności — francuska, YDS, V, Fontainebleau", url: "https://en.wikipedia.org/wiki/Grade_(climbing)" }],
+  20: [{ kind: "video", title: "Asekuracja — nauka górnej i dolnej (top rope & lead)", url: yt("FNdJPJgFMQY") }],
   30: [{ kind: "video", title: "Praca nóg w bulderingu — masterclass V0–V5", url: yt("wl4cPC1u6zo") }],
+  38: [{ kind: "video", title: "Trening siły chwytowej — hangboard dla początkujących", url: yt("VeVsz5GBbJ4") }],
   45: [{ kind: "video", title: "Dziesięć technik wspinaczkowych w dziesięć minut", url: yt("s-ArwEzr-2M") }],
   55: [{ kind: "article", title: "Dlaczego wspinacze zatrzymują się na 7a i 8a (Lattice)", url: "https://latticetraining.com/blog/milestone-grades/" }],
+  70: [{ kind: "video", title: "Wspinaczka skalna — przejście z hali na skałki", url: yt("REjJEFNjbKw") }],
+  85: [{ kind: "reference", title: "Lattice Training — plany treningowe i testy wydolności", url: "https://latticetraining.com/" }],
 };

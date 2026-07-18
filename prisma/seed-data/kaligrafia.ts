@@ -128,12 +128,19 @@ export const { milestones, criteriaByLevel } = ladderC([
 // Curated, link-verified learning resources for the concrete technique
 // milestones. Videos from Maria Montes, Loveleigh Loops, Domestika i in.
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
-  1: [{ kind: "video", title: "Narzędzia: stalówki, atrament, papier", url: yt("GLZp2Os1py4") }],
+  1: [
+    { kind: "video", title: "Narzędzia: stalówki, atrament, papier", url: yt("GLZp2Os1py4") },
+    { kind: "article", title: "Kaligrafia dla początkujących — co kupić na start", url: "https://www.jetpens.com/blog/The-Beginners-Guide-to-Calligraphy/pt/592" },
+  ],
   2: [{ kind: "video", title: "Podstawowe kreski (drills)", url: yt("8e9HHz6j3lA") }],
+  5: [{ kind: "video", title: "Jak trzymać stalówkę — kąt i nacisk", url: yt("sB4x1HfCkP0") }],
+  8: [{ kind: "video", title: "Małe litery — ćwiczenia alfabetyczne", url: yt("MN-WS4a_Gu0") }],
   12: [{ kind: "video", title: "Alfabet italika — wprowadzenie", url: yt("BFW1N4yCTXw") }],
   15: [{ kind: "video", title: "Pismo foundational — podstawy", url: yt("mj1DLCWoEPI") }],
   19: [{ kind: "video", title: "Brush lettering — kreski", url: yt("9fmjCi6Cb_o") }],
   21: [{ kind: "video", title: "Flourishe — jak zacząć", url: yt("xJbklrucYbc") }],
   27: [{ kind: "video", title: "Copperplate dla początkujących", url: yt("uasWncPctnY") }],
   35: [{ kind: "video", title: "Złocenia (gold leaf)", url: yt("69vllqd_iTw") }],
+  45: [{ kind: "article", title: "Kompozycja kaligraficzna — layout i marginesy", url: "https://www.calligraphy-skills.com/calligraphy-layout.html" }],
+  60: [{ kind: "video", title: "Spencerian script — klasyka amerykańska", url: yt("BFNBiQ3lxVM") }],
 };

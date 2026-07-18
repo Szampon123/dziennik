@@ -161,12 +161,22 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
-  1: [{ kind: "article", title: "Joga dla zupełnie początkujących", url: "https://yogawithadriene.com/yoga-complete-beginners/" }],
+  1: [
+    { kind: "article", title: "Joga dla zupełnie początkujących", url: "https://yogawithadriene.com/yoga-complete-beginners/" },
+    { kind: "video", title: "Yoga for Complete Beginners — 20 minut", url: yt("v7AYKMP6rOE") },
+  ],
+  3: [{ kind: "video", title: "Pies z głową w dół — technika i częste błędy", url: yt("EC7RGJ975b8") }],
   5: [{ kind: "article", title: "Podstawy: oddech, pozycje, o co w tym chodzi", url: "https://yogawithadriene.com/yoga-for-beginners-the-basics/" }],
+  8: [{ kind: "video", title: "Pozycja wojownika I, II, III — technika", url: yt("k4qaVoAbeHM") }],
   10: [{ kind: "video", title: "Poranna praktyka — 15 minut", url: yt("r7xsYgTeM2Q") }],
+  15: [{ kind: "video", title: "Pozycja drzewa — równowaga krok po kroku", url: yt("yVE4XXFFO70") }],
   20: [
     { kind: "video", title: "Powitanie słońca — praktyka 10 minut", url: yt("8AakYeM23sI") },
     { kind: "reference", title: "Surya Namaskara A — sekwencja krok po kroku", url: "https://yogawithadriene.com/sun-salutation-a-surya-namaskara-a/" },
   ],
+  30: [{ kind: "video", title: "Chaturanga — technika i progresja siłowa", url: yt("lmMFG-kb27k") }],
+  40: [{ kind: "video", title: "Stanie na głowie — bezpieczna progresja", url: yt("XwE8iQl1HKc") }],
   50: [{ kind: "reference", title: "Ashtanga vinyasa — sześć serii, jedyna prawdziwa drabinka w jodze", url: "https://en.wikipedia.org/wiki/Ashtanga_vinyasa_yoga" }],
+  65: [{ kind: "video", title: "Balanse na rękach — crow pose i dalej", url: yt("GQfsFVaJm3I") }],
+  80: [{ kind: "article", title: "Pranajama — techniki oddechowe dla zaawansowanych", url: "https://yogawithadriene.com/pranayama-practices/" }],
 };

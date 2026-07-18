@@ -158,13 +158,19 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
-  1: [{ kind: "reference", title: "Technika wiosłowania na ergu — oficjalny przewodnik Concept2", url: "https://www.concept2.com/training/rowing-technique" }],
+  1: [
+    { kind: "reference", title: "Technika wiosłowania na ergu — oficjalny przewodnik Concept2", url: "https://www.concept2.com/training/rowing-technique" },
+    { kind: "video", title: "Jak wiosłować na ergu — pełna instrukcja", url: yt("zQ82RYIFLN8") },
+  ],
   5: [{ kind: "video", title: "Trzy najczęstsze błędy techniczne i jak je naprawić", url: yt("PAHRAR9tXSA") }],
   10: [{ kind: "article", title: "Couch to Consistency — plan startowy Concept2", url: "https://www.concept2.com/training/plans/couch-to-consistency" }],
+  15: [{ kind: "video", title: "Drag factor — co to jest i jak ustawić", url: yt("MxOG5_-m1fg") }],
   20: [{ kind: "video", title: "Najczęstsze błędy na ergometrze (Concept2)", url: yt("ura2mFCdvVs") }],
   25: [{ kind: "article", title: "Beginner Pete Plan — 24 tygodnie do testu na 2 km", url: "https://thepeteplan.wordpress.com/beginner-training/" }],
   35: [{ kind: "video", title: "Pełna technika ruchu — film instruktażowy Concept2", url: yt("QPvYrfyGHi8") }],
   45: [{ kind: "article", title: "Jak poprawiać technikę — materiały Concept2", url: "https://www.concept2.com/training/improve-your-rowing-technique" }],
+  55: [{ kind: "video", title: "Trening interwałowy na ergu — strategie", url: yt("oP6OR-G7AxM") }],
   65: [{ kind: "reference", title: "Million Meter Club — dożywotni licznik metrów", url: "https://www.concept2.com/community/million-meter-club" }],
+  75: [{ kind: "article", title: "Interactive Pete Plan — zaawansowany plan 2 km", url: "https://thepeteplan.wordpress.com/the-pete-plan/" }],
   85: [{ kind: "reference", title: "Rankingi Concept2 — percentyle czasów na 2 km", url: "https://log.concept2.com/rankings" }],
 };

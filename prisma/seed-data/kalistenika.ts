@@ -134,12 +134,22 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
-  1: [{ kind: "article", title: "Hybrid Calisthenics — progresje od ściany do pełnej pompki", url: "https://www.hybridcalisthenics.com/routine" }],
+  1: [
+    { kind: "article", title: "Hybrid Calisthenics — progresje od ściany do pełnej pompki", url: "https://www.hybridcalisthenics.com/routine" },
+    { kind: "video", title: "Pompki — poprawna technika od podstaw", url: yt("IODxDxX7oi4") },
+  ],
+  3: [{ kind: "video", title: "Plank — technika i częste błędy", url: yt("ASdvN_XEl_c") }],
   6: [{ kind: "article", title: "Podciąganie poziome — pierwszy krok do drążka", url: "https://www.hybridcalisthenics.com/horizontal-pullups" }],
   10: [
     { kind: "video", title: "Od zera do dziesięciu podciągnięć", url: yt("Hyrk8sSHTkk") },
     { kind: "article", title: "Progresje podciągania (Hybrid Calisthenics)", url: "https://www.hybridcalisthenics.com/pullups" },
   ],
+  15: [{ kind: "video", title: "Dipy — technika i progresja", url: yt("2z8JmcrW-As") }],
+  20: [{ kind: "video", title: "Pistol squat — progresja krok po kroku", url: yt("vq5-vdgJc0I") }],
+  30: [{ kind: "video", title: "Muscle-up — progresja od podciągnięcia", url: yt("nMsHf7IODUM") }],
   40: [{ kind: "reference", title: "Overcoming Gravity — 16 poziomów trudności elementów", url: "https://stevenlow.org/overcoming-gravity/" }],
+  50: [{ kind: "video", title: "L-sit — progresja od podłogi do drążka", url: yt("IUZJoSP66HI") }],
   60: [{ kind: "reference", title: "The Fitness Wiki — planowanie treningu i progresji", url: "https://thefitness.wiki/" }],
+  70: [{ kind: "video", title: "Handstand — stanie na rękach od zera", url: yt("dtDBTqLDOoM") }],
+  85: [{ kind: "video", title: "Planche — progresja i trening", url: yt("UZ_pSEpHMxY") }],
 };
