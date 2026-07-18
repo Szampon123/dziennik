@@ -124,6 +124,18 @@ export const { milestones, criteriaByLevel } = ladderC([
 ]);
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Standard air squat na zawodach — kiedy powtórzenie się liczy", url: yt("8Cj6is9gEx0") }],
+  4: [{ kind: "video", title: "Push press i push jerk — technika wyciskania nad głowę", url: yt("WGPcHNICvAQ") }],
+  7: [{ kind: "article", title: "Jak zbudowany jest typowy trening CrossFit (WOD) — rozbiór krok po kroku", url: "https://fitbod.me/blog/typical-crossfit-workout/" }],
+  8: [{ kind: "article", title: "Słownik CrossFit: AMRAP, EMOM, WOD, RX — oficjalne wyjaśnienie pojęć", url: "https://www.crossfit.com/essentials/crossfit-terms-explained" }],
+  12: [{ kind: "video", title: "Zarzut (clean) dla początkujących — przewodnik po technice", url: yt("8sTXxyK501Q") }],
+  15: [{ kind: "article", title: "Rwanie (snatch) od zera — progresja dla początkujących", url: "https://wodprep.com/blog/ultimate-snatch-beginner-progressions/" }],
+  25: [{ kind: "video", title: "Butterfly pull-up — progresja krok po kroku", url: yt("6ji4A5WCuBo") }],
+  30: [{ kind: "video", title: "Ring muscle-up — szybki poradnik techniki", url: yt("kcOrpyWW77A") }],
+  40: [{ kind: "article", title: "Przewodnik po CrossFit Open 2026 — zasady, terminy, kwalifikacje", url: "https://www.theprogrm.com/blog/2026-crossfit-open-all-you-need-to-know" }],
+  55: [{ kind: "article", title: "Jak układać program pod zawody CrossFit", url: "https://www.conquerathlete.com/blog/best-way-to-program-for-crossfit-competitions" }],
+  65: [{ kind: "article", title: "Periodyzacja sezonu w CrossFit — makrocykl, mezocykl, mikrocykl", url: "https://wodprep.com/blog/plan-crossfit-season-periodization/" }],
   1: [
     { kind: "video", title: "The Air Squat — CrossFit", url: yt("C_VtOYc6j5c") },
     { kind: "article", title: "CrossFit beginner guide", url: "https://www.verywellfit.com/crossfit-training-guide-3498289" },

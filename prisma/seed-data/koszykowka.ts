@@ -144,6 +144,20 @@ export const criteriaByLevel: Record<number, Criterion> = {
 };
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  1: [{ kind: "video", title: "Jak rzucać do kosza — poradnik dla początkujących", url: yt("dfbIAOXDPFk") }],
+  4: [{ kind: "video", title: "Kozłowanie słabszą ręką — trening off-hand", url: yt("TQZoa9p5Mfk") }],
+  5: [{ kind: "video", title: "Rzut wolny — jak trafiać z linii", url: yt("iW2VFzBiaQo") }],
+  8: [{ kind: "video", title: "Jak trafiać więcej rzutów osobistych", url: yt("0343D3fjPnQ") }],
+  10: [{ kind: "video", title: "Zasady koszykówki 3x3 — jak grać w streetball", url: yt("bN6LywHcihI") }],
+  14: [{ kind: "video", title: "Rytuał rzutu osobistego — większa regularność", url: yt("d3fdURdzT6k") }],
+  20: [{ kind: "video", title: "Rzut osobisty — rutyna dla wysokiej skuteczności", url: yt("8Ul28lp87Xc") }],
+  22: [{ kind: "video", title: "Dlaczego nie trafiasz w meczu — rzuty w grze", url: yt("SmspzPf7PPU") }],
+  25: [{ kind: "video", title: "Jak podnieść swoje IQ koszykarskie", url: yt("uIgpf1ZKaLs") }],
+  30: [{ kind: "video", title: "Jak trafiać więcej trójek — kompletny poradnik", url: yt("lYLv4ux7Pd4") }],
+  40: [{ kind: "article", title: "Rzuty osobiste pod presją — trening regularności", url: "https://www.nike.com/a/how-to-shoot-free-throw" }],
+  50: [{ kind: "article", title: "Rytuał i psychika przy rzutach osobistych", url: "https://www.sports-psychology.com/free-throw-routine/" }],
+  60: [{ kind: "video", title: "Trójki z dystansu — zasięg i regularność", url: yt("PdgeX_3pB0A") }],
   2: [{ kind: "video", title: "Kozioł — podstawy dryblingu", url: yt("VLiOF2jMaJc") }],
   3: [{ kind: "video", title: "Technika rzutu osobistego", url: yt("TUHMJq3O3Rk") }],
   6: [{ kind: "video", title: "Dwutakt — layup krok po kroku", url: yt("S-_PYQyknWI") }],

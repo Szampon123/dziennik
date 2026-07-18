@@ -159,6 +159,17 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "4 podstawowe umiejętności dla początkującego kolarza", url: yt("4ssLDk1eX9w") }],
+  4: [{ kind: "video", title: "Dopasowanie roweru — podstawy bike fittingu", url: yt("c0gw_UG1zZM") }],
+  8: [{ kind: "video", title: "Jak jeść i pić na rowerze — odżywianie w skrócie", url: yt("sjhSm3lguxc") }],
+  12: [{ kind: "video", title: "Jak zbudować wytrzymałość kolarską", url: yt("dyOMcnSBl64") }],
+  19: [{ kind: "article", title: "Jak przejechać pierwszą setkę — 5 wskazówek na długi dystans", url: "https://www.bikeradar.com/advice/fitness-and-training/how-to-ride-100-miles" }],
+  26: [{ kind: "article", title: "12-tygodniowy plan treningowy dla kolarza", url: "https://www.bikeradar.com/advice/fitness-and-training/cycling-training-plan" }],
+  30: [{ kind: "article", title: "Odżywianie w trakcie jazdy — ile jeść i kiedy", url: "https://roadmancycling.com/blog/cycling-in-ride-nutrition-guide" }],
+  32: [{ kind: "article", title: "Jak przygotować się do setki (century) — przewodnik", url: "https://www.trainerroad.com/blog/how-to-prepare-for-and-ride-your-first-century/" }],
+  45: [{ kind: "article", title: "Wprowadzenie do audax i randonneuringu dla początkujących", url: "https://www.audax.uk/about-audax/new-to-audax/" }],
+  55: [{ kind: "article", title: "Porady na jazdę w brevecie — przygotowanie do 200 km", url: "https://www.audax.uk/about-audax/new-to-audax/advice-for-riding-audax-events/" }],
   1: [
     { kind: "video", title: "Wysokość siodła — najczęstszy błąd początkujących", url: yt("FVu5Zrktm40") },
     { kind: "video", title: "Przerzutki — jak zmieniać biegi", url: yt("TJsQ1PbkDqc") },

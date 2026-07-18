@@ -175,6 +175,25 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  3: [{ kind: "video", title: "Jak utrzymać się na wodzie — nauka dla początkujących", url: yt("7m8dzlVEPvI") }],
+  5: [{ kind: "video", title: "Styl grzbietowy dla początkujących — technika krok po kroku", url: yt("rpjOiXerg0E") }],
+  6: [{ kind: "video", title: "Oddychanie w kraulu — ćwiczenia dla początkujących", url: yt("Gq2asyrI0MI") }],
+  7: [{ kind: "video", title: "Motyl krok po kroku — prosty przewodnik po technice", url: yt("x-CB6aD4S2s") }],
+  8: [{ kind: "video", title: "Jak pokonać strach przed głęboką wodą", url: yt("yW31bm0Lj2E") }],
+  14: [{ kind: "video", title: "Jak zbudować wytrzymałość w pływaniu", url: yt("ogW23_DdVzQ") }],
+  20: [{ kind: "video", title: "Jak zaplanować trening pływacki — struktura sesji", url: yt("oM4sHl1hTEE") }],
+  22: [{ kind: "video", title: "5 najlepszych ćwiczeń na styl grzbietowy", url: yt("-hayxgpNw6s") }],
+  27: [{ kind: "video", title: "Styl klasyczny dla początkujących — dokładna technika", url: yt("ppuDgfdk9y8") }],
+  31: [{ kind: "video", title: "Nawrót koziołkowy — od początkującego do zawodowca", url: yt("dDfs74Gxl6g") }],
+  35: [{ kind: "video", title: "Motyl jak u najlepszych — technika na wyższym poziomie", url: yt("9pmnD4ah-0M") }],
+  40: [{ kind: "video", title: "Jak przetrwać styl zmienny (IM) — taktyka i tempo", url: yt("v-k4kSldI3k") }],
+  45: [{ kind: "article", title: "Periodyzacja treningu — jak rozplanować sezon pływacki", url: "https://www.usms.org/fitness-and-training/articles-and-videos/articles/periodization" }],
+  50: [{ kind: "video", title: "9 wskazówek na wody otwarte dla początkujących", url: yt("BEmR9jZ6m2U") }],
+  56: [{ kind: "video", title: "Orientacja w wodach otwartych — technika sightingu", url: yt("w7iIf192S4w") }],
+  60: [{ kind: "article", title: "Jak przygotować się do pierwszych zawodów pływackich", url: "https://www.usms.org/fitness-and-training/articles-and-videos/articles/how-to-prepare-for-your-first-swim-meet" }],
+  65: [{ kind: "article", title: "Odżywianie na długich dystansach — jak jeść w czasie pływania", url: "https://www.usms.org/fitness-and-training/articles-and-videos/articles/open-water-101-nutrition-on-long-swims" }],
+  80: [{ kind: "article", title: "Trening tempa: interwały CSS (Critical Swim Speed)", url: "https://www.usms.org/fitness-and-training/articles-and-videos/articles/how-to-train-with-critical-swim-speed-intervals" }],
   1: [{ kind: "reference", title: "Swim England — etapy nauki pływania 1–7", url: "https://www.swimming.org/learntoswim/swim-england-learn-to-swim-awards-1-7/" }],
   10: [{ kind: "article", title: "Pierwsze treningi na basenie — plany dla początkujących (USMS)", url: "https://www.usms.org/fitness-and-training/articles-and-videos/articles/best-swimming-workouts-for-beginners" }],
   13: [{ kind: "video", title: "Oddychanie obustronne — jak się go nauczyć", url: yt("IeUUuAyVu9s") }],

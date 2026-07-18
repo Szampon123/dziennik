@@ -160,6 +160,20 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "article", title: "Skala trudności bulderingu (V-scale) — kompletny przewodnik", url: "https://www.99boulders.com/bouldering-grades" }],
+  3: [{ kind: "video", title: "Jak bezpiecznie odpadać w bulderingu (na hali)", url: yt("Qc7ZQHE9L9w") }],
+  6: [{ kind: "video", title: "Kompletny przewodnik po ruchu i technice wspinania", url: yt("gtIGgs_y2nY") }],
+  7: [{ kind: "video", title: "Żabka (frogging) — masterclass techniki bioder (Neil Gresham)", url: yt("sY4OicuWbiA") }],
+  12: [{ kind: "video", title: "Jak asekurować na wędkę (top rope) — krok po kroku", url: yt("w5ybJwZPZAQ") }],
+  14: [{ kind: "video", title: "Jak zaplanować strukturę sesji wspinaczkowej", url: yt("t9XwLDq5sfA") }],
+  18: [{ kind: "article", title: "Siła palców we wspinaniu — wprowadzenie i metody (Lattice)", url: "https://latticetraining.com/blog/how-to-manage-finger-strength-for-climbers/" }],
+  25: [{ kind: "article", title: "Podstawy wspinania z dolną asekuracją (lead) — jak zacząć", url: "https://www.rei.com/learn/expert-advice/lead-climbing-basics.html" }],
+  28: [{ kind: "video", title: "Trening siły palców — block pulls dla początkujących (fingerboard)", url: yt("I_-YapmymjA") }],
+  35: [{ kind: "video", title: "Czytanie trasy 101 — jak analizować beta (Louis Parkinson)", url: yt("XnScNp24xEU") }],
+  40: [{ kind: "video", title: "Jak napisać własny plan treningowy do wspinania (Lattice)", url: yt("X-fVHtCGimw") }],
+  50: [{ kind: "video", title: "Trening na 7a — plan wejścia w poziom zaawansowany (Lattice)", url: yt("6Kgjb1oNFnA") }],
+  60: [{ kind: "video", title: "Periodyzacja treningu wspinaczkowego — plan na cały rok", url: yt("xdYiZyQJYp0") }],
   1: [
     { kind: "video", title: "Pierwszy raz na ściance — co musisz wiedzieć", url: yt("S-4XZgARAuA") },
     { kind: "article", title: "Wspinaczka dla początkujących — co zabrać i czego się spodziewać", url: "https://www.rei.com/learn/expert-advice/indoor-climbing-for-beginners.html" },

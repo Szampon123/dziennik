@@ -161,6 +161,19 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Powitanie słońca A — tutorial krok po kroku", url: yt("WH6NzQ1v04w") }],
+  4: [{ kind: "video", title: "Wojownik I, II i III — sekwencja i technika", url: yt("sCReePaPF50") }],
+  6: [{ kind: "video", title: "Otwieranie bioder — 30-minutowa sekwencja z gołębiem", url: yt("52BfnOeNKDI") }],
+  7: [{ kind: "article", title: "Jak zbudować własną praktykę jogi w domu", url: "https://yogainternational.com/article/view/the-beginners-guide-to-home-yoga-practice/" }],
+  9: [{ kind: "video", title: "Równowaga w staniu — 15-minutowy flow na stabilność", url: yt("10mu1VoOSAU") }],
+  12: [{ kind: "video", title: "Świeca (sarvangasana) — bezpieczne wejście w inwersje", url: yt("y_JiCffUUWs") }],
+  22: [{ kind: "video", title: "Kruk i żuraw — wprowadzenie do balansów na rękach", url: yt("MGVxq5sZWrQ") }],
+  25: [{ kind: "video", title: "Pranajama — ujjayi, nadi shodhana i podstawy oddechu", url: yt("mbSdsqzDe6o") }],
+  35: [{ kind: "article", title: "Nauka szpagatu — jak skutecznie rozciągać biodra i nogi", url: "https://gmb.io/splits/" }],
+  45: [{ kind: "video", title: "Stanie na rękach — kompletny przewodnik i progresja", url: yt("zrkZyCQAsDw") }],
+  55: [{ kind: "video", title: "Głębszy mostek — codzienna praktyka backbendów (koło)", url: yt("S9AP5PUFOIg") }],
+  70: [{ kind: "article", title: "Osiem stopni jogi Patańdżalego — filozofia praktyki", url: "https://en.wikipedia.org/wiki/Ashtanga_(eight_limbs_of_yoga)" }],
   1: [
     { kind: "article", title: "Joga dla zupełnie początkujących", url: "https://yogawithadriene.com/yoga-complete-beginners/" },
     { kind: "video", title: "Yoga for Complete Beginners — 20 minut", url: yt("v7AYKMP6rOE") },

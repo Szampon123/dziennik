@@ -125,6 +125,19 @@ export const { milestones, criteriaByLevel } = ladderC([
 ]);
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Oddech pilatesowy — technika oddechu żebrowo-bocznego", url: yt("3AXXOcyogEk") }],
+  3: [{ kind: "video", title: "Ćwiczenia na mięśnie dna miednicy — Pilates dla początkujących", url: yt("frXOYImfZx8") }],
+  4: [{ kind: "video", title: "The Hundred — jak poprawnie wykonać klasyczne ćwiczenie Pilates", url: yt("9mlone4NObI") }],
+  6: [{ kind: "video", title: "Trening maty dla początkujących — 25 minut, cały korpus", url: yt("NyP_waVgL1w") }],
+  8: [{ kind: "article", title: "Reformer czy mata? Porównanie dwóch form Pilates", url: "https://www.healthline.com/health/reformer-vs-mat-pilates" }],
+  10: [{ kind: "video", title: "Trening maty — poziom średniozaawansowany, 30 minut", url: yt("1TXj_U23bPs") }],
+  12: [{ kind: "video", title: "Teaser krok po kroku — progresje do pełnego ćwiczenia", url: yt("844QqARqrpI") }],
+  15: [{ kind: "video", title: "Zaawansowany trening maty w 15 minut", url: yt("y5DEn1YHK0Q") }],
+  18: [{ kind: "video", title: "Boki i skosy brzucha — trening side plank, 10 minut", url: yt("D55cOr1Y6hU") }],
+  20: [{ kind: "article", title: "Przegląd przyrządów Pilates — reformer, cadillac, chair, barrel", url: "https://breathe-education.com/blog/pilates/types-of-pilates-machines/" }],
+  30: [{ kind: "article", title: "Pilates na przewlekły ból pleców — 5 ćwiczeń", url: "https://www.healthline.com/health/back-pain/pilates-for-chronic-back-pain" }],
+  50: [{ kind: "article", title: "Jak zostać instruktorem Pilates — przewodnik po szkoleniach", url: "https://pilatesjournal.com/articles/becomingapilatesteacher" }],
   1: [
     { kind: "video", title: "Pilates Breathing Technique — Move With Nicole", url: yt("VFb0bx4YkSg") },
     { kind: "article", title: "What is Pilates? Complete beginner guide", url: "https://www.verywellfit.com/what-is-pilates-2704484" },

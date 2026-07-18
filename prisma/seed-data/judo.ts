@@ -124,6 +124,18 @@ export const { milestones, criteriaByLevel } = ladderC([
 ]);
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Kumi-kata — walka o chwyt i prawidłowa postawa", url: yt("X0LZjkvdw3U") }],
+  4: [{ kind: "article", title: "Pas biały-żółty (6 kyu) — czego wymaga egzamin na stopień", url: "https://www.britishjudo.org.uk/get-started/grading/kyu-grade-scheme/" }],
+  5: [{ kind: "video", title: "Kesa-gatame — trzymanie (osaekomi) według Kodokanu", url: yt("NDaQuJOFBYk") }],
+  8: [{ kind: "video", title: "Pierwsze randori — jak zacząć walkę treningową", url: yt("6wV7LtomHgE") }],
+  10: [{ kind: "video", title: "Podstawowe rzuty judo dla początkujących + kombinacje", url: yt("9Dca30IZRe0") }],
+  14: [{ kind: "article", title: "Randori — 8 najczęstszych błędów w sparingu", url: "https://kljudo.com/common-mistakes-in-randori/" }],
+  18: [{ kind: "article", title: "Pierwsze zawody — jak wygrać swoją walkę", url: "https://onlyjudo.com/tips-for-your-very-first-judo-competition/" }],
+  25: [{ kind: "article", title: "Kaeshi-waza — o-soto-gaeshi, kontra na o-soto-gari", url: "https://judoinfo.com/osoto-gaeshi/" }],
+  35: [{ kind: "article", title: "Jak pokonać lepszego rywala — taktyka na macie", url: "https://sports-star.co.uk/tips-and-tricks-on-how-to-beat-an-opponent-in-judo/" }],
+  65: [{ kind: "video", title: "Trening siłowy dla judoki — całe ciało", url: yt("9ixcPNodxzo") }],
+  80: [{ kind: "article", title: "Zorganizuj randori i wykorzystaj pełny potencjał", url: "https://judotraining.info/organize-your-randori-training-and-reach-your-full-potential/" }],
   1: [
     { kind: "video", title: "Ukemi — How to Fall Safely — Shintaro Higashi", url: yt("KFrdOCp2cHE") },
     { kind: "article", title: "Judo basics for beginners", url: "https://www.wikihow.com/Do-Judo" },

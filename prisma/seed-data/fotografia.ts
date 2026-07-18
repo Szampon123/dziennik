@@ -128,6 +128,21 @@ export const { milestones, criteriaByLevel } = ladderC([
 // Curated, link-verified learning resources for the concrete technique
 // milestones. Filmy z Adobe, Adorama, NatureTTL i in.
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  5: [{ kind: "article", title: "Jak zamrozić ruch — czas migawki w praktyce", url: "https://expertphotography.com/freeze-motion-photography" }],
+  8: [{ kind: "video", title: "Ćwicz oko — jak nauczyć się widzieć jak fotograf", url: yt("gGngRlWHmZw") }],
+  10: [{ kind: "video", title: "Pierwszy sprzęt fotograficzny dla początkujących", url: yt("St9MidwHc9I") }],
+  11: [{ kind: "video", title: "5 nawyków, które zmieniły moją fotografię", url: yt("-Vhg1mSA1jU") }],
+  12: [{ kind: "article", title: "Zaawansowana kompozycja — 28 technik kadrowania", url: "https://petapixel.com/photography-composition-techniques/" }],
+  13: [{ kind: "video", title: "Portret z jedną lampą — podstawy dla początkujących", url: yt("vgXbYeiHhH4") }],
+  16: [{ kind: "video", title: "Lightroom — pełny workflow obróbki od początku do końca", url: yt("mPvJkhnB4xg") }],
+  18: [{ kind: "video", title: "Jak wybrać najlepsze zdjęcia — sztuka selekcji", url: yt("YlSa8VfljsM") }],
+  19: [{ kind: "video", title: "Fotografia nocna — ustawienia i wskazówki", url: yt("X5vogaSCmuk") }],
+  20: [{ kind: "video", title: "Długa ekspozycja z filtrami ND — prosto wyjaśnione", url: yt("YTVJeAukxG0") }],
+  22: [{ kind: "video", title: "Teoria koloru, którą powinien znać każdy fotograf", url: yt("muXeSghtLwE") }],
+  23: [{ kind: "article", title: "Reportaż i fotografia dokumentalna — poradnik", url: "https://www.diyphotography.net/documentary-wedding-photography-101-a-guide-for-photographers/" }],
+  24: [{ kind: "video", title: "Jak wypracować i rozwinąć własny styl fotograficzny", url: yt("85MgVZH2pGI") }],
+  26: [{ kind: "video", title: "Lampa poza aparatem — praktyczny poradnik", url: yt("RZwYSaWoW3Y") }],
   1: [{ kind: "video", title: "Trójkąt ekspozycji", url: yt("eNohTJh-ugI") }],
   2: [{ kind: "video", title: "Tryby autofokusa", url: yt("WMuoFK5elmc") }],
   3: [{ kind: "video", title: "Tryb manualny — jak zacząć", url: yt("uyXiWF3mI2s") }],

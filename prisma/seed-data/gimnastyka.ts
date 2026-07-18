@@ -125,6 +125,21 @@ export const { milestones, criteriaByLevel } = ladderC([
 ]);
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Przewrót w tył — technika krok po kroku", url: yt("BaPfU4HHCkg") }],
+  3: [{ kind: "video", title: "Świeca / stanie na łopatkach — progresja", url: yt("WXoNNx-uOtU") }],
+  5: [{ kind: "video", title: "Mostek z leżenia — łatwy tutorial dla początkujących", url: yt("usyrUMFhLUc") }],
+  7: [{ kind: "video", title: "Pompki — idealna technika, progresje i błędy", url: yt("GX87fbBd78A") }],
+  8: [{ kind: "video", title: "Szpagat podłużny dla początkujących — pełna rutyna", url: yt("EswpoF3TxkU") }],
+  12: [{ kind: "video", title: "Gwiazda na jednej ręce — 4 proste kroki", url: yt("ysT4S3mZSR0") }],
+  14: [{ kind: "video", title: "Rozciąganie do szpagatu podłużnego — 15 min (MadFit)", url: yt("SdltgVDEPmM") }],
+  15: [{ kind: "video", title: "Przerzut w przód (front walkover) — tutorial krok po kroku", url: yt("ZWUNWRfL6C8") }],
+  18: [{ kind: "article", title: "Przewrót lotny (dive roll) — technika, progresje i ćwiczenia", url: "https://sportmentary.com/gymnastics/gymnastics-basics/dive-roll-gymnastics/" }],
+  25: [{ kind: "video", title: "Flik-flak z asekuracją — jak prawidłowo asekurować", url: yt("HIu_BmECrXw") }],
+  30: [{ kind: "video", title: "Przeszpagat (oversplit) — rozciąganie na większy zakres", url: yt("UW6G83eZblg") }],
+  35: [{ kind: "article", title: "Stanie na rękach na poręczach — kompletny przewodnik", url: "https://themovementathlete.com/handstand-straddle-hold-on-parallettes/" }],
+  40: [{ kind: "video", title: "Rundak + salto w tył — jak połączyć serię", url: yt("UrN30ryb4bc") }],
+  55: [{ kind: "video", title: "Planche — progresje od tuck do straddle (8 kroków)", url: yt("bhRCyQjwoWg") }],
   1: [
     { kind: "video", title: "Forward Roll Tutorial — GMB Fitness", url: yt("eTHHGYsqpNY") },
     { kind: "article", title: "Gymnastics for beginners", url: "https://www.wikihow.com/Do-Gymnastics" },

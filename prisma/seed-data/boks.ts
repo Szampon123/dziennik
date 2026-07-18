@@ -124,6 +124,21 @@ export const { milestones, criteriaByLevel } = ladderC([
 ]);
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  3: [{ kind: "article", title: "Jak wyprowadzić jab — przewodnik ExpertBoxing", url: "https://expertboxing.com/how-to-throw-a-jab" }],
+  4: [{ kind: "video", title: "Jak wyprowadzić perfekcyjny prosty (cross)", url: yt("sK-6Ujp3KYY") }],
+  6: [{ kind: "video", title: "Uniki (slip) — obrona dla początkujących", url: yt("-cfSa-gBxtc") }],
+  7: [{ kind: "video", title: "Kombinacja 1-2 (jab-cross) — Tony Jeffries", url: yt("vyTaKpylOcU") }],
+  9: [{ kind: "video", title: "7 wskazówek na sparing — od olimpijczyka", url: yt("fJdJTbed2kI") }],
+  10: [{ kind: "video", title: "Podstawowy drill pracy nóg dla początkujących", url: yt("v0y86288Wt0") }],
+  11: [{ kind: "video", title: "Jak wyprowadzić hak (hook) — Tony Jeffries", url: yt("UFVDcNDnpoU") }],
+  13: [{ kind: "video", title: "Jak poprawnie wyprowadzić podbródkowy (uppercut)", url: yt("eBxn21FtqPg") }],
+  14: [{ kind: "video", title: "Ciosy na korpus (body shots) — kompletny przewodnik", url: yt("p5g5dgYyDbM") }],
+  18: [{ kind: "video", title: "Ruchy głową (head movement) — kompletny przewodnik", url: yt("mtlzLQwE4mI") }],
+  20: [{ kind: "video", title: "21 zaawansowanych kombinacji bokserskich", url: yt("SUV2A0h8zvY") }],
+  25: [{ kind: "video", title: "5 prostych sposobów na kontrę (counter)", url: yt("mdVZBV_NrtY") }],
+  30: [{ kind: "video", title: "Budowanie siły bokserskiej w domu", url: yt("YRrgN_h10P0") }],
+  35: [{ kind: "video", title: "Wskazówki na walkę — od olimpijczyka", url: yt("ZDXL01fnQ6k") }],
   1: [
     { kind: "video", title: "Boxing Stance & Guard — Tony Jeffries", url: yt("ZKjklCRcbv4") },
     { kind: "article", title: "How to Box: beginner guide", url: "https://www.wikihow.com/Box" },

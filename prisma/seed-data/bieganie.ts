@@ -192,6 +192,25 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  3: [{ kind: "video", title: "Jak oddychać podczas biegu — podstawy dla początkujących", url: yt("iell2Y5GIV4") }],
+  5: [{ kind: "article", title: "Couch to 5K tydzień 5 — jak przejść do ciągłego biegu", url: "https://marathonhandbook.com/couch-to-5k-week-5-survival-guide/" }],
+  10: [{ kind: "video", title: "Dzień startu pierwszej piątki — jak dobrze go rozegrać", url: yt("fS10FZxVBIY") }],
+  12: [{ kind: "video", title: "Jak rozłożyć tempo na 5 km — równy bieg bez zadyszki", url: yt("07wZeSeCb2Q") }],
+  14: [{ kind: "video", title: "Jak ułożyć tydzień biegowy — 3 treningi w tygodniu", url: yt("thLQOqsVp30") }],
+  26: [{ kind: "video", title: "Jak zbudować własny plan biegowy krok po kroku", url: yt("Z_Z_V3IYg8A") }],
+  28: [{ kind: "video", title: "Odżywianie na długim wybieganiu — ile jeść i pić", url: yt("ZGSYCfvGawc") }],
+  32: [{ kind: "video", title: "5 wskazówek, jak przebiec 10 km poniżej 60 minut", url: yt("whjQBhctuok") }],
+  40: [{ kind: "video", title: "Prosty przewodnik po pierwszym półmaratonie", url: yt("XpOfWrdnR5Y") }],
+  45: [{ kind: "video", title: "Trening interwałowy — jak biegać szybciej", url: yt("Dyx7qFMcaeY") }],
+  50: [{ kind: "video", title: "Pierwszy ultramaraton 50 km — przewodnik i plan treningowy", url: yt("zpaTB6Vb2R4") }],
+  56: [{ kind: "video", title: "Trening do maratonu w prostych krokach", url: yt("V0Y1EvWrQVo") }],
+  58: [{ kind: "article", title: "Tempo w maratonie — metoda 10-10-10 na negatywny split", url: "https://runnersconnect.net/marathon-pacing-training/" }],
+  65: [{ kind: "video", title: "10 sekretów wysokiego kilometrażu — jak biegać więcej", url: yt("wDCa-n29wG4") }],
+  70: [{ kind: "video", title: "Periodyzacja treningu — jak osiągnąć szczyt formy", url: yt("Y59UTh02Xts") }],
+  80: [{ kind: "video", title: "Jak zakwalifikować się do maratonu w Bostonie — poradnik", url: yt("QC3BbmJF-2o") }],
+  85: [{ kind: "article", title: "Trening spolaryzowany 80/20 — jak trenują najlepsi", url: "https://marathonhandbook.com/polarized-training/" }],
+  90: [{ kind: "video", title: "Jak podnieść VO2max — zaawansowany trening szybkości", url: yt("das0CZjmASU") }],
   1: [
     { kind: "article", title: "Couch to 5K — plan NHS, tydzień po tygodniu", url: "https://www.nhs.uk/better-health/get-active/get-running-with-couch-to-5k/couch-to-5k-running-plan/" },
     { kind: "video", title: "Technika biegu — czego uczą zawodowcy", url: yt("pofBa80GAwg") },

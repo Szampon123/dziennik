@@ -170,6 +170,27 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Deska (plank) — poprawna forma, wskazówki i progresje", url: yt("A2b2EmIg0dA") }],
+  5: [{ kind: "video", title: "Martwy zwis — jak budować chwyt i siłę zwisu na drążku", url: yt("ZeFGPBxKc2A") }],
+  7: [{ kind: "video", title: "Jak zbudować mocny core i sześciopak — trening wg nauki", url: yt("1G0y8D5rFDc") }],
+  9: [{ kind: "video", title: "Technika przysiadu ze sztangą wg Starting Strength", url: yt("Yw3s1JTExkU") }],
+  10: [{ kind: "article", title: "Wybór programu — przewodnik po sprawdzonych planach (wiki r/Fitness)", url: "https://thefitness.wiki/routines/" }],
+  14: [{ kind: "video", title: "Jak wykonać martwy ciąg — instruktaż techniki", url: yt("Y1IGeJEXpF4") }],
+  15: [{ kind: "video", title: "Pierwsze podciągnięcie — trening dla początkujących", url: yt("Y3ntNsIS2Q8") }],
+  17: [{ kind: "video", title: "10 odmian pompek — od łatwych do zaawansowanych", url: yt("J-R3fk2JqS4") }],
+  22: [{ kind: "video", title: "Jak zacząć kalistenikę z obciążeniem", url: yt("oeQe4TCm2T4") }],
+  25: [{ kind: "article", title: "Progresywne przeciążenie — zasada ciągłych postępów", url: "https://blog.nasm.org/progressive-overload-explained" }],
+  28: [{ kind: "video", title: "Jak układać trening: początkujący, średnio- i zaawansowani", url: yt("bxVEZygHbrM") }],
+  32: [{ kind: "video", title: "Framework progresji dla średniozaawansowanych — jak dalej rosnąć", url: yt("Q_ueUuN69ZU") }],
+  35: [{ kind: "video", title: "Zaawansowane progresje deski (plank) na mocny brzuch", url: yt("MO4m0VDYP5c") }],
+  38: [{ kind: "video", title: "Jak robić więcej podciągnięć — pełny program, serie i powtórzenia", url: yt("WC0Lg2Y072Y") }],
+  40: [{ kind: "video", title: "L-sit krok po kroku — wprowadzenie do siły gimnastycznej", url: yt("BbAkWxDZKIM") }],
+  42: [{ kind: "video", title: "Jak przełamać zastój w wyciskaniu leżąc — 4 kroki wg nauki", url: yt("ptpmRrzRtWQ") }],
+  47: [{ kind: "video", title: "Podciąganie z obciążeniem — droga do +40 kg krok po kroku", url: yt("FTPwQWNZoBk") }],
+  55: [{ kind: "video", title: "Kompletny poradnik martwego ciągu — technika zaawansowana", url: yt("Vjd5pEyj9-E") }],
+  65: [{ kind: "video", title: "Jak zwiększyć przysiad — 4 kroki wg nauki", url: yt("sdeQjm7avi8") }],
+  70: [{ kind: "video", title: "Muscle-up dla początkujących — jak opanować technikę", url: yt("N4u_sP0bbWI") }],
   1: [
     { kind: "article", title: "r/Fitness Basic Beginner Routine — od czego zacząć", url: "https://thefitness.wiki/routines/r-fitness-basic-beginner-routine/" },
     { kind: "reference", title: "The Fitness Wiki — baza wiedzy o treningu", url: "https://thefitness.wiki/" },

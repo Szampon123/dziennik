@@ -163,6 +163,18 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Postawa bokserska krok po kroku — fundament każdej techniki", url: yt("SjLXzCpRS8U") }],
+  3: [{ kind: "video", title: "Uderzać czy walczyć w parterze — który styl sztuk walki wybrać", url: yt("3_Hy4hz2HVk") }],
+  6: [{ kind: "video", title: "Jak bezpiecznie padać — trzy techniki na każdą stronę", url: yt("ZVzzJ4xDgoE") }],
+  7: [{ kind: "video", title: "Rozgrzewka i rozciąganie przed treningiem — sesja do powtarzania", url: yt("h_VjN6bzgwU") }],
+  8: [{ kind: "video", title: "Pięć kombinacji, które musi znać każdy początkujący", url: yt("kzOuIDYXCHg") }],
+  12: [{ kind: "video", title: "Jak nauczyć się i opanować dowolną technikę — pełny proces", url: yt("8wsErcCTRyo") }],
+  14: [{ kind: "video", title: "Twardy czy lekki sparing — dlaczego zaczynać na lekko", url: yt("hvGZNDWNfqk") }],
+  18: [{ kind: "article", title: "Jak studiować technikę z nagrań — dziesięć wskazówek", url: "https://brianejohns.com/2024/02/14/top-ten-tips-for-watching-martial-arts-instructional-videos/" }],
+  30: [{ kind: "article", title: "Po co trenować drugą dyscyplinę — korzyści z cross-treningu", url: "https://jitsmagazine.com/the-benefits-of-cross-training-in-martial-arts/" }],
+  40: [{ kind: "video", title: "Jak przygotować się do walki — obóz startowy krok po kroku", url: yt("by-wgyePRos") }],
+  45: [{ kind: "video", title: "Jak opanować nerwy przed walką — mentalność zawodnika", url: yt("-4kSEJnWCXo") }],
   1: [
     { kind: "video", title: "Padanie (ukemi) — pierwsza rzecz, której się uczysz", url: yt("q6FBYGpUsY8") },
     { kind: "video", title: "Jak wybrać sztukę walki — przegląd stylów", url: yt("Aaebn1eAdYs") },
@@ -175,7 +187,7 @@ export const resourcesByLevel: Record<number, MilestoneResource[]> = {
   10: [{ kind: "video", title: "BJJ — guard i podstawowe pozycje", url: yt("bDVO4bqp27c") }],
   15: [{ kind: "article", title: "Pięć technik, od których zaczyna każdy judoka", url: "https://www.kokakids.co.uk/judo-techniques-for-beginners" }],
   20: [{ kind: "video", title: "Muay Thai — kopnięcia i kolana podstawy", url: yt("QVov2TEYJ8k") }],
-  25: [{ kind: "video", title: "Padanie w cztery strony — komplet ukemi", url: yt("5n_Qjeia2n8") }],
+  25: [{ kind: "video", title: "Padanie w cztery strony — komplet ukemi", url: yt("5n_Qjeia2n8") }, { kind: "article", title: "Jak przełamać zastój (plateau) w treningu", url: "https://www.grapplearts.com/how-to-get-past-a-plateau-in-bjj/" }],
   35: [{ kind: "video", title: "Sparing — jak zacząć bezpiecznie", url: yt("9q-BTnG0gSU") }],
   50: [{ kind: "reference", title: "IBJJF — minimalne okresy między pasami", url: "https://ibjjf.com/news/ibjjf-minimum-graduation-period-update" }],
   60: [{ kind: "article", title: "Jak przygotować się do pierwszych zawodów", url: "https://www.wikihow.com/Prepare-for-a-Martial-Arts-Tournament" }],

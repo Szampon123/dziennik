@@ -134,6 +134,19 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Plank — jak trzymać deskę poprawnie", url: yt("Tp7jFLRmXu8") }],
+  4: [{ kind: "video", title: "Opanuj pompkę — poradnik dla początkujących", url: yt("-WXc4E-zcao") }],
+  5: [{ kind: "video", title: "Martwy zwis — aktywna technika wisu na drążku", url: yt("WUY-S2jaghc") }],
+  7: [{ kind: "video", title: "L-sit — idealna technika dla początkujących", url: yt("eywCpp0p7lg") }],
+  8: [{ kind: "video", title: "Dipy na poręczach — pełny poradnik techniki", url: yt("XqBuu8Qp4mA") }],
+  12: [{ kind: "video", title: "Pistol squat — kompletna checklista techniki", url: yt("R1mxpLzYgxM") }],
+  18: [{ kind: "video", title: "Muscle-up — najlepszy sposób krok po kroku", url: yt("_iYvlSMgUGE") }],
+  22: [{ kind: "video", title: "Stanie na rękach — poradnik dla zupełnie początkujących", url: yt("lzGzDMzTUQE") }],
+  25: [{ kind: "video", title: "Planche straddle — poradnik i progresje", url: yt("-lZSaDK1hUg") }],
+  35: [{ kind: "video", title: "Front lever — wszystkie progresje dla początkujących", url: yt("AGhb8V8M758") }],
+  45: [{ kind: "video", title: "Back lever — 5 prostych kroków", url: yt("FZZqbeZti84") }],
+  55: [{ kind: "video", title: "Kalistenika od podstaw — technika i programowanie treningu", url: yt("1mlN0yuxoLE") }],
   1: [
     { kind: "article", title: "Hybrid Calisthenics — progresje od ściany do pełnej pompki", url: "https://www.hybridcalisthenics.com/routine" },
     { kind: "video", title: "Pompki — poprawna technika od podstaw", url: yt("IODxDxX7oi4") },

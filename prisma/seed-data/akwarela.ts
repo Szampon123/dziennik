@@ -128,6 +128,18 @@ export const { milestones, criteriaByLevel } = ladderC([
 // Curated, link-verified learning resources for the concrete technique
 // milestones. Videos from Louise De Masi, Jenna Rainey, Kirsty Partridge i in.
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  6: [{ kind: "video", title: "Pierwsza akwarela: wskazówki na start", url: yt("tP8Z-n0ppBM") }],
+  9: [{ kind: "article", title: "Papier akwarelowy: przewodnik po rodzajach", url: "https://www.jacksonsart.com/blog/2021/04/15/a-guide-to-watercolour-paper/" }],
+  10: [{ kind: "video", title: "Jak dobrać kolory do palety", url: yt("6TZgxDrIY18") }],
+  11: [{ kind: "video", title: "Codzienna rutyna ćwiczeń akwarelowych", url: yt("Q2m4A6q98ZU") }],
+  12: [{ kind: "video", title: "Panowanie nad techniką mokrym w mokre", url: yt("Vg19sNs48xU") }],
+  13: [{ kind: "video", title: "Realistyczny liść — botanika w akwareli", url: yt("XpSP5icbVGs") }],
+  16: [{ kind: "video", title: "Pejzaż górski: mokre w mokre i sucha technika", url: yt("yOjuKlo7Sxo") }],
+  17: [{ kind: "article", title: "Perspektywa i głębia w pejzażu", url: "https://www.solvingwatercolour.com/watercolor-landscapes-depth-perspective/" }],
+  18: [{ kind: "video", title: "Jak zbudować profesjonalne portfolio", url: yt("9BI13bpf8FU") }],
+  20: [{ kind: "video", title: "Portret akwarelą: pełne demo i karnacja", url: yt("EoAC9iF4Rp4") }],
+  25: [{ kind: "video", title: "Plener: porady i techniki malowania", url: yt("fp5wtsLc-8s") }],
   1: [{ kind: "video", title: "Materiały: papier, farby, pędzle", url: yt("qyJs4VhDoBs") }],
   2: [{ kind: "video", title: "Lawa płaska (flat wash)", url: yt("efSp9VWnft8") }],
   3: [{ kind: "video", title: "Lawa gradientowa", url: yt("Xo7k51lZLV0") }],

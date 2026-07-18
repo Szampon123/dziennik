@@ -130,6 +130,16 @@ export const { milestones, criteriaByLevel } = ladderC([
 // milestones (count/hours/exhibition levels intentionally have none). Mix of
 // videos (Proko, Circle Line, Sycra…) and free courses (Drawabox, Ctrl+Paint).
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  9: [{ kind: "video", title: "Jak zbudować nawyk codziennego rysowania", url: yt("VLg-yfGvVDw") }],
+  10: [{ kind: "video", title: "10 ćwiczeń, które szybko poprawią rysunek (Marc Brunet)", url: yt("C87ZXHPQkh0") }],
+  11: [{ kind: "video", title: "Jak skutecznie ćwiczyć rysunek — pełny poradnik", url: yt("rVbqw5fMLJY") }],
+  14: [{ kind: "video", title: "Jak rysować dynamiczne fałdy tkaniny (Jazza x Proko)", url: yt("5dpD8mDH1Pk") }],
+  16: [{ kind: "video", title: "Perspektywa 1-, 2- i 3-punktowa — kompletny kurs", url: yt("1miyDqc0bsg") }],
+  18: [{ kind: "video", title: "Jak wypracować własny styl rysowania", url: yt("DHzJMa_pqPY") }],
+  21: [{ kind: "video", title: "Jak zacząć szkicownik — materiały, techniki, nawyki", url: yt("r4vCXI0IliQ") }],
+  22: [{ kind: "video", title: "Perspektywa 3-punktowa krok po kroku", url: yt("EPBaHkj753I") }],
+  25: [{ kind: "video", title: "Rysowanie iteracyjne — najszybsza droga do postępu (Sycra)", url: yt("k0ufz75UvHs") }],
   1: [{ kind: "course", title: "Drawabox — Lekcja 1: kreski i bryły", url: "https://drawabox.com/lesson/1" }],
   4: [{ kind: "video", title: "Bryły 3D — rysunek i cieniowanie", url: yt("cBNc12M2_Yc") }],
   5: [{ kind: "video", title: "Cieniowanie kuli — światło i cień", url: yt("uM-gJrczaRE") }],

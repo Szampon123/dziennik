@@ -146,6 +146,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
 };
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Forhend — 6 podstaw, które musi znać każdy początkujący", url: yt("Yg8F4In2TrU") }],
+  4: [{ kind: "video", title: "Bekhend oburęczny — fundamenty dla początkujących", url: yt("3Y-bv7GpaXE") }],
+  6: [{ kind: "video", title: "Serwis dla początkujących — jak wykonać podanie", url: yt("FKtqaKjZVPs") }],
+  8: [{ kind: "video", title: "Split step — fundament pracy nóg w tenisie", url: yt("J1UhPl1UrYs") }],
+  14: [{ kind: "video", title: "Zasady tenisa — punktacja i reguły wyjaśnione", url: yt("jrhM3k84YJU") }],
+  20: [{ kind: "video", title: "4 strategie gry singlowej na wygrany mecz", url: yt("EXhMRS1WTPs") }],
+  22: [{ kind: "video", title: "Wolej — kompletny przewodnik gry przy siatce", url: yt("3RVvlb8HJPg") }],
+  25: [{ kind: "video", title: "Jak celować serwisem — umiejscowienie podania", url: yt("e17XZfdCu5c") }],
+  35: [{ kind: "video", title: "Topspin forhendowy — jak nadać rotację (6 wskazówek)", url: yt("ncVrDdmRCuo") }],
+  38: [{ kind: "video", title: "5 taktyk na wygranie meczu tenisowego", url: yt("GRjnJQTcWIY") }],
+  50: [{ kind: "video", title: "Pozycjonowanie na korcie — gdzie stać w singlu", url: yt("_cWG65aLoz8") }],
+  65: [{ kind: "video", title: "Gra pod presją — mentalna twardość w tenisie", url: yt("teZlZP_0gEg") }],
   1: [{ kind: "video", title: "Pierwsze kroki na korcie — odbijanie", url: yt("bKXfJC_nNjk") }],
   3: [{ kind: "video", title: "Forhend — technika uderzenia", url: yt("Dga_yNDzBLs") }],
   5: [{ kind: "video", title: "Bekhend jednoręczny i oburęczny", url: yt("xw7l87R5Rfo") }],

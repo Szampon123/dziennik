@@ -125,6 +125,19 @@ export const { milestones, criteriaByLevel } = ladderC([
 ]);
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  4: [{ kind: "video", title: "Rwanie od podłogi — technika w minutę (Catalyst Athletics)", url: yt("_yqwbwHoSDI") }],
+  5: [{ kind: "video", title: "Power clean krok po kroku — technika zarzutu (Torokhtiy)", url: yt("E2z5zK5V-MM") }],
+  7: [{ kind: "video", title: "Jak rwać sztangę — pełny przewodnik techniki (Torokhtiy)", url: yt("yHZ1eZ8fJjc") }],
+  8: [{ kind: "video", title: "Podrzut (jerk) w minutę — wybicie nad głowę (Catalyst)", url: yt("9-sdE3eQDLk") }],
+  10: [{ kind: "video", title: "Napraw wejście pod sztangę w rwaniu — trzeci pull (Catalyst)", url: yt("UoCZhN4mdTg") }],
+  15: [{ kind: "video", title: "Podrzut sztangi (clean and jerk) — pełna technika (Torokhtiy)", url: yt("9HyWjAk7fhY") }],
+  20: [{ kind: "article", title: "Powtarzalna technika rwania — stała pozycja startowa i pozycje", url: "https://barbend.com/fix-your-snatch/" }],
+  25: [{ kind: "video", title: "Jak szybciej schodzić pod sztangę w rwaniu — drille", url: yt("MDtq5xq-uWI") }],
+  35: [{ kind: "video", title: "Popraw ciągi i rwanie — pionowy napęd nóg w wyproście (Catalyst)", url: yt("joI_IOTRV9Y") }],
+  45: [{ kind: "video", title: "Najtrudniejszy element rwania — sztanga z powrotem do bioder", url: yt("mlZbmGmg0XM") }],
+  60: [{ kind: "article", title: "Timing i szybkość pod sztangą — drille dla zaawansowanych", url: "https://www.mashelite.com/drills-for-timing-and-speed-under-the-bar/" }],
+  80: [{ kind: "article", title: "Jak dobrać podejścia na zawodach — otwarcia i skoki (Greg Everett)", url: "https://www.catalystathletics.com/article/2026/How-Do-You-Choose-Openers-Attempts-for-Weightlifting-Compet/" }],
   1: [
     { kind: "video", title: "Overhead Squat Technique — Catalyst Athletics", url: yt("pn2dGUr-JgE") },
     { kind: "article", title: "Olympic weightlifting for beginners", url: "https://www.barbend.com/olympic-weightlifting-beginners-guide/" },

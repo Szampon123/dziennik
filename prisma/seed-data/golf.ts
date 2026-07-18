@@ -151,6 +151,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Pierwsza wizyta na driving range — czego się spodziewać", url: yt("C0y35N1u1CU") }],
+  4: [{ kind: "video", title: "Jak czysto i równo uderzać żelaza — Rick Shiels", url: yt("qdRSOKvjNZU") }],
+  5: [{ kind: "video", title: "Podstawy swingu: jak wznieść piłkę w powietrze — Michael Breed", url: yt("9RMXU00WY2c") }],
+  7: [{ kind: "video", title: "Pewne wbijanie krótkich puttów — drill Golficity", url: yt("x0jyE3hEMgU") }],
+  9: [{ kind: "video", title: "Pierwsze wyjście na pole: par, liczenie wyniku", url: yt("KHUJkqOSrjk") }],
+  14: [{ kind: "article", title: "Pierwsza runda na polu — kompletny przewodnik", url: "https://golfguidebook.com/your-first-time-on-a-golf-course-everything-you-need-to-know/" }],
+  20: [{ kind: "video", title: "Trafiaj więcej greenów: celuj w środek — SwingU", url: yt("AsDXnyy1LN0") }],
+  25: [{ kind: "video", title: "Bezstresowy sposób na złamanie 100 — Rick Shiels", url: yt("-6RyI0ac-F0") }],
+  35: [{ kind: "video", title: "5 prostych zasad, by grać niżej — Jeremy Dale", url: yt("5t6cjMvSRh4") }],
+  45: [{ kind: "article", title: "Strategia na więcej birdie — Top Speed Golf", url: "https://topspeedgolf.com/vault/golf-strategy-plan-to-make-more-birdies/" }],
+  55: [{ kind: "video", title: "Plan gry z HCP 20 do 10 — Golf Sidekick", url: yt("QydGZfmYO4s") }],
+  70: [{ kind: "video", title: "System 666: jak złamać 80 — Golf Sidekick", url: yt("6nIvYm2T1ss") }],
   1: [{ kind: "video", title: "How to hit a golf ball for beginners — Rick Shiels", url: yt("LG1vJv7PAws") }],
   3: [{ kind: "video", title: "Putting basics — Rick Shiels", url: yt("UaqfXPM0f2A") }],
   6: [{ kind: "video", title: "How to chip — Me and My Golf", url: yt("kS-0F6hYz_o") }],

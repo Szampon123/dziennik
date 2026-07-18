@@ -127,6 +127,22 @@ import type { MilestoneResource } from "../../src/lib/milestone-resources";
 const yt = (id: string) => `https://www.youtube.com/watch?v=${id}`;
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  3: [{ kind: "video", title: "Wymiana bierek — kiedy opłaca się bić (wartość figur w praktyce)", url: yt("GOZKmnRkSMU") }],
+  4: [{ kind: "video", title: "Mat samotnemu królowi hetmanem — technika krok po kroku", url: yt("CSA9se6t82I") }],
+  6: [{ kind: "video", title: "Podstawowe zasady otwarć wyjaśnione", url: yt("8IlJ3v8I4Z8") }],
+  8: [{ kind: "article", title: "Jak przygotować się do turnieju szachowego — kompletny poradnik", url: "https://thechessworld.com/articles/training-techniques/tournament-preparation-complete-guide/" }],
+  9: [{ kind: "video", title: "7 najczęstszych błędów początkujących w szachach", url: yt("SXrKRA_KZ5k") }],
+  10: [{ kind: "video", title: "Jak analizować własne partie — prosty sposób (GM Noel Studer)", url: yt("shma5hsckww") }],
+  11: [{ kind: "article", title: "Plan nauki szachów — gotowe programy treningowe wg poziomu", url: "https://www.chess.com/article/view/study-plan-directory" }],
+  12: [{ kind: "video", title: "Taktyka dla początkujących: widełki, związanie, szpila", url: yt("MbMslp2WcI0") }],
+  14: [{ kind: "article", title: "Lichess czy Chess.com — którą platformę wybrać", url: "https://www.chess.com/blog/avii_ar/lichess-vs-chess-com-which-one-should-you-use" }],
+  16: [{ kind: "video", title: "Jak zbudować repertuar debiutowy (Hanging Pawns)", url: yt("nr-_W6Eujzg") }],
+  20: [{ kind: "video", title: "Podstawy końcówek pionowych — wprowadzenie (GM Naroditsky)", url: yt("QUqq7wSLE78") }],
+  24: [{ kind: "article", title: "Szachy pozycyjne — kompletny przewodnik", url: "https://thechessworld.com/articles/general-information/positional-chess-complete-guide/" }],
+  30: [{ kind: "video", title: "Jak skutecznie studiować partie mistrzów", url: yt("Q_IZG57UBCE") }],
+  35: [{ kind: "video", title: "Końcówki wieżowe — pozycje Luceny i Philidora", url: yt("rDist9x7szE") }],
+  40: [{ kind: "video", title: "Zaawansowana taktyka — trudne zadania z GM Naroditskym", url: yt("1EV8XLSZsho") }],
   1: [{ kind: "video", title: "How to play chess — complete rules", url: yt("OCSbzArwB10") }],
   2: [{ kind: "video", title: "How to checkmate", url: yt("4wRBjlJGMbg") }],
   5: [{ kind: "video", title: "Chess openings basics", url: yt("3qfBIboJjN4") }],

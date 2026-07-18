@@ -128,6 +128,19 @@ export const { milestones, criteriaByLevel } = ladderC([
 // Curated, link-verified learning resources for the concrete technique
 // milestones (produkcja w DAW: JustinGuitar, Cubase, Produce Like A Pro i in.).
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  5: [{ kind: "video", title: "Jak zbudować 8-taktową pętlę", url: yt("wuCGMOQyles") }],
+  6: [{ kind: "video", title: "Od pętli do pełnej struktury utworu", url: yt("ltiXacTxmUg") }],
+  7: [{ kind: "video", title: "Ustawienia eksportu (bounce): sample rate, bit, dither", url: yt("Bi1sU2Iyer0") }],
+  8: [{ kind: "video", title: "Jak wreszcie kończyć swoje utwory", url: yt("UFpZy7X1ZOg") }],
+  10: [{ kind: "video", title: "Skróty klawiszowe DAW — przyspiesz pracę", url: yt("u23C1AU_8NU") }],
+  11: [{ kind: "video", title: "5 rzeczy, które pomogły mi kończyć więcej utworów", url: yt("t7by48WmueA") }],
+  14: [{ kind: "video", title: "Sound design 101: oscylatory, filtry, obwiednie, LFO", url: yt("MVDxvSN0kas") }],
+  16: [{ kind: "video", title: "Podstawy miksu dla początkujących", url: yt("NWw9S4pPrtc") }],
+  18: [{ kind: "video", title: "Automatyzacja w DAW od podstaw (FL Studio)", url: yt("RoMq8FhYKGk") }],
+  22: [{ kind: "video", title: "Sidechain — kompresja pod stopę wyjaśniona", url: yt("QUUCRCVll3k") }],
+  24: [{ kind: "video", title: "Mastering dla początkujących — krok po kroku", url: yt("99ABUkzpPH4") }],
+  30: [{ kind: "video", title: "Zaawansowany miks od zera (masterclass)", url: yt("mVdgolJWqV4") }],
   1: [{ kind: "video", title: "Czym jest DAW — podstawy", url: yt("rqwfZB9QFPI") }],
   2: [{ kind: "video", title: "Programowanie beatu perkusyjnego", url: yt("dgt8EgI0ECM") }],
   3: [{ kind: "video", title: "Akordy i linia basu", url: yt("iBdzc4GhSgQ") }],

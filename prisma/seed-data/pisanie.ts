@@ -128,6 +128,18 @@ export const { milestones, criteriaByLevel } = ladderC([
 // Curated, link-verified learning resources for the concrete technique
 // milestones (twórcze pisanie: Reedsy, Abbie Emmons, Alexa Donne i in.).
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  1: [{ kind: "article", title: "Jak zbudować codzienny nawyk pisania", url: "https://thewritepractice.com/writing-habit/" }],
+  6: [{ kind: "article", title: "Flash fiction: sztuka najkrótszych opowiadań", url: "https://thewritepractice.com/flash-fiction/" }],
+  7: [{ kind: "article", title: "Jak samodzielnie zredagować własny tekst (z szablonem)", url: "https://reedsy.com/blog/how-to-edit-a-book/" }],
+  8: [{ kind: "article", title: "Najlepsze programy i narzędzia do pisania", url: "https://reedsy.com/blog/book-writing-software/" }],
+  9: [{ kind: "article", title: "Jak opublikować opowiadanie: 3 drogi do czytelników", url: "https://reedsy.com/blog/how-to-publish-a-short-story/" }],
+  11: [{ kind: "article", title: "Jak zbudować rutynę pisania, której nie porzucisz", url: "https://jerryjenkins.com/writing-routine/" }],
+  13: [{ kind: "article", title: "Ile słów ma powieść? Cele i liczba słów", url: "https://reedsy.com/blog/how-many-words-in-a-novel/" }],
+  15: [{ kind: "article", title: "Punkt widzenia (POV): kompletny przewodnik z przykładami", url: "https://reedsy.com/blog/point-of-view/" }],
+  17: [{ kind: "article", title: "Podróż bohatera: 12 kroków klasycznej struktury fabuły", url: "https://reedsy.com/blog/heros-journey/" }],
+  20: [{ kind: "article", title: "Przygotowanie do NaNoWriMo: 8 wskazówek na listopad", url: "https://reedsy.com/blog/how-to-prepare-for-nanowrimo/" }],
+  25: [{ kind: "article", title: "Kompletny przewodnik po query letter", url: "https://www.janefriedman.com/query-letters/" }],
   2: [{ kind: "video", title: "Jak napisać scenę", url: yt("XLDo02UhOIo") }],
   3: [{ kind: "video", title: "Opis miejsca (setting description)", url: yt("PH_NoXKO9Ec") }],
   4: [{ kind: "video", title: "Naturalny dialog", url: yt("tCZSndWrZZM") }],

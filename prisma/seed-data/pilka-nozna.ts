@@ -140,6 +140,19 @@ export const criteriaByLevel: Record<number, Criterion> = {
 };
 
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Panowanie nad piłką — 10 prostych ćwiczeń dla początkujących", url: yt("e5RxAJM-oxc") }],
+  5: [{ kind: "video", title: "Jak naprawdę nauczyć się żonglerki — od zera dla początkujących", url: yt("5PQgz2SUPdk") }],
+  8: [{ kind: "video", title: "Wszystkie techniki podania w piłce nożnej", url: yt("HZ5W1HDheTo") }],
+  9: [{ kind: "video", title: "Taktyka gry 5 na 5 — atak i obrona na małym boisku", url: yt("dRNqdwfZgb0") }],
+  10: [{ kind: "video", title: "Strzał z mocą i precyzją — kompletny poradnik", url: yt("vZ1G5mCAf_c") }],
+  12: [{ kind: "video", title: "Trening słabszej nogi — 15 ćwiczeń", url: yt("xlHnFTEarKI") }],
+  14: [{ kind: "video", title: "Jak działają pozycje w piłce — prosty przewodnik dla początkujących", url: yt("VqoCKoGR6G8") }],
+  22: [{ kind: "video", title: "Poranny trening indywidualny — jak trenować solo", url: yt("E150IqwnUeg") }],
+  23: [{ kind: "video", title: "Around the World — trik żonglerski krok po kroku", url: yt("lHy5-QofzP0") }],
+  35: [{ kind: "video", title: "Trening przygotowania fizycznego — szybkość, wytrzymałość, zwinność", url: yt("rVjLbtKus6k") }],
+  40: [{ kind: "video", title: "10 prostych zwodów 1v1 na ogranie obrońcy", url: yt("RCA8A9ainIA") }],
+  45: [{ kind: "video", title: "5 łatwych trików freestyle dla początkujących", url: yt("xSpvUfTBWx8") }],
   1: [{ kind: "video", title: "Żonglerka — pierwsze podbicia", url: yt("HFQXv5gka7k") }],
   3: [{ kind: "video", title: "Jak nauczyć się żonglerki piłką", url: yt("r9jG1dnMEFY") }],
   4: [{ kind: "video", title: "Podania w piłce nożnej — podstawy", url: yt("pm4Anpbk5eQ") }],

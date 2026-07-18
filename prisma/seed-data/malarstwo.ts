@@ -129,6 +129,18 @@ export const { milestones, criteriaByLevel } = ladderC([
 // milestones (count/hours/exhibition levels have none). Videos from Proko,
 // Marco Bucci, Florent Farges, Sessions College, Andrew Tischler i in.
 export const resourcesByLevel: Record<number, MilestoneResource[]> = {
+  // — Rozszerzenie zasobów Tier 1 (wszystkie linki zweryfikowane jako aktywne) —
+  2: [{ kind: "video", title: "Mieszanie koloru — metoda bez talentu (Mark Carder)", url: yt("hGMRrpYmsr8") }],
+  6: [{ kind: "video", title: "Pierwsza martwa natura w oleju — pełny tutorial", url: yt("Ab94OeQg7u0") }],
+  9: [{ kind: "video", title: "Jak zbudować stały nawyk malowania (daily studies)", url: yt("GCbI4V7OmFQ") }],
+  10: [{ kind: "video", title: "Jak urządzić pracownię malarską w domu", url: yt("-Wa8ETg7-sI") }],
+  11: [{ kind: "video", title: "Jak malować codziennie, gdy brakuje czasu", url: yt("NX2VFiTfbk4") }],
+  12: [{ kind: "video", title: "Opanowanie kompozycji w malarstwie (Ian Roberts)", url: yt("GSSB6LjrKNU") }],
+  16: [{ kind: "video", title: "Malowanie szpachlą — technika dla początkujących", url: yt("h0jnUpPXEs8") }],
+  18: [{ kind: "video", title: "Malarstwo w plenerze — wprowadzenie krok po kroku", url: yt("qIdMVtHhQQA") }],
+  21: [{ kind: "video", title: "Ciepłe i zimne barwy — sekret lepszych obrazów", url: yt("JTVZgbNBBnY") }],
+  24: [{ kind: "video", title: "Jak zbudować profesjonalne portfolio artysty", url: yt("Jl-gcqSzyWA") }],
+  27: [{ kind: "video", title: "Malarstwo olejne dla początkujących — demo krok po kroku", url: yt("p848X4-_VPQ") }],
   1: [{ kind: "video", title: "Materiały do malarstwa (akryl)", url: yt("2P3dAsa2qvQ") }],
   3: [{ kind: "video", title: "Mieszanie kolorów — podstawy", url: yt("dbkX2uFwFdk") }],
   4: [{ kind: "video", title: "Podmalówka walorowa (grisaille)", url: yt("uFXapKNNoBA") }],
